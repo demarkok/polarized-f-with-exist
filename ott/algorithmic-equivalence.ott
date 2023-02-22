@@ -1,0 +1,95 @@
+embed {{ tex-preamble
+
+\colorlet{colorEOneA}{Red!90!Black}
+\newcommand{\eqEOneA}{ \mathcolor{colorEOneA}{ [[≈]]_1^{A} } } 
+% \newcommand{\subEOneA}{ \mathcolor{colorEOneA}{ [[≤]]_0^A } } 
+% \newcomma
+
+}}
+
+
+defns
+  E1A :: 'E1A' ::=
+
+  defn coh ⊨ imN ≈ imM ⫤ mu :: :: NAeq :: ''
+  {{ com Negative multi-quantified type equivalence (algorithmic) }}
+  {{ tex [[coh]] \vDash [[imN]] \eqEOneA [[imM]] \Dashv [[mu]] }} by
+
+
+  -----------------  :: NVar
+  coh ⊨ a- ≈ a- ⫤ ·
+
+
+  coh ⊨ imP ≈ imQ ⫤ mu
+  ------------------- :: ShiftU
+  coh ⊨ ↑imP ≈ ↑imQ ⫤ mu
+
+
+  coh ⊨ imP ≈ imQ ⫤ mu1    coh ⊨ imN ≈ imM ⫤ mu2    mu1 ∪ mu2 is bijective
+  --------------------------------------------------------------------- :: Arrow
+  coh ⊨ imP → imN ≈ imQ → imM ⫤ mu1 ∪ mu2
+
+  S coh ⊨ [a+*:coh/pas] imN ≈ [b+*:coh/pbs] imM ⫤ mu 
+  ------------------------------------------------- :: Forall
+  coh ⊨ ∀pas.imN ≈ ∀pbs.imM ⫤ mu |_ mv imM
+
+  -----------------------------------------  :: NMVar
+  coh ⊨ a-:coh ≈ b-:coh ⫤ b-:coh ↦ a-:coh
+
+
+  defn coh ⊨ imP ≈ imQ ⫤ mu :: :: PAeq :: ''
+  {{ com Positive multi-quantified type equivalence (algorithmic) }}
+  {{ tex [[coh]] \vDash [[imP]] \eqEOneA [[imQ]] \Dashv [[mu]] }} by
+
+  -----------------  :: PVar
+  coh ⊨ a+ ≈ a+ ⫤ ·
+
+  coh ⊨ imN ≈ imM ⫤ mu
+  -------------------- :: ShiftD
+  coh ⊨ ↓imN ≈ ↓imM ⫤ mu
+
+  
+  S coh ⊨ [a-*:coh/nas] imP ≈ [b-*:coh/nbs] imQ ⫤ mu 
+  ------------------------------------------------ :: Exists 
+  coh ⊨ ∃nas.imP ≈ ∃nbs.imQ ⫤ mu |_ mv imQ
+
+  -----------------------------------------  :: PMVar
+  coh ⊨ a+:coh ≈ b+:coh ⫤ b+:coh ↦ a+:coh
+
+% defns
+%   E1 :: '' ::=
+
+%   defn iN ≈ iM :: :: Neq :: ''
+%   {{ com Negative multi-quantified type equivalence }}
+%   {{ tex [[iN]] \eqEOne [[iM]] }} by
+
+%   ------------ :: NVar
+%   na ≈ na
+
+%   iP ≈ iQ
+%   ------------- :: ShiftU
+%   ↑iP ≈ ↑iQ
+
+%   iP ≈ iQ    iN ≈ iM
+%   ------------------ :: Arrow
+%   iP → iN ≈ iQ → iM
+
+%   mu : pbs ∩ fv iM ↔ pas ∩ fv iN    iN ≈ [mu] iM
+%   ---------------------------------------------- :: Forall
+%   ∀ pas . iN ≈ ∀ pbs . iM
+
+
+%   defn iP ≈ iQ :: :: Peq :: ''
+%   {{ com Positive multi-quantified type equivalence }}
+%   {{ tex [[iP]] \eqEOne [[iQ]] }} by
+
+%   ------------ :: PVar
+%   pa ≈ pa
+  
+%   iN ≈ iM
+%   ------------- :: ShiftD
+%   ↓iN ≈ ↓iM
+
+%   mu : nbs ∩ fv iQ ↔ nas ∩ fv iP    iP ≈ [mu] iQ
+%   ---------------------------------------------- :: Exists 
+%   ∃nas.iP ≈ ∃nbs.iQ

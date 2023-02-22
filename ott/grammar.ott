@@ -1,0 +1,345 @@
+embed {{ tex-preamble
+
+\usepackage{esvect}
+
+
+% https://tex.stackexchange.com/questions/33401/a-version-of-colorbox-that-works-inside-math-environments
+\setlength{\fboxsep}{1pt}
+\newcommand{\ngbox}[1]{\mathchoice%
+  {\colorbox{black!8}{$\displaystyle      \mathit{ #1 } $} }%
+  {\colorbox{black!8}{$\textstyle         \mathit{ #1 } $} }%
+  {\colorbox{black!8}{$\scriptstyle       \mathit{ #1 } $} }%
+  {\colorbox{black!8}{$\scriptscriptstyle \mathit{ #1 } $} } }%
+
+}}
+
+
+
+metavar a {{ tex \alpha }}, b {{ tex \beta }} ::= {{ com type variables }} 
+
+indexvar n , m, i , j ::= {{ com index variables }}
+
+grammar
+
+pa {{ tex \alpha^{+} }},
+pb {{ tex \beta^{+} }} 
+:: 'pa_' ::= {{ com positive variable }}
+   | a +       :: :: Var {{ tex [[a]]^{+} }}
+
+na {{ tex \alpha^{-} }},
+nb {{ tex \beta^{-} }}
+:: 'na_' ::= {{ com negative variable }}
+   | a -       :: :: Var {{ tex [[a]]^{-} }}
+
+
+grammar
+
+s {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
+   | ·                  :: :: Empty
+   | P / a+             :: :: PosSub
+   | N / a-             :: :: NegSub
+   | iPs / pas          :: :: PosSubs 
+   | iNs / nas          :: :: NegSubs
+   | pmas / pas         :: :: PosMSubs
+   | nmas / nas         :: :: NegMSubs
+   | puas / pas         :: :: PosUSubs
+   | nuas / nas         :: :: NegUSubs
+   | varset1 / varset2  :: :: VarSubs
+   | </ si // , // i /> :: :: concat  {{ com concatenate }}
+
+
+usEntry  {{ tex e }} :: usE_' ::= {{ com entry of a unification solution }}
+   | pua :≈ iP            :: :: PSol {{ tex [[pua]] :\approx   [[iP]] }}
+   | nua :≈ iN            :: :: NSol {{ tex [[nua]] :\approx   [[iN]] }}
+   | pua :≥ iP            :: :: PSup {{ tex [[pua]] :\geqslant [[iP]] }}
+   % | nua :≤ iN            :: :: PSub {{ tex [[nua]] :[[≤]] [[iN]] }}
+
+us {{ tex \widehat{\sigma} }}  :: 'us_' ::= {{ com unification solution (substitution) }}
+   | ·                    :: :: Empty
+   | usEntry              :: :: Entry
+   | us \ puas            :: :: PSetminus
+   | us \ nuas            :: :: NSetminus
+   | us \ pua             :: :: PExclude
+   | us \ nua             :: :: NExclude
+   | </ usi // , // i /> :: :: concat  {{ com concatenate }}
+   | ( us )              :: S :: paren
+
+grammar
+
+P, Q :: 'P_' ::= {{ com positive types }}
+   | a+       ::   :: Var
+   | ↓ N      ::   :: Shift
+   | ∃ na . P ::   :: Exists
+   | [ s ] P  :: M :: AppSub 
+
+N, M :: 'N_' ::= {{ com negative types }}
+   | a-       ::   :: Var
+   | ↑ P      ::   :: Shift
+   | ∀ pa . N ::   :: Forall
+   | P → N    ::   :: Fun
+   | [ s ] N  :: M :: AppSub 
+
+grammar
+
+pas {{ tex \vv{ \alpha^{+} } }},
+pbs {{ tex \vv{ \beta^{+} } }}
+:: 'pas_' ::= {{ com positive variable list }}
+   | ·                    ::   :: empty   {{ com empty list }}
+   | pa                   ::   :: Var     {{ com a variable }}
+   % | a+ *                 ::   :: Vars    {{ com variable list }} {{ tex \vv{ [[a+]] } }}
+   | </ pasi // , // i /> ::   :: concat  {{ com concatenate lists }}
+
+nas {{ tex \vv{ \alpha^{-} } }},
+nbs {{ tex \vv{ \beta^{-} } }}
+:: 'nas_' ::= {{ com negative variables }}
+   | ·                    ::   :: empty   {{ com empty list }}
+   | na                   ::   :: Var     {{ com a variable }}
+   % | a- *                 ::   :: Vars    {{ com variable list }} {{ tex \vv{ [[a-]] } }}
+   | </ nasi // , // i /> ::   :: concat  {{ com concatenate lists }}
+
+
+iP {{ tex P }}, iQ {{ tex Q }}:: 'iP_' ::= {{ com multi-quantified positive types }}
+   | pa         ::   :: Var
+   | ↓ iN       ::   :: Shift
+   | ∃ nas . iP ::   :: Exists {{ com $[[iP]] \neq \exists\dots$ }}
+   | [ s ] iP   :: M :: AppSub  
+   | [ mu ] iP  :: M :: AppMoving 
+
+iN {{ tex N }}, iM {{ tex M }} :: 'iN_' ::= {{ com multi-quantified negative types }}
+   | na          ::   :: Var
+   | ↑ iP        ::   :: Shift
+   | iP → iN     ::   :: Fun
+   | ∀ pas . iN  ::   :: Forall {{ com $[[iN]] \neq \forall\dots$ }}
+   | [ s ] iN    :: M :: AppSub 
+   | [ mu ] iN   :: M :: AppMoving
+
+
+iPs {{ tex \vv{ P } }}
+:: 'iPs_' ::= {{ com list of positive types }}
+   | ·                    ::   :: empty   {{ com empty list }}
+   | iP                   ::   :: Var     {{ com a singel type }}
+   | </ iPsi // , // i /> ::   :: concat  {{ com concatenate lists }}
+
+iNs {{ tex \vv{ N } }}
+:: 'iNs_' ::= {{ com list of negative types }}
+   | ·                    ::   :: empty   {{ com empty list }}
+   | iN                   ::   :: Var     {{ com a singel type }}
+   | </ iNsi // , // i /> ::   :: concat  {{ com concatenate lists }}
+
+
+grammar
+
+  G {{ tex \Gamma }} :: DT_Ctxt ::= {{ com declarative type context }}
+    | ·                  ::   :: empty   {{ com empty context }}
+    | Ord varset         ::   :: fromset {{ tex [[varset]] }}
+    % | varset             ::   :: nvar     {{ com a negative variable }}
+    | pas                ::   :: PList     {{ com list of variables }}
+    | nas                ::   :: NList     {{ com list of variables }}
+    | </ Gi // , // i /> ::   :: concat  {{ com concatenate contexts }}
+    | ( G )              :: S :: paren
+    | G1 ∪ G2            ::   :: union
+
+
+grammar
+
+ordVars {{ tex \vv{ \alpha } }} :: OrdVars ::= {{ com ordered positive or negative variables }}
+    | ·                         ::   :: empty     {{ com empty set }}
+    | pas                       ::   :: PList     {{ com list of variables }}
+    | nas                       ::   :: NList     {{ com list of variables }}
+    | ordVars1 \ ordVars2       ::   :: Setminus  {{ com setminus }}
+    | </ ordVarsi // , // i />  ::   :: concat    {{ com concatenate contexts }}
+    | ( ordVars )               :: S :: paren     {{ com parenthesis }}
+
+
+grammar
+
+varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
+    | ∅                  ::   :: emptyset  {{ com empty set }}
+    | fv iP              ::   :: Pfv       {{ com free variables }}
+    | fv iN              ::   :: Nfv       {{ com free variables }}
+    | fv imP             ::   :: Pmfv      {{ com free variables }}
+    | fv imN             ::   :: Nmfv      {{ com free variables }}
+    | varset1 ∩ varset2  ::   :: intersect {{ com set intersection }}
+    | varset1 ∪ varset2  ::   :: union     {{ com set union }}
+    | varset1 \ varset2  ::   :: setminus  {{ com set complement }}
+    | mv imP             ::   :: Pmv       {{ com movable variables }}
+    | mv imN             ::   :: Nmv       {{ com movable variables }}
+    | uv uN              ::   :: Nuv       {{ com unification variables }}
+    | uv uP              ::   :: Puv       {{ com unification variables }}
+    | ( varset )         :: S :: paren     {{ com parenthesis }}
+    | G                  ::   :: Cntxt     {{ com context }}
+    | ordVars            ::   :: OrdVars   {{ com ordered list of variables }}
+grammar
+
+mu {{ tex \mu }} :: Mu ::= 
+    | ·                   ::   :: empty   {{ com empty moving }}
+    | pma1 ↦ pma2         ::   :: Psingle {{ com Positive unit substitution }}
+    | nma1 ↦ nma2         ::   :: Nsingle {{ com Positive unit substitution }}
+    | mu1 ∪ mu2           :: M :: Union   {{ com Set-like union of movings }} 
+    | </ mui // , // i /> ::   :: concat  {{ com concatenate movings }}
+    | mu |_ varset        :: M :: restr   {{ com restriction on a set }} 
+                                          {{ tex [[mu]]|_{[[varset]]}  }} 
+
+grammar
+
+coh {{ tex n }} :: 'n_' ::= {{ com cohort index }}
+    | Z     :: :: Zero {{ tex 0 }}
+    | S coh :: :: Succ {{ tex [[coh]]+1 }}
+
+grammar
+
+pma {{ tex \widetilde{\alpha}^{+} }} :: pma_ ::= {{ com positive movable variable }}
+    | a + : coh :: :: Var {{ tex \widetilde{[[a]]}^{+ [[coh]] } }}
+
+
+nma {{ tex \widetilde{\alpha}^{-} }} :: nma_ ::= {{ com negative movable variable }}
+    | a - : coh :: :: Var {{ tex \widetilde{[[a]]}^{- [[coh]] } }}
+
+
+pmas {{ tex \vv{ \widetilde{ \alpha^{+} } } }},
+pmbs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
+:: 'pmas_' ::= {{ com positive movable variable list }}
+   | ·                     ::   :: empty    {{ com empty list }}
+   | pma                   ::   :: Var      {{ com a variable }}
+   % | pas : coh             ::   :: FromVars {{ com from a list of non-movable variables }}
+   %                                          {{ tex \vv{ \widetilde{ [[pas]]^{+[[coh]]} } } }}
+   | a + * : coh            ::   :: FromVar  {{ com from a non-movable variable }}
+                                            {{ tex \vv{ \widetilde{ [[a]]^{+[[coh]]} } } }}
+   | </ pmasi // , // i /> ::   :: concat   {{ com concatenate lists }}
+
+nmas {{ tex \vv{ \widetilde{ \alpha^{-} } } }},
+nmbs {{ tex \vv{ \widetilde{ \beta^{-}  } } }}
+:: 'nmas_' ::= {{ com negatiive movable variable list }}
+   | ·                     ::   :: empty    {{ com empty list }}
+   | nma                   ::   :: Var      {{ com a variable }}
+   % | nas : coh             ::   :: FromVars {{ com transofmed non-movable variables }}
+   %                                          {{ tex \vv{ \widetilde{ [[nas]]^{-[[coh]]} } } }}
+   | a - * : coh            ::   :: FromVar  {{ com from a non-movable variable }}
+                                            {{ tex \vv{ \widetilde{ [[a]]^{-[[coh]]} } } }}
+   | </ nmasi // , // i /> ::   :: concat   {{ com concatenate lists }}
+
+
+imP {{ tex P }}, imQ {{ tex Q }}:: 'imP_' ::= {{ com multi-quantified positive types with movable variables }}
+   | pa          ::   :: Var
+   | pma         ::   :: MovVar
+   | ↓ imN       ::   :: Shift
+   | ∃ nas . imP ::   :: Exists
+   | [ s ] imP   :: M :: AppSub  
+   | [ mu ] imP  :: M :: AppMoving 
+
+imN {{ tex N }}, imM {{ tex M }} :: 'imN_' ::= {{ com multi-quantified negative types with movable variables }}
+   | na          ::   :: Var
+   | nma         ::   :: MovVar
+   | ↑ imP       ::   :: Shift
+   | imP → imN    ::   :: Fun
+   | ∀ pas . imN ::   :: Forall
+   | [ s ] imN   :: M :: AppSub 
+   | [ mu ] imN  :: M :: AppMoving
+
+
+
+
+pua {{ tex \widehat{\alpha}^{+} }} :: pua_ ::= {{ com positive unification variable }}
+    | a ^ + :: :: Var {{ tex \widehat{[[a]]}^{+} }}
+
+nua {{ tex \widehat{\alpha}^{-} }} :: nua_ ::= {{ com negative unification variable }}
+    | a ^ - :: :: Var {{ tex \widehat{[[a]]}^{-} }}
+
+puas {{ tex \vv{ \widetilde{ \alpha^{+} } } }},
+pubs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
+:: 'puas_' ::= {{ com positive unification variable list }}
+   | ·                     ::   :: empty    {{ com empty list }}
+   | pua                   ::   :: Var      {{ com a variable }}
+   | pua * [ varset ]      ::   :: FromVarC {{ com from a normal variable }}
+                                            {{ tex \vv{ [[pua]] \{ [[varset]] \} } }}
+   | pua *                 ::   :: FromVar  {{ com from a normal variable, context unspecified }}
+                                            {{ tex \vv{ [[pua]] } }}
+   | </ puasi // , // i /> ::   :: concat   {{ com concatenate lists }}
+
+nuas {{ tex \vv{ \widehat{ \alpha^{-} } } }},
+nubs {{ tex \vv{ \widehat{ \beta^{-}  } } }}
+:: 'nuas_' ::= {{ com negative unification variable list }}
+   | ·                     ::   :: empty    {{ com empty list }}
+   | nua                   ::   :: Var      {{ com a variable }}
+   | nua * [ varset ]      ::   :: FromVarC {{ com from a normal variable }}
+                                            {{ tex \vv{ [[nua]] \{ [[varset]] \} }  }}
+   | nua *                 ::   :: FromVar  {{ com from a normal variable, context unspecified }}
+                                            {{ tex \vv{ [[nua]]  } }}
+   | </ nuasi // , // i /> ::   :: concat   {{ com concatenate lists }}
+
+
+
+uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive algorithmic type (potentially with metavariables) }}
+                                                            {{ tex \ngbox{[[uP]]} }} | pa             ::   :: Var | pma            ::   :: MovVar
+   | pua [ varset ] ::   :: UnifVar {{ tex [[pua]]\{ [[varset]] \} }}
+   | ↓ uN          ::   :: Shift
+   | ∃ nas . uP    ::   :: Exists
+   | [ s ] uP      :: M :: AppSub  
+   | [ mu ] uP     :: M :: AppMoving 
+
+uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative algorithmic type (potentially with metavariables) }}
+                                                             {{ tex \ngbox{[[uN]]} }}
+   | na             ::   :: Var
+   | nma            ::   :: MovVar
+   | nua [ varset ] ::   :: UnifVar {{ tex [[nua]]\{ [[varset]] \} }}
+   | ↑ uP          ::   :: Shift
+   | uP → uN       ::   :: Fun
+   | ∀ pas . uN    ::   :: Forall
+   | [ s ] uN      :: M :: AppSub 
+   | [ mu ] uN     :: M :: AppMoving
+
+
+terminals :: 'terminals_' ::=
+  | ∃  :: :: exists    {{ tex \exists }}
+  | ∀  :: :: forall    {{ tex \forall }}
+  | ↑  :: :: upShift   {{ tex \mathord{\uparrow} }}
+  | ↓  :: :: downShift {{ tex \mathord{\downarrow} }}
+  | →  :: :: funArrow  {{ tex \rightarrow }}
+  | ↔  :: :: bijArrow  {{ tex \leftrightarrow }}
+  | ∊  :: :: inSet     {{ tex \in }}
+  | ∉  :: :: notInSet  {{ tex \notin }}
+  | ·  :: :: cDot      {{ tex \cdot }}
+  | ⊢  :: :: vdash     {{ tex \vdash }}
+  | ≤  :: :: subtype   {{ tex \leqslant }}
+  | ≥  :: :: supertype {{ tex \geqslant }}
+  | ≈  :: :: equiv     {{ tex \simeq }}
+  | ∪  :: :: union     {{ tex \cup }}
+  | ∩  :: :: intersect {{ tex \cap }}
+  | \  :: :: setminus  {{ tex \setminus }}
+  | ⊆  :: :: subset    {{ tex \subseteq }}
+  | ↦  :: :: mapsto    {{ tex \mapsto }}
+  | ≈u :: :: unify     {{ tex \overset{u}{\simeq} }}
+  | ≈au :: :: antiunify  {{ tex \overset{a}{\simeq} }}
+  | ∅ :: :: empty      {{ tex \emptyset }}
+  % | ≈a :: :: antiunify {{ tex \overset{g}{\simeq} }}
+  | ⊨  :: :: vDash     {{ tex \vDash }}
+  | ⫤  :: :: Dashv     {{ tex \Dashv }}
+  % | ⊫  :: :: VDash     {{ tex \mathcolor{\ccolor}{\VDash} }}
+  % | ⫥  :: :: DashV     {{ tex \mathcolor{\ccolor}{\DashV} }}
+  | ≠  :: :: neq       {{ tex \neq }}
+  % | ≡  :: :: equiv     {{ tex \mathcolor{\rcolor}{\equiv} }}
+  | ≡n  :: :: equivn    {{ tex \equiv_{n} }}
+  | ∨  :: :: LUB       {{ tex \vee }}
+  | ⇓ :: :: norm       {{ tex \Downarrow }}
+
+
+% subrules
+%   iP <:: imP
+%   iN <:: imN
+% subrules
+%   imP <:: uP  
+%   imN <:: uN  
+  
+
+funs
+  LUBF ::=
+fun
+  iP1 ∨ iP2 :: iQ :: LUB 
+by
+% fun
+%   usEntry1 & usEntry2 :: usEntry :: USEM
+% by
+
+fun
+  us1 & us2 :: us :: MRG
+by

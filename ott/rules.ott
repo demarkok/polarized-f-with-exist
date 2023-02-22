@@ -1,0 +1,31 @@
+grammar
+  formula :: 'formula_' ::=
+    | judgement                              ::   :: judgement
+    | formula1 .. formulan                   ::   :: dots
+    | mu : varset1 ↔ varset2                 ::   :: moving_decl
+    | mu is bijective                        ::   :: moving_bij
+    | us is functional                       ::   :: unif_solution_fun
+    | us1 ∊ us2                              ::   :: in
+    | varset1 ⊆ varset2                      ::   :: varset_subset
+    | varset1 = varset2                      ::   :: varset_eq
+    | varset is fresh                        ::   :: fresh
+    % | x ∊ T                                  ::   :: x_in_T {{ com lookup $[[ x ]]$ in context $[[ T ]]$ }}
+    | na ∉ varset                            ::   :: na_notin_set
+    | pa ∉ varset                            ::   :: pa_notin_set
+    | na ∊ varset                            ::   :: na_in_set
+    | pa ∊ varset                            ::   :: pa_in_set
+    % | xs ⊆ T                                 ::   :: xs_in_T
+    % | let T1 = T2                            ::   :: let_T
+    % | let xs = vars                          ::   :: let_vars
+    % | vars ∩ T = ∅                             ::   :: xs_T_disj
+    % | vars1 ∩ vars2 = ∅                      ::   :: xs_disj
+    % | UV ( t ) = ua1 [ vars1 ] ,.., uan [ varsn ] ::   :: uvars_in_t
+    % | ux : arn ∊ T                           ::   :: ux_in_T {{ com lookupof $[[ ux ]]$ in context $[[ T ]]$ }}
+    % | ux : arn = t ∊ T                       ::   :: ux_inst_in_T {{ com lookup type of $[[ ux ]]$  instantiation in context $[[ T ]]$ }}
+    | N ≠ M                                    ::   :: Pneq
+    | P ≠ Q                                    ::   :: Nneq
+    % | xs = vars                              ::   :: xs_assignment
+    % | arity f = [ arn1 ,.., arnn ]           ::   :: arity
+    % | judgement etc                          ::   :: etc  {{ tex [[ judgement ]]... }}
+    % | etc                                    ::   :: etc  {{ tex \cdots }}
+    % | ∀ i ∊ nat1 .. natn . judgment          ::   :: dots

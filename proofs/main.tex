@@ -1,0 +1,65 @@
+% vim: ft=tex
+\documentclass[a4,natbib=false]{article}
+\usepackage[a4paper, total={8in, 10in}]{geometry}
+
+\input{prelude.tex}
+
+
+\input{../_build/_gen/included.tex}
+
+
+
+\begin{document}
+
+\section{Vanilla System}
+\subsection{Grammar}
+\ottgrammartabular{
+  \ottP\ottinterrule
+  \ottN\ottinterrule
+}
+\subsection{Declarative Subtyping}
+\ottdefnsDZero
+
+\section{Multi-Quantified System}
+\subsection{Grammar}
+\ottgrammartabular{
+  \ottiP\ottinterrule
+  \ottiN\ottinterrule
+}
+\subsection{Declarative Subtyping}
+\ottdefnsDOne
+
+
+
+
+\subsection{Declarative Equivalence}
+\ottdefnsEOne
+
+
+\section{Algorithm}
+\subsection{Algorithmic Equivalence}
+\ottdefnsEOneA
+
+\subsection{Unification}
+\ottdefnsU
+
+\subsection{Algorithmic Subtyping}
+\ottdefnsA
+
+\subsection{Unification Solution Merge}
+\ottdefnsSM
+
+\subsection{Least Upper Bound}
+\ottdefnsLUB
+
+\subsection{Antiunification}
+\ottdefnsAU
+
+
+
+
+
+% \input{tex/grammar}
+% \input{tex/declarative-subtyping}
+
+\end{document}

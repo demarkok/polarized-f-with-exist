@@ -1,0 +1,91 @@
+defns
+  Order :: 'O' ::=
+
+  defn ord varset in uN = varset' :: :: NVarOrd :: '' by
+
+
+  na ∊ varset
+  ---------------------  :: NVarIn
+  ord varset in na = na
+
+  na ∉ varset
+  --------------------- :: NVarNIn
+  ord varset in na = ·
+
+  ------------------------------ :: NUVar
+  ord varset in nua[varset'] = · 
+
+
+  ord varset in uP = ordVars
+  --------------------------- :: ShiftU
+  ord varset in ↑uP = ordVars
+
+  ord varset in uP = ordVars1   ord varset in uN = ordVars2
+  --------------------------------------------------------- :: Arrow
+  ord varset in uP → uN = ordVars1, (ordVars2 \ ordVars1)
+
+  ord (varset \ pas) in uN = ordVars
+  ---------------------------------- :: Forall
+  ord varset in ∀pas.uN = ordVars
+
+
+  defn ord varset in uP = varset' :: :: PVarOrd :: '' by
+
+  pa ∊ varset
+  ---------------------  :: PVarIn
+  ord varset in pa = pa
+
+  pa ∉ varset
+  ---------------------  :: PVarIn
+  ord varset in pa = · 
+
+  ------------------------------  :: PUVar
+  ord varset in pua[varset'] = · 
+
+  ord varset in uN = ordVars
+  --------------------------- :: ShiftD
+  ord varset in ↓uN = ordVars
+
+  ord (varset \ nas) in uP = ordVars
+  ---------------------------------- :: Forall
+  ord varset in ∃nas.uP = ordVars
+
+
+defns
+  Nrm :: 'Nrm' ::=
+
+  defn uN ⇓ uM :: :: NNorm :: ''  by
+
+  -------  :: NVar
+  na ⇓ na
+
+  -------------------------  :: NUVar
+  nua[varset] ⇓ nua[varset]
+
+  uP ⇓ uQ
+  --------- :: ShiftU
+  ↑uP ⇓ ↑uQ
+
+  uP ⇓ uQ    uN ⇓ uM
+  ------------------- :: Arrow
+  uP → uN ⇓ uQ → uM
+
+  uN ⇓ uN'    ord pas in uN' = pas'
+  --------------------------------- :: Forall
+  ∀pas.uN ⇓ ∀pas'.uN'
+
+  defn uP ⇓ uQ :: :: PNorm :: ''  by
+
+  -------  :: PVar
+  pa ⇓ pa
+
+  -------------------------  :: PUVar
+  pua[varset] ⇓ pua[varset]
+
+  uN ⇓ uM
+  --------- :: ShiftD
+  ↓uN ⇓ ↓uM
+
+  uP ⇓ uP'    ord nas in uP' = nas'
+  --------------------------------- :: Exists
+  ∃nas.uP ⇓ ∃nas'.uP'

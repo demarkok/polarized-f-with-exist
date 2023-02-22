@@ -1,0 +1,7 @@
+defns
+  WF :: 'WF' ::=
+
+  defn G ⊢ iN  :: :: NiWF :: '' {{ com Negative type well-formedness }} by
+  defn G ⊢ iP  :: :: PiWF :: '' {{ com Positive type well-formedness }} by
+  defn G ⊢ N   :: :: NWF :: '' {{ com Negative type well-formedness }} by
+  defn G ⊢ P   :: :: PWF :: '' {{ com Positive type well-formedness }} by

@@ -1,0 +1,35 @@
+% defns
+%   A2 :: '' ::=
+
+%   defn iN ≈ iM :: :: neg_ieq :: 'NiEq_'
+%   {{ com Negative multi-quantified type equivalence }} by
+
+%   ------------ :: Var
+%   na ≈ na
+
+%   iP ≈ iQ
+%   ------------- :: ShiftU
+%   ↑iP ≈ ↑iQ
+
+%   iP ≈ iQ    iN ≈ iM
+%   ------------------ :: Arrow
+%   iP → iN ≈ iQ → iM
+
+%   mu : pbs ∩ fv iM ↔ pas ∩ fv iN    iN ≈ [mu] iM
+%   ---------------------------------------------- :: Def
+%   ∀ pas . iN ≈ ∀ pbs . iM
+
+
+%   defn iP ≈ iQ :: :: pos_ieq :: 'PiEq_'
+%   {{ com Positive multi-quantified type equivalence }} by
+
+%   ------------ :: Var
+%   pa ≈ pa
+  
+%   iN ≈ iM
+%   ------------- :: ShiftU
+%   ↓iN ≈ ↓iM
+
+%   mu : nbs ∩ fv iQ ↔ nas ∩ fv iP    iP ≈ [mu] iQ
+%   ---------------------------------------------- :: Def
+%   ∃nas.iP ≈ ∃nbs.iQ

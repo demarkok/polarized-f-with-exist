@@ -1,0 +1,67 @@
+embed {{ tex-preamble
+
+\colorlet{colorOne}{Yellow!50!Brown}
+\newcommand{\eqDOne}{ \mathcolor{colorOne}{ [[≈]]_1^{ \scaleto{[[≤]]}{3.5pt} } } } 
+\newcommand{\subDOne}{ \mathcolor{colorOne}{ [[≤]]_1 } } 
+\newcommand{\supDOne}{ \mathcolor{colorOne}{ [[≥]]_1 } } 
+
+}}
+
+defns
+  D1 :: 'D1' ::=
+
+  defn G ⊢ iN ≈ iM :: :: Neq :: ''
+  {{ com Negative equivalence on MQ types }}
+  {{ tex [[G]] [[⊢]] [[iN]] \eqDOne [[iM]] }} by
+
+  G ⊢ iN ≤ iM   G ⊢ iM ≤ iN
+  ------------------------- :: NDef
+  G ⊢ iN ≈ iM 
+
+  defn G ⊢ iP ≈ iQ :: :: Peq :: ''
+  {{ com Positive equivalence on MQ types }}
+  {{ tex [[G]] [[⊢]] [[iP]] \eqDOne [[iQ]] }} by
+
+  G ⊢ iP ≥ iQ   G ⊢ iQ ≥ iP
+  --------------------- :: PDef
+  G ⊢ iP ≈ iQ 
+
+  defn G ⊢ iN ≤ iM :: :: Nsub :: ''
+  {{ com Negative subtyping }}
+  {{ tex [[G]] [[⊢]] [[iN]] \subDOne [[iM]] }} by
+
+  ----------- :: NVar
+  G ⊢ a- ≤ a- 
+
+  G ⊢ iP ≈ iQ
+  ------------ :: ShiftU
+  G ⊢ ↑iP ≤ ↑iQ
+
+  G ⊢ iP ≥ iQ    G ⊢ iN ≤ iM 
+  -------------------------- :: Arrow
+  G ⊢ iP → iN ≤ iQ → iM
+
+  G, pbs ⊢ iPi   G, pbs ⊢ [iPs/pas] iN ≤ iM
+  ----------------------------------------- :: Forall
+  G ⊢ ∀pas.iN ≤ ∀pbs.iM
+
+  defn G ⊢ iP ≥ iQ :: :: Psup :: ''
+  {{ com Positive supertyping }}
+  {{ tex [[G]] [[⊢]] [[iP]] \supDOne [[iQ]] }} by
+
+  ------------- :: PVar
+  G ⊢ a+ ≥ a+ 
+
+  G ⊢ iN ≈ iM
+  -------------- :: ShiftD
+  G ⊢ ↓iN ≥ ↓iM
+
+  G, nbs ⊢ iNi   G, nbs ⊢ [iNs/nas] iP ≥ iQ'
+  ---------------------------------------- :: ExistsL
+  G ⊢ ∃nas.iP ≥ ∃nbs.iQ
+
+
+
+
+
+

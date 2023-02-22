@@ -1,0 +1,41 @@
+defns
+  LUB :: 'LUB' ::=
+
+  defn iP1 ∨ iP2 = iQ  :: :: Nsub :: ''
+  {{ com Least Upper Bound (Least Common Supertype) }} by
+
+  
+  ------------ :: Var
+  pa ∨ pa = pa
+
+
+  Z ⊨ ↓imN ≈au ↓imM ⫤ (uP, us1, us2); mu
+  -------------------------------------- :: Shift
+  ↓iN ∨ ↓iM = ∃nas.[nas/uv uP]iP
+
+  nas ∩ nbs = ∅
+  -------------------------------- :: Exists
+  ∃nas.iP1 ∨ ∃nbs.iP2 = iP1 ∨ iP2
+
+defns
+  AU :: 'AU' ::=
+  defn coh ⊨ imP1 ≈au imP2 ⫤ ( uQ , us1 , us2 ) ; mu  :: :: AUP :: 'P' by
+
+
+  --------------------------------------------------------  :: PVar
+  coh ⊨ a+:coh ≈au b+:coh ⫤  (a+, ·, ·) ; b+:coh ↦ a+:coh
+
+
+
+
+  defn coh ⊨ imN1 ≈au imN2 ⫤ ( uM , us1 , us2 ) ; mu  :: :: AUN :: 'N' by
+
+  --------------------------------------------------------  :: NVar
+  coh ⊨ a-:coh ≈au b-:coh ⫤  (a-, ·, ·) ; b-:coh ↦ a-:coh
+
+
+  coh ⊨ imP1  ≈au imP2 ⫤ (uQ, us1, us2) ; mu
+  coh ⊨ imN1  ≈au imN2 ⫤ (uM, us'1, us'2) ; mu'
+  --------------------------------------------------------  :: Arrow
+  coh ⊨ imP1 → imN1 ≈au imP2 → imN2 ⫤ (uQ → uM, , ·) ; mu ∪ mu'
+  

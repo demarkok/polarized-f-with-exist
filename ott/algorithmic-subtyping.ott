@@ -1,0 +1,49 @@
+embed {{ tex-preamble
+
+\colorlet{colorA}{Purple}
+\newcommand{\subA}{ \mathcolor{colorA}{ [[≤]] } } 
+\newcommand{\supA}{ \mathcolor{colorA}{ [[≥]] } } 
+
+}}
+
+defns
+  A :: 'A' ::=
+
+  defn G ⊨ uN ≤ iM ⫤ us :: :: Nsub :: ''
+  {{ com Negative subtyping }}
+  {{ tex [[G]] [[⊨]] [[uN]] \subA [[iM]] [[⫤]] [[us]] }} by
+
+  --------------- :: NVar
+  G ⊨ a- ≤ a- ⫤ · 
+
+  Z ⊨ uP ≈u imQ ⫤ mu ; us
+  ------------------------ :: ShiftU
+  G ⊨ ↑uP ≤ ↑iQ ⫤ us
+
+  G ⊨ uP ≥ iQ ⫤ us1    G ⊨ uN ≤ iM ⫤ us2
+  ---------------------------------------- :: Arrow
+  G ⊨ uP → uN ≤ iQ → iM ⫤ us1 & us2
+
+  G, pbs ⊨ [a^+*[G, pbs]/pas] uN ≤ iM ⫤ us
+  ---------------------------------------- :: Forall
+  G ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ us \ a^+*
+
+  defn G ⊨ uP ≥ iQ ⫤ us :: :: Psup :: ''
+  {{ com Positive supertyping }}
+  {{ tex [[G]] [[⊨]] [[uP]] \supA [[iQ]] [[⫤]] [[us]] }} by
+
+  ---------------- :: PVar
+  G ⊨ a+ ≥ a+ ⫤ ·
+
+  Z ⊨ uN ≈u imM ⫤ mu ; us
+  ------------------------ :: ShiftD
+  G ⊨ ↓uN ≥ ↓iM ⫤ us
+
+  G, nbs ⊨ [a^-*[G, nbs]/nas] uP ≥ iQ ⫤ us
+  ------------------------------------------ :: Exists
+  G ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ us
+
+    
+  varset1 =  fv iP \ varset      varset2 is fresh
+  ------------------------------------------------------ :: PUVar
+  G ⊨ a^+ [varset] ≥ iP ⫤ (a^+ :≥ iP ∨ [varset2/varset1]iP)

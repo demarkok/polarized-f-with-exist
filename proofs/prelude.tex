@@ -1,0 +1,32 @@
+\usepackage{lscape}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{supertabular}
+\usepackage[inline]{enumitem}
+\usepackage{cleveref}
+
+\usepackage{mathabx}
+\usepackage{color}
+\usepackage[dvipsnames,usenames]{xcolor}
+\usepackage{scalerel}
+
+\newcommand{\niton}{\not\owns}
+
+\newcommand{\ilyam}[1]{{\color{red} \texttt{Ilya:  #1}}}
+
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+
+
+% https://tex.stackexchange.com/questions/85033/colored-symbols/85035#85035
+\newcommand*{\mathcolor}{}
+\def\mathcolor#1#{ \mathcoloraux{#1} }
+\newcommand*{\mathcoloraux}[3]{%
+  \protect\leavevmode
+  \begingroup
+  \color#1{#2}#3%
+  \endgroup
+}

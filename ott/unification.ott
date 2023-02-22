@@ -1,0 +1,63 @@
+
+embed {{ tex-preamble
+
+\colorlet{colorU}{Purple!90!Black}
+\newcommand{\eqU}{ \mathcolor{colorU}{ [[≈u]] } } 
+% \newcommand{\subEOneA}{ \mathcolor{colorEOneA}{ [[≤]]_0^A } } 
+% \newcomma
+
+}}
+
+
+defns
+  U :: 'U' ::=
+
+  defn coh ⊨ uN ≈u imM ⫤ mu ; us :: :: NUnif :: ''
+  {{ com Negative unification }}
+  {{ tex [[coh]] \vDash [[uN]] \eqU [[imM]] \Dashv [[mu]] ; \, [[us]] }} by
+
+  ----------------------  :: NVar
+  coh ⊨ a- ≈u a- ⫤ · ; · 
+
+
+  coh ⊨ uP ≈u imQ ⫤ mu ; us
+  -------------------------- :: ShiftU
+  coh ⊨ ↑uP ≈u ↑imQ ⫤ mu ; us
+
+  coh ⊨ uP ≈u imQ ⫤ mu1 ; us1    coh ⊨ uN ≈u imM ⫤ mu2 ; us2
+  mu1 ∪ mu2 is bijective 
+  --------------------------------------------------------------------- :: Arrow
+  coh ⊨ uP → uN ≈u imQ → imM ⫤ mu1 ∪ mu2 ; us1 & us2
+
+  S coh ⊨ [a+*:coh/pas] uN ≈u [b+*:coh/pbs] imM ⫤ mu ; us
+  ------------------------------------------------------- :: Forall
+  coh ⊨ ∀pas.uN ≈u ∀pbs.imM ⫤ mu |_ mv imM ; us
+
+  -------------------------------------------  :: NMVar
+  coh ⊨ a-:coh ≈u b-:coh ⫤ b-:coh ↦ a-:coh ; ·
+
+  fv imN ⊆ varset    mv imN = ∅ 
+  -----------------------------------------  :: NUVar
+  coh ⊨ nua[varset] ≈u imN ⫤ · ; nua :≈ iN
+
+  defn coh ⊨ uP ≈u imQ ⫤ mu ; us :: :: PUnif :: ''
+  {{ com Positive unification }}
+  {{ tex [[coh]] \vDash [[uP]] \eqU [[imQ]] \Dashv [[mu]] ; \, [[us]] }} by
+
+  ---------------------  :: PVar
+  coh ⊨ a+ ≈u a+ ⫤ · ; ·
+
+  coh ⊨ uN ≈u imM ⫤ mu ; us
+  -------------------------- :: ShiftD
+  coh ⊨ ↓uN ≈u ↓imM ⫤ mu ; us
+
+  S coh ⊨ [a-*:coh/nas] uP ≈u [b-*:coh/nbs] imQ ⫤ mu ; us
+  -------------------------------------------------------- :: Exists 
+  coh ⊨ ∃nas.uP ≈u ∃nbs.imQ ⫤ mu |_ mv imQ ; us
+
+  --------------------------------------------  :: PMVar
+  coh ⊨ a+:coh ≈u b+:coh ⫤ b+:coh ↦ a+:coh ; ·
+
+  fv imP ⊆ varset   mv imP = ∅ 
+  ------------------------------------------  :: PUVar
+  coh ⊨ pua[varset] ≈u imP ⫤ · ; pua :≈ iP

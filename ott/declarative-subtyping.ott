@@ -1,0 +1,69 @@
+embed {{ tex-preamble
+
+\colorlet{colorDZero}{OliveGreen}
+\newcommand{\eqDZero}{ \mathcolor{colorDZero}{ [[≈]]_0^{ \scaleto{[[≤]]}{3.5pt} } } } 
+\newcommand{\subDZero}{ \mathcolor{colorDZero}{ [[≤]]_0 } } 
+\newcommand{\supDZero}{ \mathcolor{colorDZero}{ [[≥]]_0 } } 
+
+}}
+
+defns
+  D0 :: 'D0' ::=
+
+  defn G ⊢ N ≈ M :: :: Neq :: ''
+  {{ com Negative equivalence }}
+  {{ tex [[G]] [[⊢]] [[N]] \eqDZero [[M]] }} by
+
+  G ⊢ N ≤ M   G ⊢ M ≤ N
+  --------------------- :: NDef
+  G ⊢ N ≈ M 
+
+  defn G ⊢ P ≈ Q :: :: Peq :: ''
+  {{ com Positive equivalence }}
+  {{ tex [[G]] [[⊢]] [[P]]  \eqDZero [[Q]] }} by
+
+  G ⊢ P ≥ Q   G ⊢ Q ≥ P
+  --------------------- :: PDef
+  G ⊢ P ≈ Q 
+
+  defn G ⊢ N ≤ M :: :: Nsub :: ''
+  {{ com Negative subtyping }}
+  {{ tex [[G]] [[⊢]] [[N]] \subDZero [[M]] }} by
+
+  ----------- :: NVar
+  G ⊢ a- ≤ a- 
+
+  G ⊢ P ≈ Q
+  ------------ :: ShiftU
+  G ⊢ ↑P ≤ ↑Q
+
+  G ⊢ P   G ⊢ [P/a+] N ≤ M    M ≠ ∀b+.M'
+  ------------------------------------- :: ForallL
+  G ⊢ ∀a+.N ≤ M
+
+  G, a+ ⊢ N ≤ M
+  -------------- :: ForallR
+  G ⊢ N ≤ ∀a+.M
+
+  G ⊢ P ≥ Q    G ⊢ N ≤ M 
+  ----------------------- :: Arrow
+  G ⊢ P → N ≤ Q → M
+
+  defn G ⊢ P ≥ Q :: :: Psup :: ''
+  {{ com Positive supertyping }}
+  {{ tex [[G]] [[⊢]] [[P]] \supDZero [[Q]] }} by
+
+  ----------- :: PVar
+  G ⊢ a+ ≥ a+ 
+
+  G ⊢ N ≈ M
+  ------------ :: ShiftD
+  G ⊢ ↓N ≥ ↓M
+
+  G ⊢ N   G ⊢ [N/a-] P ≥ Q    Q ≠ ∃a-.Q'
+  -------------------------------------- :: ExistsL
+  G ⊢ ∃a-.P ≥ Q
+
+  G, a- ⊢ P ≥ Q
+  --------------- :: ExistsR
+  G ⊢ P ≥ ∃a-.Q

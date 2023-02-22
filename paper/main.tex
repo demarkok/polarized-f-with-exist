@@ -1,0 +1,349 @@
+%% For double-blind review submission
+% \documentclass[acmsmall,10pt,review,anonymous,natbib=false]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+%% For single-blind review submission
+%\documentclass[acmsmall,10pt,review]{acmart}\settopmatter{printfolios=true}
+%% For final camera-ready submission
+% \documentclass[acmsmall,10pt,screen,natbib=false]{acmart}\settopmatter{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode} % before cleveref to get refs to lines correctly
+\usepackage{amsmath}
+\usepackage{amsfonts}
+%% \usepackage{amssymb} % clashes with acmart's newtxmath
+%% \usepackage{balance}
+\usepackage{booktabs}
+\usepackage[capitalize]{cleveref}
+\usepackage{color}
+\usepackage{enumerate}
+\usepackage{etoolbox}
+\usepackage{float}
+\usepackage{graphicx}
+%% \usepackage{lstlinebgrd}
+\usepackage{listings}
+\usepackage{marvosym}
+\usepackage{mathpartir}
+\usepackage{microtype}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{paralist}
+\usepackage{pgfplots}
+\usepackage{siunitx}
+\usepackage{soul}
+\usepackage{stmaryrd}
+\usepackage{thm-restate}
+\usepackage{tikz}
+\usepackage[colorinlistoftodos,disable]{todonotes} %% no [prependcaption]
+\usepackage{wrapfig}
+\usepackage{xspace}
+\usepackage[inline]{enumitem} % breaks alphabetical ordering :-(
+\usepackage{../sav-science} %% can also be included w/ TEXINPUTS
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CLASS AND CONFERENCE SPECIFIC
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Journal information
+%% Supplied to authors by publisher for camera-ready submission;
+%% use defaults for review submission.
+\acmPrice{}
+\acmDOI{XXXXXXX.XXXXXXX}
+\acmYear{2023}
+\copyrightyear{2023}
+% \acmSubmissionID{popl21main-p319-p}
+\acmJournal{PACMPL}
+\acmVolume{5}
+\acmNumber{ICFP}
+\acmArticle{43}
+\acmMonth{1}
+
+%% Copyright information
+%% Supplied to authors (based on authors' rights management selection;
+%% see authors.acm.org) by publisher for camera-ready submission;
+%% use 'none' for review submission.
+%% \setcopyright{none}
+%% \setcopyright{acmcopyright}
+%\setcopyright{acmlicensed}
+\setcopyright{rightsretained}
+%\copyrightyear{2018}           %% If different from \acmYear
+
+%% Bibliography
+% Use style=ACM-Reference-Format for numeric citations
+% Hack to try to make acmart work with biblatex:
+% https://tex.stackexchange.com/questions/37076/is-it-possible-to-load-biblatex-with-a-class-that-has-already-loaded-natbib
+\let\citename\relax
+\usepackage[natbib=true, abbreviate=true, dateabbrev=true, isbn=false, doi=true, urldate=comp, url=true, maxbibnames=9, maxcitenames=1, uniquelist=false, backref=false, dashed=false, backend=biber, style=authoryear-comp, language=american]{biblatex}
+\addbibresource{../wmbib/biblio.bib}
+\renewcommand{\bibfont}{\Small}
+
+%% First name, then last name
+\DeclareNameAlias{sortname}{first-last}
+
+%% print URL (and urldate) only if DOI is not present
+\DeclareSourcemap{
+ \maps[datatype=bibtex]{
+    \map{
+       \step[fieldsource=doi,final]
+       \step[fieldset=url,null]
+       \step[fieldset=urldate,null]
+       }
+     }
+}
+
+%% Michalis: The commands below are *necessary* for clickable links
+%% in biblatex's default author-year format
+%%
+\DeclareFieldFormat{citehyperref}{%
+  \DeclareFieldAlias{bibhyperref}{noformat}% Avoid nested links
+  \bibhyperref{%% [
+      #1%% ]
+  }}
+
+\DeclareFieldFormat{textcitehyperref}{%
+  \DeclareFieldAlias{bibhyperref}{noformat}% Avoid nested links
+  \bibhyperref{%
+    #1%
+    \ifbool{cbx:parens}
+      {\bibcloseparen\global\boolfalse{cbx:parens}}
+      {}}}
+
+\savebibmacro{cite}
+\savebibmacro{textcite}
+
+\renewbibmacro*{cite}{%
+  \printtext[citehyperref]{%
+    \restorebibmacro{cite}%
+    \usebibmacro{cite}}}
+
+\renewbibmacro*{textcite}{%
+  \ifboolexpr{
+    ( not test {\iffieldundef{prenote}} and
+      test {\ifnumequal{\value{citecount}}{1}} )
+    or
+    ( not test {\iffieldundef{postnote}} and
+      test {\ifnumequal{\value{citecount}}{\value{citetotal}}} )
+  }
+    {\DeclareFieldAlias{textcitehyperref}{noformat}}
+    {}%
+  \printtext[textcitehyperref]{%
+    \restorebibmacro{textcite}%
+    \usebibmacro{textcite}}}
+
+%% Michalis: The commands below redefine the parentheses commands to use
+%% brackets instead of parentheses in author-year format
+%%
+\makeatletter
+\newrobustcmd*{\parentexttrack}[1]{%
+  \begingroup
+  \blx@blxinit
+  \blx@setsfcodes
+  \blx@bibopenparen#1\blx@bibcloseparen
+  \endgroup}
+
+\AtEveryCite{%
+  \let\parentext=\parentexttrack%
+  \let\bibopenparen=\bibopenbracket%
+  \let\bibcloseparen=\bibclosebracket}
+\makeatother
+
+%% Michalis: Even more trickery to print only one author in \textcite
+%%
+\makeatletter
+\DeclareIndexNameFormat{cbx@chr@getfirstauthorhash}{%
+  \ifnumequal{\value{listcount}}{1}
+    {\savefield{hash}{\cbx@thishash}%
+     \ifmorenames
+       {\gappto{\cbx@thishash}{@alone}}
+       {\gappto{\cbx@thishash}{@etal}}}
+    {}}
+
+\newbibmacro*{shorttextcite}{%
+  \indexnames[cbx@chr@getfirstauthorhash][1-1]{labelname}%
+  \ifdefequal{\cbx@thishash}{\cbx@lasthash}
+    {\iffieldundef{shorthand}
+       {\ifthenelse{\iffieldequals{labelyear}{\cbx@lastyear}\AND
+                    \(\value{multicitecount}=0\OR\iffieldundef{postnote}\)}
+          {\setunit{\addcomma}%
+           \usebibmacro{cite:extradate}}
+          {\setunit{\compcitedelim}%
+           \usebibmacro{cite:labeldate+extradate}%
+           \savefield{labelyear}{\cbx@lastyear}}}
+       {\setunit{\compcitedelim}%
+        \usebibmacro{cite:shorthand}%
+        \global\undef\cbx@lastyear}}
+    {\ifnameundef{labelname}
+       {\iffieldundef{shorthand}
+          {\usebibmacro{cite:label}%
+           \setunit{%
+             \global\booltrue{cbx:parens}%
+             \printdelim{nonameyeardelim}\bibopenparen}%
+           \ifnumequal{\value{citecount}}{1}
+             {\usebibmacro{prenote}}
+             {}%
+           \usebibmacro{cite:labeldate+extradate}}
+          {\usebibmacro{cite:shorthand}}}
+       {\printnames[labelname][1-1]{labelname}%
+        \setunit{%
+          \global\booltrue{cbx:parens}%
+          \printdelim{nameyeardelim}\bibopenparen}%
+        \ifnumequal{\value{citecount}}{1}
+          {\usebibmacro{prenote}}
+          {}%
+        \iffieldundef{shorthand}
+          {\iffieldundef{labelyear}
+             {\usebibmacro{cite:label}}
+             {\usebibmacro{cite:labeldate+extradate}}%
+           \savefield{labelyear}{\cbx@lastyear}}
+          {\usebibmacro{cite:shorthand}%
+           \global\undef\cbx@lastyear}}%
+     \stepcounter{textcitecount}%
+     \global\let\cbx@lasthash\cbx@thishash}%
+  \setunit{%
+    \ifbool{cbx:parens}
+      {\bibcloseparen\global\boolfalse{cbx:parens}}
+      {}%
+    \textcitedelim}}
+
+
+\DeclareCiteCommand{\cbx@shorttextcite}
+  {\usebibmacro{cite:init}%
+   \global\undef\cbx@thishash}
+  {\usebibmacro{citeindex}%
+   \usebibmacro{shorttextcite}}
+  {}
+  {\usebibmacro{textcite:postnote}}
+
+\DeclareCiteCommand{\shorttextcite}[\cbx@textcite@init\cbx@shorttextcite]
+  {\gdef\cbx@savedkeys{}%
+   \citetrackerfalse%
+   \pagetrackerfalse%
+   \DeferNextCitekeyHook%
+   \usebibmacro{cite:init}%
+   \global\undef\cbx@thishash}
+  {\ifthenelse{\iffirstcitekey\AND\value{multicitetotal}>0}
+     {\protected@xappto\cbx@savedcites{()(\thefield{multipostnote})}%
+      \global\clearfield{multipostnote}}
+     {}%
+   \xappto\cbx@savedkeys{\thefield{entrykey},}%
+   \indexnames[cbx@chr@getfirstauthorhash][1-1]{labelname}%
+   \ifdefequal{\cbx@thishash}{\cbx@lasthash}
+     {}
+     {\stepcounter{textcitetotal}%
+      \global\let\cbx@lasthash\cbx@thishash}}
+  {}
+  {\protected@xappto\cbx@savedcites{%
+     [\thefield{prenote}][\thefield{postnote}]{\cbx@savedkeys}}}
+\makeatother
+
+%% Michalis: Do not print commas after "et al."
+\renewcommand{\nameyeardelim}{\space}
+
+%% Michalis: Make shorttextcite the default
+\renewcommand{\textcite}{\shorttextcite}
+
+%% Michalis: Make parencite the default
+\renewcommand{\cite}{\parencite}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CUSTOM DEFINITIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{./tex/defs.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DOCUMENT BODY
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%% Title & Abstract
+\title{\persevere: \Pers Semantics for Verification under Ext4}
+
+
+
+\author{Ilya Kaysin}
+\affiliation{
+  \institution{University of Cambridge}
+  \country{United Kingdom}
+}
+\email{ik404@cam.ac.uk}
+
+\author{Neel Krishnaswami}
+\affiliation{
+  \institution{University of Cambridge}
+  \country{United Kingdom}
+}
+\email{nk480@cam.ac.uk}
+
+\author{Henry Mercer}
+\affiliation{
+  \institution{GitHub?}
+  \country{United Kingdom}
+}
+
+
+%% Abstract
+\begin{abstract}
+\input{./tex/abstract.tex}
+\end{abstract}
+
+%% 2012 ACM Computing Classification System (CSS) concepts
+%% Generate at 'http://dl.acm.org/ccs/ccs.cfm'.
+% \begin{CCSXML}
+% <ccs2012>
+%    <concept>
+%        <concept_id>10003752.10010124.10010138.10010142</concept_id>
+%        <concept_desc>Theory of computation~Program verification</concept_desc>
+%        <concept_significance>500</concept_significance>
+%        </concept>
+%    <concept>
+%        <concept_id>10003752.10010124.10010131.10010135</concept_id>
+%        <concept_desc>Theory of computation~Axiomatic semantics</concept_desc>
+%        <concept_significance>500</concept_significance>
+%        </concept>
+%  </ccs2012>
+% \end{CCSXML}
+
+% \ccsdesc[500]{Theory of computation~Program verification}
+% \ccsdesc[500]{Theory of computation~Axiomatic semantics}
+%% End of generated code
+
+%% Keywords
+%% comma separated list
+% \keywords{File Systems; \Pers; Weak Consistency; Model Checking}  %% \keywords is optional
+
+\maketitle
+
+\listoftodos{}
+
+%% Body
+\input{./tex/intro.tex}
+\input{./tex/overview.tex}
+\input{./tex/formal.tex}
+\input{./tex/algo.tex}
+\input{./tex/eval.tex}
+\input{./tex/related.tex}
+
+\begin{acks}
+% We thank Luc Maranget and the POPL 2021 reviewers for their valuable feedback.
+% Ilya Kaysin was supported by RFBR (grant number 18-01-00380).
+% Azalea Raad was supported in part by a European Research Council (ERC) Consolidator Grant for the project ``RustBelt'', under the European Union Horizon 2020 Framework Programme (grant agreement number 683289).
+\end{acks}
+
+%% Bibliography
+%% \balance %% necessary for two-column formats
+\printbibliography
+
+\lstset{basicstyle=\ttfamily\scriptsize,keywordstyle=\color{black}\bfseries\underbar,tabsize=8,showstringspaces=false,frame=L,label= ,caption= ,captionpos=b,numbers=none}
+
+%% \clearpage
+%% \appendix
+%% \input{./tex/appendix/recovery.tex}
+%% \input{./tex/appendix/drf.tex}
+%% \input{./tex/appendix/syscalls.tex}
+
+\end{document}

@@ -1,0 +1,45 @@
+embed {{ tex-preamble
+
+\colorlet{colorEOne}{Orange!70!Red}
+\newcommand{\eqEOne}{ \mathcolor{colorEOne}{ [[≈]]_1^{D} } } 
+
+}}
+
+
+defns
+  E1 :: 'E1' ::=
+
+  defn iN ≈ iM :: :: Neq :: ''
+  {{ com Negative multi-quantified type equivalence }}
+  {{ tex [[iN]] \eqEOne [[iM]] }} by
+
+  ------- :: NVar
+  a- ≈ a-
+
+  iP ≈ iQ
+  ---------- :: ShiftU
+  ↑iP ≈ ↑iQ
+
+  iP ≈ iQ    iN ≈ iM
+  ------------------ :: Arrow
+  iP → iN ≈ iQ → iM
+
+  mu : (pbs ∩ fv iM) ↔ (pas ∩ fv iN)    iN ≈ [mu] iM
+  -------------------------------------------------- :: Forall
+  ∀ pas . iN ≈ ∀ pbs . iM
+
+
+  defn iP ≈ iQ :: :: Peq :: ''
+  {{ com Positive multi-quantified type equivalence }}
+  {{ tex [[iP]] \eqEOne [[iQ]] }} by
+
+  -------- :: PVar
+  a+ ≈ a+
+  
+  iN ≈ iM
+  ------------- :: ShiftD
+  ↓iN ≈ ↓iM
+
+  mu : (nbs ∩ fv iQ) ↔ (nas ∩ fv iP)    iP ≈ [mu] iQ
+  -------------------------------------------------- :: Exists 
+  ∃nas.iP ≈ ∃nbs.iQ
