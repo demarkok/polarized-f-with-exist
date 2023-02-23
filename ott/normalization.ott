@@ -36,7 +36,7 @@ defns
   ord varset in pa = pa
 
   pa ∉ varset
-  ---------------------  :: PVarIn
+  ---------------------  :: PVarNIn
   ord varset in pa = · 
 
   ------------------------------  :: PUVar
@@ -47,12 +47,16 @@ defns
   ord varset in ↓uN = ordVars
 
   ord (varset \ nas) in uP = ordVars
-  ---------------------------------- :: Forall
+  ---------------------------------- :: Exists
   ord varset in ∃nas.uP = ordVars
 
 
 defns
   Nrm :: 'Nrm' ::=
+
+  defn iN ⇓ iM :: :: NiNorm :: ''  by
+  defn iP ⇓ iQ :: :: PiNorm :: ''  by
+
 
   defn uN ⇓ uM :: :: NNorm :: ''  by
 

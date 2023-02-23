@@ -18,7 +18,6 @@ embed {{ tex-preamble
 metavar a {{ tex \alpha }}, b {{ tex \beta }} ::= {{ com type variables }} 
 
 indexvar n , m, i , j ::= {{ com index variables }}
-
 grammar
 
 pa {{ tex \alpha^{+} }},
@@ -61,6 +60,7 @@ us {{ tex \widehat{\sigma} }}  :: 'us_' ::= {{ com unification solution (substit
    | us \ nuas            :: :: NSetminus
    | us \ pua             :: :: PExclude
    | us \ nua             :: :: NExclude
+   | us1 ∪ us2            :: :: Union
    | </ usi // , // i /> :: :: concat  {{ com concatenate }}
    | ( us )              :: S :: paren
 
@@ -244,6 +244,7 @@ pua {{ tex \widehat{\alpha}^{+} }} :: pua_ ::= {{ com positive unification varia
 
 nua {{ tex \widehat{\alpha}^{-} }} :: nua_ ::= {{ com negative unification variable }}
     | a ^ - :: :: Var {{ tex \widehat{[[a]]}^{-} }}
+    | a ^ - _ { iN , iM } :: :: VarIdxd {{ tex \widehat{[[a]]}^{-}_{\{ [[iN]], [[iM]] \} } }}
 
 puas {{ tex \vv{ \widetilde{ \alpha^{+} } } }},
 pubs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
@@ -282,11 +283,12 @@ uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative al
    | na             ::   :: Var
    | nma            ::   :: MovVar
    | nua [ varset ] ::   :: UnifVar {{ tex [[nua]]\{ [[varset]] \} }}
-   | ↑ uP          ::   :: Shift
-   | uP → uN       ::   :: Fun
-   | ∀ pas . uN    ::   :: Forall
-   | [ s ] uN      :: M :: AppSub 
-   | [ mu ] uN     :: M :: AppMoving
+   | nua            ::   :: BareUnifVar
+   | ↑ uP           ::   :: Shift
+   | uP → uN        ::   :: Fun
+   | ∀ pas . uN     ::   :: Forall
+   | [ s ] uN       :: M :: AppSub 
+   | [ mu ] uN      :: M :: AppMoving
 
 
 terminals :: 'terminals_' ::=
@@ -327,9 +329,9 @@ terminals :: 'terminals_' ::=
 %   iP <:: imP
 %   iN <:: imN
 % subrules
-%   imP <:: uP  
-%   imN <:: uN  
-  
+%   iP <:: uP  
+%   iN <:: uN  
+
 
 funs
   LUBF ::=

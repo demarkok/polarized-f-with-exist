@@ -9,8 +9,8 @@ defns
   pa ∨ pa = pa
 
 
-  Z ⊨ ↓imN ≈au ↓imM ⫤ (uP, us1, us2); mu
-  -------------------------------------- :: Shift
+  iN ⇓ iN'   iM ⇓ iM'    Ord (fv iN' ∪ fv iM') ⊨ ↓iN' ≈au ↓iM' ⫤ (uP, us1, us2)
+  ----------------------------------------------------------------------- :: Shift
   ↓iN ∨ ↓iM = ∃nas.[nas/uv uP]iP
 
   nas ∩ nbs = ∅
@@ -19,23 +19,33 @@ defns
 
 defns
   AU :: 'AU' ::=
-  defn coh ⊨ imP1 ≈au imP2 ⫤ ( uQ , us1 , us2 ) ; mu  :: :: AUP :: 'P' by
+  defn G ⊨ iP1 ≈au iP2 ⫤ ( uQ , us1 , us2 )  :: :: AUP :: 'P' by
 
+  -------------------------- :: Var
+  G ⊨ pa ≈au pa ⫤ (pa, ·, ·)
 
-  --------------------------------------------------------  :: PVar
-  coh ⊨ a+:coh ≈au b+:coh ⫤  (a+, ·, ·) ; b+:coh ↦ a+:coh
+  G ⊨ iN1 ≈au iN2 ⫤ (uM, us1, us2)
+  ----------------------------------- :: Shift
+  G ⊨ ↓iN1 ≈au ↓iN2 ⫤ (↓uM, us1, us2)
 
+  nas ∩ G = ∅    G ⊨ iP1 ≈au iP2 ⫤ (uQ, us1, us2)
+  ------------------------------------------------ :: Exists
+  G ⊨ ∃nas.iP1 ≈au ∃nas.iP2 ⫤ (∃nas.uQ, us1, us2)
 
+  defn G ⊨ iN1 ≈au iN2 ⫤ ( uM , us1 , us2 )  :: :: AUN :: 'N' by
 
+  ---------------------- :: Var
+  G ⊨ na ≈au na ⫤ (na, ·, ·)
 
-  defn coh ⊨ imN1 ≈au imN2 ⫤ ( uM , us1 , us2 ) ; mu  :: :: AUN :: 'N' by
+  G ⊨ iP1 ≈au iP2 ⫤ (uQ, us1, us2)
+  --------------------------------- :: Shift
+  G ⊨ ↑iP1 ≈au ↑iP2 ⫤ (↑uQ, us1, us2)
 
-  --------------------------------------------------------  :: NVar
-  coh ⊨ a-:coh ≈au b-:coh ⫤  (a-, ·, ·) ; b-:coh ↦ a-:coh
+  G ⊨ iP1 ≈au iP2 ⫤ (uQ, us1, us2)    G ⊨ iN1 ≈au iN2 ⫤ (uM, us'1, us'2)
+  ----------------------------------------------------------------------  :: Arrow
+  G ⊨ iP1 → iN1 ≈au iP2 → iN2 ⫤ (uQ → uM, us1 ∪ us'1, us2 ∪ us'2)
 
+  G ⊨ iP1 ≈au iP2 ⫤ (uQ, us1, us2)    G ⊨ iN1 ≈au iN2 ⫤ (uM, us'1, us'2)
+  ----------------------------------------------------------------------  :: AU
+  G ⊨ iN ≈au iM ⫤ (a^-_{iN, iM} , (a^-_{iN, iM} :≈ iN) ,  (a^-_{iN, iM} :≈ iM))
 
-  coh ⊨ imP1  ≈au imP2 ⫤ (uQ, us1, us2) ; mu
-  coh ⊨ imN1  ≈au imN2 ⫤ (uM, us'1, us'2) ; mu'
-  --------------------------------------------------------  :: Arrow
-  coh ⊨ imP1 → imN1 ≈au imP2 → imN2 ⫤ (uQ → uM, , ·) ; mu ∪ mu'
-  

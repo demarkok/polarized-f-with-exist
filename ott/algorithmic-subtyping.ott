@@ -16,8 +16,8 @@ defns
   --------------- :: NVar
   G ⊨ a- ≤ a- ⫤ · 
 
-  Z ⊨ uP ≈u imQ ⫤ mu ; us
-  ------------------------ :: ShiftU
+  uP ⇓ uP'   iQ ⇓ iQ'  uP' ≈u iQ' ⫤ us
+  --------------------------------------- :: ShiftU
   G ⊨ ↑uP ≤ ↑iQ ⫤ us
 
   G ⊨ uP ≥ iQ ⫤ us1    G ⊨ uN ≤ iM ⫤ us2
@@ -35,8 +35,8 @@ defns
   ---------------- :: PVar
   G ⊨ a+ ≥ a+ ⫤ ·
 
-  Z ⊨ uN ≈u imM ⫤ mu ; us
-  ------------------------ :: ShiftD
+  uN ⇓ uN'   iM ⇓ iM'   uN' ≈u iM' ⫤ us
+  ------------------------------------- :: ShiftD
   G ⊨ ↓uN ≥ ↓iM ⫤ us
 
   G, nbs ⊨ [a^-*[G, nbs]/nas] uP ≥ iQ ⫤ us

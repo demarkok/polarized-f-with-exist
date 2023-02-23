@@ -11,12 +11,16 @@
 
 \begin{document}
 
-\section{Vanilla System}
+\section{The Vanilla System}
+
+First, we present the top-level system, which is easy to understand.
+
 \subsection{Grammar}
 \ottgrammartabular{
   \ottP\ottinterrule
   \ottN\ottinterrule
 }
+
 \subsection{Declarative Subtyping}
 \ottdefnsDZero
 
@@ -30,13 +34,19 @@
 \ottdefnsDOne
 
 
-
-
 \subsection{Declarative Equivalence}
 \ottdefnsEOne
 
 
 \section{Algorithm}
+
+\subsection{Normalization}
+\subsubsection{Ordering}
+\ottdefnsOrder
+
+\subsubsection{Quantifier Normalization}
+\ottdefnsNrm
+
 \subsection{Algorithmic Equivalence}
 \ottdefnsEOneA
 
@@ -54,9 +64,6 @@
 
 \subsection{Antiunification}
 \ottdefnsAU
-
-
-
 
 
 % \input{tex/grammar}
