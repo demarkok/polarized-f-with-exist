@@ -1,6 +1,8 @@
 % vim: ft=tex
 \documentclass[a4,natbib=false]{article}
 \usepackage[a4paper, total={8in, 10in}]{geometry}
+\usepackage{hyperref}
+\usepackage{mathpartir}
 
 \input{prelude.tex}
 
@@ -9,9 +11,77 @@
 
 
 
+
+% \renewcommand{\ottdruleEOneNVarName}[0]{ Hello \def\@currentlabelname{FOO} \phantomsection  }
+% \newcommand{\ottdrulename}[1]{\textsc{#1}}
+
+% \renewcommand{\ottdrule}[4][]{{\displaystyle\frac{\begin{array}{l}#2\end{array}}{#3}\quad\ottdrulename{#4}%
+%   }\ruleLabel{#4}{#4}}
+
+% \renewcommand{\ottdrule}[4][]{%
+%   {\displaystyle\frac{\begin{array}{l}#2\end{array}}{#3}\quad\ottdrulename{#4}}%
+%   \mpr@label{\textsc{#1}}%
+% }
+% \DeclareDocumentCommand \redrule {m m o}{%
+%   \inferrule*[vcenter,left={#3:}]{}{#1 \tred #2}
+%   \mpr@label{\textsc{#3}}
+% }
+
+% \renewcommand{\ottdrulename}[2][#1]{\textsc{#1} \label{}}
+
+
+% \renewcommand{\ottdruleEOneNVarName}[0]{foo }
+
+% \makeatletter
+% \renewcommand{\ottdruleEOneNVar}[1]{\ottdrule[#1]{%
+%   }{
+%     % \protected@edef\@currentlabelname{foo}
+%     \def\@currentlabelname{foo}%
+%     \phantomsection
+%     \label{boo}
+%     \alpha ^{-}   \eqEOne   \alpha ^{-}
+%   }{%
+%     {\ottdruleEOneNVarName}{}%
+%   } }
+% \makeatother
+
+
+\newcommand{\ruleref}[1]{Rule \nameref{#1}}
+
+
+% nf(N) = M
+\renewcommand{\ottdruleNrmNVarName}[0]{(Var$^-$)}
+\renewcommand{\ottdruleNrmNUVarName}[0]{(UVar$^-$)}
+\renewcommand{\ottdruleNrmShiftUName}[0]{($\uparrow$)}
+\renewcommand{\ottdruleNrmArrowName}[0]{($\rightarrow$)}
+\renewcommand{\ottdruleNrmForallName}[0]{($\forall$)}
+
+% nf(P) = Q
+\renewcommand{\ottdruleNrmPVarName}[0]{(Var$^+$)}
+\renewcommand{\ottdruleNrmPUVarName}[0]{(UVar$^+$)}
+\renewcommand{\ottdruleNrmShiftDName}[0]{($\downarrow$)}
+\renewcommand{\ottdruleNrmExistsName}[0]{($\exists$)}
+
+
+% N ≈ M
+
+\renewcommand{\ottdruleEOneNVarName}[0]{(Var$^-$$^{\eqEOne}$)}
+\renewcommand{\ottdruleEOneShiftUName}[0]{($\uparrow^{\eqEOne}$)}
+\renewcommand{\ottdruleEOneArrowName}[0]{($\rightarrow^{\eqEOne}$)}
+\renewcommand{\ottdruleEOneForallName}[0]{($\forall^{\eqEOne}$)}
+
+% P ≈ Q
+\renewcommand{\ottdruleEOnePVarName}[0]{(Var$^+$)}
+\renewcommand{\ottdruleEOneShiftDName}[0]{($\downarrow^{\eqEOne}$)}
+\renewcommand{\ottdruleEOneExistsName}[0]{($\exists^{\eqEOne}$)}
+
+
+
 \begin{document}
 
 \section{The Vanilla System}
+
+
 
 First, we present the top-level system, which is easy to understand.
 
@@ -47,8 +117,8 @@ First, we present the top-level system, which is easy to understand.
 \subsubsection{Quantifier Normalization}
 \ottdefnsNrm
 
-\subsection{Algorithmic Equivalence}
-\ottdefnsEOneA
+% \subsection{Algorithmic Equivalence}
+% \ottdefnsEOneA
 
 \subsection{Unification}
 \ottdefnsU
@@ -65,8 +135,20 @@ First, we present the top-level system, which is easy to understand.
 \subsection{Antiunification}
 \ottdefnsAU
 
+\section{Proofs}
 
-% \input{tex/grammar}
-% \input{tex/declarative-subtyping}
+
+
+
+\subsection{Normaliztaion}
+
+\subsubsection{Auxiliary properties}
+\input{../_build/_gen/tex/ord-and-norm-aux-lemmas.tex}
+
+\subsubsection{Soundness}
+\input{../_build/_gen/tex/ord-and-norm-soundness.tex}
+
+\subsubsection{Completeness}
+\input{../_build/_gen/tex/ord-and-norm-completeness.tex}
 
 \end{document}

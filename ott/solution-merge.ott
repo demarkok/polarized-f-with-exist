@@ -19,14 +19,11 @@ defns
   ---------------------------------- :: PSupEq
   pua :≥ iP & pua :≈ iQ = pua :≈ iQ
 
-
-  Z ⊨ imP ≈ imQ ⫤ mu
   ---------------------------------- :: PEqEq
-  pua :≈ iP & pua :≈ iQ = pua :≈ iQ
+  pua :≈ iP & pua :≈ iP = pua :≈ iP
 
-  Z ⊨ imN ≈ imM ⫤ mu
   ---------------------------------- :: NEqEq
-  nua :≈ iN & nua :≈ iM = pua :≈ iQ
+  nua :≈ iN & nua :≈ iN = nua :≈ iN
 
 
 
@@ -36,7 +33,7 @@ defns
   ------------- :: Empty
    · & us = us
 
-   (pua :≈ iQ) ∊ us2     Z ⊨ imP ≈ imQ ⫤ mu
+   (pua :≈ iP) ∊ us2
    us1 & (us2 \ pua) = us3
   ----------------------------------------- :: PEqEq
    (pua :≈ iP, us1) & us2 = (pua :≈ iP, us3)
@@ -58,7 +55,7 @@ defns
    (pua :≈ iP, us1) & us2 = (pua :≈ iP, us3)
 
 
-   (nua :≈ iM) ∊ us2     Z ⊨ imN ≈ imM ⫤ mu
+   (nua :≈ iN) ∊ us2 
    us1 & (us2 \ nua) = us3
   ----------------------------------------- :: NEqEq
    (nua :≈ iN, us1) & us2 = (nua :≈ iN, us3)

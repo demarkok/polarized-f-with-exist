@@ -4,14 +4,17 @@
 SHELL:=/bin/bash
 
 
+TEX := tex
 BUILD  := ../_build
 GEN := $(BUILD)/_gen
+GEN_TEX := $(GEN)/$(TEX)
 CACHE := $(BUILD)/ott.cache
 OTT := ../ott
 
 OTTS := $(OTT)/*.ott
 PDFS := defs.pdf main.pdf
-TEXS := main.tex tex/*.tex
+TEXS := main.tex prelude.tex $(wildcard $(TEX)/*.tex)
+GEN_TEXS := $(addprefix $(GEN)/,$(TEXS))
 PRELUDE := prelude.tex
 
 
@@ -26,7 +29,7 @@ $(GEN)/defs.tex: %: $(OTTS) | $(GEN)
 	ott -i prelude.ott $(addprefix -i , $^)  -writesys $@ -o $(GEN)/defs.tex
 	rm prelude.ott
 
-$(BUILD) $(GEN): %:
+$(BUILD) $(GEN) $(GEN_TEX): %:
 	mkdir -p $@
 
 $(CACHE): %: $(OTTS) | $(BUILD)
@@ -42,10 +45,10 @@ $(GEN)/included.tex: $(CACHE) | $(GEN)
   # For rubber
 	touch $@.aux
 
-$(GEN)/main.tex : $(TEXS) $(CACHE) $(GEN)/included.tex | $(GEN)
-	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $< $@
+$(GEN_TEXS): $(TEXS) $(CACHE) $(GEN)/included.tex | $(GEN_TEX)
+	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
 
-main.pdf : $(GEN)/main.tex
+main.pdf: $(GEN_TEXS)
 	rubber --pdf $(GEN)/main.tex
 
 continuous:

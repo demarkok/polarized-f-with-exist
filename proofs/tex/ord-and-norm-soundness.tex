@@ -1,0 +1,97 @@
+\begin{lemma}[Soundness of variable ordering]
+  \label{lemma:ord-soundness}
+  Variable ordering extracts precisely used free variables.
+  \begin{itemize}
+    \item[$-$] $[[ ord varset in uN ]] \equiv [[varset ∩ fv uN]]$ (as sets)
+    \item[$+$] $[[ ord varset in uP ]] \equiv [[varset ∩ fv uP]]$ (as sets)
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Straightforward mutual induction on 
+  $[[ ord varset in uN = ordVars ]]$ and $[[ ord varset in uP = ordVars ]]$
+\end{proof}
+
+
+\begin{corollary}[Additivity of ordering]
+  \label{corollary:ord-additivity}
+  \begin{itemize}
+    \item[$-$] $[[ ord (varset1 ∪ varset2) in iN ]]
+                \equiv
+                [[ord varset1 in iN]] \cup [[ord varset2 in iN]]$ (as sets)
+    \item[$+$] $[[ ord (varset1 ∪ varset2) in iP ]]
+                \equiv
+                [[ord varset1 in iP]] \cup [[ord varset2 in iP]]$ (as sets)
+
+  \end{itemize}
+\end{corollary}
+
+\begin{corollary}[Weakening of ordering]
+  \label{corollary:ord-weakening}
+  \begin{itemize}
+  \item[$-$] $[[ ord (varset ∩ fv iN) in iN ]] \equiv [[ ord varset in iN ]]$ (as sets)
+  \item[$+$] $[[ ord (varset ∩ fv iP) in iP ]] \equiv [[ ord varset in iP ]]$ (as sets)
+  \end{itemize}
+\end{corollary}
+
+
+% \begin{corollary}
+%   \label{corollary:mu-ord}
+%   Suppose that $\mu$ is a bijection between two sets of variables
+%   $\mu : A \leftrightarrow B$, and $A$ and $B$ are disjoint with $[[varset]]$.
+%   \begin{itemize}
+%   \item[$-$]
+%     If $A$ and $B$ are disjoint with $[[fv iN]]$ then
+%     $[[  ord varset in iN ]] = [[ord varset in [mu] iN ]]$
+%   \item[$+$]
+%     If $A$ and $B$ are disjoint with $[[fv iP]]$ then
+%     $[[  ord varset in iP ]] = [[ord varset in [mu] iP ]]$
+%   \end{itemize}
+% \end{corollary}
+% \begin{proof}
+
+% \end{proof}
+
+
+\begin{lemma}[Soundness of quantifier normalization]
+  \label{lemma:normalization-soundness}
+  Normalization respects equivalence.
+
+  \begin{itemize}
+    \item[$-$] $[[iN ≈ nf(iN)]]$
+    \item[$+$] $[[iP ≈ nf(iP)]]$
+  \end{itemize}
+
+\end{lemma}
+\begin{proof}
+  Mutual induction on $[[nf(iN) = iM]]$ and $[[nf(iP) = iQ]]$.
+  Let us consider how this judgment is formed:
+  \begin{itemize}
+    \item{\nameref{\ottdruleNrmNVarLabel} and \nameref{\ottdruleNrmPVarLabel}} by
+      the corresponding equivalence rules.
+    \item{\nameref{\ottdruleNrmShiftULabel}, \nameref{\ottdruleNrmShiftDLabel},
+        and \nameref{\ottdruleNrmArrowLabel}} by the induction hypothesis and
+      the corresponding congruent equivalence rules.
+    \item{\nameref{\ottdruleNrmForallLabel}} From the induction hypothesis, we
+      know that $[[iN ≈ iN']]$. In particular, by \cref{lemma:equiv-fv}, $[[fv
+      iN]] \equiv [[fv iN']]$. Then by \cref{lemma:ord-soundness}, $[[pas']]
+      \equiv [[pas ∩ fv iN']] \equiv [[pas ∩ fv iN]]$, and thus,
+      $[[pas' ∩ fv iN']] \equiv [[pas ∩ fv iN]]$.
+      
+      To prove $[[∀pas.iN ≈ ∀pas'.iN']]$, it suffices to provide a bijection 
+      $\mu : [[pas' ∩ fv iN']] \leftrightarrow [[pas ∩ fv iN]]$ such that
+      $[[iN ≈ [mu]iN']]$. Since these sets are equal, we take $\mu = id$.
+    \item{\nameref{\ottdruleNrmExistsLabel}} Same as for \nameref{\ottdruleNrmForallLabel}.
+  \end{itemize}
+\end{proof}
+
+\begin{corollary}
+  \label{corollary:fv-nf}
+  Free variables are not changed by the normalization
+  \begin{itemize}
+  \item[$-$] $[[fv iN]] \equiv [[fv nf(iN)]]$
+  \item[$+$] $[[fv iP]] \equiv [[fv nf(iP)]]$
+  \end{itemize}
+\end{corollary}
+\begin{proof}
+  Immediately from \cref{lemma:normalization-soundness,lemma:equiv-fv}.
+\end{proof}

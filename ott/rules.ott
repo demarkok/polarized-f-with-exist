@@ -14,6 +14,7 @@ grammar
     | pa ∉ varset                            ::   :: pa_notin_set
     | na ∊ varset                            ::   :: na_in_set
     | pa ∊ varset                            ::   :: pa_in_set
+    | otherwise                              ::   :: otherwise {{ tex \text{if any other rule is not applicable} }}
     % | xs ⊆ T                                 ::   :: xs_in_T
     % | let T1 = T2                            ::   :: let_T
     % | let xs = vars                          ::   :: let_vars

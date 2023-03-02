@@ -25,12 +25,12 @@ defns
   ↑uP ≈u ↑iQ ⫤ us
 
   uP ≈u iQ ⫤ us1    uN ≈u iM ⫤ us2
-  --------------------------------------------------------------------- :: Arrow
+  -------------------------------- :: Arrow
   uP → uN ≈u iQ → iM ⫤ us1 & us2
 
-  [a+*:coh/pas] uN ≈u [b+*:coh/pbs] iM ⫤ us
-  ------------------------------------------------------- :: Forall
-  ∀pas.uN ≈u ∀pbs.iM ⫤ us
+  uN ≈u iM ⫤ us
+  ------------------------ :: Forall
+  ∀pas.uN ≈u ∀pas.iM ⫤ us
 
   fv iN ⊆ varset
   ----------------------------- :: NUVar
@@ -47,9 +47,9 @@ defns
   -------------------------- :: ShiftD
   ↓uN ≈u ↓iM ⫤ us
 
-  [a-*:coh/nas] uP ≈u [b-*:coh/nbs] iQ ⫤ us
-  -------------------------------------------------------- :: Exists 
-  ∃nas.uP ≈u ∃nbs.iQ ⫤ us
+  uP ≈u iQ ⫤ us
+  ------------------------ :: Exists 
+  ∃nas.uP ≈u ∃nas.iQ ⫤ us
 
   fv iP ⊆ varset  
   ----------------------------- :: PUVar

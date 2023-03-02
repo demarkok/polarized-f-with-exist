@@ -1,0 +1,48 @@
+\begin{lemma}
+  \label{lemma:equiv-fv}
+  Set of free variables is invariant under equivalence.
+  \begin{itemize}
+  \item[$-$] If $[[iN ≈ iM]]$ then $[[fv iN]] \equiv [[fv iM]]$ (as sets)
+  \item[$+$] If $[[iP ≈ iQ]]$ then $[[fv iP]] \equiv [[fv iQ]]$ (as sets)
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Straightforward mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$
+\end{proof}
+
+
+\begin{lemma}[Distributivity of renaming over variable ordering]
+  \label{lemma:distr-mu-ord}
+  Suppose that $\mu$ is a bijection between two sets of variables
+  $\mu : A \leftrightarrow B$, and $B$ is disjoint with $[[varset]]$.
+  \begin{itemize}
+  \item[$-$]
+    If $B$ is disjoint with $[[fv iN]]$ then
+    $[[ [mu] (ord varset in iN) ]] = [[ord ([mu] varset) in [mu] iN ]]$
+  \item[$+$]
+    If $B$ is disjoint with $[[fv iP]]$ then
+    $[[ [mu] (ord varset in iP) ]] = [[ord ([mu] varset) in [mu] iP ]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Mutual induction on $[[iN]]$ and $[[iP]]$.
+  \todo[inline]{Proof (should be easy)}
+\end{proof}
+
+
+\begin{lemma}[Commutativity of normalization and renaming]
+  \label{lemma:norm-subst-commute} Normalization of a term commutes with renaming.
+
+  Suppose that $\mu$ is a bijection between two sets of variables
+  $\mu : A \leftrightarrow B$. Then
+  \begin{itemize}
+    \item[$-$] $[[nf([mu]iN)]] = [[ [mu] nf(iN) ]]$
+    \item[$+$] $[[nf([mu]iP)]] = [[ [mu] nf(iP) ]]$
+  \end{itemize}
+  Here equality means alpha-equivalence.
+\end{lemma}
+
+\begin{proof}
+  Mutual induction on $iN$ and $iP$.
+  \todo[inline]{Write a little bit about the exists/forall case}
+\end{proof}

@@ -16,8 +16,8 @@ defns
   --------------- :: NVar
   G ⊨ a- ≤ a- ⫤ · 
 
-  uP ⇓ uP'   iQ ⇓ iQ'  uP' ≈u iQ' ⫤ us
-  --------------------------------------- :: ShiftU
+  nf(uP) ≈u nf(iQ) ⫤ us
+  --------------------- :: ShiftU
   G ⊨ ↑uP ≤ ↑iQ ⫤ us
 
   G ⊨ uP ≥ iQ ⫤ us1    G ⊨ uN ≤ iM ⫤ us2
@@ -35,8 +35,8 @@ defns
   ---------------- :: PVar
   G ⊨ a+ ≥ a+ ⫤ ·
 
-  uN ⇓ uN'   iM ⇓ iM'   uN' ≈u iM' ⫤ us
-  ------------------------------------- :: ShiftD
+  nf(uN) ≈u nf(iM) ⫤ us
+  ---------------------- :: ShiftD
   G ⊨ ↓uN ≥ ↓iM ⫤ us
 
   G, nbs ⊨ [a^-*[G, nbs]/nas] uP ≥ iQ ⫤ us
@@ -44,6 +44,6 @@ defns
   G ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ us
 
     
-  varset1 =  fv iP \ varset      varset2 is fresh
-  ------------------------------------------------------ :: PUVar
-  G ⊨ a^+ [varset] ≥ iP ⫤ (a^+ :≥ iP ∨ [varset2/varset1]iP)
+  nf(iP) = iP'    varset1 = fv iP' \ varset    varset2 is fresh
+  --------------------------------------------------------------- :: PUVar
+  G ⊨ a^+ [varset] ≥ iP ⫤ (a^+ :≥ iP' ∨ [varset2/varset1]iP')

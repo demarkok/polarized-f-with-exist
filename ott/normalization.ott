@@ -1,3 +1,4 @@
+
 defns
   Order :: 'O' ::=
 
@@ -7,6 +8,7 @@ defns
   na ∊ varset
   ---------------------  :: NVarIn
   ord varset in na = na
+
 
   na ∉ varset
   --------------------- :: NVarNIn
@@ -24,8 +26,8 @@ defns
   --------------------------------------------------------- :: Arrow
   ord varset in uP → uN = ordVars1, (ordVars2 \ ordVars1)
 
-  ord (varset \ pas) in uN = ordVars
-  ---------------------------------- :: Forall
+  varset ∩ pas = ∅    ord varset in uN = ordVars
+  ---------------------------------------------- :: Forall
   ord varset in ∀pas.uN = ordVars
 
 
@@ -46,50 +48,52 @@ defns
   --------------------------- :: ShiftD
   ord varset in ↓uN = ordVars
 
-  ord (varset \ nas) in uP = ordVars
-  ---------------------------------- :: Exists
+  varset ∩ nas = ∅    ord varset in uP = ordVars
+  --------------------------------------------- :: Exists
   ord varset in ∃nas.uP = ordVars
 
 
 defns
   Nrm :: 'Nrm' ::=
 
-  defn iN ⇓ iM :: :: NiNorm :: ''  by
-  defn iP ⇓ iQ :: :: PiNorm :: ''  by
+  defn nf ( iN ) = iM :: :: NiNorm :: ''  by
+  defn nf ( iP ) = iQ :: :: PiNorm :: ''  by
 
 
-  defn uN ⇓ uM :: :: NNorm :: ''  by
+  defn nf ( uN ) = uM :: :: NNorm :: ''  by
 
-  -------  :: NVar
-  na ⇓ na
+  -------------  :: NVar
+  nf(na) = na
 
-  -------------------------  :: NUVar
-  nua[varset] ⇓ nua[varset]
+  --------------------------------  :: NUVar
+  nf(nua[varset]) = nua[varset]
 
-  uP ⇓ uQ
-  --------- :: ShiftU
-  ↑uP ⇓ ↑uQ
 
-  uP ⇓ uQ    uN ⇓ uM
-  ------------------- :: Arrow
-  uP → uN ⇓ uQ → uM
+  nf(uP) = uQ
+  ------------- :: ShiftU
+  nf(↑uP) = ↑uQ
 
-  uN ⇓ uN'    ord pas in uN' = pas'
-  --------------------------------- :: Forall
-  ∀pas.uN ⇓ ∀pas'.uN'
+  nf(uP) = uQ    nf(uN) = uM
+  -------------------------- :: Arrow
+  nf(uP → uN) = uQ → uM
 
-  defn uP ⇓ uQ :: :: PNorm :: ''  by
+  nf(uN) = uN'    ord pas in uN' = pas'
+  ------------------------------------- :: Forall
+  nf(∀pas.uN) = ∀pas'.uN'
 
-  -------  :: PVar
-  pa ⇓ pa
 
-  -------------------------  :: PUVar
-  pua[varset] ⇓ pua[varset]
+  defn nf ( uP ) = uQ :: :: PNorm :: ''  by
 
-  uN ⇓ uM
-  --------- :: ShiftD
-  ↓uN ⇓ ↓uM
+  ------------  :: PVar
+  nf(pa) = pa
 
-  uP ⇓ uP'    ord nas in uP' = nas'
-  --------------------------------- :: Exists
-  ∃nas.uP ⇓ ∃nas'.uP'
+  ----------------------------  :: PUVar
+  nf(pua[varset]) = pua[varset]
+
+  nf(uN) = uM
+  ------------- :: ShiftD
+  nf(↓uN) = ↓uM
+
+  nf(uP) = uP'    ord nas in uP' = nas'
+  ------------------------------------- :: Exists
+  nf(∃nas.uP) = ∃nas'.uP'

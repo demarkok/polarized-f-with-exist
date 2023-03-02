@@ -143,12 +143,13 @@ grammar
 grammar
 
 ordVars {{ tex \vv{ \alpha } }} :: OrdVars ::= {{ com ordered positive or negative variables }}
-    | ·                         ::   :: empty     {{ com empty set }}
+    | ·                         ::   :: empty     {{ com empty list }}
     | pas                       ::   :: PList     {{ com list of variables }}
     | nas                       ::   :: NList     {{ com list of variables }}
     | ordVars1 \ ordVars2       ::   :: Setminus  {{ com setminus }}
     | </ ordVarsi // , // i />  ::   :: concat    {{ com concatenate contexts }}
     | ( ordVars )               :: S :: paren     {{ com parenthesis }}
+    | [ mu ] ordVars            :: M :: moving    {{ com apply moving to list }}
 
 
 grammar
@@ -157,8 +158,8 @@ varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
     | ∅                  ::   :: emptyset  {{ com empty set }}
     | fv iP              ::   :: Pfv       {{ com free variables }}
     | fv iN              ::   :: Nfv       {{ com free variables }}
-    | fv imP             ::   :: Pmfv      {{ com free variables }}
-    | fv imN             ::   :: Nmfv      {{ com free variables }}
+    | fv imP             ::   :: mPfv      {{ com free variables }}
+    | fv imN             ::   :: mNfv      {{ com free variables }}
     | varset1 ∩ varset2  ::   :: intersect {{ com set intersection }}
     | varset1 ∪ varset2  ::   :: union     {{ com set union }}
     | varset1 \ varset2  ::   :: setminus  {{ com set complement }}
@@ -166,9 +167,12 @@ varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
     | mv imN             ::   :: Nmv       {{ com movable variables }}
     | uv uN              ::   :: Nuv       {{ com unification variables }}
     | uv uP              ::   :: Puv       {{ com unification variables }}
+    | fv uN              ::   :: uNfv       {{ com free variables }}
+    | fv uP              ::   :: uPfv       {{ com free variables }}
     | ( varset )         :: S :: paren     {{ com parenthesis }}
     | G                  ::   :: Cntxt     {{ com context }}
     | ordVars            ::   :: OrdVars   {{ com ordered list of variables }}
+    | [ mu ] varset      :: M :: moving    {{ com apply moving to varset }}
 grammar
 
 mu {{ tex \mu }} :: Mu ::= 
@@ -179,6 +183,8 @@ mu {{ tex \mu }} :: Mu ::=
     | </ mui // , // i /> ::   :: concat  {{ com concatenate movings }}
     | mu |_ varset        :: M :: restr   {{ com restriction on a set }} 
                                           {{ tex [[mu]]|_{[[varset]]}  }} 
+    | mu -1               :: M :: inv     {{ com inversion }} 
+                                          {{ tex [[mu]]^{-1} }} 
 
 grammar
 
@@ -338,6 +344,17 @@ funs
 fun
   iP1 ∨ iP2 :: iQ :: LUB 
 by
+
+fun ord varset in uP :: ordVars :: uPOrd by
+fun ord varset in uN :: ordVars :: uNOrd by
+fun ord varset in iP :: ordVars :: NOrd by
+fun ord varset in iN :: ordVars :: POrd by
+
+fun nf ( iN' ) :: iN :: Nnf by
+fun nf ( iP' ) :: iP :: Pnf by
+fun nf ( uN' ) :: uN :: uNnf by
+fun nf ( uP' ) :: uP :: uPnf by
+
 % fun
 %   usEntry1 & usEntry2 :: usEntry :: USEM
 % by
