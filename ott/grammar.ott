@@ -137,16 +137,16 @@ grammar
     | nas                ::   :: NList     {{ com list of variables }}
     | </ Gi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( G )              :: S :: paren
-    | G1 ∪ G2            ::   :: union
+    % | G1 ∪ G2            ::   :: union
 
 
 grammar
 
-ordVars {{ tex \vv{ \alpha } }} :: OrdVars ::= {{ com ordered positive or negative variables }}
+ordVars {{ tex \vv{ \alpha } }}, ordVarsb {{ tex \vv{ \beta } }} :: OrdVars ::= {{ com ordered positive or negative variables }}
     | ·                         ::   :: empty     {{ com empty list }}
     | pas                       ::   :: PList     {{ com list of variables }}
     | nas                       ::   :: NList     {{ com list of variables }}
-    | ordVars1 \ ordVars2       ::   :: Setminus  {{ com setminus }}
+    | ordVars1 \ varset         ::   :: Setminus  {{ com setminus }}
     | </ ordVarsi // , // i />  ::   :: concat    {{ com concatenate contexts }}
     | ( ordVars )               :: S :: paren     {{ com parenthesis }}
     | [ mu ] ordVars            :: M :: moving    {{ com apply moving to list }}
@@ -171,7 +171,7 @@ varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
     | fv uP              ::   :: uPfv       {{ com free variables }}
     | ( varset )         :: S :: paren     {{ com parenthesis }}
     | G                  ::   :: Cntxt     {{ com context }}
-    | ordVars            ::   :: OrdVars   {{ com ordered list of variables }}
+    | { ordVars }        ::   :: OrdVars   {{ com ordered list of variables }}
     | [ mu ] varset      :: M :: moving    {{ com apply moving to varset }}
 grammar
 

@@ -2,8 +2,8 @@
   \label{lemma:ord-soundness}
   Variable ordering extracts precisely used free variables.
   \begin{itemize}
-    \item[$-$] $[[ ord varset in uN ]] \equiv [[varset ∩ fv uN]]$ (as sets)
-    \item[$+$] $[[ ord varset in uP ]] \equiv [[varset ∩ fv uP]]$ (as sets)
+    \item[$-$] $[[ {ord varset in uN} ]] \equiv [[varset ∩ fv uN]]$ (as sets)
+    \item[$+$] $[[ {ord varset in uP} ]] \equiv [[varset ∩ fv uP]]$ (as sets)
   \end{itemize}
 \end{lemma}
 \begin{proof}
@@ -14,22 +14,25 @@
 
 \begin{corollary}[Additivity of ordering]
   \label{corollary:ord-additivity}
+  Variable ordering is additive (in terms of set union) with respect to its first argument.
   \begin{itemize}
-    \item[$-$] $[[ ord (varset1 ∪ varset2) in iN ]]
+    \item[$-$] $[[ {ord (varset1 ∪ varset2) in iN} ]]
                 \equiv
-                [[ord varset1 in iN]] \cup [[ord varset2 in iN]]$ (as sets)
-    \item[$+$] $[[ ord (varset1 ∪ varset2) in iP ]]
+                [[{ord varset1 in iN} ∪ {ord varset2 in iN}]]$ (as sets)
+    \item[$+$] $[[{ord (varset1 ∪ varset2) in iP}]]
                 \equiv
-                [[ord varset1 in iP]] \cup [[ord varset2 in iP]]$ (as sets)
+                [[{ord varset1 in iP} ∪ {ord varset2 in iP}]]$ (as sets)
 
   \end{itemize}
 \end{corollary}
 
 \begin{corollary}[Weakening of ordering]
   \label{corollary:ord-weakening}
+  Extending the first argument of the ordering with unused variables does not
+  change the result.
   \begin{itemize}
-  \item[$-$] $[[ ord (varset ∩ fv iN) in iN ]] \equiv [[ ord varset in iN ]]$ (as sets)
-  \item[$+$] $[[ ord (varset ∩ fv iP) in iP ]] \equiv [[ ord varset in iP ]]$ (as sets)
+  \item[$-$] $[[ ord (varset ∩ fv iN) in iN ]] = [[ ord varset in iN ]]$
+  \item[$+$] $[[ ord (varset ∩ fv iP) in iP ]] = [[ ord varset in iP ]]$
   \end{itemize}
 \end{corollary}
 

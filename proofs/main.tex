@@ -48,6 +48,25 @@
 
 \newcommand{\ruleref}[1]{Rule \nameref{#1}}
 
+% ord varset in uN = varset'
+
+\renewcommand{\ottdruleONVarInName}[0]{(Var$_{\in}^-$)}
+\renewcommand{\ottdruleONVarNInName}[0]{(Var$_{\notin}^-$)}
+\renewcommand{\ottdruleONUVarName}[0]{(UVar$^-$)}
+\renewcommand{\ottdruleOShiftUName}[0]{($\uparrow$)}
+\renewcommand{\ottdruleOArrowName}[0]{($\rightarrow$)}
+\renewcommand{\ottdruleOForallName}[0]{($\forall$)}
+
+
+% ord varset in uP = varset'
+
+\renewcommand{\ottdruleOPVarInName}[0]{(Var$_{\in}^+$)}
+\renewcommand{\ottdruleOPVarNInName}[0]{(Var$_{\notin}^+$)}
+\renewcommand{\ottdruleOPUVarName}[0]{(UVar$^+$)}
+\renewcommand{\ottdruleOShiftDName}[0]{($\downarrow$)}
+\renewcommand{\ottdruleOExistsName}[0]{($\exists$)}
+
+
 
 % nf(N) = M
 \renewcommand{\ottdruleNrmNVarName}[0]{(Var$^-$)}

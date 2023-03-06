@@ -2,7 +2,10 @@
 defns
   Order :: 'O' ::=
 
-  defn ord varset in uN = varset' :: :: NVarOrd :: '' by
+  defn ord varset in iN = ordVars :: :: NiVarOrd :: '' by
+  defn ord varset in iP = ordVars :: :: PiVarOrd :: '' by
+
+  defn ord varset in uN = ordVars :: :: NVarOrd :: '' by
 
 
   na ∊ varset
@@ -24,14 +27,14 @@ defns
 
   ord varset in uP = ordVars1   ord varset in uN = ordVars2
   --------------------------------------------------------- :: Arrow
-  ord varset in uP → uN = ordVars1, (ordVars2 \ ordVars1)
+  ord varset in uP → uN = ordVars1, (ordVars2 \ {ordVars1})
 
   varset ∩ pas = ∅    ord varset in uN = ordVars
   ---------------------------------------------- :: Forall
   ord varset in ∀pas.uN = ordVars
 
 
-  defn ord varset in uP = varset' :: :: PVarOrd :: '' by
+  defn ord varset in uP = ordVars :: :: PVarOrd :: '' by
 
   pa ∊ varset
   ---------------------  :: PVarIn
