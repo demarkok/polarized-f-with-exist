@@ -11,9 +11,9 @@ defns
 
   Ord (fv iN ∪ fv iM) ⊨ ↓iN ≈au ↓iM ⫤ (uP, us1, us2)
   ----------------------------------------------------------------------- :: Shift
-  ↓iN ∨ ↓iM = ∃nas.[nas/uv uP]iP
+  ↓iN ∨ ↓iM = ∃nas.[nas/Ord(uv uP)]iP
 
-  nas ∩ nbs = ∅
+  {nas} ∩ {nbs} = ∅
   -------------------------------- :: Exists
   ∃nas.iP1 ∨ ∃nbs.iP2 = iP1 ∨ iP2
 
@@ -28,7 +28,7 @@ defns
   ----------------------------------- :: Shift
   G ⊨ ↓iN1 ≈au ↓iN2 ⫤ (↓uM, us1, us2)
 
-  nas ∩ G = ∅    G ⊨ iP1 ≈au iP2 ⫤ (uQ, us1, us2)
+  {nas} ∩ {G} = ∅    G ⊨ iP1 ≈au iP2 ⫤ (uQ, us1, us2)
   ------------------------------------------------ :: Exists
   G ⊨ ∃nas.iP1 ≈au ∃nas.iP2 ⫤ (∃nas.uQ, us1, us2)
 

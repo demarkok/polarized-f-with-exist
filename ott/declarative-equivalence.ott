@@ -24,8 +24,8 @@ defns
   ------------------ :: Arrow
   iP → iN ≈ iQ → iM
 
-  pas ∩ fv iM = ∅   mu : (pbs ∩ fv iM) ↔ (pas ∩ fv iN)    iN ≈ [mu] iM
-  ------------------------------------------------------------------ :: Forall
+  {pas} ∩ fv iM = ∅   mu : ({pbs} ∩ fv iM) ↔ ({pas} ∩ fv iN)    iN ≈ [mu] iM
+  -------------------------------------------------------------------------- :: Forall
   ∀ pas . iN ≈ ∀ pbs . iM
 
 
@@ -40,6 +40,6 @@ defns
   ------------- :: ShiftD
   ↓iN ≈ ↓iM
 
-  nas ∩ fv iQ = ∅   mu : (nbs ∩ fv iQ) ↔ (nas ∩ fv iP)    iP ≈ [mu] iQ
-  ------------------------------------------------------------------ :: Exists 
+  {nas} ∩ fv iQ = ∅   mu : ({nbs} ∩ fv iQ) ↔ ({nas} ∩ fv iP)    iP ≈ [mu] iQ
+  ------------------------------------------------------------------------- :: Exists 
   ∃nas.iP ≈ ∃nbs.iQ

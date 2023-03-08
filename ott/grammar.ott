@@ -34,16 +34,16 @@ nb {{ tex \beta^{-} }}
 grammar
 
 s {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
-   | ·                  :: :: Empty
-   | P / a+             :: :: PosSub
-   | N / a-             :: :: NegSub
-   | iPs / pas          :: :: PosSubs 
-   | iNs / nas          :: :: NegSubs
-   | pmas / pas         :: :: PosMSubs
-   | nmas / nas         :: :: NegMSubs
-   | puas / pas         :: :: PosUSubs
-   | nuas / nas         :: :: NegUSubs
-   | varset1 / varset2  :: :: VarSubs
+   | ·                    :: :: Empty
+   | P / a+               :: :: PosSub
+   | N / a-               :: :: NegSub
+   | iPs / pas            :: :: PosSubs 
+   | iNs / nas            :: :: NegSubs
+   | pmas / pas           :: :: PosMSubs
+   | nmas / nas           :: :: NegMSubs
+   | puas / pas           :: :: PosUSubs
+   | nuas / nas           :: :: NegUSubs
+   | ordVars1 / ordVars2  :: :: VarSubs
    | </ si // , // i /> :: :: concat  {{ com concatenate }}
 
 
@@ -104,6 +104,7 @@ iP {{ tex P }}, iQ {{ tex Q }}:: 'iP_' ::= {{ com multi-quantified positive type
    | ∃ nas . iP ::   :: Exists {{ com $[[iP]] \neq \exists\dots$ }}
    | [ s ] iP   :: M :: AppSub  
    | [ mu ] iP  :: M :: AppMoving 
+   | ( iP )     :: S :: Paren
 
 iN {{ tex N }}, iM {{ tex M }} :: 'iN_' ::= {{ com multi-quantified negative types }}
    | na          ::   :: Var
@@ -112,6 +113,7 @@ iN {{ tex N }}, iM {{ tex M }} :: 'iN_' ::= {{ com multi-quantified negative typ
    | ∀ pas . iN  ::   :: Forall {{ com $[[iN]] \neq \forall\dots$ }}
    | [ s ] iN    :: M :: AppSub 
    | [ mu ] iN   :: M :: AppMoving
+   | ( iN )      :: S :: Paren
 
 
 iPs {{ tex \vv{ P } }}
@@ -131,10 +133,10 @@ grammar
 
   G {{ tex \Gamma }} :: DT_Ctxt ::= {{ com declarative type context }}
     | ·                  ::   :: empty   {{ com empty context }}
-    | Ord varset         ::   :: fromset {{ tex [[varset]] }}
     % | varset             ::   :: nvar     {{ com a negative variable }}
     | pas                ::   :: PList     {{ com list of variables }}
     | nas                ::   :: NList     {{ com list of variables }}
+    | Ord varset         ::   :: fromset   {{ tex [[varset]] }}
     | </ Gi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( G )              :: S :: paren
     % | G1 ∪ G2            ::   :: union
@@ -147,6 +149,8 @@ ordVars {{ tex \vv{ \alpha } }}, ordVarsb {{ tex \vv{ \beta } }} :: OrdVars ::= 
     | pas                       ::   :: PList     {{ com list of variables }}
     | nas                       ::   :: NList     {{ com list of variables }}
     | ordVars1 \ varset         ::   :: Setminus  {{ com setminus }}
+    | G                         ::   :: Cntxt     {{ com context }}
+    | Ord varset                ::   :: fromset   {{ tex [[varset]] }}
     | </ ordVarsi // , // i />  ::   :: concat    {{ com concatenate contexts }}
     | ( ordVars )               :: S :: paren     {{ com parenthesis }}
     | [ mu ] ordVars            :: M :: moving    {{ com apply moving to list }}
@@ -170,7 +174,6 @@ varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
     | fv uN              ::   :: uNfv       {{ com free variables }}
     | fv uP              ::   :: uPfv       {{ com free variables }}
     | ( varset )         :: S :: paren     {{ com parenthesis }}
-    | G                  ::   :: Cntxt     {{ com context }}
     | { ordVars }        ::   :: OrdVars   {{ com ordered list of variables }}
     | [ mu ] varset      :: M :: moving    {{ com apply moving to varset }}
 grammar
@@ -258,7 +261,7 @@ pubs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
    | ·                     ::   :: empty    {{ com empty list }}
    | pua                   ::   :: Var      {{ com a variable }}
    | pua * [ varset ]      ::   :: FromVarC {{ com from a normal variable }}
-                                            {{ tex \vv{ [[pua]] \{ [[varset]] \} } }}
+                                            {{ tex \vv{ [[pua]] {[[varset]]} } }}
    | pua *                 ::   :: FromVar  {{ com from a normal variable, context unspecified }}
                                             {{ tex \vv{ [[pua]] } }}
    | </ puasi // , // i /> ::   :: concat   {{ com concatenate lists }}
@@ -269,7 +272,7 @@ nubs {{ tex \vv{ \widehat{ \beta^{-}  } } }}
    | ·                     ::   :: empty    {{ com empty list }}
    | nua                   ::   :: Var      {{ com a variable }}
    | nua * [ varset ]      ::   :: FromVarC {{ com from a normal variable }}
-                                            {{ tex \vv{ [[nua]] \{ [[varset]] \} }  }}
+                                            {{ tex \vv{ [[nua]] {[[varset]]} } }}
    | nua *                 ::   :: FromVar  {{ com from a normal variable, context unspecified }}
                                             {{ tex \vv{ [[nua]]  } }}
    | </ nuasi // , // i /> ::   :: concat   {{ com concatenate lists }}

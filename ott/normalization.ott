@@ -29,8 +29,8 @@ defns
   --------------------------------------------------------- :: Arrow
   ord varset in uP → uN = ordVars1, (ordVars2 \ {ordVars1})
 
-  varset ∩ pas = ∅    ord varset in uN = ordVars
-  ---------------------------------------------- :: Forall
+  varset ∩ {pas} = ∅    ord varset in uN = ordVars
+  ------------------------------------------------- :: Forall
   ord varset in ∀pas.uN = ordVars
 
 
@@ -51,7 +51,7 @@ defns
   --------------------------- :: ShiftD
   ord varset in ↓uN = ordVars
 
-  varset ∩ nas = ∅    ord varset in uP = ordVars
+  varset ∩ {nas} = ∅    ord varset in uP = ordVars
   --------------------------------------------- :: Exists
   ord varset in ∃nas.uP = ordVars
 
@@ -80,8 +80,8 @@ defns
   -------------------------- :: Arrow
   nf(uP → uN) = uQ → uM
 
-  nf(uN) = uN'    ord pas in uN' = pas'
-  ------------------------------------- :: Forall
+  nf(uN) = uN'    ord {pas} in uN' = pas'
+  --------------------------------------- :: Forall
   nf(∀pas.uN) = ∀pas'.uN'
 
 
@@ -97,6 +97,6 @@ defns
   ------------- :: ShiftD
   nf(↓uN) = ↓uM
 
-  nf(uP) = uP'    ord nas in uP' = nas'
-  ------------------------------------- :: Exists
+  nf(uP) = uP'    ord {nas} in uP' = nas'
+  --------------------------------------- :: Exists
   nf(∃nas.uP) = ∃nas'.uP'

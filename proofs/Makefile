@@ -13,10 +13,10 @@ OTT := ../ott
 
 OTTS := $(OTT)/*.ott
 PDFS := defs.pdf main.pdf
-TEXS := main.tex prelude.tex $(wildcard $(TEX)/*.tex)
+TEXS := main.tex $(wildcard $(TEX)/*.tex)
 GEN_TEXS := $(addprefix $(GEN)/,$(TEXS))
 PRELUDE := prelude.tex
-
+STY := *.sty
 
 
 all: $(PDFS)
@@ -45,7 +45,7 @@ $(GEN)/included.tex: $(CACHE) | $(GEN)
   # For rubber
 	touch $@.aux
 
-$(GEN_TEXS): $(TEXS) $(CACHE) $(GEN)/included.tex | $(GEN_TEX)
+$(GEN_TEXS): $(TEXS) $(CACHE) $(GEN)/included.tex $(PRELUDE) $(STY) | $(GEN_TEX)
 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
 
 main.pdf: $(GEN_TEXS)
