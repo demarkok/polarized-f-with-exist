@@ -52,6 +52,7 @@ usEntry  {{ tex e }} :: usE_' ::= {{ com entry of a unification solution }}
    | nua :≈ iN            :: :: NSol {{ tex [[nua]] :\approx   [[iN]] }}
    | pua :≥ iP            :: :: PSup {{ tex [[pua]] :\geqslant [[iP]] }}
    % | nua :≤ iN            :: :: PSub {{ tex [[nua]] :[[≤]] [[iN]] }}
+   | ( usEntry )          :: S :: paren
 
 us {{ tex \widehat{\sigma} }}  :: 'us_' ::= {{ com unification solution (substitution) }}
    | ·                    :: :: Empty
@@ -332,6 +333,8 @@ terminals :: 'terminals_' ::=
   | ≡n  :: :: equivn    {{ tex \equiv_{n} }}
   | ∨  :: :: LUB       {{ tex \vee }}
   | ⇓ :: :: norm       {{ tex \Downarrow }}
+  | :≥ :: :: solGeq    {{ tex :[[≥]] }}
+  | :≈ :: :: solEq     {{ tex :[[≈]] }}
 
 
 % subrules
@@ -358,10 +361,10 @@ fun nf ( iP' ) :: iP :: Pnf by
 fun nf ( uN' ) :: uN :: uNnf by
 fun nf ( uP' ) :: uP :: uPnf by
 
-% fun
-%   usEntry1 & usEntry2 :: usEntry :: USEM
-% by
+fun
+  usEntry1 & usEntry2 :: usEntry :: USEM {{ tex [[usEntry1]] ~ \& ~ [[usEntry2]] }}
+by
 
 fun
-  us1 & us2 :: us :: MRG
+  us1 & us2 :: us :: MRG {{ tex [[us1]] ~ \& ~[[us2]] }}
 by

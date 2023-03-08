@@ -95,6 +95,13 @@
 \renewcommand{\ottdruleEOneExistsName}[0]{($\exists^{\eqEOne}$)}
 
 
+\renewcommand{\ottdruleSMESupSupName}[0]{$([[≥]]\&[[≥]])$}
+\renewcommand{\ottdruleSMEEqSupName}[0]{$([[≈]]\&[[≥]])$}
+\renewcommand{\ottdruleSMESupEqName}[0]{$([[≥]]\&[[≈]])$}
+\renewcommand{\ottdruleSMEPEqEqName}[0]{$([[≈]]\&[[≈]]^{+})$}
+\renewcommand{\ottdruleSMENEqEqName}[0]{$([[≈]]\&[[≈]]^{-})$}
+
+
 
 \begin{document}
 
@@ -146,7 +153,31 @@ First, we present the top-level system, which is easy to understand.
 \ottdefnsA
 
 \subsection{Unification Solution Merge}
-\ottdefnsSM
+
+Unification solution is represented by a list of unification solution entries.
+Each entry restrict an unification variable in two possible ways: either stating
+that it must be equivalent to a certain type ($[[pua :≈ iP]]$ or $[[nua :≈
+iN]]$) or that it must be a (positive) supertype of a certain type ($[[pua :≥
+iP]]$).
+
+\begin{definition} [Matching Entries]
+  We call two entries matching if they are restricting the same unification variable.
+\end{definition}
+
+Two matching entries can be merged in the following way:
+\begin{definition} \hfill \\
+\ottdefnSME\\
+\end{definition}
+
+
+To merge two unification solution, we merge each pair of
+matching entries, and unite the results.
+
+\begin{definition}
+  $[[us1 & us2]] = \{ [[usEntry1 & usEntry2]] \mid [[usEntry1]] \in [[us1]],
+  [[usEntry2]]  \in [[us2]], \text{s.t. } [[usEntry1]] \text{ matches with } [[usEntry2]] \}$
+\end{definition}
+
 
 \subsection{Least Upper Bound}
 \ottdefnsLUB
