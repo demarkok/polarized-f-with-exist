@@ -35,10 +35,10 @@ defns
   defn nf ( uN ) = uM :: :: uNNorm :: ''  by
 
   --------------------------------  :: NUVar
-  nf(nua[varset]) = nua[varset]
+  nf(nua[Δ]) = nua[Δ]
 
   defn nf ( uP ) = uQ :: :: uPNorm :: ''  by
 
   ----------------------------  :: PUVar
-  nf(pua[varset]) = pua[varset]
+  nf(pua[Δ]) = pua[Δ]
 

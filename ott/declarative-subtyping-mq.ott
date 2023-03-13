@@ -56,8 +56,8 @@ defns
   -------------- :: ShiftD
   G ⊢ ↓iN ≥ ↓iM
 
-  G, nbs ⊢ iNi   G, nbs ⊢ [iNs/nas] iP ≥ iQ'
-  ---------------------------------------- :: ExistsL
+  G, nbs ⊢ iNi   G, nbs ⊢ [iNs/nas] iP ≥ iQ
+  ----------------------------------------- :: ExistsL
   G ⊢ ∃nas.iP ≥ ∃nbs.iQ
 
 

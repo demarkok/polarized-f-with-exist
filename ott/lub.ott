@@ -1,21 +1,27 @@
 defns
   LUB :: 'LUB' ::=
 
-  defn iP1 ∨ iP2 = iQ  :: :: Nsub :: ''
+  defn G ⊨ iP1 ∨ iP2 = iQ  :: :: Nsub :: ''
   {{ com Least Upper Bound (Least Common Supertype) }} by
 
   
-  ------------ :: Var
-  pa ∨ pa = pa
+  ---------------- :: Var
+  G ⊨ pa ∨ pa = pa
 
 
-  Ord (fv iN ∪ fv iM) ⊨ ↓iN ≈au ↓iM ⫤ (uP, us1, us2)
-  ----------------------------------------------------------------------- :: Shift
-  ↓iN ∨ ↓iM = ∃nas.[nas/Ord(uv uP)]iP
+  G ⊨ ↓iN ≈au ↓iM ⫤ (uP, us1, us2)
+  -------------------------------------------------- :: Shift
+  G ⊨ ↓iN ∨ ↓iM = ∃nas.[nas/Ord(uv uP)]iP
 
-  {nas} ∩ {nbs} = ∅
-  -------------------------------- :: Exists
-  ∃nas.iP1 ∨ ∃nbs.iP2 = iP1 ∨ iP2
+
+  % {nas} ∩ fv iP2 = ∅    {nbs} ∩ fv iP1 = ∅
+  G, nas, nbs ⊨ iP1 ∨ iP2 = iQ
+  --------------------------------------- :: Exists
+  G ⊨ ∃nas.iP1 ∨ ∃nbs.iP2 = iQ
+
+
+  defn upgrade G ⊢ iP to Δ = iQ :: :: Up :: '' by
+
 
 defns
   AU :: 'AU' ::=
@@ -46,5 +52,5 @@ defns
   G ⊨ iP1 → iN1 ≈au iP2 → iN2 ⫤ (uQ → uM, us1 ∪ us'1, us2 ∪ us'2)
 
   otherwise   G ⊢ iN     G ⊢ iM 
-  -----------------------------------------------------------------------------  :: AU
-  G ⊨ iN ≈au iM ⫤ (a^-_{iN, iM} , (a^-_{iN, iM} :≈ iN) ,  (a^-_{iN, iM} :≈ iM))
+  -------------------------------------------------------------------------------------  :: AU
+  G ⊨ iN ≈au iM ⫤ (a^-_{iN, iM} , (G ⊢ a^-_{iN, iM} :≈ iN) ,  (G ⊢ a^-_{iN, iM} :≈ iM))

@@ -1,3 +1,4 @@
+\UseRawInputEncoding
 % vim: ft=tex
 \documentclass[a4,natbib=false]{article}
 \usepackage[a4paper, total={8in, 10in}]{geometry}
@@ -156,8 +157,8 @@ First, we present the top-level system, which is easy to understand.
 
 Unification solution is represented by a list of unification solution entries.
 Each entry restrict an unification variable in two possible ways: either stating
-that it must be equivalent to a certain type ($[[pua :≈ iP]]$ or $[[nua :≈
-iN]]$) or that it must be a (positive) supertype of a certain type ($[[pua :≥
+that it must be equivalent to a certain type ($[[Δ ⊢ pua :≈ iP]]$ or $[[Δ ⊢ nua :≈
+iN]]$) or that it must be a (positive) supertype of a certain type ($[[Δ ⊢ pua :≥
 iP]]$).
 
 \begin{definition} [Matching Entries]
@@ -195,5 +196,9 @@ matching entries, and unite the results.
 \subsection{Normaliztaion}
 
 \input{../_build/_gen/tex/norm-lemmas.tex}
+
+\subsection{Subtyping}
+
+\input{../_build/_gen/tex/subtyping-lemmas.tex}
 
 \end{document}

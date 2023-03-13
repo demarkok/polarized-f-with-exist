@@ -48,9 +48,9 @@ s {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
 
 
 usEntry  {{ tex e }} :: usE_' ::= {{ com entry of a unification solution }}
-   | pua :≈ iP            :: :: PSol {{ tex [[pua]] :\approx   [[iP]] }}
-   | nua :≈ iN            :: :: NSol {{ tex [[nua]] :\approx   [[iN]] }}
-   | pua :≥ iP            :: :: PSup {{ tex [[pua]] :\geqslant [[iP]] }}
+   | Γ ⊢ pua :≈ iP            :: :: PSol {{ tex [[Γ]] \vdash [[pua]] :\approx   [[iP]] }}
+   | Γ ⊢ nua :≈ iN            :: :: NSol {{ tex [[Γ]] \vdash [[nua]] :\approx   [[iN]] }}
+   | Γ ⊢ pua :≥ iP            :: :: PSup {{ tex [[Γ]] \vdash [[pua]] :\geqslant [[iP]] }}
    % | nua :≤ iN            :: :: PSub {{ tex [[nua]] :[[≤]] [[iN]] }}
    | ( usEntry )          :: S :: paren
 
@@ -132,7 +132,7 @@ iNs {{ tex \vv{ N } }}
 
 grammar
 
-  G {{ tex \Gamma }} :: DT_Ctxt ::= {{ com declarative type context }}
+G {{ tex \Gamma }}, Δ {{ tex \Delta }}, Γ {{ tex \Gamma }} :: DT_Ctxt ::= {{ com declarative type context }}
     | ·                  ::   :: empty   {{ com empty context }}
     % | varset             ::   :: nvar     {{ com a negative variable }}
     | pas                ::   :: PList     {{ com list of variables }}
@@ -261,8 +261,8 @@ pubs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
 :: 'puas_' ::= {{ com positive unification variable list }}
    | ·                     ::   :: empty    {{ com empty list }}
    | pua                   ::   :: Var      {{ com a variable }}
-   | pua * [ varset ]      ::   :: FromVarC {{ com from a normal variable }}
-                                            {{ tex \vv{ [[pua]] {[[varset]]} } }}
+   | pua * [ Δ ]      ::   :: FromVarC {{ com from a normal variable }}
+                                            {{ tex \vv{ [[pua]] \{[[Δ]]\} } }}
    | pua *                 ::   :: FromVar  {{ com from a normal variable, context unspecified }}
                                             {{ tex \vv{ [[pua]] } }}
    | </ puasi // , // i /> ::   :: concat   {{ com concatenate lists }}
@@ -272,8 +272,8 @@ nubs {{ tex \vv{ \widehat{ \beta^{-}  } } }}
 :: 'nuas_' ::= {{ com negative unification variable list }}
    | ·                     ::   :: empty    {{ com empty list }}
    | nua                   ::   :: Var      {{ com a variable }}
-   | nua * [ varset ]      ::   :: FromVarC {{ com from a normal variable }}
-                                            {{ tex \vv{ [[nua]] {[[varset]]} } }}
+   | nua * [ Δ ]      ::   :: FromVarC {{ com from a normal variable }}
+                                            {{ tex \vv{ [[nua]] \{[[Δ]]\} } }}
    | nua *                 ::   :: FromVar  {{ com from a normal variable, context unspecified }}
                                             {{ tex \vv{ [[nua]]  } }}
    | </ nuasi // , // i /> ::   :: concat   {{ com concatenate lists }}
@@ -282,7 +282,7 @@ nubs {{ tex \vv{ \widehat{ \beta^{-}  } } }}
 
 uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive algorithmic type (potentially with metavariables) }}
                                                             {{ tex \ngbox{[[uP]]} }} | pa             ::   :: Var | pma            ::   :: MovVar
-   | pua [ varset ] ::   :: UnifVar {{ tex [[pua]]\{ [[varset]] \} }}
+   | pua [ Δ ] ::   :: UnifVar {{ tex [[pua]]\{ [[Δ]] \} }}
    | ↓ uN          ::   :: Shift
    | ∃ nas . uP    ::   :: Exists
    | [ s ] uP      :: M :: AppSub  
@@ -292,7 +292,7 @@ uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative al
                                                              {{ tex \ngbox{[[uN]]} }}
    | na             ::   :: Var
    | nma            ::   :: MovVar
-   | nua [ varset ] ::   :: UnifVar {{ tex [[nua]]\{ [[varset]] \} }}
+   | nua [ Δ ] ::   :: UnifVar {{ tex [[nua]]\{ [[Δ]] \} }}
    | nua            ::   :: BareUnifVar
    | ↑ uP           ::   :: Shift
    | uP → uN        ::   :: Fun
@@ -347,9 +347,9 @@ terminals :: 'terminals_' ::=
 
 funs
   LUBF ::=
-fun
-  iP1 ∨ iP2 :: iQ :: LUB 
-by
+% fun
+%   iP1 ∨ iP2 :: iQ :: LUB 
+% by
 
 fun ord varset in uP :: ordVars :: uPOrd by
 fun ord varset in uN :: ordVars :: uNOrd by

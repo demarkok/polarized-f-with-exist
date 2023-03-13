@@ -24,7 +24,7 @@ defns
   ---------------------------------------- :: Arrow
   G ⊨ uP → uN ≤ iQ → iM ⫤ us1 & us2
 
-  G, pbs ⊨ [a^+*[{G, pbs}]/pas] uN ≤ iM ⫤ us
+  G, pbs ⊨ [a^+*[G, pbs]/pas] uN ≤ iM ⫤ us
   ---------------------------------------- :: Forall
   G ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ us \ a^+*
 
@@ -39,11 +39,11 @@ defns
   ---------------------- :: ShiftD
   G ⊨ ↓uN ≥ ↓iM ⫤ us
 
-  G, nbs ⊨ [a^-*[{G, nbs}]/nas] uP ≥ iQ ⫤ us
+  G, nbs ⊨ [a^-*[G, nbs]/nas] uP ≥ iQ ⫤ us
   ------------------------------------------ :: Exists
   G ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ us
 
     
-  nf(iP) = iP'    varset1 = fv iP' \ varset    varset2 is fresh
-  --------------------------------------------------------------- :: PUVar
-  G ⊨ a^+ [varset] ≥ iP ⫤ (a^+ :≥ iP' ∨ [Ord varset2/ Ord varset1]iP')
+   upgrade G ⊢ nf(iP) to Δ = iQ
+  ----------------------------------------------- :: PUVar
+  G ⊨ a^+ [Δ] ≥ iP ⫤ (Δ ⊢ a^+ :≥ iQ)

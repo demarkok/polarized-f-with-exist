@@ -32,9 +32,9 @@ defns
   ------------------------ :: Forall
   ∀pas.uN ≈u ∀pas.iM ⫤ us
 
-  fv iN ⊆ varset
-  ----------------------------- :: NUVar
-  nua[varset] ≈u iN ⫤ nua :≈ iN
+  fv iN ⊆ {Δ}
+  ------------------------------- :: NUVar
+  nua[Δ] ≈u iN ⫤ (Δ ⊢ nua :≈ iN)
 
   defn uP ≈u iQ ⫤ us :: :: PUnif :: ''
   {{ com Positive unification }}
@@ -51,6 +51,6 @@ defns
   ------------------------ :: Exists 
   ∃nas.uP ≈u ∃nas.iQ ⫤ us
 
-  fv iP ⊆ varset  
-  ----------------------------- :: PUVar
-  pua[varset] ≈u iP ⫤ pua :≈ iP
+  fv iP ⊆ {Δ} 
+  ------------------------------- :: PUVar
+  pua[Δ] ≈u iP ⫤ (Δ ⊢ pua :≈ iP)
