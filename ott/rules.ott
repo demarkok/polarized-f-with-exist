@@ -14,6 +14,8 @@ grammar
     | pa ∉ varset                            ::   :: pa_notin_set
     | na ∊ varset                            ::   :: na_in_set
     | pa ∊ varset                            ::   :: pa_in_set
+    | nua ∊ Θ                                ::   :: nua_in_ctxt
+    | pua ∊ Θ                                ::   :: pua_in_ctxt
     | otherwise                              ::   :: otherwise {{ tex \text{if any other rule is not applicable} }}
     % | xs ⊆ T                                 ::   :: xs_in_T
     % | let T1 = T2                            ::   :: let_T

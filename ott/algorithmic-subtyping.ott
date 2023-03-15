@@ -9,41 +9,43 @@ embed {{ tex-preamble
 defns
   A :: 'A' ::=
 
-  defn G ⊨ uN ≤ iM ⫤ us :: :: Nsub :: ''
+  defn G ; Θ ⊨ uN ≤ iM ⫤ us :: :: Nsub :: ''
   {{ com Negative subtyping }}
-  {{ tex [[G]] [[⊨]] [[uN]] \subA [[iM]] [[⫤]] [[us]] }} by
+  {{ tex [[G]] ;\, [[Θ]] [[⊨]] [[uN]] \subA [[iM]] [[⫤]] [[us]] }} by
 
   --------------- :: NVar
-  G ⊨ a- ≤ a- ⫤ · 
+  G;Θ ⊨ a⁻ ≤ a⁻ ⫤ · 
 
-  nf(uP) ≈u nf(iQ) ⫤ us
-  --------------------- :: ShiftU
-  G ⊨ ↑uP ≤ ↑iQ ⫤ us
+  G;· ⊨ nf(uP) ≈u nf(iQ) ⫤ us
+  ---------------------------- :: ShiftU
+  G;Θ ⊨ ↑uP ≤ ↑iQ ⫤ us
 
-  G ⊨ uP ≥ iQ ⫤ us1    G ⊨ uN ≤ iM ⫤ us2
+  G;Θ ⊨ uP ≥ iQ ⫤ us1    G;Θ ⊨ uN ≤ iM ⫤ us2
   ---------------------------------------- :: Arrow
-  G ⊨ uP → uN ≤ iQ → iM ⫤ us1 & us2
+  G;Θ ⊨ uP → uN ≤ iQ → iM ⫤ us1 & us2
 
-  G, pbs ⊨ [a^+*[G, pbs]/pas] uN ≤ iM ⫤ us
-  ---------------------------------------- :: Forall
-  G ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ us \ a^+*
+  % *[G, pbs]
+  G, pbs; Θ, â⁺*[G, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ us
+  ----------------------------------- :: Forall
+  G;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ us \ â⁺*
 
-  defn G ⊨ uP ≥ iQ ⫤ us :: :: Psup :: ''
+  defn G ; Θ ⊨ uP ≥ iQ ⫤ us :: :: Psup :: ''
   {{ com Positive supertyping }}
-  {{ tex [[G]] [[⊨]] [[uP]] \supA [[iQ]] [[⫤]] [[us]] }} by
+  {{ tex [[G]] ;\, [[Θ]] [[⊨]] [[uP]] \supA [[iQ]] [[⫤]] [[us]] }} by
 
   ---------------- :: PVar
-  G ⊨ a+ ≥ a+ ⫤ ·
+  G;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·
 
-  nf(uN) ≈u nf(iM) ⫤ us
-  ---------------------- :: ShiftD
-  G ⊨ ↓uN ≥ ↓iM ⫤ us
+  G;· ⊨ nf(uN) ≈u nf(iM) ⫤ us
+  ---------------------------- :: ShiftD
+  G;Θ ⊨ ↓uN ≥ ↓iM ⫤ us
 
-  G, nbs ⊨ [a^-*[G, nbs]/nas] uP ≥ iQ ⫤ us
+  % *[G, nbs]
+  G, nbs; Θ,â⁻*[G, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ us
   ------------------------------------------ :: Exists
-  G ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ us
+  G;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ us
 
     
    upgrade G ⊢ nf(iP) to Δ = iQ
   ----------------------------------------------- :: PUVar
-  G ⊨ a^+ [Δ] ≥ iP ⫤ (Δ ⊢ a^+ :≥ iQ)
+  G;Θ ⊨ â⁺ [Δ] ≥ iP ⫤ (Δ ⊢ â⁺ :≥ iQ)

@@ -12,45 +12,45 @@ embed {{ tex-preamble
 defns
   U :: 'U' ::=
 
-  defn uN ≈u iM ⫤ us :: :: NUnif :: ''
+  defn Γ ; Θ ⊨ uN ≈u iM ⫤ us :: :: NUnif :: ''
   {{ com Negative unification }}
-  {{ tex [[uN]] \eqU [[iM]] \Dashv [[us]] }} by
+  {{ tex [[Γ]] ; [[Θ]] \vDash [[uN]] \eqU [[iM]] \Dashv [[us]] }} by
 
-  ------------ :: NVar
-  a- ≈u a- ⫤ · 
+  -------------------- :: NVar
+  Γ;Θ ⊨ a⁻ ≈u a⁻ ⫤ · 
 
 
-  uP ≈u iQ ⫤ us
+  Γ;Θ ⊨ uP ≈u iQ ⫤ us
   --------------------- :: ShiftU
-  ↑uP ≈u ↑iQ ⫤ us
+  Γ;Θ ⊨ ↑uP ≈u ↑iQ ⫤ us
 
-  uP ≈u iQ ⫤ us1    uN ≈u iM ⫤ us2
+  Γ;Θ ⊨  uP ≈u iQ ⫤ us1    Γ ; Θ ⊨ uN ≈u iM ⫤ us2
   -------------------------------- :: Arrow
-  uP → uN ≈u iQ → iM ⫤ us1 & us2
+  Γ;Θ ⊨  uP → uN ≈u iQ → iM ⫤ us1 & us2
 
-  uN ≈u iM ⫤ us
+  Γ, pas; Θ ⊨  uN ≈u iM ⫤ us
   ------------------------ :: Forall
-  ∀pas.uN ≈u ∀pas.iM ⫤ us
+  Γ;Θ ⊨  ∀pas.uN ≈u ∀pas.iM ⫤ us
 
-  fv iN ⊆ {Δ}
-  ------------------------------- :: NUVar
-  nua[Δ] ≈u iN ⫤ (Δ ⊢ nua :≈ iN)
+  â⁻[Δ] ∊ Θ   Δ ⊢ iN  
+  ------------------------------------- :: NUVar
+  Γ;Θ ⊨  â⁻ ≈u iN ⫤ (Δ ⊢ â⁻ :≈ iN)
 
-  defn uP ≈u iQ ⫤ us :: :: PUnif :: ''
+  defn Γ ; Θ ⊨ uP ≈u iQ ⫤ us :: :: PUnif :: ''
   {{ com Positive unification }}
-  {{ tex [[uP]] \eqU [[iQ]] \Dashv [[us]] }} by
+  {{ tex [[Γ]] ; [[Θ]] \vDash [[uP]] \eqU [[iQ]] \Dashv [[us]] }} by
 
   ---------------------  :: PVar
-  a+ ≈u a+ ⫤ ·
+  Γ;Θ ⊨  a⁺ ≈u a⁺ ⫤ ·
 
-  uN ≈u iM ⫤ us
+  Γ;Θ ⊨  uN ≈u iM ⫤ us
   -------------------------- :: ShiftD
-  ↓uN ≈u ↓iM ⫤ us
+  Γ;Θ ⊨  ↓uN ≈u ↓iM ⫤ us
 
-  uP ≈u iQ ⫤ us
+  Γ, nas; Θ ⊨  uP ≈u iQ ⫤ us
   ------------------------ :: Exists 
-  ∃nas.uP ≈u ∃nas.iQ ⫤ us
+  Γ;Θ ⊨  ∃nas.uP ≈u ∃nas.iQ ⫤ us
 
-  fv iP ⊆ {Δ} 
-  ------------------------------- :: PUVar
-  pua[Δ] ≈u iP ⫤ (Δ ⊢ pua :≈ iP)
+  â⁺[Δ] ∊ Θ   Δ ⊢ iP
+  --------------------------------- :: PUVar
+  Γ;Θ ⊨  â⁺ ≈u iP ⫤ (Δ ⊢ â⁺ :≈ iP)

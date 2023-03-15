@@ -14,8 +14,7 @@ embed {{ tex-preamble
 }}
 
 
-
-metavar a {{ tex \alpha }}, b {{ tex \beta }} ::= {{ com type variables }} 
+metavar a {{ tex \alpha }}, b {{ tex \beta }}, α {{ tex \alpha }}, β {{ tex \beta }} ::= {{ com type variables }} 
 
 indexvar n , m, i , j ::= {{ com index variables }}
 grammar
@@ -23,20 +22,20 @@ grammar
 pa {{ tex \alpha^{+} }},
 pb {{ tex \beta^{+} }} 
 :: 'pa_' ::= {{ com positive variable }}
-   | a +       :: :: Var {{ tex [[a]]^{+} }}
+   | a ⁺       :: :: Var {{ tex [[a]]^{+} }}
 
 na {{ tex \alpha^{-} }},
 nb {{ tex \beta^{-} }}
 :: 'na_' ::= {{ com negative variable }}
-   | a -       :: :: Var {{ tex [[a]]^{-} }}
+   | a ⁻       :: :: Var {{ tex [[a]]^{-} }}
 
 
 grammar
 
 s {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
    | ·                    :: :: Empty
-   | P / a+               :: :: PosSub
-   | N / a-               :: :: NegSub
+   | P / pa               :: :: PosSub
+   | N / na               :: :: NegSub
    | iPs / pas            :: :: PosSubs 
    | iNs / nas            :: :: NegSubs
    | pmas / pas           :: :: PosMSubs
@@ -68,13 +67,13 @@ us {{ tex \widehat{\sigma} }}  :: 'us_' ::= {{ com unification solution (substit
 grammar
 
 P, Q :: 'P_' ::= {{ com positive types }}
-   | a+       ::   :: Var
+   | pa       ::   :: Var
    | ↓ N      ::   :: Shift
    | ∃ na . P ::   :: Exists
    | [ s ] P  :: M :: AppSub 
 
 N, M :: 'N_' ::= {{ com negative types }}
-   | a-       ::   :: Var
+   | na       ::   :: Var
    | ↑ P      ::   :: Shift
    | ∀ pa . N ::   :: Forall
    | P → N    ::   :: Fun
@@ -142,6 +141,15 @@ G {{ tex \Gamma }}, Δ {{ tex \Delta }}, Γ {{ tex \Gamma }} :: DT_Ctxt ::= {{ c
     | ( G )              :: S :: paren
     % | G1 ∪ G2            ::   :: union
 
+grammar
+
+T {{ tex \Theta }}, Θ {{ tex \Theta }}, Ξ {{ tex \Xi }} :: U_Ctxt ::= {{ com unification type variable context }}
+    | ·                  ::   :: empty   {{ com empty context }}
+    | puas                ::   :: PUList {{ com list of variables }}
+    | nuas                ::   :: NUList {{ com list of variables }}
+    | </ Θi // , // i /> ::   :: concat  {{ com concatenate contexts }}
+    | ( Θ )              :: S :: paren
+    % | G1 ∪ G2            ::   :: union
 
 grammar
 
@@ -250,11 +258,13 @@ imN {{ tex N }}, imM {{ tex M }} :: 'imN_' ::= {{ com multi-quantified negative 
 
 
 pua {{ tex \widehat{\alpha}^{+} }} :: pua_ ::= {{ com positive unification variable }}
-    | a ^ + :: :: Var {{ tex \widehat{[[a]]}^{+} }}
+    | a ̂ ⁺        :: :: Var {{ tex \widehat{[[a]]}^{+} }}
+    | a ̂ ⁺ [ Δ ]  :: :: AnnotVar {{ tex \widehat{[[a]]}^{+}\{ [[Δ]] \} }}
 
 nua {{ tex \widehat{\alpha}^{-} }} :: nua_ ::= {{ com negative unification variable }}
-    | a ^ - :: :: Var {{ tex \widehat{[[a]]}^{-} }}
-    | a ^ - _ { iN , iM } :: :: VarIdxd {{ tex \widehat{[[a]]}^{-}_{\{ [[iN]], [[iM]] \} } }}
+    | a ̂ ⁻               :: :: Var {{ tex \widehat{[[a]]}^{-} }}
+    | a ̂ ⁻ _ { iN , iM } :: :: VarIdxd {{ tex \widehat{[[a]]}^{-}_{\{ [[iN]], [[iM]] \} } }}
+    | a ̂ ⁻ [ Δ ]         :: :: AnnotVar {{ tex \widehat{[[a]]}^{-}\{ [[Δ]] \} }}
 
 puas {{ tex \vv{ \widetilde{ \alpha^{+} } } }},
 pubs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
@@ -282,7 +292,7 @@ nubs {{ tex \vv{ \widehat{ \beta^{-}  } } }}
 
 uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive algorithmic type (potentially with metavariables) }}
                                                             {{ tex \ngbox{[[uP]]} }} | pa             ::   :: Var | pma            ::   :: MovVar
-   | pua [ Δ ] ::   :: UnifVar {{ tex [[pua]]\{ [[Δ]] \} }}
+   | pua           ::   :: UnifVar 
    | ↓ uN          ::   :: Shift
    | ∃ nas . uP    ::   :: Exists
    | [ s ] uP      :: M :: AppSub  
@@ -291,9 +301,7 @@ uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive alg
 uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative algorithmic type (potentially with metavariables) }}
                                                              {{ tex \ngbox{[[uN]]} }}
    | na             ::   :: Var
-   | nma            ::   :: MovVar
-   | nua [ Δ ] ::   :: UnifVar {{ tex [[nua]]\{ [[Δ]] \} }}
-   | nua            ::   :: BareUnifVar
+   | nua            ::   :: UnifVar
    | ↑ uP           ::   :: Shift
    | uP → uN        ::   :: Fun
    | ∀ pas . uN     ::   :: Forall

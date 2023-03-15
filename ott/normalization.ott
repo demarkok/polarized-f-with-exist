@@ -34,11 +34,12 @@ defns
 
   defn nf ( uN ) = uM :: :: uNNorm :: ''  by
 
-  --------------------------------  :: NUVar
-  nf(nua[Δ]) = nua[Δ]
+  ----------- :: NUVar
+  nf(â⁻) = â⁻
+
 
   defn nf ( uP ) = uQ :: :: uPNorm :: ''  by
 
-  ----------------------------  :: PUVar
-  nf(pua[Δ]) = pua[Δ]
+  ----------- :: PUVar
+  nf(â⁺) = â⁺
 

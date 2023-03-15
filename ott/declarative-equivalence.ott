@@ -14,7 +14,7 @@ defns
   {{ tex [[iN]] \eqEOne [[iM]] }} by
 
   ------- :: NVar
-  a- ≈ a-
+  a⁻ ≈ a⁻
 
   iP ≈ iQ
   ---------- :: ShiftU
@@ -34,7 +34,7 @@ defns
   {{ tex [[iP]] \eqEOne [[iQ]] }} by
 
   -------- :: PVar
-  a+ ≈ a+
+  a⁺ ≈ a⁺
   
   iN ≈ iM
   ------------- :: ShiftD

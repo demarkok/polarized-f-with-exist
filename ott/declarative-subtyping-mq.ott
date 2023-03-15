@@ -31,7 +31,7 @@ defns
   {{ tex [[G]] [[⊢]] [[iN]] \subDOne [[iM]] }} by
 
   ----------- :: NVar
-  G ⊢ a- ≤ a- 
+  G ⊢ a⁻ ≤ a⁻ 
 
   G ⊢ iP ≈ iQ
   ------------ :: ShiftU
@@ -50,7 +50,7 @@ defns
   {{ tex [[G]] [[⊢]] [[iP]] \supDOne [[iQ]] }} by
 
   ------------- :: PVar
-  G ⊢ a+ ≥ a+ 
+  G ⊢ a⁺ ≥ a⁺ 
 
   G ⊢ iN ≈ iM
   -------------- :: ShiftD

@@ -21,36 +21,3 @@ defns
 
 
   defn upgrade G ⊢ iP to Δ = iQ :: :: Up :: '' by
-
-
-defns
-  AU :: 'AU' ::=
-  defn G ⊨ iP1 ≈au iP2 ⫤ ( uQ , us1 , us2 )  :: :: AUP :: 'P' by
-
-  -------------------------- :: Var
-  G ⊨ pa ≈au pa ⫤ (pa, ·, ·)
-
-  G ⊨ iN1 ≈au iN2 ⫤ (uM, us1, us2)
-  ----------------------------------- :: Shift
-  G ⊨ ↓iN1 ≈au ↓iN2 ⫤ (↓uM, us1, us2)
-
-  {nas} ∩ {G} = ∅    G ⊨ iP1 ≈au iP2 ⫤ (uQ, us1, us2)
-  ------------------------------------------------ :: Exists
-  G ⊨ ∃nas.iP1 ≈au ∃nas.iP2 ⫤ (∃nas.uQ, us1, us2)
-
-  defn G ⊨ iN1 ≈au iN2 ⫤ ( uM , us1 , us2 )  :: :: AUN :: 'N' by
-
-  ---------------------- :: Var
-  G ⊨ na ≈au na ⫤ (na, ·, ·)
-
-  G ⊨ iP1 ≈au iP2 ⫤ (uQ, us1, us2)
-  --------------------------------- :: Shift
-  G ⊨ ↑iP1 ≈au ↑iP2 ⫤ (↑uQ, us1, us2)
-
-  G ⊨ iP1 ≈au iP2 ⫤ (uQ, us1, us2)    G ⊨ iN1 ≈au iN2 ⫤ (uM, us'1, us'2)
-  ----------------------------------------------------------------------  :: Arrow
-  G ⊨ iP1 → iN1 ≈au iP2 → iN2 ⫤ (uQ → uM, us1 ∪ us'1, us2 ∪ us'2)
-
-  otherwise   G ⊢ iN     G ⊢ iM 
-  -------------------------------------------------------------------------------------  :: AU
-  G ⊨ iN ≈au iM ⫤ (a^-_{iN, iM} , (G ⊢ a^-_{iN, iM} :≈ iN) ,  (G ⊢ a^-_{iN, iM} :≈ iM))

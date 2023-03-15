@@ -31,19 +31,19 @@ defns
   {{ tex [[G]] [[⊢]] [[N]] \subDZero [[M]] }} by
 
   ----------- :: NVar
-  G ⊢ a- ≤ a- 
+  G ⊢ a⁻ ≤ a⁻ 
 
   G ⊢ P ≈ Q
   ------------ :: ShiftU
   G ⊢ ↑P ≤ ↑Q
 
-  G ⊢ P   G ⊢ [P/a+] N ≤ M    M ≠ ∀b+.M'
+  G ⊢ P   G ⊢ [P/a⁺] N ≤ M    M ≠ ∀b⁺.M'
   ------------------------------------- :: ForallL
-  G ⊢ ∀a+.N ≤ M
+  G ⊢ ∀a⁺.N ≤ M
 
-  G, a+ ⊢ N ≤ M
+  G, a⁺ ⊢ N ≤ M
   -------------- :: ForallR
-  G ⊢ N ≤ ∀a+.M
+  G ⊢ N ≤ ∀a⁺.M
 
   G ⊢ P ≥ Q    G ⊢ N ≤ M 
   ----------------------- :: Arrow
@@ -54,16 +54,16 @@ defns
   {{ tex [[G]] [[⊢]] [[P]] \supDZero [[Q]] }} by
 
   ----------- :: PVar
-  G ⊢ a+ ≥ a+ 
+  G ⊢ a⁺ ≥ a⁺ 
 
   G ⊢ N ≈ M
   ------------ :: ShiftD
   G ⊢ ↓N ≥ ↓M
 
-  G ⊢ N   G ⊢ [N/a-] P ≥ Q    Q ≠ ∃a-.Q'
+  G ⊢ N   G ⊢ [N/a⁻] P ≥ Q    Q ≠ ∃a⁻.Q'
   -------------------------------------- :: ExistsL
-  G ⊢ ∃a-.P ≥ Q
+  G ⊢ ∃a⁻.P ≥ Q
 
-  G, a- ⊢ P ≥ Q
+  G, a⁻ ⊢ P ≥ Q
   --------------- :: ExistsR
-  G ⊢ P ≥ ∃a-.Q
+  G ⊢ P ≥ ∃a⁻.Q
