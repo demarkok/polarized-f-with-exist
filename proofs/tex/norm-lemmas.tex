@@ -1,0 +1,213 @@
+\begin{lemma}
+  \label{lemma:equiv-fv}
+  Set of free variables is invariant under equivalence.
+  \begin{itemize}
+  \item[$-$] If $[[iN ≈ iM]]$ then $[[fv iN]] \equiv [[fv iM]]$ (as sets)
+  \item[$+$] If $[[iP ≈ iQ]]$ then $[[fv iP]] \equiv [[fv iQ]]$ (as sets)
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Straightforward mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$
+\end{proof}
+
+
+\begin{lemma}
+  \label{lemma:fv-nf}
+  Free variables are not changed by the normalization
+  \begin{itemize}
+  \item[$-$] $[[fv iN]] \equiv [[fv nf(iN)]]$
+  \item[$+$] $[[fv iP]] \equiv [[fv nf(iP)]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  By straightforward induction on $[[nf(iN) = iM]]$.
+\end{proof}
+
+
+\begin{lemma}[Commutativity of normalization and renaming]
+  \label{lemma:norm-subst-commute} Normalization of a term commutes with renaming.
+
+  Suppose that $\mu$ is a bijection between two sets of variables
+  $\mu : A \leftrightarrow B$. Then
+  \begin{itemize}
+    \item[$-$] $[[nf([mu]iN)]] = [[ [mu] nf(iN) ]]$
+    \item[$+$] $[[nf([mu]iP)]] = [[ [mu] nf(iP) ]]$
+  \end{itemize}
+  Here equality means alpha-equivalence.
+\end{lemma}
+
+\begin{proof}
+  Mutual induction on $[[iN]]$ and $[[iP]]$.
+  \begin{caseof}
+    \item $[[iN]]$ = $[[na]]$ \\
+      $[[nf([mu]iN)]] = [[ nf([mu]na) ]] = [[ [mu]na ]] $.
+      The latter follows from the fact that $[[ [mu]na ]]$ is a variable, and thus, 
+      \ruleref{\ottdruleNrmNVarLabel} is applicable.
+
+      $[[ [mu] nf(iN) ]] = [[ [mu] nf(na) ]] = [[ [mu] na ]] $.
+   \item If the type is formed by $[[→]]$, $[[↑]]$, or $[[↓]]$, 
+     the required equality follows from the congruence of the normalization and
+     substitution, and the induction hypothesis.
+     For example, if $[[iN]] = [[iP → iM]]$ then \\
+     $\begin{aligned}[t]
+        [[nf([mu] iN)]] &= [[ nf([mu] (iP → iM)) ]] \\
+                        &= [[ nf([mu]iP → [mu]iM) ]]
+                        && \text{By the congruence of substitution} \\
+                        &= [[ nf([mu]iP) → nf([mu]iM) ]]
+                        && \text{By the congruence of normalization, i.e. \ruleref{\ottdruleNrmArrowLabel}} \\
+                        &= [[ [mu]nf(iP) → [mu]nf(iM) ]]
+                        && \text{By the induction hypothesis} \\
+                        &= [[ [mu](nf(iP) → nf(iM)) ]]
+                        && \text{By the congruence of substitution} \\
+                        &= [[ [mu]nf(iP → iM) ]]
+                        && \text{By the congruence of normalization} \\
+                        &= [[ [mu]nf(iN) ]]
+      \end{aligned}$ \\
+    \item $[[iN]] = [[∀ pas.iM]]$ \label{case:norm-subst-commute} \\
+      $\begin{aligned}[t]
+          [[ [mu] nf(iN) ]] &= [[ [mu] nf(∀pas.iM)]] \\
+                            &= [[ [mu] ∀pas'.nf(iM) ]]
+                            && \text {Where $[[ ord {pas} in nf(iM) = pas' ]]$}\\
+        \end{aligned}$ \\
+
+      $\begin{aligned}[t]
+         [[ nf([mu]iN) ]] &= [[ nf([mu] ∀pas.iM)]] \\
+                          &= [[ nf(∀pas.[mu]iM) ]]
+                          && \text{Assuming $[[{pas}]] \cap A = \emptyset$
+                             and $[[{pas}]] \cap B = \emptyset$}\\
+                          &= [[ ∀pbs.nf([mu]iM) ]]
+                          && \text {Where $[[ ord {pas} in nf([mu]iM) = pbs ]]$}\\
+                          &= [[ ∀pas'.nf([mu]iM) ]]
+                          && \text {As $[[pbs]] = [[pas']]$ (see below)}
+         \end{aligned}$ \\
+
+    Notice that $[[mu]]$ is free of collisions on $[[{pas}]]$ and $[[fv nf(iM)]]$ because
+    \begin{enumerate}[nolistsep]
+      \item[(i)] $[[mu]](A \cap [[{pas}]]) \cap [[fv nf(iM)]] = \emptyset \cap [[fv nf(iM)]] = \emptyset$ and
+      \item[(ii)] $[[mu]](A \cap [[fv nf(iM)]]) \cap [[{pas}]] \subseteq B \cap
+        [[{pas}]] = \emptyset$
+    \end{enumerate}
+    $\begin{aligned}[t]
+       [[pbs]] &= [[ ord {pas} in nf([mu]iM) ]] \\
+               &= [[ ord {pas} in [mu]nf(iM) ]]
+               && \text{By the induction hypothesis} \\
+               &= [[ ord {[mu]pas} in [mu]nf(iM) ]]
+               && \text{Since $[[{pas}]] \cap A = \emptyset$} \\
+               &= [[ [mu] ord {pas} in nf(iM) ]]
+               && \text{by \cref{lemma:distr-mu-ord}} \\
+               &= [[ ord {pas} in nf(iM) ]]
+               && \text{Since $[[{ord {pas} in nf(iM)}]] \cap A \subseteq [[{pas}]] \cap A = \emptyset$} \\
+               &= [[ pas' ]]
+     \end{aligned}$ \\
+
+     To show alpha-equivalence of 
+     $[[ [mu] ∀pas'.nf(iM) ]]$ and $[[ ∀pas'.nf([mu]iM) ]]$,
+     we can assume that $[[{pas'}]] \cap A = \emptyset$, and $[[{pas'}]] \cap B = \emptyset$.
+     Then $[[ [mu] ∀pas'.nf(iM) ]] = [[∀pas'.[mu]nf(iM)]] = [[ ∀pas'.nf([mu]iM)
+     ]]$, the latter follows from the induction hypothesis.
+
+   \item $[[iP]] = [[∃ nas.iQ]]$ \\
+     Same as for \cref{case:norm-subst-commute}.
+  \end{caseof}
+\end{proof}
+
+\begin{lemma}[Soundness of quantifier normalization]
+  \label{lemma:normalization-soundness}
+  \hfill
+
+  \begin{itemize}
+    \item[$-$] $[[iN ≈ nf(iN)]]$
+    \item[$+$] $[[iP ≈ nf(iP)]]$
+  \end{itemize}
+
+\end{lemma}
+\begin{proof}
+  Mutual induction on $[[nf(iN) = iM]]$ and $[[nf(iP) = iQ]]$.
+  Let us consider how this judgment is formed:
+  \begin{caseof}
+    \item{\nameref{\ottdruleNrmNVarLabel} and \nameref{\ottdruleNrmPVarLabel}}\\ By
+      the corresponding equivalence rules.
+    \item{\nameref{\ottdruleNrmShiftULabel}, \nameref{\ottdruleNrmShiftDLabel},
+        and \nameref{\ottdruleNrmArrowLabel}}\\
+      By the induction hypothesis and the corresponding congruent equivalence rules.
+    \item{\nameref{\ottdruleNrmForallLabel}}, i.e. $[[nf(∀pas.uN) = ∀pas'.uN']]$ \label{case:norm-soundness:forall}\\
+      From the induction hypothesis, we
+      know that $[[iN ≈ iN']]$. In particular, by \cref{lemma:equiv-fv}, $[[fv
+        iN]] \equiv [[fv iN']]$.
+      Then by \cref{lemma:ord-soundness}, $[[{pas'}]]
+      \equiv [[{pas} ∩ fv iN']] \equiv [[{pas} ∩ fv iN]]$, and thus,
+      $[[{pas'} ∩ fv iN']] \equiv [[{pas} ∩ fv iN]]$.
+      
+      To prove $[[∀pas.iN ≈ ∀pas'.iN']]$, it suffices to provide a bijection 
+      $\mu : [[{pas'} ∩ fv iN']] \leftrightarrow [[{pas} ∩ fv iN]]$ such that
+      $[[iN ≈ [mu]iN']]$. Since these sets are equal, we take $\mu = id$.
+    \item{\nameref{\ottdruleNrmExistsLabel}} Same as for \cref{case:norm-soundness:forall}.
+  \end{caseof}
+\end{proof}
+
+
+\begin{lemma}[Completeness of quantified normalization]
+  Normalization returns the same representative for equivalent types.
+
+  \begin{itemize}
+  \item[$-$] If $[[iN ≈ iM]]$ then $[[nf(iN)]] = [[nf(iM)]]$
+  \item[$+$] If $[[iP ≈ iQ]]$ then $[[nf(iP)]] = [[nf(iQ)]]$
+  \end{itemize}
+  (Here equality means alpha-equivalence)
+\end{lemma}
+
+\begin{proof}
+  Mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$.
+  \begin{caseof}
+  \item {\nameref{\ottdruleEOneForallLabel}} \label{case:ord-completeness:forall} \\
+
+    From the definition of the normalization,
+    \begin{itemize}
+      \item $[[nf(∀pas.iN)]] = [[∀pas'.nf(iN)]]$ where $[[pas']]$ is $[[ord {pas} in nf(iN)]]$
+      \item $[[nf(∀pbs.iM)]] = [[∀pbs'.nf(iM)]]$ where $[[pbs']]$ is $[[ord {pbs} in nf(iM)]]$
+    \end{itemize}
+    Let us take $[[mu : ({pbs} ∩ fv iM) ↔ ({pas} ∩ fv iN)]]$ from the
+    inversion of the equivalence judgment. Notice that from
+    \cref{lemma:fv-nf,lemma:ord-soundness}, the domain and the codomain of $\mu$ can be written
+    as $[[mu : {pbs'} ↔ {pas'}]]$.
+    
+    To show the alpha-equivalence of $[[∀pas'.nf(iN)]]$ and $[[∀pbs'.nf(iM)]]$,
+    it suffices to prove that
+    \begin{enumerate*}
+    \item[(i)] $[[ [mu] nf(iM) ]] = [[nf(iN)]]$ and \newline
+    \item[(ii)] $[[ [mu]pbs' ]] = [[pas']]$
+    \end{enumerate*}.
+    
+    \begin{enumerate}
+    \item[(i)] $[[ [mu] nf(iM) ]] = [[nf([mu]iM)]] = [[nf(iN)]]$.
+      The first equality holds by \cref{lemma:norm-subst-commute}, the second---by the induction hypothesis.
+
+    \item[(ii)] $\begin{aligned}[t] [[ [mu]pbs' ]] &= [[ [mu] ord {pbs} in nf(iM) ]]
+                                                  && \text{by the definition of $[[pbs']]$ } \\
+                                                  &= [[ [mu] ord ({pbs} ∩ fv iM) in nf(iM) ]]
+                                                  && \text{from \cref{lemma:fv-nf,corollary:ord-weakening} } \\
+                                                  &= [[ ord [mu] ({pbs} ∩ fv iM) in [mu] nf(iM) ]]
+                                                  && \text{by \cref{lemma:distr-mu-ord}, because
+                                                     $[[{pas} ∩ fv iN]] \cap [[fv nf(iM)]] \subseteq [[{pas} ∩ fv iM ]]
+                                                     = \emptyset$}\\
+                                                  &
+                                                  && \text{and $[[{pas} ∩ fv iN]] \cap [[({pbs} ∩ fv iM)]] \subseteq
+                                                     [[{pas} ∩ fv iM]] = \emptyset$} \\
+                                                  &= [[ ord [mu] ({pbs} ∩ fv iM) in nf(iN) ]]
+                                                  && \text{since $[[ [mu] nf(iM) ]] = [[nf(iN)]]$ is proved } \\
+                                                  &= [[ ord ({pas} ∩ fv iN) in nf(iN) ]]
+                                                  && \text{because $\mu$ is a bijection between
+                                                     $[[{pas} ∩ fv iN]]$ and $[[{pbs} ∩ fv iM]]$} \\
+                                                  &= [[ ord {pas} in nf(iN) ]]
+                                                  && \text{from \cref{lemma:fv-nf,corollary:ord-weakening} } \\
+                                                  &= [[ pas' ]]
+                                                  && \text{by the definition of $[[pas']]$} \\
+      \end{aligned}$
+    \end{enumerate}
+  \item {\nameref{\ottdruleEOneExistsLabel}} Same as for \cref{case:ord-completeness:forall}.
+  \item Other rules are congruent, and thus, proved by the corresponding congruent alpha-equivalence rule,
+    which is applicable by the induction hypothesis. 
+  \end{caseof}
+\end{proof}
+
+

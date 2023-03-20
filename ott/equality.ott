@@ -1,0 +1,12 @@
+defns
+  EQ :: 'EQ' ::=
+
+  defn iN = iM :: :: Neq :: ''
+  {{ com Negative type equality (alpha-equivalence) }}
+  {{ tex [[iN]] = [[iM]] }} by
+
+  defn iP = iQ :: :: Peq :: ''
+  {{ com Positive type equuality (alphha-equivalence)}}
+  {{ tex [[iP]] = [[iQ]] }} by
+
+  defn uP = uQ :: :: Pueq :: '' by

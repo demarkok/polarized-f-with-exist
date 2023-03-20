@@ -1,0 +1,76 @@
+\begin{lemma}[Shape of the Supertypes] Let us define the
+  set of upper bounds of a positive type $\UB([[iP]])$ in the following way:
+
+  \hfill
+
+  \begin{tabular}{@{}lr@{}} \toprule
+    % supertypes of ... & ... are \\ 
+    $[[G ⊢ iP]]$          & $\UB([[G ⊢ iP]])$ \\ \midrule
+    \addlinespace[0.7em]
+    $[[ G ⊢ pb ]]$        & $\{[[ ∃nas.pb ]] \ \mid \ \text{for some }[[nas]]\}$ \\
+    \addlinespace[0.7em]
+    $[[ G ⊢ ∃nbs.iP ]]$   & %$\Set{ [[iQ]] \ | \begin{array}{l} [[iQ]] \in \UB([[iP]]) \\  \text{ s.t. } [[fv iQ ∩ {nbs} = ∅]] \end{array}}$  \\
+                            $\UB([[G ⊢ iP]])$ \\
+    \addlinespace[0.7em]
+    $[[ G ⊢ ↓M ]]$        & $\Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l} [[ [iNs/nas] ↓iM' ≈ ↓iM ]] \\ \text{ for some $[[G ⊢ iNi]]$ } \end{array}}$  \\
+  \end{tabular}
+
+  Then $\UB([[G ⊢ iP]]) \equiv \{[[iQ]]\ \mid \ [[G ⊢ iQ ≥ iP]] \}$.
+\end{lemma}
+
+\begin{lemma}[Normalized Shape of the Supertypes]
+  For a normalized positive type $[[iP = nf(iP)]]$,
+  let us define the set of normalized upper bounds in the following way:
+  
+  \hfill
+
+  \begin{tabular}{@{}lr@{}} \toprule
+    % supertypes of ... & ... are \\ 
+    $[[G ⊢ iP]]$          & $\NFUB([[G ⊢ iP]])$ \\ \midrule
+    \addlinespace[0.7em]
+    $[[ G ⊢ pb ]]$        & $\{ [[pb]] \}$ \\
+    \addlinespace[0.7em]
+    $[[ G ⊢ ∃nbs.iP ]]$   & %$\Set{ [[iQ]] \ | \begin{array}{l} [[iQ]] \in \UB([[iP]]) \\  \text{ s.t. } [[fv iQ ∩ {nbs} = ∅]] \end{array}}$  \\
+    $\NFUB([[G ⊢ iP]])$ \\
+    \addlinespace[0.7em]
+    $[[ G ⊢ ↓M ]]$        & $\Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l} [[ [iNs/nas] ↓iM' = ↓iM ]] \\ \text{ for some $[[G ⊢ iNi]]$ } \end{array}}$  \\
+  \end{tabular}
+
+  hen $\NFUB([[G ⊢ iP]]) \equiv \{[[nf(iQ)]]\ \mid \ [[G ⊢ iQ ≥ iP]] \}$.
+\end{lemma}
+
+\begin{lemma}[Soundness of the Least Upper Bound]
+  For types $[[Γ ⊢ iP1]]$, and $[[Γ ⊢ iP2]]$,
+  if $[[Γ ⊨ iP1 ∨ iP2 = iQ]]$ then
+  \begin{enumerate}
+    \item[(i)]  $[[Γ ⊢ iQ]]$
+    \item[(ii)] $[[Γ ⊢ iQ ≥ iP1]]$ and $[[Γ ⊢ iQ ≥ iP2]]$
+  \end{enumerate}
+\end{lemma}
+
+\begin{lemma}[Completeness of the Least Upper Bound]
+  For types $[[Γ ⊢ iP1]]$, $[[Γ ⊢ iP2]]$, and $[[Γ ⊢ iQ']]$
+  such that $[[Γ ⊢ iQ' ≥ iP1]]$ and $[[Γ ⊢ iQ' ≥ iP2]]$,
+  there exists $[[iQ]]$ s.t. $[[Γ ⊨ iP1 ∨ iP2 = iQ]]$, and
+  $[[Γ ⊢ iQ' ≥ iQ]]$
+\end{lemma}
+
+\begin{lemma}[Soundness of Upgrade]
+  For $[[Δ]] \subseteq [[Γ]]$,
+  suppose that $[[upgrade Γ ⊢ iP to Δ = iQ]]$.
+  Then
+  \begin{enumerate}
+    \item [(i)] $[[Δ ⊢ iQ]]$
+    \item [(ii)] $[[Γ ⊢ iQ ≥ iP]]$
+  \end{enumerate}
+\end{lemma}
+
+\begin{lemma}[Completeness of Upgrade]
+  For $[[Δ]] \subseteq [[Γ]]$,
+  $[[Γ ⊢ iP]]$ and $[[Δ ⊢ iQ']]$,
+  such that $[[Γ ⊢ iQ' ≥ iP]]$,
+  there exists $[[iQ]]$ s.t.
+  $[[upgrade Γ ⊢ iP to Δ = iQ]]$, and
+  $[[Δ ⊢ iQ' ≥ iQ]]$.
+\end{lemma}
+

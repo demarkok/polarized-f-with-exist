@@ -1,0 +1,162 @@
+\renewcommand\stackalignment{l}
+\begin{tabular}{@{}lccc@{}} \toprule
+  % supertypes of ... & ... are \\ 
+  Algorithm                   & Soundness & Completeness & Initiality \\
+  \midrule
+  \addlinespace[0.7em]
+  % $[[ ord varset in iN ]]$
+  Ordering
+                      &   \infer{[[ {ord varset in iN} ]] \equiv [[varset ∩ fv iN]]}{}{}
+                                % \infer{\stackunder{hello}{world}}{}{}
+                                % \begin{itemize}
+                                % \item[$-$] $[[ {ord varset in uN} ]] \equiv [[varset ∩ fv uN]]$ (as sets)
+                                % \item[$+$] $[[ {ord varset in uP} ]] \equiv [[varset ∩ fv uP]]$ (as sets)
+                                % \end{itemize}
+                            & \infer{[[ord varset in iN]] = [[ord varset in iM]]}{[[iN ≈ iM]]}{}
+                            & --- \\
+
+  \addlinespace[0.7em]
+  % $[[ nf(iN) ]]$
+  Normalization
+                      &   \infer{[[iN ≈ nf(iN)]]}{}{}
+                  & \infer{[[nf(iN)]] = [[nf(iM)]]}{[[iN ≈ iM]]}{}
+                  & --- \\
+
+  \addlinespace[0.7em]
+  % $[[ upgrade Γ ⊢ iP to Δ = iQ ]]$
+  Uppgrade
+                      & \infer
+                                     { [[iQ]] \text{ is sound}
+                                      \begin{cases}
+                                         [[Δ ⊢ iQ]]\\
+                                         [[Γ ⊢ iQ ≥ iP]]
+                                      \end{cases}
+                                     }
+                                     {[[upgrade Γ ⊢ iP to Δ = iQ]]}
+                                     {}
+                              & \infer{\exists [[iQ]] \text{ s.t. }
+                                [[upgrade Γ ⊢ iP to Δ = iQ]]
+                                }{\exists \text{ sound } [[iQ']]}{}
+                             & \infer
+                                 {[[Δ ⊢ iQ' ≥ iQ]]}
+                                 {
+                                 \stackon
+                                 {$[[upgrade Γ ⊢ iP to Δ = iQ]]$}
+                                 {$[[iQ']]$  is sound}
+                                 }{}
+  \\
+
+
+
+  \addlinespace[0.7em]
+  % $[[ Γ ⊨ iP1 ∨ iP2 = iQ]]$
+  LUB
+                      & \infer
+                                     { [[iQ]] \text{ is sound}
+                                      \begin{cases}
+                                        [[Γ ⊢ iQ]]\\
+                                        [[Γ ⊢ iQ ≥ iP1]]\\
+                                        [[Γ ⊢ iQ ≥ iP2]]
+                                      \end{cases}
+                                     }
+                                     {[[Γ ⊨ iP1 ∨ iP2 = iQ]]}
+                                     {}
+                              & \infer{\exists [[iQ]] \text{ s.t. }
+                                [[Γ ⊨ iP1 ∨ iP2 = iQ]]
+                                }{\exists \text{ sound } [[iQ']]}{}
+                             & \infer
+                                 {[[Δ ⊢ iQ' ≥ iQ]]}
+                                 {
+                                 \stackon
+                                 {$[[Γ ⊨ iP1 ∨ iP2 = iQ]]$}
+                                 {$[[iQ']]$  is sound}
+                                 }{}
+  \\
+
+  \addlinespace[0.7em]
+  Anti-unification
+                      & \infer
+                                              { \text{\stackunder
+                                              {$[[(Ξ, uQ, aus1, aus2)]]$}
+                                              {is sound}}
+                                      \begin{cases}
+                                         [[Ξ]] \text{ is negative} \\
+                                         [[Γ ; Ξ ⊢ uQ]] \\
+                                         [[Γ ; · ⊢ ausi : Ξ]] \\
+                                         [[ [ausi] uQ = iPi ]]
+                                      \end{cases}
+                                     }
+                                     {[[G ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]}
+                                     {}
+                              & \infer{\stackunder
+                                {$\exists [[(Ξ, uQ, aus1, aus2)]] \text{ s.t. }$}
+                                {$[[G ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$}
+                                }{\exists \text{ sound } [[(Ξ', uQ', aus1', aus2')]]}{}
+                             & \infer
+                               {
+                                 \exists [[Γ;Ξ ⊢ aus : Ξ']] \text{ s.t. } [[ [aus]uQ' = uQ ]] 
+                               }
+                               {
+                               \stackon
+                               {$[[G ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$}
+                               {$[[(Ξ', uQ', aus1', aus2')]] \text{ is sound}$}
+                               }
+                               {}
+  \\
+
+  \addlinespace[0.7em]
+  % $[[ Γ ⊨ iP1 ∨ iP2 = iQ]]$
+  \stackunder{Unification}
+  {(matching)}
+                      & \infer
+                                     { [[us]] \text{ is sound}
+                                      \begin{cases}
+                                         [[Θ ⊢ us]]\\
+                                         [[ [us]uP = iQ ]]\\
+                                      \end{cases}
+                                     }
+                                     {[[Θ ⊨ uP ≈u iQ ⫤ us]]}
+                                     {}
+                              & \infer{\exists [[us]] \text{ s.t. }
+                                [[Θ ⊨ uP ≈u iQ ⫤ us]]
+                                }{\exists \text{ sound } [[us']]}{}
+                             &  ---
+  \\
+
+  \addlinespace[0.7em]
+  % $[[ Γ ⊨ iP1 ∨ iP2 = iQ]]$
+  \stackunder{Equivalence}
+  {(matching)}
+                      & \infer
+                        { 
+                         [[Γ ⊢ iP ≈ iQ]]
+                        }
+                       {
+                       [[Γ ⊢ iP]] & [[Γ ⊢ iQ]] & [[iP ≈ iQ]]
+  }
+  {}
+                      & \infer{
+                        [[iP ≈ iQ]]
+                        }{[[Γ ⊢ iP ≈ iQ]]}{}
+                     &  ---
+  \\
+
+  \addlinespace[0.7em]
+  % $[[ Γ ⊨ iP1 ∨ iP2 = iQ]]$
+  Subtyping
+                      & \infer
+                        { [[us]] \text{ is sound}
+                        \begin{cases}
+                          [[Θ ⊢ us]]\\
+                          [[ Γ ⊢ [us]uN ≤ iM ]]
+                        \end{cases}
+                        }
+                        {[[Γ ; Θ ⊨ uN ≤ iM ⫤ us]]}
+                        {}
+                     & \infer{\exists [[us]] \text{ s.t. }
+                       [[Γ ; Θ ⊨ uN ≤ iM ⫤ us]]
+                                }{\exists \text{ sound } [[us']]}{}
+                     &  ---
+  \\
+  
+\end{tabular}

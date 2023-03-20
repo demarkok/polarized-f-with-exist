@@ -1,0 +1,54 @@
+defns
+  Order :: 'O' ::=
+
+  defn ord varset in iN = ordVars :: :: NVarOrd :: '' by
+
+  na ∊ varset
+  ---------------------  :: NVarIn
+  ord varset in na = na
+
+  na ∉ varset
+  --------------------- :: NVarNIn
+  ord varset in na = ·
+
+
+  ord varset in iP = ordVars
+  --------------------------- :: ShiftU
+  ord varset in ↑iP = ordVars
+
+  ord varset in iP = ordVars1   ord varset in iN = ordVars2
+  --------------------------------------------------------- :: Arrow
+  ord varset in iP → iN = ordVars1, (ordVars2 \ {ordVars1})
+
+  varset ∩ {pas} = ∅    ord varset in iN = ordVars
+  ------------------------------------------------- :: Forall
+  ord varset in ∀pas.iN = ordVars
+
+
+  defn ord varset in iP = ordVars :: :: PVarOrd :: '' by
+
+  pa ∊ varset
+  ---------------------  :: PVarIn
+  ord varset in pa = pa
+
+  pa ∉ varset
+  ---------------------  :: PVarNIn
+  ord varset in pa = · 
+
+  ord varset in iN = ordVars
+  --------------------------- :: ShiftD
+  ord varset in ↓iN = ordVars
+
+  varset ∩ {nas} = ∅    ord varset in iP = ordVars
+  --------------------------------------------- :: Exists
+  ord varset in ∃nas.iP = ordVars
+
+  defn ord varset in uN = ordVars :: :: uNVarOrd :: '' by
+
+  ----------------------- :: NUVar
+  ord varset in α̂⁻ = · 
+
+  defn ord varset in uP = ordVars :: :: uPVarOrd :: '' by
+
+  ------------------------  :: PUVar
+  ord varset in α̂⁺ = · 

@@ -1,0 +1,214 @@
+\begin{definition} [Collision free bijection]
+  We say that a bijection $\mu : A \leftrightarrow B$ between sets of
+  variables is \textbf{collision free on sets} $P$ and $Q$ if and only if
+  \begin{enumerate}
+  \item $\mu(P \cap A) \cap Q = \emptyset$
+  \item $\mu(Q \cap A) \cap P = \emptyset$
+  \end{enumerate}
+\end{definition}
+
+
+\begin{lemma}[Soundness of variable ordering]
+  \label{lemma:ord-soundness}
+  Variable ordering extracts precisely used free variables.
+  \begin{itemize}
+    \item[$-$] $[[ {ord varset in uN} ]] \equiv [[varset ∩ fv uN]]$ (as sets)
+    \item[$+$] $[[ {ord varset in uP} ]] \equiv [[varset ∩ fv uP]]$ (as sets)
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Straightforward mutual induction on 
+  $[[ ord varset in uN = ordVars ]]$ and $[[ ord varset in uP = ordVars ]]$
+\end{proof}
+
+
+\begin{corollary}[Additivity of ordering]
+  \label{corollary:ord-additivity}
+  Variable ordering is additive (in terms of set union) with respect to its first argument.
+  \begin{itemize}
+    \item[$-$] $[[ {ord (varset1 ∪ varset2) in iN} ]]
+                \equiv
+                [[{ord varset1 in iN} ∪ {ord varset2 in iN}]]$ (as sets)
+    \item[$+$] $[[{ord (varset1 ∪ varset2) in iP}]]
+                \equiv
+                [[{ord varset1 in iP} ∪ {ord varset2 in iP}]]$ (as sets)
+
+  \end{itemize}
+\end{corollary}
+
+\begin{corollary}[Weakening of ordering]
+  \label{corollary:ord-weakening}
+  Extending the first argument of the ordering with unused variables does not
+  change the result.
+  \begin{itemize}
+  \item[$-$] $[[ ord (varset ∩ fv iN) in iN ]] = [[ ord varset in iN ]]$
+  \item[$+$] $[[ ord (varset ∩ fv iP) in iP ]] = [[ ord varset in iP ]]$
+  \end{itemize}
+\end{corollary}
+
+
+\begin{lemma}[Distributivity of renaming over variable ordering]
+  \label{lemma:distr-mu-ord}
+  Suppose that $\mu$ is a bijection between two sets of variables
+  $\mu : A \leftrightarrow B$.
+  
+  \begin{itemize}
+  \item[$-$]
+    If $[[mu]]$ is collision free on $[[varset]]$ and $[[fv iN]]$ then
+    $[[ [mu] (ord varset in iN) ]] = [[ord ([mu] varset) in [mu] iN ]]$
+  \item[$+$]
+    If $[[mu]]$ is collision free on $[[varset]]$ and $[[fv iP]]$ then
+    $[[ [mu] (ord varset in iP) ]] = [[ord ([mu] varset) in [mu] iP ]]$
+  \end{itemize}
+\end{lemma}
+
+\begin{proof}
+  Mutual induction on $[[iN]]$ and $[[iP]]$.
+  \begin{caseof}
+  \item $[[iN]]$ = $[[na]]$ \label{case:distr-mu-ord:var} \\
+    let us consider four cases:
+    \begin{caseof}
+    \item $[[na]] \in A$ and $[[na]] \in [[varset]]$\\ Then
+      $
+      \begin{aligned}[t] [[ [mu] (ord varset in iN) ]] &= [[ [mu] (ord varset in na)]] \\
+                                                             &= [[ [mu] na ]]
+                                                             && \text{by \ruleref{\ottdruleOPVarInLabel}}\\
+                                                             &= [[nb]]
+                                                             && \text{for some $[[nb]] \in B$ (notice that $[[nb]] \in [[ [mu]varset ]]$)} \\
+                                                             &= [[ ord [mu]varset in nb ]]
+                                                             && \text{by \ruleref{\ottdruleOPVarInLabel},
+                                                                because $[[nb]] \in [[ [mu]varset ]]$} \\
+                                                             &= [[ord [mu] varset in [mu] na ]]
+       \end{aligned}
+       $
+     \item $[[na]] \notin A$ and $[[na]] \notin [[varset]]$\\
+       Notice that
+       $[[ [mu] (ord varset in iN) ]] = [[ [mu] (ord varset in na)]] = [[·]]$ by
+       \ruleref{\ottdruleOPVarNInLabel}.
+       On the other hand, $[[ ord [mu] varset in [mu] na = ord [mu] varset
+       in na ]] = [[·]]$ The latter equality is from
+       \ruleref{\ottdruleOPVarNInLabel}, because
+       $[[mu]]$ is collision free on $[[varset]]$ and $[[fv iN]]$, so
+       $[[fv iN]] \ni [[na]] \notin [[mu]](A \cap [[varset]]) \cup
+       [[varset]] \supseteq [[ [mu] varset ]]$.
+     \item $[[na]] \in A$ but $[[na]] \notin [[varset]]$\\ Then
+       $[[ [mu] (ord varset in iN) ]] = [[ [mu] (ord varset in na)]] = [[·]]$
+       by \ruleref{\ottdruleOPVarNInLabel}.
+       To prove that $[[ ord [mu] varset in [mu] na ]] = [[·]]$, we apply
+       \ruleref{\ottdruleOPVarNInLabel}. Let us show that
+       $[[ [mu] na ]] \notin [[ [mu] varset ]]$.
+       Since $[[ [mu] na ]] = [[mu]]([[na]])$ and
+       $[[ [mu] varset ]] \subseteq [[mu]](A \cap [[varset]]) \cup [[varset]]$,
+       it suffices to prove 
+       $[[mu]]([[na]]) \notin [[mu]](A \cap [[varset]]) \cup [[varset]]$.
+
+       \begin{enumerate}
+       \item[(i)] If there is an element $x \in A \cap [[varset]]$ such that
+         $[[mu]] x = [[mu]] [[na]]$, then $x = [[na]]$ by bijectivity of
+         $[[mu]]$, which contradicts with $[[na]] \notin [[varset]]$. This way, 
+         $[[mu]]([[na]]) \notin [[mu]](A \cap [[varset]])$.
+       \item[(ii)]
+         Since $[[mu]]$ is collision free on $[[varset]]$ and $[[fv iN]]$,
+         $[[mu]] (A \cap [[fv iN]]) \ni [[mu]]([[na]]) \notin [[varset]]$.
+       \end{enumerate}
+
+     \item $[[na]] \notin A$ but $[[na]] \in [[varset]]$\\
+       $[[ ord [mu] varset in [mu] na ]] = [[ ord [mu] varset in na ]] = [[na]]$.
+       The latter is by \ruleref{\ottdruleOPVarNInLabel}, because
+       $[[na]] = [[ [mu] na ]] \in [[ [mu] varset ]]$ since $[[na]] \in [[varset]]$.
+       On the other hand, $[[ [mu] (ord varset in iN) ]] = [[ [mu] (ord varset in na)]] = [[ [mu] na ]] = [[na]]$.
+    \end{caseof}
+  
+  \item $[[iN]] = [[↑iP]]$ \\
+    $\begin{aligned}[t]
+       [[ [mu] (ord varset in iN) ]] &= [[ [mu] (ord varset in ↑iP) ]] \\
+                                     &= [[ [mu] (ord varset in iP) ]]
+                                     && \text{by \ruleref{\ottdruleOShiftULabel}}\\
+                                     &= [[ ord [mu]varset in [mu]iP ]]
+                                     && \text{by the induction hypothesis}\\
+                                     &= [[ ord [mu]varset in  ↑[mu]iP ]]
+                                     && \text{by \ruleref{\ottdruleOShiftULabel}}\\
+                                     &= [[ ord [mu]varset in  [mu]↑iP ]]
+                                     && \text{by the definition of substitution}\\
+                                     &= [[ ord [mu]varset in  [mu]iN ]]
+            \end{aligned}$
+          
+   \item $[[iN]] = [[iP → iM]]$  \\
+     $\begin{aligned}[t]
+        [[ [mu] (ord varset in iN) ]] &= [[ [mu] (ord varset in iP → iM) ]] \\
+                                      &= [[ [mu] (ordVars1, (ordVars2 \ {ordVars1})) ]]
+                                      && \text{where } [[ord varset in iP = ordVars1]] \text{ and } [[ord varset in iM = ordVars2]] \\
+                                      &= [[ [mu] ordVars1, [mu](ordVars2 \ {ordVars1}) ]] \\
+                                      &= [[ [mu] ordVars1, ([mu]ordVars2 \ [mu]{ordVars1}) ]]
+                                      && \text{by induction on $[[ordVars2]]$;
+                                         the inductive step is similar to \cref{case:distr-mu-ord:var}.
+                                         Notice that $[[mu]]$ is} \\
+                                      & && \text{collision free on $[[{ordVars1}]]$ and $[[{ordVars2}]]$
+                                           since
+                                           $[[{ordVars1}]] \subseteq [[varset]]$ and
+                                           $[[{ordVars2}]] \subseteq [[fv iN]]$ }\\
+                                      &= [[ [mu] ordVars1, ([mu]ordVars2 \ {[mu]ordVars1}) ]]
+      \end{aligned}$ \\
+    $\begin{aligned}[t]
+       [[  (ord [mu] varset in [mu]iN) ]] &= [[ (ord [mu] varset in [mu]iP → [mu]iM) ]] \\
+                                     &= [[ (ordVarsb1, (ordVarsb2 \ {ordVarsb1})) ]]
+                                     && \text{where } [[ord [mu] varset in [mu] iP = ordVarsb1]] \text{ and } [[ord [mu] varset in [mu] iM = ordVarsb2]] \\
+                                          & && \text{then by the induction
+                                               hypothesis,
+                                               $[[ordVarsb1]] = [[ [mu] ordVars1 ]]$,
+                                               $[[ordVarsb2]] = [[ [mu] ordVars2 ]]$,
+                                               }\\
+                                     &= [[ [mu] ordVars1, ([mu]ordVars2 \ {[mu]ordVars1}) ]]
+     \end{aligned}$
+   
+   \item $[[iN]] = [[∀ pas.iM]]$ \\
+     $\begin{aligned}[t]
+          [[ [mu] (ord varset in iN) ]] &= [[ [mu] ord varset in ∀pas.iM]] \\
+                                        &= [[ [mu] ord varset in iM]] \\
+                                        &= [[ ord [mu] varset in [mu] iM]]
+                                        && \text {by the induction hypothesis}\\
+     \end{aligned}$ \\
+     $ 
+     \begin{aligned}[t]
+       [[ (ord [mu] varset in [mu] iN) ]] &= [[ ord [mu] varset in [mu] ∀pas.iM ]] \\
+                                          &= [[ ord [mu] varset in ∀pas.[mu]iM ]] \\
+                                          &= [[ ord [mu] varset in [mu] iM ]] \\
+     \end{aligned}
+     $
+     
+  \end{caseof}
+\end{proof}
+
+
+\begin{lemma}[Completeness of variable ordering]
+  \label{lemma:ord-completeness}
+  Variable ordering is invariant under equivalence.
+
+  \begin{itemize}
+  \item[$-$] For $[[iN ≈ iM]]$ and any $[[varset]]$,
+    $[[ord varset in uN]] = [[ord varset in uM]]$ (as lists)
+    
+  \item[$+$] For $[[iP ≈ iQ]]$ and any $[[varset]]$,
+    $[[ord varset in uP]] = [[ord varset in uQ]]$ (as lists)
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$.
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
