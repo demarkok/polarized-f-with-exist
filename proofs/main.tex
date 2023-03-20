@@ -175,8 +175,25 @@ To merge two unification solution, we merge each pair of
 matching entries, and unite the results.
 
 \begin{definition}
-  $[[us1 & us2]] = \{ [[usEntry1 & usEntry2]] \mid [[usEntry1]] \in [[us1]],
-  [[usEntry2]]  \in [[us2]], \text{s.t. } [[usEntry1]] \text{ matches with } [[usEntry2]] \}$
+  foo
+
+  $\begin{aligned}[t]
+  [[us1 & us2]] &= \{ [[usEntry1 & usEntry2]] \mid [[usEntry1]] \in [[us1]],
+  [[usEntry2]]  \in [[us2]], \text{s.t. } [[usEntry1]] \text{ matches with }
+                                   [[usEntry2]] \}\\
+                &\cup
+                                     \{ [[usEntry1]] \mid [[usEntry1]] \in
+                                     [[us1]], \text{ s.t. }
+                                     \forall [[usEntry2]]  \in [[us2]],
+                                     [[usEntry1]] \text{ does not match with }
+                                                     [[usEntry2]] \}\\
+        &\cup
+          \{ [[usEntry2]] \mid [[usEntry2]] \in
+          [[us2]], \text{ s.t. }
+          \forall [[usEntry1]]  \in [[us1]],
+          [[usEntry1]] \text{ does not match with }
+          [[usEntry2]] \}\\
+   \end{aligned}$
 \end{definition}
 
 
