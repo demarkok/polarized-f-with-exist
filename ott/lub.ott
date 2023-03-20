@@ -9,10 +9,11 @@ defns
   G ⊨ pa ∨ pa = pa
 
 
-  G ⊨ ↓iN ≈au ↓iM ⫤ (uP, us1, us2)
+  G,· ⊨ ↓iN ≈au ↓iM ⫤ (Ξ, uP, aus1, aus2)
   -------------------------------------------------- :: Shift
-  G ⊨ ↓iN ∨ ↓iM = ∃nas.[nas/Ord(uv uP)]iP
+  G ⊨ ↓iN ∨ ↓iM = ∃nas.[nas / ToList Ξ]uP
 
+  % G ⊨ ↓iN ∨ ↓iM = ∃ nas . [nas/ToList Ξ] uP
 
   % {nas} ∩ fv iP2 = ∅    {nbs} ∩ fv iP1 = ∅
   G, nas, nbs ⊨ iP1 ∨ iP2 = iQ

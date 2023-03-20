@@ -32,7 +32,7 @@ nb {{ tex \beta^{-} }}
 
 grammar
 
-s {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
+s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
    | ·                    :: :: Empty
    | P / pa               :: :: PosSub
    | N / na               :: :: NegSub
@@ -42,8 +42,9 @@ s {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
    | nmas / nas           :: :: NegMSubs
    | puas / pas           :: :: PosUSubs
    | nuas / nas           :: :: NegUSubs
+   | nas / nuas           :: :: NegFromUSubs
    | ordVars1 / ordVars2  :: :: VarSubs
-   | </ si // , // i /> :: :: concat  {{ com concatenate }}
+   | </ si // , // i />   :: :: concat  {{ com concatenate }}
 
 
 usEntry  {{ tex e }} :: usE_' ::= {{ com entry of a unification solution }}
@@ -53,16 +54,27 @@ usEntry  {{ tex e }} :: usE_' ::= {{ com entry of a unification solution }}
    % | nua :≤ iN            :: :: PSub {{ tex [[nua]] :[[≤]] [[iN]] }}
    | ( usEntry )          :: S :: paren
 
-us {{ tex \widehat{\sigma} }}  :: 'us_' ::= {{ com unification solution (substitution) }}
-   | ·                    :: :: Empty
-   | usEntry              :: :: Entry
-   | us \ puas            :: :: PSetminus
-   | us \ nuas            :: :: NSetminus
-   | us \ pua             :: :: PExclude
-   | us \ nua             :: :: NExclude
-   | us1 ∪ us2            :: :: Union
-   | </ usi // , // i /> :: :: concat  {{ com concatenate }}
+us {{ tex \widehat{\sigma} }}, uσ {{ tex \widehat{\sigma} }} :: 'us_' ::= {{ com unification solution (substitution) }}
+   | ·                   ::   :: Empty
+   | usEntry             ::   :: Entry
+   | us \ puas           ::   :: PSetminus
+   | us \ nuas           ::   :: NSetminus
+   | us \ pua            ::   :: PExclude
+   | us \ nua            ::   :: NExclude
+   | us1 ∪ us2           ::   :: Union
+   | </ usi // , // i /> ::   :: concat  {{ com concatenate }}
    | ( us )              :: S :: paren
+
+grammar
+
+aus {{ tex \widehat{\tau} }} :: 'aus_' ::= {{ com anti-unification substitution }}
+   | ·                    ::   :: Empty
+   | nua :≈ iN            ::   :: NSol  {{ tex [[nua]] :\approx [[iN]] }}
+   | nua :≈ uN            ::   :: NuSol {{ tex [[nua]] :\approx [[uN]] }}
+   | nas / nuas           ::   :: NegFromUSubs
+   | aus1 ∪ aus2          ::   :: Union
+   | </ ausi // , // i /> ::   :: concat  {{ com concatenate }}
+   | ( aus )              :: S :: paren
 
 grammar
 
@@ -102,7 +114,9 @@ iP {{ tex P }}, iQ {{ tex Q }}:: 'iP_' ::= {{ com multi-quantified positive type
    | pa         ::   :: Var
    | ↓ iN       ::   :: Shift
    | ∃ nas . iP ::   :: Exists {{ com $[[iP]] \neq \exists\dots$ }}
-   | [ s ] iP   :: M :: AppSub  
+   | [ s ]  iP  :: M :: AppSub  
+   | [ aus ] uP :: M :: AppAUSub  
+   | [ us ] uP  :: M :: AppUSub  
    | [ mu ] iP  :: M :: AppMoving 
    | ( iP )     :: S :: Paren
 
@@ -113,6 +127,7 @@ iN {{ tex N }}, iM {{ tex M }} :: 'iN_' ::= {{ com multi-quantified negative typ
    | ∀ pas . iN  ::   :: Forall {{ com $[[iN]] \neq \forall\dots$ }}
    | [ s ] iN    :: M :: AppSub 
    | [ mu ] iN   :: M :: AppMoving
+   | [ us ] uN   :: M :: AppUSub  
    | ( iN )      :: S :: Paren
 
 
@@ -143,14 +158,26 @@ G {{ tex \Gamma }}, Δ {{ tex \Delta }}, Γ {{ tex \Gamma }} :: DT_Ctxt ::= {{ c
 
 grammar
 
-T {{ tex \Theta }}, Θ {{ tex \Theta }}, Ξ {{ tex \Xi }} :: U_Ctxt ::= {{ com unification type variable context }}
+T {{ tex \Theta }}, Θ {{ tex \Theta }}:: U_Ctxt ::= {{ com unification type variable context }}
     | ·                  ::   :: empty   {{ com empty context }}
-    | puas                ::   :: PUList {{ com list of variables }}
-    | nuas                ::   :: NUList {{ com list of variables }}
+    | puas               ::   :: PUList {{ com list of variables }}
+    | nuas               ::   :: NUList {{ com list of variables }}
     | </ Θi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( Θ )              :: S :: paren
-    % | G1 ∪ G2            ::   :: union
+    % | Ξ ⁻                ::   :: NCtxt {{ tex [[Ξ]]^{-} }}
+                                       % {{ com context containing only negative uvars }}
 
+grammar
+
+Xi {{ tex \Xi }}, Ξ {{ tex \Xi }} :: AU_Ctxt ::= {{ com anti-unification type variable context }}
+    | ·                  ::   :: empty   {{ com empty context }}
+    | puas               ::   :: PAUList {{ com list of variables }}
+    | nuas               ::   :: NAUList {{ com list of variables }}
+    | </ Ξi // , // i /> ::   :: concat  {{ com concatenate contexts }}
+    | ( Ξ )              :: S :: paren
+    | Ξ1 ∪ Ξ2            ::   :: union
+
+                                       % {{ com context containing only negative uvars }}
 grammar
 
 ordVars {{ tex \vv{ \alpha } }}, ordVarsb {{ tex \vv{ \beta } }} :: OrdVars ::= {{ com ordered positive or negative variables }}
@@ -282,7 +309,9 @@ nubs {{ tex \vv{ \widehat{ \beta^{-}  } } }}
 :: 'nuas_' ::= {{ com negative unification variable list }}
    | ·                     ::   :: empty    {{ com empty list }}
    | nua                   ::   :: Var      {{ com a variable }}
-   | nua * [ Δ ]      ::   :: FromVarC {{ com from a normal variable }}
+   | ToList Ξ              ::   :: Ctxt     {{ com from an antiunification context }}
+                                            {{ tex [[Ξ]] }}
+   | nua * [ Δ ]           ::   :: FromVarC {{ com from a normal variable }}
                                             {{ tex \vv{ [[nua]] \{[[Δ]]\} } }}
    | nua *                 ::   :: FromVar  {{ com from a normal variable, context unspecified }}
                                             {{ tex \vv{ [[nua]]  } }}
@@ -296,6 +325,7 @@ uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive alg
    | ↓ uN          ::   :: Shift
    | ∃ nas . uP    ::   :: Exists
    | [ s ] uP      :: M :: AppSub  
+   | [ aus ] uP    :: M :: AppUSub  
    | [ mu ] uP     :: M :: AppMoving 
 
 uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative algorithmic type (potentially with metavariables) }}
@@ -308,6 +338,9 @@ uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative al
    | [ s ] uN       :: M :: AppSub 
    | [ mu ] uN      :: M :: AppMoving
 
+
+auSol :: 'auSOL_' ::=
+   | ( Ξ , uQ , aus1 , aus2 ) :: :: Sol
 
 terminals :: 'terminals_' ::=
   | ∃  :: :: exists    {{ tex \exists }}

@@ -5,3 +5,12 @@ defns
   defn G ⊢ iP  :: :: PiWF :: '' {{ com Positive type well-formedness }} by
   defn G ⊢ N   :: :: NWF :: '' {{ com Negative type well-formedness }} by
   defn G ⊢ P   :: :: PWF :: '' {{ com Positive type well-formedness }} by
+
+  % defn G ; Θ ⊢ uN  :: :: NuWF :: '' {{ com Negative type well-formedness }} by
+  % defn G ; Θ ⊢ uP  :: :: PuWF :: '' {{ com Positive type well-formedness }} by
+  defn G ; Ξ ⊢ uP  :: :: PauWF :: '' {{ com Positive anti-unification type well-formedness }} by
+
+  % defn  Γ ⊢ uσ : Θ :: :: USWFa :: '' {{ com Unification solution well-formedness }} by
+  defn  Γ ; Ξ2 ⊢ aus : Ξ1 :: :: AUSWF :: '' {{ com Antiunification substitution well-formedness }} by
+  defn  Θ ⊢ us :: :: USWF :: '' {{ com Unification substitution well-formedness }} by
+  defn  G ⊢ Θ :: :: UCWF :: '' {{ com Unification context well-formedness }} by

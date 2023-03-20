@@ -13,10 +13,10 @@ defns
   {{ com Negative subtyping }}
   {{ tex [[G]] ;\, [[Θ]] [[⊨]] [[uN]] \subA [[iM]] [[⫤]] [[us]] }} by
 
-  --------------- :: NVar
+  ----------------- :: NVar
   G;Θ ⊨ a⁻ ≤ a⁻ ⫤ · 
 
-  G;· ⊨ nf(uP) ≈u nf(iQ) ⫤ us
+  Θ ⊨ nf(uP) ≈u nf(iQ) ⫤ us
   ---------------------------- :: ShiftU
   G;Θ ⊨ ↑uP ≤ ↑iQ ⫤ us
 
@@ -36,7 +36,7 @@ defns
   ---------------- :: PVar
   G;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·
 
-  G;· ⊨ nf(uN) ≈u nf(iM) ⫤ us
+  Θ ⊨ nf(uN) ≈u nf(iM) ⫤ us
   ---------------------------- :: ShiftD
   G;Θ ⊨ ↓uN ≥ ↓iM ⫤ us
 

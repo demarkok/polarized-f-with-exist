@@ -43,3 +43,5 @@ defns
   {nas} ∩ fv iQ = ∅   mu : ({nbs} ∩ fv iQ) ↔ ({nas} ∩ fv iP)    iP ≈ [mu] iQ
   ------------------------------------------------------------------------- :: Exists 
   ∃nas.iP ≈ ∃nbs.iQ
+
+  defn uP ≈ uQ :: :: Pueq :: '' by
