@@ -103,6 +103,18 @@
 \renewcommand{\ottdruleSMENEqEqName}[0]{$([[≈]]\&[[≈]]^{-})$}
 
 
+% G ⊢ N ≤1 M
+
+\renewcommand{\ottdruleDOneNVarName}[0]{(Var$^-$$^{\subDOne}$)}
+\renewcommand{\ottdruleDOneShiftUName}[0]{($\uparrow^{\subDOne}$)}
+\renewcommand{\ottdruleDOneArrowName}[0]{($\rightarrow^{\subDOne}$)}
+\renewcommand{\ottdruleDOneForallName}[0]{($\forall^{\subDOne}$)}
+
+% G ⊢ P ≥1 Q
+\renewcommand{\ottdruleDOnePVarName}[0]{(Var$^+$$^{\supDOne}$)}
+\renewcommand{\ottdruleDOneShiftDName}[0]{($\downarrow^{\supDOne}$)}
+\renewcommand{\ottdruleDOneExistsName}[0]{($\exists^{\supDOne}$)}
+
 
 \begin{document}
 
@@ -175,8 +187,6 @@ To merge two unification solution, we merge each pair of
 matching entries, and unite the results.
 
 \begin{definition}
-  foo
-
   $\begin{aligned}[t]
   [[us1 & us2]] &= \{ [[usEntry1 & usEntry2]] \mid [[usEntry1]] \in [[us1]],
   [[usEntry2]]  \in [[us2]], \text{s.t. } [[usEntry1]] \text{ matches with }
@@ -205,17 +215,23 @@ matching entries, and unite the results.
 
 \section{Proofs}
 
+\subsection{Substitution}
+\input{../_build/_gen/tex/subst-lemmas.tex}
+
+\subsection{Type well-formedness}
+\input{../_build/_gen/tex/wf-lemmas.tex}
+
 \subsection{Overview}
 \input{../_build/_gen/tex/lemmas-overview.tex}
 
-
 \subsection{Variable Ordering}
-
 \input{../_build/_gen/tex/ord-lemmas.tex}
 
 \subsection{Normaliztaion}
-
 \input{../_build/_gen/tex/norm-lemmas.tex}
+
+\subsection{Equivalence}
+\input{../_build/_gen/tex/equiv-lemmas.tex}
 
 \subsection{Upper Bounds}
 

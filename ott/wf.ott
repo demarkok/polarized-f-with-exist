@@ -14,3 +14,5 @@ defns
   defn  Γ ; Ξ2 ⊢ aus : Ξ1 :: :: AUSWF :: '' {{ com Antiunification substitution well-formedness }} by
   defn  Θ ⊢ us :: :: USWF :: '' {{ com Unification substitution well-formedness }} by
   defn  G ⊢ Θ :: :: UCWF :: '' {{ com Unification context well-formedness }} by
+
+  defn  Γ1 ⊢ σ : Γ2 :: :: SWF :: '' {{ com Substitution well-formedness }} by

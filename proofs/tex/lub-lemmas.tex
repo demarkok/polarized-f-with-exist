@@ -1,4 +1,21 @@
-\begin{lemma}[Shape of the Supertypes] Let us define the
+\begin{lemma}[Decomposition of the quantifier rule]
+  \ilyam{move somewhere}
+  \label{lemma:qant-rule-decomposition}
+  Whenever the quantifier rule (\ruleref{\ottdruleDOneExistsLabel} or
+  \ruleref{\ottdruleDOneForallLabel}) is applied, one can assume that the rule
+  adding quantifiers on the right-hand side was applied the last.
+
+  \begin{itemize}
+  \item[$-$]
+    If $[[G ⊢ iN ≤ ∀pbs.iM]]$ then $[[G, pbs ⊢ iN ≤ iM]]$.
+    \item[$+$]
+      If $[[G ⊢ iP ≥ ∃nbs.iQ]]$ then $[[G, nbs ⊢ iP ≥ iQ]]$.
+  \end{itemize}
+\end{lemma}
+
+\begin{lemma}[Shape of the Supertypes]
+  \label{lemma:shape-of-supertypes}
+  Let us define the
   set of upper bounds of a positive type $\UB([[iP]])$ in the following way:
 
   \hfill
@@ -7,16 +24,95 @@
     % supertypes of ... & ... are \\ 
     $[[G ⊢ iP]]$          & $\UB([[G ⊢ iP]])$ \\ \midrule
     \addlinespace[0.7em]
-    $[[ G ⊢ pb ]]$        & $\{[[ ∃nas.pb ]] \ \mid \ \text{for some }[[nas]]\}$ \\
+    $[[ G ⊢ pb ]]$        & $\{[[ ∃nas.pb ]] \ \mid \ \text{for }[[nas]]\}$ \\
     \addlinespace[0.7em]
-    $[[ G ⊢ ∃nbs.iP ]]$   & %$\Set{ [[iQ]] \ | \begin{array}{l} [[iQ]] \in \UB([[iP]]) \\  \text{ s.t. } [[fv iQ ∩ {nbs} = ∅]] \end{array}}$  \\
-                            $\UB([[G ⊢ iP]])$ \\
+    $[[ G ⊢ ∃nbs.iQ ]]$   & %$\Set{ [[iQ]] \ | \begin{array}{l} [[iQ]] \in \UB([[iP]]) \\  \text{ s.t. } [[fv iQ ∩ {nbs} = ∅]] \end{array}}$  \\
+                            $\UB([[G, nbs ⊢ iQ]])$ not using $[[nbs]]$ \\
     \addlinespace[0.7em]
-    $[[ G ⊢ ↓M ]]$        & $\Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l} [[ [iNs/nas] ↓iM' ≈ ↓iM ]] \\ \text{ for some $[[G ⊢ iNi]]$ } \end{array}}$  \\
+    $[[ G ⊢ ↓M ]]$        & $\Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l}
+                                                         \text{for $[[nas]]$, $[[iM']]$, and $[[iNs]]$ s.t. }\\
+                                                         \text{$[[G ⊢ iNi]]$, $[[G,nas ⊢ iM']]$,  and $[[ [iNs/nas] ↓iM' ≈ ↓iM ]]$}
+                                                       \end{array}}$  \\
   \end{tabular}
 
   Then $\UB([[G ⊢ iP]]) \equiv \{[[iQ]]\ \mid \ [[G ⊢ iQ ≥ iP]] \}$.
 \end{lemma}
+
+\begin{proof}
+  By induction on $[[G ⊢ iP]]$.
+  \begin{caseof}
+  \item $[[iP]] = [[pb]]$\\
+    Then the last rule that is applied to infer $[[G ⊢ iQ
+    ≥ pb]]$ must be either \ruleref{\ottdruleDOnePVarLabel} or
+    \ruleref{\ottdruleDOneExistsLabel}. The former case means that $[[iQ =
+    pb]]$. In the latter case, $[[iQ = ∃nas.iQ']]$, where $[[iQ']]$ has no outer
+    existential quantifiers. Then by inversion of
+    \ruleref{\ottdruleDOneExistsLabel}, $[[ Γ ⊢ [iNs/nas] iQ' ≥ pb]]$ for some $[[iNs]]$.
+    This time, to infer this judgment, only \ruleref{\ottdruleDOnePVarLabel} is applicable,
+    which means that $[[iQ' = pb]]$, and then $[[iQ = ∃nas.pb]]$.
+  \item $[[iP = ∃nbs.iP']]$\\
+    Then if $[[G ⊢ iQ ≥ ∃nbs.iP']]$, then by
+    \cref{lemma:qant-rule-decomposition}, $[[G, nbs ⊢ iQ ≥ iP']]$, and $[[fv
+    iQ ∩ {nbs} = ∅]]$ by the the Barendregt's convention. The other
+    direction holds by \ruleref{\ottdruleDOneExistsLabel}. This way,
+    $\{[[iQ]] \mid [[G ⊢ iQ ≥ ∃nbs.iP']] \} = \{[[iQ]] \mid  [[G, nbs ⊢ iQ
+    ≥ iP']] \text{ s.t. } [[fv(iQ) ∩ {nbs} = ∅]] \}$. From the induction
+    hypothesis, the latter is equal to $\UB([[G, nbs ⊢ iP']])$ not using
+    $[[nbs]]$, i.e. $\UB([[G ⊢ ∃nbs.iP']])$.
+  \item $[[iP = ↓iM]]$\\
+    Then let us consider two subcases upper bounds without outer quantifiers (we
+    denote the corresponding set restriction as $|_{\not\exists}$) and upper
+    bounds with outer quantifiers ($|_{\exists}$). We prove that for both of
+    these groups, the restricted sets are equal.
+    % ∃a.P(f a) <=> ∃b∊Im(f).P(b)
+
+    \begin{caseof}
+      \item \label{case:sup-shape-down-zero}
+      $[[iQ]] \neq [[∃nbs.iQ']]$\\
+      Then the last applied rule to infer
+      $[[G ⊢ iQ ≥ ↓iM]]$ must be \ruleref{\ottdruleDOneShiftDLabel},
+      which means $[[iQ]] = [[↓iM']]$, and by inversion, $[[G ⊢ iM' ≈ iM]]$,
+      then by \cref{lemma:equiv-completeness} and
+      \ruleref{\ottdruleEOneShiftDLabel}, $[[↓iM' ≈ ↓iM]]$.
+      This way, $[[iQ]] = [[↓iM']] \in \{ [[↓iM']] \mid [[↓iM' ≈ ↓iM]] \} = \UB([[Γ⊢↓iM]])|_{\not\exists}$.
+
+      In the other direction,
+      $
+      \begin{aligned}[t]
+        [[↓iM' ≈ ↓iM]] &\Rightarrow [[G ⊢ ↓iM' ≈ ↓iM]]
+                       && \text{by \cref{lemma:equiv-soundness}, since
+                          $[[G ⊢ ↓iM']]$ by \cref{lemma:wf-equiv} }\\
+                       &\Rightarrow [[G ⊢ ↓iM' ≥ ↓iM]]
+                       && \text{by inversion}
+      \end{aligned}
+      $
+      \item $[[iQ]] = [[∃nbs.iQ']]$ (for non-empty $[[nbs]]$)\\
+        Then the last rule applied to infer $[[G ⊢ ∃nbs.iQ' ≥ ↓iM]]$
+        must be \ruleref{\ottdruleDOneExistsLabel}.
+        Inversion of this rule gives us $[[G ⊢ [iNs/nbs]iQ' ≥ ↓iM]]$
+        for some $[[G ⊢ iNi]]$. Notice that $[[ [iNs/nbs]iQ' ]]$ has no outer
+        quantifiers. Thus from \cref{case:sup-shape-down-zero},
+        $[[ [iNs/nbs]iQ' ≈ ↓iM ]]$, which is only possible if $[[iQ']] = [[↓iM']]$.
+        This way, $[[iQ]] = [[∃nbs.↓iM']] \in \UB([[Γ⊢↓iM]])|_{\exists}$ (notice
+        that $[[nbs]]$ is not empty).
+
+        In the other direction,
+        $
+        \begin{aligned}[t]
+          [[ [iNs/nbs]↓iM' ≈ ↓iM]] &\Rightarrow [[G ⊢ [iNs/nbs] ↓iM' ≈ ↓iM]]
+          && \text{by \cref{lemma:equiv-soundness}, since
+             $[[G ⊢ [iNs/nbs] ↓iM']]$ by \cref{lemma:wf-equiv} }\\
+                                  &\Rightarrow [[G ⊢ [iNs/nbs]↓iM' ≥ ↓iM]]
+         && \text{by inversion}\\
+                                  &\Rightarrow [[G ⊢ ∃nbs.↓iM' ≥ ↓iM]] 
+         && \text{by \ruleref{\ottdruleDOneExistsLabel}}\\
+        \end{aligned}
+        $
+    \end{caseof}
+    
+  \end{caseof}
+\end{proof}
+
 
 \begin{lemma}[Normalized Shape of the Supertypes]
   For a normalized positive type $[[iP = nf(iP)]]$,
@@ -31,13 +127,231 @@
     $[[ G ⊢ pb ]]$        & $\{ [[pb]] \}$ \\
     \addlinespace[0.7em]
     $[[ G ⊢ ∃nbs.iP ]]$   & %$\Set{ [[iQ]] \ | \begin{array}{l} [[iQ]] \in \UB([[iP]]) \\  \text{ s.t. } [[fv iQ ∩ {nbs} = ∅]] \end{array}}$  \\
-    $\NFUB([[G ⊢ iP]])$ \\
+    $\NFUB([[G, nbs ⊢ iP]])$ not using $[[nbs]]$ \\
     \addlinespace[0.7em]
-    $[[ G ⊢ ↓M ]]$        & $\Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l} [[ [iNs/nas] ↓iM' = ↓iM ]] \\ \text{ for some $[[G ⊢ iNi]]$ } \end{array}}$  \\
+    $[[ G ⊢ ↓M ]]$        & $\Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l}
+                                                         \text{for $[[nas]]$, $[[iM']]$, and $[[iNs]]$ s.t. $[[ord {nas} in iM' = nas]]$,}\\
+                                                         \text{$[[G ⊢ iNi]]$, $[[G,nas ⊢ iM']]$,  and $[[ [iNs/nas] ↓iM' = ↓iM ]]$}
+                                                       \end{array}}$  \\
   \end{tabular}
 
-  hen $\NFUB([[G ⊢ iP]]) \equiv \{[[nf(iQ)]]\ \mid \ [[G ⊢ iQ ≥ iP]] \}$.
+  Then $\NFUB([[G ⊢ iP]]) \equiv \{[[nf(iQ)]]\ \mid \ [[G ⊢ iQ ≥ iP]] \}$.
 \end{lemma}
+
+
+\begin{proof}
+  By induction on $[[G ⊢ iP]]$.
+  \begin{caseof}
+  \item $[[iP]] = [[pb]]$\\
+    Then from \cref{lemma:shape-of-supertypes},
+    $\{[[nf(iQ)]]\ \mid \ [[G ⊢ iQ ≥ pb]] \} = \{[[ nf(∃nas.pb) ]] \ \mid \
+    \text{for some }[[nas]]\}  = \{[[pb]]\}$ 
+  \item $[[iP = ∃nbs.iP']]$\\
+    $
+    \begin{aligned}[t]
+      \NFUB([[Γ ⊢ ∃nbs.iP']]) &= \NFUB([[Γ, nbs ⊢ iP']]) \text{ not using $[[nbs]]$}\\
+                              &= \{ [[nf(iQ)]] \mid [[Γ, nbs ⊢ iQ ≥ iP']]  \}
+                                \text{ not using $[[nbs]]$}
+                              && \text{by the induction hypothesis}\\
+                              &= \{ [[nf(iQ)]] \mid [[Γ, nbs ⊢ iQ ≥ iP']]
+                                \text{ s.t. $[[fv iQ]] \cap [[nbs]] = \emptyset$}
+                                \}
+                             && \text{because $[[fv nf(iQ)]] = [[fv iQ]]$ by \cref{lemma:fv-nf}}\\
+                              &= \{ [[nf(iQ)]] \mid [[iQ]] \in \UB([[Γ, nbs ⊢ iP']]) \text{ s.t. $[[fv iQ]] \cap [[nbs]] = \emptyset$}
+                                \}
+                            && \text{by \cref{lemma:shape-of-supertypes}}\\
+                              &= \{ [[nf(iQ)]] \mid [[iQ]] \in \UB([[Γ ⊢ ∃nbs.iP']])
+                                \}
+                              && \text{by the definition of $\UB{}$}\\
+                              &= \{ [[nf(iQ)]] \mid [[Γ ⊢ iQ ≥ ∃nbs.iP']]
+                                \}
+                              && \text{by \cref{lemma:shape-of-supertypes}}\\
+    \end{aligned}
+    $
+  
+  \item $[[iP = ↓iM]]$\\
+    
+In the following reasoning, we will use the following principle of variable
+replacement.
+\begin{observation}
+  \label{observation:idemp-replacement}
+  Suppose that $\nu : A \rightarrow A$ is an idempotent
+  function, $P$ is a predicate on $A$, $F : A \rightarrow B$ is a
+  function. Then
+ \[ 
+  \begin{aligned}[t]
+    &\{ F(\nu x ) \mid x \in A \text{ s.t. } P(\nu x) \} =\\
+    = &\{ F(x) \mid x \in A \text{ s.t. } \nu x = x \text{ and } P(x) \}.
+  \end{aligned}
+ \]
+\end{observation}
+In our case, the idempotent $\nu$ will be normalization, variable ordering, or
+domain restriction.
+
+Another observation we will use is the following.
+\begin{observation}
+  \label{observation:image-replacement}
+  For functions $F$ and $\nu$, and
+  predicates $P$ and $Q$,
+ \[ 
+  \begin{aligned}[t]
+    &\{F(\nu x) \mid x \in A \text{ s.t. } Q(\nu x) \text{ and } P(x) \} =\\
+    = &\{F(\nu x) \mid x \in A \text{ s.t. } Q(\nu x) \text{ and } (\exists x'
+        \in A \text{ s.t. } P(x') \text{ and } \nu x' = \nu x) \}.
+  \end{aligned}
+ \]
+\end{observation}
+    
+    $\begin{aligned}[t]
+      &\mathrel{\phantom{=}} \{ [[nf(iQ)]] \mid [[Γ ⊢ iQ ≥ ↓iM]] \}=\\
+      %
+      %
+      &=\{ [[nf(iQ)]] \mid [[iQ]] \in \UB([[ Γ ⊢ ↓iM]])\}
+      && \text{by \cref{lemma:shape-of-supertypes}}\\
+      %
+      %
+      &= \Set{[[ nf(∃nas.↓iM') ]] \ |
+      \begin{array}{l}
+        \text{for $[[nas]]$, $[[iM']]$, and $[[iNs]]$ s.t.  $[[G,nas ⊢ iM']]$,}\\
+        \text{$[[G ⊢ iNi]]$, and $[[ [iNs/nas] ↓iM' ≈ ↓iM ]]$}\\
+      \end{array}}
+      && \text{by the definition of $\UB$}\\
+      %
+      %
+      &= \Set{[[ nf(∃nas.↓iM') ]] \ |
+        \begin{array}{l}
+          \text{for $[[nas]]$, $[[iM']]$, and $[[σ]]$ s.t.  $[[G,nas ⊢ iM']]$,}\\
+          \text{$[[G ⊢ σ : nas]]$, and $[[ [σ] ↓iM' ≈ ↓iM ]]$}
+        \end{array}}
+      && \text{we reassigned the substitution $[[ iNs/nas ]]$ as $[[ σ ]]$}\\
+      %
+      %
+      &= \Set{[[ nf(∃nas.↓iM') ]] \ |
+        \begin{array}{l}
+          \text{for $[[nas]]$, $[[iM']]$, and $[[σ]]$ s.t. $[[G,nas ⊢ iM']]$,}\\
+          \text{$[[G ⊢ σ : nas]]$, and $[[ [σ|fv iM' ] ↓iM' ≈ ↓iM ]]$}
+        \end{array}}
+      && \text{by \cref{lemma:subst-restr-fv}}\\
+      % 
+      % 
+      &= \Set{[[ ∃nas'.nf(↓iM') ]] \ |
+      \begin{array}{l}
+        \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t. $[[G,nas ⊢ iM']]$,}\\
+        \text{$[[G ⊢ σ : nas]]$,\, $[[ord {nas} in iM' = nas']]$}\\
+        \text{and $[[ [σ|fv iM'] ↓iM' ≈ ↓iM ]]$}
+      \end{array}}
+      && \text{by the definition of normalization}\\
+      %
+      %
+      &= \Set{[[ ∃nas'.nf(↓iM') ]] \ |
+      \begin{array}{l}
+        \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t. $[[G,nas ⊢ iM']]$, }\\
+        \text{$[[G ⊢ σ : nas]]$,\, $[[ord {nas} in iM' = nas']]$}\\
+        \text{and $[[ nf([σ|fv iM'] ↓iM') = nf(↓iM) ]]$}
+      \end{array}}
+      &&\begin{array}{l}
+         \text{from
+          \cref{lemma:normalization-soundness,lemma:normalization-completeness},
+          equivalence of types can be}\\
+          \text{replaced with the equality of their normal forms}
+        \end{array} \\
+      %
+      %
+      &= \Set{[[ ∃nas'.nf(↓iM') ]] \ |
+        \begin{array}{l}
+          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t. $[[G,nas ⊢ iM']]$,}\\
+          \text{$[[G ⊢ σ : nas]]$,\, $[[ord {nas} in iM' = nas']]$}\\
+          \text{and $[[ [nf(σ|fv iM')] ↓nf(iM') = ↓nf(iM) ]]$}
+        \end{array}}
+      && \text{by congruence of normalization and \cref{lemma:norm-subst-distr}}\\
+      %
+      %
+      &= \Set{[[ ∃nas'.↓iM' ]] \ |
+        \begin{array}{l}
+          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t. $[[G,nas ⊢ iM']]$,}\\
+          \text{$[[G ⊢ σ : nas]]$,\, $[[ord {nas} in iM' = nas']]$}\\
+          \text{and $[[ [σ|fv iM'] ↓iM' = ↓iM ]]$}
+        \end{array}}
+      &&\begin{array}{l}
+         \text{by \cref{lemma:normal-after-subst}, $[[↓iM']]$ and $[[σ|fv
+          iM']]$ are already normal,}\\
+          \text{since the result of the substitution is normal;}\\
+          \text{$[[iM]]$ is normal by assumption}
+         \end{array}\\
+      % 
+      % 
+      &= \Set{[[ ∃nas'.↓iM' ]] \ |
+        \begin{array}{l}
+          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas ⊢ iM']]$,}\\
+          \text{($\exists [[σ']]$ s.t. $[[G ⊢ σ' : nas]]$ and $[[σ|fv(↓iM')]] =
+          [[σ'|fv(↓iM')]]$)}\\
+          \text{$[[ord {nas} in iM' = nas']]$ and $[[ [σ|fv iM'] ↓iM' = ↓iM ]]$}\\
+        \end{array}}
+      &&\begin{array}{l}
+      \text{We apply \cref{observation:image-replacement} (with $\nu [[σ]]$
+      =  $[[σ|fv iM']]$, and}\\
+      \text{$P([[σ]]) = [[G ⊢ σ : nas]]$)}
+      \end{array}\\
+      %
+      %
+      &= \Set{[[ ∃nas'.↓iM' ]] \ |
+        \begin{array}{l}
+          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas ⊢ iM']]$,}\\
+          \text{$[[G ⊢ σ|fv iM' : nas']]$,\, $[[ord {nas} in iM' = nas']]$}\\
+          \text{and $[[ [σ|fv iM'] ↓iM' = ↓iM ]]$}
+        \end{array}}
+      &&\begin{array}{l}
+           \text{Notice that}\\
+           \text{``$\exists [[σ']]$ s.t. ($[[G ⊢ σ' : nas]]$ and $[[σ|fv(↓iM')]] =
+           [[σ'|fv(↓iM')]]$)''}\\
+           \text{is equivalent to $[[G ⊢ σ|fv(↓iM') : nas']]$}\\
+         \end{array} \\
+         % 
+         % 
+      &= \Set{[[ ∃nas'.↓iM' ]] \ |
+        \begin{array}{l}
+          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas ⊢ iM']]$,}\\
+          \text{$[[G ⊢ σ : nas']]$,\, $[[ord {nas} in iM' = nas']]$}\\
+          \text{and $[[ [σ] ↓iM' = ↓iM ]]$}
+        \end{array}}
+      && \begin{array}{l}
+         \text{We apply \cref{observation:idemp-replacement} to the
+           restriction of $[[σ]]$, and then}\\
+         \text{remove $[[σ|fv iM']] = [[σ]]$  as it follows from $[[G ⊢ σ : nas']]$}\\
+         \end{array}\\
+         % 
+         % 
+      &= \Set{[[ ∃nas'.↓iM' ]] \ |
+        \begin{array}{l}
+          \text{for $[[nas]]$, $[[nas']]$, $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas' ⊢ iM']]$,}\\
+          \text{$[[G ⊢ σ : nas']]$,\, $[[ord {nas} in iM' = nas']]$}\\
+          \text{and $[[ [σ] ↓iM' = ↓iM ]]$}
+        \end{array}}
+      &&
+         \begin{array}{l}
+           \text{From \cref{lemma:wf-ctxt-equiv}, since
+           $[[ {Γ, nas} ∩ fv iM' ]] = [[ {Γ, nas'} ∩ fv iM' ]]$}\\
+         \end{array}\\
+      % 
+      % 
+      &= \Set{[[ ∃nas'.↓iM' ]] \ |
+        \begin{array}{l}
+          \text{for $[[nas']]$,  $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas' ⊢ iM']]$,}\\
+          \text{$[[G ⊢ σ : nas']]$,\, $[[ord {nas'} in iM' = nas']]$}\\
+          \text{and $[[ [σ] ↓iM' = ↓iM ]]$}
+        \end{array}}
+      && \text{We apply \cref{observation:idemp-replacement} to the ordering of $[[nas]]$}\\
+      &= \Set{ [[ ∃nas.↓iM' ]] \ |
+        \begin{array}{l}
+          \text{for $[[nas']]$, $[[iM']]$, and $[[iNs]]$ s.t. $[[ord {nas'} in iM' = nas]]$,}\\
+          \text{$[[G ⊢ iNi]]$, $[[G,nas' ⊢ iM']]$,  and $[[ [iNs/nas'] ↓iM' = ↓iM ]]$}
+        \end{array}} 
+      && \text{By reassigning $[[σ]]$ explicitly as $[[iNs/nas']]$}\\
+      %
+      %
+    \end{aligned}$
+  \end{caseof}
+\end{proof}
 
 \begin{lemma}[Soundness of the Least Upper Bound]
   For types $[[Γ ⊢ iP1]]$, and $[[Γ ⊢ iP2]]$,

@@ -57,7 +57,7 @@ defns
   G ⊢ ↓iN ≥ ↓iM
 
   G, nbs ⊢ iNi   G, nbs ⊢ [iNs/nas] iP ≥ iQ
-  ----------------------------------------- :: ExistsL
+  ----------------------------------------- :: Exists
   G ⊢ ∃nas.iP ≥ ∃nbs.iQ
 
 

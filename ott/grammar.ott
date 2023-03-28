@@ -214,7 +214,7 @@ varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
     | [ mu ] varset      :: M :: moving    {{ com apply moving to varset }}
 grammar
 
-mu {{ tex \mu }} :: Mu ::= 
+mu {{ tex \mu }}, μ {{ tex \mu }}:: Mu ::= 
     | ·                   ::   :: empty   {{ com empty moving }}
     | pma1 ↦ pma2         ::   :: Psingle {{ com Positive unit substitution }}
     | nma1 ↦ nma2         ::   :: Nsingle {{ com Positive unit substitution }}
@@ -401,6 +401,12 @@ fun nf ( iN' ) :: iN :: Nnf by
 fun nf ( iP' ) :: iP :: Pnf by
 fun nf ( uN' ) :: uN :: uNnf by
 fun nf ( uP' ) :: uP :: uPnf by
+fun nf ( iNs' ) :: iNs :: uNsnf by
+fun nf ( iPs' ) :: iPs :: uPsnf by
+fun nf ( σ' ) :: σ :: Snf by
+fun nf ( μ' ) :: μ :: Movnf by
+
+fun  σ' | varset  :: σ :: Restr {{ tex [[σ']]|_{[[varset]]} }} by 
 
 fun
   usEntry1 & usEntry2 :: usEntry :: USEM {{ tex [[usEntry1]] ~ \& ~ [[usEntry2]] }}

@@ -179,17 +179,26 @@
   \end{caseof}
 \end{proof}
 
+\begin{lemma}[Ordering is not affected by independent substitutions]
+  \label{lemma:ord-sigma}
+  Suppose that $[[Γ2 ⊢ σ : Γ1]]$, i.e. $[[σ]]$ maps variables from $[[Γ1]]$ into types
+  taking free variables from $[[Γ2]]$, and $[[varset]]$ is a set of variables
+  disjoint with both $[[Γ1]]$ and $[[Γ2]]$. Then
+  \begin{itemize}
+  \item[$-$] $[[ ord varset in [σ]iN ]] = [[ord varset in iN ]]$
+  \item[$+$] $[[ ord varset in [σ]iP ]] = [[ord varset in iP ]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  \ilyam{Should be easy}
+\end{proof}
 
 \begin{lemma}[Completeness of variable ordering]
   \label{lemma:ord-completeness}
-  Variable ordering is invariant under equivalence.
-
-  \begin{itemize}
-  \item[$-$] For $[[iN ≈ iM]]$ and any $[[varset]]$,
-    $[[ord varset in uN]] = [[ord varset in uM]]$ (as lists)
-    
-  \item[$+$] For $[[iP ≈ iQ]]$ and any $[[varset]]$,
-    $[[ord varset in uP]] = [[ord varset in uQ]]$ (as lists)
+  Variable ordering is invariant under equivalence. For arbitrary $[[varset]]$,
+   \begin{itemize}
+  \item[$-$] If $[[iN ≈ iM]]$ then $[[ord varset in uN]] = [[ord varset in uM]]$ (as lists)
+  \item[$+$] If $[[iP ≈ iQ]]$ then $[[ord varset in uP]] = [[ord varset in uQ]]$ (as lists)
   \end{itemize}
 \end{lemma}
 \begin{proof}

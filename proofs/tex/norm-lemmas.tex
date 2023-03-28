@@ -23,94 +23,6 @@
   By straightforward induction on $[[nf(iN) = iM]]$.
 \end{proof}
 
-
-\begin{lemma}[Commutativity of normalization and renaming]
-  \label{lemma:norm-subst-commute} Normalization of a term commutes with renaming.
-
-  Suppose that $\mu$ is a bijection between two sets of variables
-  $\mu : A \leftrightarrow B$. Then
-  \begin{itemize}
-    \item[$-$] $[[nf([mu]iN)]] = [[ [mu] nf(iN) ]]$
-    \item[$+$] $[[nf([mu]iP)]] = [[ [mu] nf(iP) ]]$
-  \end{itemize}
-  Here equality means alpha-equivalence.
-\end{lemma}
-
-\begin{proof}
-  Mutual induction on $[[iN]]$ and $[[iP]]$.
-  \begin{caseof}
-    \item $[[iN]]$ = $[[na]]$ \\
-      $[[nf([mu]iN)]] = [[ nf([mu]na) ]] = [[ [mu]na ]] $.
-      The latter follows from the fact that $[[ [mu]na ]]$ is a variable, and thus, 
-      \ruleref{\ottdruleNrmNVarLabel} is applicable.
-
-      $[[ [mu] nf(iN) ]] = [[ [mu] nf(na) ]] = [[ [mu] na ]] $.
-   \item If the type is formed by $[[→]]$, $[[↑]]$, or $[[↓]]$, 
-     the required equality follows from the congruence of the normalization and
-     substitution, and the induction hypothesis.
-     For example, if $[[iN]] = [[iP → iM]]$ then \\
-     $\begin{aligned}[t]
-        [[nf([mu] iN)]] &= [[ nf([mu] (iP → iM)) ]] \\
-                        &= [[ nf([mu]iP → [mu]iM) ]]
-                        && \text{By the congruence of substitution} \\
-                        &= [[ nf([mu]iP) → nf([mu]iM) ]]
-                        && \text{By the congruence of normalization, i.e. \ruleref{\ottdruleNrmArrowLabel}} \\
-                        &= [[ [mu]nf(iP) → [mu]nf(iM) ]]
-                        && \text{By the induction hypothesis} \\
-                        &= [[ [mu](nf(iP) → nf(iM)) ]]
-                        && \text{By the congruence of substitution} \\
-                        &= [[ [mu]nf(iP → iM) ]]
-                        && \text{By the congruence of normalization} \\
-                        &= [[ [mu]nf(iN) ]]
-      \end{aligned}$ \\
-    \item $[[iN]] = [[∀ pas.iM]]$ \label{case:norm-subst-commute} \\
-      $\begin{aligned}[t]
-          [[ [mu] nf(iN) ]] &= [[ [mu] nf(∀pas.iM)]] \\
-                            &= [[ [mu] ∀pas'.nf(iM) ]]
-                            && \text {Where $[[ ord {pas} in nf(iM) = pas' ]]$}\\
-        \end{aligned}$ \\
-
-      $\begin{aligned}[t]
-         [[ nf([mu]iN) ]] &= [[ nf([mu] ∀pas.iM)]] \\
-                          &= [[ nf(∀pas.[mu]iM) ]]
-                          && \text{Assuming $[[{pas}]] \cap A = \emptyset$
-                             and $[[{pas}]] \cap B = \emptyset$}\\
-                          &= [[ ∀pbs.nf([mu]iM) ]]
-                          && \text {Where $[[ ord {pas} in nf([mu]iM) = pbs ]]$}\\
-                          &= [[ ∀pas'.nf([mu]iM) ]]
-                          && \text {As $[[pbs]] = [[pas']]$ (see below)}
-         \end{aligned}$ \\
-
-    Notice that $[[mu]]$ is free of collisions on $[[{pas}]]$ and $[[fv nf(iM)]]$ because
-    \begin{enumerate}[nolistsep]
-      \item[(i)] $[[mu]](A \cap [[{pas}]]) \cap [[fv nf(iM)]] = \emptyset \cap [[fv nf(iM)]] = \emptyset$ and
-      \item[(ii)] $[[mu]](A \cap [[fv nf(iM)]]) \cap [[{pas}]] \subseteq B \cap
-        [[{pas}]] = \emptyset$
-    \end{enumerate}
-    $\begin{aligned}[t]
-       [[pbs]] &= [[ ord {pas} in nf([mu]iM) ]] \\
-               &= [[ ord {pas} in [mu]nf(iM) ]]
-               && \text{By the induction hypothesis} \\
-               &= [[ ord {[mu]pas} in [mu]nf(iM) ]]
-               && \text{Since $[[{pas}]] \cap A = \emptyset$} \\
-               &= [[ [mu] ord {pas} in nf(iM) ]]
-               && \text{by \cref{lemma:distr-mu-ord}} \\
-               &= [[ ord {pas} in nf(iM) ]]
-               && \text{Since $[[{ord {pas} in nf(iM)}]] \cap A \subseteq [[{pas}]] \cap A = \emptyset$} \\
-               &= [[ pas' ]]
-     \end{aligned}$ \\
-
-     To show alpha-equivalence of 
-     $[[ [mu] ∀pas'.nf(iM) ]]$ and $[[ ∀pas'.nf([mu]iM) ]]$,
-     we can assume that $[[{pas'}]] \cap A = \emptyset$, and $[[{pas'}]] \cap B = \emptyset$.
-     Then $[[ [mu] ∀pas'.nf(iM) ]] = [[∀pas'.[mu]nf(iM)]] = [[ ∀pas'.nf([mu]iM)
-     ]]$, the latter follows from the induction hypothesis.
-
-   \item $[[iP]] = [[∃ nas.iQ]]$ \\
-     Same as for \cref{case:norm-subst-commute}.
-  \end{caseof}
-\end{proof}
-
 \begin{lemma}[Soundness of quantifier normalization]
   \label{lemma:normalization-soundness}
   \hfill
@@ -119,7 +31,6 @@
     \item[$-$] $[[iN ≈ nf(iN)]]$
     \item[$+$] $[[iP ≈ nf(iP)]]$
   \end{itemize}
-
 \end{lemma}
 \begin{proof}
   Mutual induction on $[[nf(iN) = iM]]$ and $[[nf(iP) = iQ]]$.
@@ -145,8 +56,114 @@
   \end{caseof}
 \end{proof}
 
+\begin{corollary}[Normalization preserves ordering]
+  \label{corollary:normalization-ord}
+  For any $[[varset]]$,
+  \begin{itemize}
+  \item[$-$] $[[ord varset in nf(uN)]] = [[ord varset in uM]]$
+  \item[$+$] $[[ord varset in nf(uP)]] = [[ord varset in uQ]]$
+  \end{itemize}
+\end{corollary}
+\begin{proof}
+  Immediately from \cref{lemma:ord-completeness,lemma:normalization-soundness}.
+\end{proof}
+
+\begin{lemma}[Distributivity of normalization over substitution]
+  \label{lemma:norm-subst-distr} Normalization of a term distributes over substitution.
+  Suppose that $[[Γ2 ⊢ σ : Γ1]]$, i.e. $[[σ]]$ maps variables from $[[Γ1]]$ into types
+  taking free variables from $[[Γ2]]$.
+  Then
+  \begin{itemize}
+  \item[$-$] $[[nf([σ]iN)]] = [[ [nf(σ)] nf(iN) ]]$
+  \item[$+$] $[[nf([σ]iP)]] = [[ [nf(σ)] nf(iP) ]]$
+  \end{itemize}
+  where $[[nf(σ)]]$ means pointwise normalization: $[[ [nf(σ)] α⁻]] = [[nf([σ]
+  α⁻)]]$. %, and .
+\end{lemma}
+\begin{proof}
+  Mutual induction on $[[iN]]$ and $[[iP]]$.
+  \begin{caseof}
+    \item $[[iN]]$ = $[[na]]$ \\
+      \label{case:norm-subst-distr-var}
+      $[[nf([σ]iN)]] = [[ nf([σ]na) ]] = [[ [nf(σ)]na ]] $.
+
+      $[[ [nf(σ)] nf(iN) ]] = [[ [nf(σ)] nf(na) ]] = [[ [nf(σ)] na ]] $.
+    \item $[[iP]]$ = $[[pa]]$ \\
+      Similar to \cref{case:norm-subst-distr-var}.
+   \item If the type is formed by $[[→]]$, $[[↑]]$, or $[[↓]]$, 
+     the required equality follows from the congruence of the normalization and
+     substitution, and the induction hypothesis.
+     For example, if $[[iN]] = [[iP → iM]]$ then \\
+     $\begin{aligned}[t]
+        [[nf([σ] iN)]] &= [[ nf([σ] (iP → iM)) ]] \\
+                        &= [[ nf([σ]iP → [σ]iM) ]]
+                        && \text{By the congruence of substitution} \\
+                        &= [[ nf([σ]iP) → nf([σ]iM) ]]
+                        && \text{By the congruence of normalization, i.e. \ruleref{\ottdruleNrmArrowLabel}} \\
+                        &= [[ [nf(σ)]nf(iP) → [nf(σ)]nf(iM) ]]
+                        && \text{By the induction hypothesis} \\
+                        &= [[ [nf(σ)](nf(iP) → nf(iM)) ]]
+                        && \text{By the congruence of substitution} \\
+                        &= [[ [nf(σ)]nf(iP → iM) ]]
+                        && \text{By the congruence of normalization} \\
+                        &= [[ [nf(σ)]nf(iN) ]]
+      \end{aligned}$ \\
+    \item $[[iN]] = [[∀ pas.iM]]$ \label{case:norm-subst-commute} \\
+      $\begin{aligned}[t]
+          [[ [nf(σ)] nf(iN) ]] &= [[ [nf(σ)] nf(∀pas.iM)]] \\
+                            &= [[ [nf(σ)] ∀pas'.nf(iM) ]]
+                            && \text {Where $[[pas']] = [[ ord {pas} in nf(iM)]]
+                               = [[ord {pas} in iM]]$
+                               (the latter is by
+                               \cref{corollary:normalization-ord})}\\
+        \end{aligned}$ \\
+
+      $\begin{aligned}[t]
+         [[ nf([σ]iN) ]] &= [[ nf([σ] ∀pas.iM)]] \\
+                          &= [[ nf(∀pas.[σ]iM) ]]
+                          && \text{Assuming $[[{pas} ∩ {Γ1}]] = \emptyset$
+                             and $[[{pas} ∩ {Γ2}]] = \emptyset$}\\
+                          &= [[ ∀pbs.nf([σ]iM) ]]
+                          && \text {Where $[[pbs]] = [[ord {pas} in nf([σ]iM)]]
+                             = [[ord {pas} in [σ]iM]]$ (the latter is by
+                             \cref{corollary:normalization-ord})}\\
+                          &= [[ ∀pas'.nf([σ]iM) ]]
+                          && \text{By \cref{lemma:ord-sigma}, $[[pbs]] = [[pas']]$
+                             since $[[{pas}]]$ is disjoint with $[[Γ1]]$ and
+                             $[[Γ2]]$}\\
+                          &= [[ ∀pas'.[nf(σ)]nf(iM) ]]
+                          && \text {By the induction hypothesis}\\
+         \end{aligned}$ \\
+
+     To show alpha-equivalence of 
+     $[[ [nf(σ)] ∀pas'.nf(iM) ]]$ and $[[ ∀pas'.[nf(σ)]nf(iM) ]]$,
+     we can assume that $[[{pas'} ∩ {Γ1}]] = \emptyset$, and $[[{pas'} ∩ {Γ2}]]
+     = \emptyset$.
+
+   \item $[[iP]] = [[∃ nas.iQ]]$ \\
+     Same as for \cref{case:norm-subst-commute}.
+  \end{caseof}
+\end{proof}
+
+
+\begin{corollary}[Commutativity of normalization and renaming]
+  \label{lemma:norm-subst-commute} Normalization of a term commutes with renaming.
+  Suppose that $\mu$ is a bijection between two sets of variables
+  $\mu : A \leftrightarrow B$. Then
+  \begin{itemize}
+    \item[$-$] $[[nf([mu]iN)]] = [[ [mu] nf(iN) ]]$
+    \item[$+$] $[[nf([mu]iP)]] = [[ [mu] nf(iP) ]]$
+  \end{itemize}
+\end{corollary}
+\begin{proof}
+  Immediately from \cref{lemma:norm-subst-distr},
+  after noticing that $[[nf(mu)]] = [[mu]]$.
+\end{proof}
+
+
 
 \begin{lemma}[Completeness of quantified normalization]
+  \label{lemma:normalization-completeness}
   Normalization returns the same representative for equivalent types.
 
   \begin{itemize}
@@ -211,3 +228,124 @@
 \end{proof}
 
 
+\begin{lemma}[Idempotence of normalization]
+  \label{lemma:norm-idemp}
+  Normalization is idempotent
+  \begin{itemize}
+  \item[$-$] $[[nf(nf(iN))]] = [[nf(iN)]]$
+  \item[$+$] $[[nf(nf(iP))]] = [[nf(iP)]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  By applying \cref{lemma:normalization-completeness} to \cref{lemma:normalization-soundness}.
+\end{proof}
+
+
+
+\begin{lemma}
+  \label{lemma:normal-after-subst}
+  The result of a substitution is normalized if and only if the initial type and
+  the substitution are normalized.
+
+  Suppose that $[[σ]]$ is a substitution  $[[Γ2 ⊢ σ : Γ1]]$,
+  $[[iP]]$ is a positive type ($[[Γ1 ⊢ iP]]$),
+  $[[iN]]$ is a negative type ($[[Γ1 ⊢ iN]]$). Then
+  \begin{itemize}
+  \item[$+$]
+    $[[ [σ]iP  ]] \text{ is normal} \iff
+    \begin{cases}
+      [[σ|fv(iP)]] &\text{is normal}\\
+      [[iP]]       &\text{is normal}\\
+    \end{cases} $
+  \item[$-$]
+    $[[ [σ]iN  ]] \text{is normal} \iff
+    \begin{cases}
+      [[σ|fv(iN)]] &\text{is normal}\\
+      [[iN]]       &\text{is normal}\\
+    \end{cases} $
+  \end{itemize}
+\end{lemma}
+
+\begin{proof}
+  Mutual induction on $[[Γ1 ⊢ iP]]$ and $[[Γ1 ⊢ iN]]$.
+  \begin{caseof}
+  \item $[[iN]] = [[na]]$\\
+    Then $[[iN]]$ is always normal, and
+    the normality of $[[σ|{na}]]$ by the definition means $[[ [σ]na ]]$ is normal.
+
+  \item $[[iN]] = [[iP → iM]]$\\
+    \label{case:normal-after-subst-arrow}
+    $
+    \begin{aligned}[t]
+      [[ [σ](iP → iM) ]] \text{ is normal} &\iff [[ [σ]iP → [σ]iM ]] \text{ is normal}
+                                           && \text{by the substitution
+                                              congruence} \\
+                                           &\iff
+                                             \begin{cases}
+                                             [[ [σ]iP ]] &\text{is normal} \\
+                                             [[ [σ]iM ]] &\text{is normal} \\
+                                             \end{cases}
+                                           && \text{by congruence of normality \ilyam{lemma?}}\\
+                                           &\iff
+                                             \begin{cases}
+                                               [[ iP ]]       &\text{is normal} \\
+                                               [[ σ|fv(iP) ]] &\text{is normal} \\
+                                               [[ iM ]]       &\text{is normal} \\
+                                               [[ σ|fv(iM) ]] &\text{is normal} \\
+                                             \end{cases}
+                                           && \text{by the induction hypothesis}\\
+                                           &\iff
+                                             \begin{cases}
+                                               [[ iP → iM ]]  &\text{is normal} \\
+                                               [[ σ|fv(iP) ∪ fv(iM)]] &\text{is normal} \\
+                                             \end{cases}
+                                          \iff&&%
+                                             \begin{cases}
+                                               [[ iP → iM ]]  &\text{is normal} \\
+                                               [[ σ|fv(iP→iM)]] &\text{is normal} \\
+                                             \end{cases}
+    \end{aligned}
+    $
+  \item $[[iN]] = [[↑iP]]$\\
+    By congruence and the inductive hypothesis, similar to \cref{case:normal-after-subst-arrow}
+  \item $[[iN]] = [[∀pas.iM]]$\\
+    $
+    \begin{aligned}[t]
+      [[ [σ](∀pas.iM) ]] \text{ is normal} &\iff [[ (∀pas.[σ]iM) ]] \text{ is normal}
+                                           && \text{assuming $[[pas]] \cap [[Γ1]] = \emptyset$ and
+                                              $[[pas]] \cap [[Γ2]] = \emptyset$} \\
+                                           &\iff
+                                             \begin{cases}
+                                             [[ [σ]iM ]] \text{ is normal} \\
+                                             [[ord {pas} in [σ]iM = pas]] \\
+                                             \end{cases}
+                                           && \text{by the definition of normalization}\\
+                                           &\iff
+                                             \begin{cases}
+                                               [[ [σ]iM ]] \text{ is normal} \\
+                                               [[ord {pas} in iM = pas]] \\
+                                             \end{cases}
+                                           && \text{by \cref{lemma:ord-sigma}}\\
+                                           &\iff
+                                             \begin{cases}
+                                               [[ σ|fv(iM) ]] \text{ is normal} \\
+                                               [[ iM ]] \text{ is normal} \\
+                                               [[ord {pas} in iM = pas]] \\
+                                             \end{cases}
+                                           && \text{by the induction hypothesis}\\
+                                           &\iff
+                                             \begin{cases}
+                                               [[ σ|fv(∀pas.iM) ]] \text{ is normal} \\
+                                               [[ ∀pas.iM ]] \text{ is normal} \\
+                                             \end{cases}
+                                           &&
+                                              \begin{aligned}
+                                              &\text{since $[[fv(∀pas.iM) = fv(iM)]]$;}\\ &\text{by the definition of normalization}
+                                              \end{aligned}
+    \end{aligned}
+    $
+  \item $[[iP]] = \dots$\\
+    The positive cases are done in the same way as the negative ones.
+
+  \end{caseof}
+\end{proof}

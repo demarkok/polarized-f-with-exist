@@ -20,8 +20,24 @@
   Normalization
                       &   \infer{[[iN ≈ nf(iN)]]}{}{}
                   & \infer{[[nf(iN)]] = [[nf(iM)]]}{[[iN ≈ iM]]}{}
-                  & --- \\
+                  & --- 
+  \\
 
+  \addlinespace[0.7em]
+  % $[[ Γ ⊨ iP1 ∨ iP2 = iQ]]$
+  Equivalence
+                      & \infer
+                        { 
+                        [[Γ ⊢ iP ≈ iQ]]
+                        }
+                        {
+                        [[Γ ⊢ iP]] & [[Γ ⊢ iQ]] & [[iP ≈ iQ]]
+                        }
+                        {}
+                      & \infer{[[iP ≈ iQ]]}{[[Γ ⊢ iP ≈ iQ]]}{}
+                      &  ---
+
+  \\
   \addlinespace[0.7em]
   % $[[ upgrade Γ ⊢ iP to Δ = iQ ]]$
   Uppgrade
@@ -121,24 +137,6 @@
                                 [[Θ ⊨ uP ≈u iQ ⫤ us]]
                                 }{\exists \text{ sound } [[us']]}{}
                              &  ---
-  \\
-
-  \addlinespace[0.7em]
-  % $[[ Γ ⊨ iP1 ∨ iP2 = iQ]]$
-  \stackunder{Equivalence}
-  {(matching)}
-                      & \infer
-                        { 
-                         [[Γ ⊢ iP ≈ iQ]]
-                        }
-                       {
-                       [[Γ ⊢ iP]] & [[Γ ⊢ iQ]] & [[iP ≈ iQ]]
-  }
-  {}
-                      & \infer{
-                        [[iP ≈ iQ]]
-                        }{[[Γ ⊢ iP ≈ iQ]]}{}
-                     &  ---
   \\
 
   \addlinespace[0.7em]
