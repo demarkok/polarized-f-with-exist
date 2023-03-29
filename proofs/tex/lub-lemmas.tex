@@ -316,7 +316,7 @@ Another observation we will use is the following.
         \end{array}}
       && \begin{array}{l}
          \text{We apply \cref{observation:idemp-replacement} to the
-           restriction of $[[σ]]$, and then}\\
+           restriction of $[[σ]]$, and}\\
          \text{remove $[[σ|fv iM']] = [[σ]]$  as it follows from $[[G ⊢ σ : nas']]$}\\
          \end{array}\\
          % 
@@ -329,7 +329,7 @@ Another observation we will use is the following.
         \end{array}}
       &&
          \begin{array}{l}
-           \text{From \cref{lemma:wf-ctxt-equiv}, since
+           \text{by \cref{lemma:wf-ctxt-equiv}, since
            $[[ {Γ, nas} ∩ fv iM' ]] = [[ {Γ, nas'} ∩ fv iM' ]]$}\\
          \end{array}\\
       % 
@@ -347,6 +347,8 @@ Another observation we will use is the following.
           \text{$[[G ⊢ iNi]]$, $[[G,nas' ⊢ iM']]$,  and $[[ [iNs/nas'] ↓iM' = ↓iM ]]$}
         \end{array}} 
       && \text{By reassigning $[[σ]]$ explicitly as $[[iNs/nas']]$}\\
+      &= \NFUB([[↓iM]])
+      && \text{by definition}\\
       %
       %
     \end{aligned}$
@@ -361,6 +363,82 @@ Another observation we will use is the following.
     \item[(ii)] $[[Γ ⊢ iQ ≥ iP1]]$ and $[[Γ ⊢ iQ ≥ iP2]]$
   \end{enumerate}
 \end{lemma}
+\begin{proof}
+  Induction on $[[Γ ⊨ iP1 ∨ iP2 = iQ]]$.
+  \begin{caseof}
+  \item $[[Γ ⊨ pa ∨ pa = pa]]$\\
+     Then $[[Γ ⊢ pa]]$ by assumption, and
+     $[[Γ ⊢ pa ≥ pa]]$ by \ruleref{\ottdruleDOnePVarLabel}.
+   \item $[[Γ ⊨ ∃nas.iP1 ∨ ∃nbs.iP2 = iQ]]$\\
+     Then by inversion of $[[Γ ⊢ ∃nas.iPi]]$  and
+     weakening, $[[Γ, nas, nbs ⊢ iPi]]$, hence, the induction
+     hypothesis applied to $[[Γ, nas, nbs ⊨ iP1 ∨ iP2 = iQ]]$. Then
+     \begin{itemize}
+       \item[(i)] $[[Γ, nas, nbs ⊢ iQ]]$,
+       \item[(ii)] $[[Γ, nas, nbs ⊢ iQ ≥ iP1]]$,
+       \item[(iii)] $[[Γ, nas, nbs ⊢ iQ ≥ iP2]]$.
+     \end{itemize}
+
+     To prove $[[Γ ⊢ iQ]]$, it suffices to show that
+     $[[fv(iQ) ∩ {Γ, nas, nbs}]] = [[fv(iQ) ∩ {Γ}]]$ (and then apply \cref{lemma:wf-ctxt-equiv}).
+     The inclusion right-to-left is self-evident. To show
+     $[[fv(iQ) ∩ {Γ, nas, nbs}]] \subseteq [[fv(iQ) ∩ {Γ}]]$, we prove that 
+     $[[fv(iQ)]] \subseteq [[{Γ}]]$
+
+     $
+     \begin{aligned}[t]
+       [[fv(iQ)]] &\subseteq [[fv iP1 ∩ fv iP2]]
+                  && \text{by \cref{lemma:fv-propagation}}\\
+                  &\subseteq [[({Γ, nas} \ {nbs}) ∩ ({Γ, nbs} \ {nas})]]
+                  &&
+                  \begin{array}{l}
+                  \text{since $[[Γ ⊢ ∃nas.iP1]]$,~ $[[fv(iP1)]]
+                  \subseteq [[{Γ, nas}]] = [[{Γ, nas}
+                  \ {nbs}]]$}\\
+                  \text{(the latter is because by the Barendregt's
+                  convention,}\\
+                    \text{$[[{Γ, nas} ∩ {nbs} = ∅]]$);
+                    similarly, $[[fv(iP2)]] \subseteq [[{Γ, nbs} \ {nas}]]$}\\
+                  \end{array}\\
+                  &\subseteq [[{Γ}]]
+     \end{aligned}
+     $
+     % we notice that 
+     % $[[fv iQ]] \subseteq [[fv iP1]] ∩ [[fv iP2]]
+     % Let us show that $Γ \$
+     % From \cref{lemma:fv-propagation},
+     % $[[fv iQ]] \subseteq [[fv iP1]] ∩ [[fv iP2]] \subseteq {\Gamma}$.
+     % Hence, since 
+
+     To show $[[Γ ⊢ iQ ≥ ∃nas.iP1]]$, we apply
+     \ruleref{\ottdruleDOneExistsLabel}.
+     Then $[[Γ, nas ⊢ iQ ≥ iP1]]$ holds since
+     $[[Γ, nas, nbs ⊢ iQ ≥ iP1]]$ (by the induction hypothesis),
+     $[[Γ, nas ⊢ iQ]]$ (by weakening), and $[[Γ, nas ⊢ iP1]]$.
+
+     Judgment $[[Γ ⊢ iQ ≥ ∃nbs.iP2]]$ is proved symmetrically.
+  \item $[[Γ ⊨ ↓iN ∨ ↓iM = ∃nas.[nas / ToList Ξ]uP]]$
+    By the inversion, $[[G,· ⊨ ↓iN ≈au ↓iM ⫤ (Ξ, uP, aus1, aus2)]]$.
+    Then by \cref{lemma:au-soundness},
+    \begin{enumerate}
+      \item[(i)] $[[Γ ; Ξ ⊢ uP]]$
+    \end{enumerate}
+
+    To show $[[Γ ⊢ ∃nas.[nas / ToList Ξ]uP]]$,
+    notice that $[[Γ, nas ⊢ [nas / ToList Ξ]uP]]$, which
+    follows from $[[Γ ; Ξ ⊢ uP]]$ by \cref{todo}.
+
+    To show $[[Γ ⊢ ∃nas.[nas / ToList Ξ]uP ≥ ↓iN]]$,
+    we apply \ruleref{ottdruleDOneExistsLabel}.
+    Notice that $[[ausi]]$ corresponds to $[[iNs/nas]]$
+
+    % $[[Γ ; · ⊢ ausi : Ξ]]$ \\
+    % $[[ [nas][nas / ToList Ξ]uP ≥ ↓iN]]$
+
+  \end{caseof}
+
+\end{proof}
+
 
 \begin{lemma}[Completeness of the Least Upper Bound]
   For types $[[Γ ⊢ iP1]]$, $[[Γ ⊢ iP2]]$, and $[[Γ ⊢ iQ']]$
@@ -372,7 +450,6 @@ Another observation we will use is the following.
 \begin{lemma}[Soundness of Upgrade]
   For $[[Δ]] \subseteq [[Γ]]$,
   suppose that $[[upgrade Γ ⊢ iP to Δ = iQ]]$.
-  Then
   \begin{enumerate}
     \item [(i)] $[[Δ ⊢ iQ]]$
     \item [(ii)] $[[Γ ⊢ iQ ≥ iP]]$

@@ -21,4 +21,5 @@ defns
   G ⊨ ∃nas.iP1 ∨ ∃nbs.iP2 = iQ
 
 
-  defn upgrade G ⊢ iP to Δ = iQ :: :: Up :: '' by
+
+defn upgrade G ⊢ iP to Δ = iQ :: :: Up :: '' by

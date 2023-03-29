@@ -68,7 +68,6 @@
 \renewcommand{\ottdruleOExistsName}[0]{($\exists$)}
 
 
-
 % nf(N) = M
 \renewcommand{\ottdruleNrmNVarName}[0]{(Var$^-$)}
 \renewcommand{\ottdruleNrmNUVarName}[0]{(UVar$^-$)}
@@ -114,6 +113,9 @@
 \renewcommand{\ottdruleDOnePVarName}[0]{(Var$^+$$^{\supDOne}$)}
 \renewcommand{\ottdruleDOneShiftDName}[0]{($\downarrow^{\supDOne}$)}
 \renewcommand{\ottdruleDOneExistsName}[0]{($\exists^{\supDOne}$)}
+
+
+
 
 
 \begin{document}
@@ -214,6 +216,9 @@ matching entries, and unite the results.
 \ottdefnsAU
 
 \section{Proofs}
+
+\subsection{Declarative Subtyping}
+\input{../_build/_gen/tex/subtyping-lemmas.tex}
 
 \subsection{Substitution}
 \input{../_build/_gen/tex/subst-lemmas.tex}

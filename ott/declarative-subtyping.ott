@@ -10,60 +10,60 @@ embed {{ tex-preamble
 defns
   D0 :: 'D0' ::=
 
-  defn G ⊢ N ≈ M :: :: Neq :: ''
+  defn G ⊢ N ≈₀ M :: :: Neq :: ''
   {{ com Negative equivalence }}
   {{ tex [[G]] [[⊢]] [[N]] \eqDZero [[M]] }} by
 
-  G ⊢ N ≤ M   G ⊢ M ≤ N
+  G ⊢ N ≤₀ M   G ⊢ M ≤₀ N
   --------------------- :: NDef
-  G ⊢ N ≈ M 
+  G ⊢ N ≈₀ M 
 
-  defn G ⊢ P ≈ Q :: :: Peq :: ''
+  defn G ⊢ P ≈₀ Q :: :: Peq :: ''
   {{ com Positive equivalence }}
   {{ tex [[G]] [[⊢]] [[P]]  \eqDZero [[Q]] }} by
 
-  G ⊢ P ≥ Q   G ⊢ Q ≥ P
+  G ⊢ P ≥₀ Q   G ⊢ Q ≥₀ P
   --------------------- :: PDef
-  G ⊢ P ≈ Q 
+  G ⊢ P ≈₀ Q 
 
-  defn G ⊢ N ≤ M :: :: Nsub :: ''
+  defn G ⊢ N ≤₀ M :: :: Nsub :: ''
   {{ com Negative subtyping }}
   {{ tex [[G]] [[⊢]] [[N]] \subDZero [[M]] }} by
 
   ----------- :: NVar
-  G ⊢ a⁻ ≤ a⁻ 
+  G ⊢ a⁻ ≤₀ a⁻ 
 
-  G ⊢ P ≈ Q
+  G ⊢ P ≈₀ Q
   ------------ :: ShiftU
-  G ⊢ ↑P ≤ ↑Q
+  G ⊢ ↑P ≤₀ ↑Q
 
-  G ⊢ P   G ⊢ [P/a⁺] N ≤ M    M ≠ ∀b⁺.M'
+  G ⊢ P   G ⊢ [P/a⁺] N ≤₀ M    M ≠ ∀b⁺.M'
   ------------------------------------- :: ForallL
-  G ⊢ ∀a⁺.N ≤ M
+  G ⊢ ∀a⁺.N ≤₀ M
 
-  G, a⁺ ⊢ N ≤ M
+  G, a⁺ ⊢ N ≤₀ M
   -------------- :: ForallR
-  G ⊢ N ≤ ∀a⁺.M
+  G ⊢ N ≤₀ ∀a⁺.M
 
-  G ⊢ P ≥ Q    G ⊢ N ≤ M 
+  G ⊢ P ≥₀ Q    G ⊢ N ≤₀ M 
   ----------------------- :: Arrow
-  G ⊢ P → N ≤ Q → M
+  G ⊢ P → N ≤₀ Q → M
 
-  defn G ⊢ P ≥ Q :: :: Psup :: ''
+  defn G ⊢ P ≥₀ Q :: :: Psup :: ''
   {{ com Positive supertyping }}
   {{ tex [[G]] [[⊢]] [[P]] \supDZero [[Q]] }} by
 
   ----------- :: PVar
-  G ⊢ a⁺ ≥ a⁺ 
+  G ⊢ a⁺ ≥₀ a⁺ 
 
-  G ⊢ N ≈ M
+  G ⊢ N ≈₀ M
   ------------ :: ShiftD
-  G ⊢ ↓N ≥ ↓M
+  G ⊢ ↓N ≥₀ ↓M
 
-  G ⊢ N   G ⊢ [N/a⁻] P ≥ Q    Q ≠ ∃a⁻.Q'
+  G ⊢ N   G ⊢ [N/a⁻] P ≥₀ Q    Q ≠ ∃a⁻.Q'
   -------------------------------------- :: ExistsL
-  G ⊢ ∃a⁻.P ≥ Q
+  G ⊢ ∃a⁻.P ≥₀ Q
 
-  G, a⁻ ⊢ P ≥ Q
+  G, a⁻ ⊢ P ≥₀ Q
   --------------- :: ExistsR
-  G ⊢ P ≥ ∃a⁻.Q
+  G ⊢ P ≥₀ ∃a⁻.Q

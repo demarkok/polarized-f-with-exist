@@ -41,8 +41,8 @@ defns
   -------------------------- :: Arrow
   G ⊢ iP → iN ≤ iQ → iM
 
-  G, pbs ⊢ iPi   G, pbs ⊢ [iPs/pas] iN ≤ iM
-  ----------------------------------------- :: Forall
+  fv iN ∩ {pbs} = ∅   G, pbs ⊢ iPi   G, pbs ⊢ [iPs/pas] iN ≤ iM
+  -------------------------------------------------------------- :: Forall
   G ⊢ ∀pas.iN ≤ ∀pbs.iM
 
   defn G ⊢ iP ≥ iQ :: :: Psup :: ''
@@ -56,7 +56,7 @@ defns
   -------------- :: ShiftD
   G ⊢ ↓iN ≥ ↓iM
 
-  G, nbs ⊢ iNi   G, nbs ⊢ [iNs/nas] iP ≥ iQ
+  fv iP ∩ {nbs} = ∅   G, nbs ⊢ iNi   G, nbs ⊢ [iNs/nas] iP ≥ iQ
   ----------------------------------------- :: Exists
   G ⊢ ∃nas.iP ≥ ∃nbs.iQ
 
