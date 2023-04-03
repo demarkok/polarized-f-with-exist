@@ -3,8 +3,10 @@ defns
 
   defn G ⊢ iN  :: :: NiWF :: '' {{ com Negative type well-formedness }} by
   defn G ⊢ iP  :: :: PiWF :: '' {{ com Positive type well-formedness }} by
-  defn G ⊢ N   :: :: NWF :: '' {{ com Negative type well-formedness }} by
-  defn G ⊢ P   :: :: PWF :: '' {{ com Positive type well-formedness }} by
+  defn G ⊢ N   :: :: NWF :: ''   {{ com Negative type well-formedness }} by
+  defn G ⊢ P   :: :: PWF :: ''   {{ com Positive type well-formedness }} by
+  defn G ⊢ iNs  :: :: NisWF :: '' {{ com Negative type list well-formedness }} by
+  defn G ⊢ iPs  :: :: PisWF :: '' {{ com Positive type list well-formedness }} by
 
   % defn G ; Θ ⊢ uN  :: :: NuWF :: '' {{ com Negative type well-formedness }} by
   % defn G ; Θ ⊢ uP  :: :: PuWF :: '' {{ com Positive type well-formedness }} by

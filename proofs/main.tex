@@ -116,6 +116,11 @@
 
 
 
+% G ⊨ iP1 ∨ iP2 = iQ
+\renewcommand{\ottdruleLUBVarName}[0]{(Var$^{\vee}$)}
+\renewcommand{\ottdruleLUBShiftName}[0]{($\downarrow^{\vee}$)}
+\renewcommand{\ottdruleLUBExistsName}[0]{($\exists^{\vee}$)}
+
 
 
 \begin{document}
@@ -228,6 +233,9 @@ matching entries, and unite the results.
 
 \subsection{Overview}
 \input{../_build/_gen/tex/lemmas-overview.tex}
+
+\subsection{Anti-unification}
+\input{../_build/_gen/tex/au-lemmas.tex}
 
 \subsection{Variable Ordering}
 \input{../_build/_gen/tex/ord-lemmas.tex}

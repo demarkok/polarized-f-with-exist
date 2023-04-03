@@ -33,18 +33,20 @@ nb {{ tex \beta^{-} }}
 grammar
 
 s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
-   | ·                    :: :: Empty
-   | P / pa               :: :: PosSub
-   | N / na               :: :: NegSub
-   | iPs / pas            :: :: PosSubs 
-   | iNs / nas            :: :: NegSubs
-   | pmas / pas           :: :: PosMSubs
-   | nmas / nas           :: :: NegMSubs
-   | puas / pas           :: :: PosUSubs
-   | nuas / nas           :: :: NegUSubs
-   | nas / nuas           :: :: NegFromUSubs
-   | ordVars1 / ordVars2  :: :: VarSubs
-   | </ si // , // i />   :: :: concat  {{ com concatenate }}
+   | ·                    ::   :: Empty
+   | P / pa               ::   :: PosSub
+   | N / na               ::   :: NegSub
+   | iPs / pas            ::   :: PosSubs 
+   | iNs / nas            ::   :: NegSubs
+   | pmas / pas           ::   :: PosMSubs
+   | nmas / nas           ::   :: NegMSubs
+   | puas / pas           ::   :: PosUSubs
+   | nuas / nas           ::   :: NegUSubs
+   | nas / nuas           ::   :: NegFromUSubs
+   | σ1 ○ σ2              ::   :: Compose
+   | ordVars1 / ordVars2  ::   :: VarSubs
+   | ( σ )                :: S :: paren
+   | </ si // , // i />   ::   :: concat  {{ com concatenate }}
 
 
 usEntry  {{ tex e }} :: usE_' ::= {{ com entry of a unification solution }}
@@ -72,6 +74,7 @@ aus {{ tex \widehat{\tau} }} :: 'aus_' ::= {{ com anti-unification substitution 
    | nua :≈ iN            ::   :: NSol  {{ tex [[nua]] :\approx [[iN]] }}
    | nua :≈ uN            ::   :: NuSol {{ tex [[nua]] :\approx [[uN]] }}
    | nas / nuas           ::   :: NegFromUSubs
+   | iNs / nuas           ::   :: Neg
    | aus1 ∪ aus2          ::   :: Union
    | </ ausi // , // i /> ::   :: concat  {{ com concatenate }}
    | ( aus )              :: S :: paren
@@ -137,7 +140,8 @@ iPs {{ tex \vv{ P } }}
    | iP                   ::   :: Var     {{ com a singel type }}
    | </ iPsi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
-iNs {{ tex \vv{ N } }}
+iNs {{ tex \vv{ N } }},
+iMs {{ tex \vv{ M } }}
 :: 'iNs_' ::= {{ com list of negative types }}
    | ·                    ::   :: empty   {{ com empty list }}
    | iN                   ::   :: Var     {{ com a singel type }}
@@ -288,7 +292,9 @@ pua {{ tex \widehat{\alpha}^{+} }} :: pua_ ::= {{ com positive unification varia
     | a ̂ ⁺        :: :: Var {{ tex \widehat{[[a]]}^{+} }}
     | a ̂ ⁺ [ Δ ]  :: :: AnnotVar {{ tex \widehat{[[a]]}^{+}\{ [[Δ]] \} }}
 
-nua {{ tex \widehat{\alpha}^{-} }} :: nua_ ::= {{ com negative unification variable }}
+nua {{ tex \widehat{\alpha}^{-} }},
+nub {{ tex \widehat{\beta}^{-} }}
+:: nua_ ::= {{ com negative unification variable }}
     | a ̂ ⁻               :: :: Var {{ tex \widehat{[[a]]}^{-} }}
     | a ̂ ⁻ _ { iN , iM } :: :: VarIdxd {{ tex \widehat{[[a]]}^{-}_{\{ [[iN]], [[iM]] \} } }}
     | a ̂ ⁻ [ Δ ]         :: :: AnnotVar {{ tex \widehat{[[a]]}^{-}\{ [[Δ]] \} }}
@@ -364,6 +370,7 @@ terminals :: 'terminals_' ::=
   | ≈u :: :: unify     {{ tex \overset{u}{\simeq} }}
   | ≈au :: :: antiunify  {{ tex \overset{a}{\simeq} }}
   | ∅ :: :: empty      {{ tex \emptyset }}
+  | ○ :: :: compose    {{ tex \circ }}
   % | ≈a :: :: antiunify {{ tex \overset{g}{\simeq} }}
   | ⊨  :: :: vDash     {{ tex \vDash }}
   | ⫤  :: :: Dashv     {{ tex \Dashv }}
