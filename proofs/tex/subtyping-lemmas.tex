@@ -1,0 +1,40 @@
+\begin{lemma}[Free Variable Propagation]
+  \label{lemma:fv-propagation}
+  In the judgments of negative subtyping or positive supertyping,
+  free variables propagate left-to-right. For a context $[[Γ]]$,
+  \begin{itemize}
+    \item $-$ if $[[Γ ⊢ iN ≤ iM]]$ then $[[fv(iN)]] \subseteq [[fv(iM)]]$
+    \item $+$ if $[[Γ ⊢ iP ≥ iQ]]$ then $[[fv(iP)]] \subseteq [[fv(iQ)]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Mutual induction on $[[Γ ⊢ iN ≤ iM]]$ and $[[Γ ⊢ iP ≥ iQ]]$.
+  \begin{caseof}
+  \item $[[G ⊢ a⁻ ≤ a⁻]]$\\
+    It is self-evident that $[[{a⁻} ⊆ {a⁻}]]$.
+  \item $[[G ⊢ ↑iP ≤ ↑iQ]]$
+    From the inversion (and unfolding $[[G ⊢ iP ≈ iQ]]$ ), we have
+    $[[G ⊢ iP ≥ iQ]]$. Then by the induction hypothesis,
+    $[[fv(iP)]] \subseteq [[fv(iQ)]]$. The desired inclusion
+    inclusion holds, since $[[fv(↑iP)]] = [[fv(iP)]]$ and
+    $[[fv(↑iQ)]] = [[fv(iQ)]]$.
+  \item $[[G ⊢ iP → iN ≤ iQ → iM]]$
+    The induction hypothesis applied to the premises gives:
+    $[[fv(iP)]] \subseteq [[fv(iQ)]]$ and
+    $[[fv(iN)]] \subseteq [[fv(iM)]]$.
+    Then $[[fv(iP → iN)]] = [[fv(iP) ∪ fv(iN)]] \subseteq
+    [[fv(iQ) ∪ fv(iM)]] = [[fv(iQ → iM)]]$.
+
+  \item $[[G ⊢ ∀pas.iN ≤ ∀pbs.iM]]$\\
+    $
+    \begin{aligned}[t]
+      [[fv ∀pas.iN ]] &\subseteq [[fv ([iPs/pas] iN) ]] ~\setminus~ [[{pbs}]] 
+                      &&   \text{here $[[{pbs}]]$ is excluded by the premise $[[fv iN ∩ {pbs} = ∅]]$}\\
+                      &\subseteq [[fv iM]] ~\setminus~ [[{pbs}]]
+                      &&   \text{by the induction hypothesis, } [[fv ([iPs/pas] iN) ]] \subseteq [[fv iM]] \\
+                      &\subseteq [[fv ∀pbs.iM]]
+    \end{aligned}
+    $
+  \item The positive cases are symmetric.
+  \end{caseof}
+\end{proof}

@@ -1,0 +1,101 @@
+\begin{lemma}[Type well-formedness is invariant under equivalence]
+  \label{lemma:wf-equiv}
+  Mutual subtyping implies declarative equivalence.
+  \begin{itemize}
+  \item[$+$] if $[[iP ≈ iQ]]$ then $[[Γ ⊢ iP]] \iff [[Γ ⊢ iQ]]$,
+  \item[$-$] if $[[iN ≈ iM]]$ then $[[Γ ⊢ iN]] \iff [[Γ ⊢ iM]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  \ilyam{todo}
+\end{proof}
+
+\begin{corollary}[Normalization preserves well-formedness]
+  \label{corollary:wf-nf}
+  \hfill
+  \begin{itemize}
+  \item[$+$] $[[Γ ⊢ iP]] \iff [[Γ ⊢ nf(iP)]]$,
+  \item[$-$] $[[Γ ⊢ iN]] \iff [[Γ ⊢ nf(iN)]]$
+  \end{itemize}
+\end{corollary}
+\begin{proof}
+  Immediately from \cref{lemma:wf-equiv,lemma:normalization-soundness}.
+\end{proof}
+
+\begin{corollary}[Normalization preserves well-formedness of substitution]
+  \label{corollary:wf-s-nf}
+  \hfill \\
+   $[[Γ2 ⊢ σ : Γ1]] \iff [[Γ2 ⊢ nf(σ) : Γ1]]$
+\end{corollary}
+
+\begin{lemma}[Soundness of equivalence]
+  \label{lemma:equiv-soundness}
+  Declarative equivalence implies mutual subtyping.
+  \begin{itemize}
+    \item[$+$] if $[[Γ ⊢ iP]]$, $[[Γ ⊢ iQ]]$, and $[[iP ≈ iQ]]$ then $[[Γ ⊢ iP ≈ iQ]]$,
+    \item[$-$] if $[[Γ ⊢ iN]]$, $[[Γ ⊢ iM]]$, and $[[iN ≈ iM]]$ then $[[Γ ⊢ iN ≈ iM]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  We prove it by mutual induction on $[[iP ≈ iQ]]$ and $[[iN ≈ iM]]$.
+  \begin{caseof}
+    \item $[[a⁻ ≈ a⁻]]$\\
+      Then $[[Γ ⊢ a⁻ ≤ a⁻]]$ by \ruleref{\ottdruleDOneNVarLabel},
+      which immediately implies $[[Γ ⊢ a⁻ ≈ a⁻]]$ by \ruleref{\ottdruleDOneNDefLabel}.
+
+    \item $[[↑iP ≈ ↑iQ]]$\\
+      Then by inversion of \ruleref{\ottdruleDOneShiftULabel},
+      $[[iP ≈ iQ]]$, and from the induction hypothesis, $[[Γ ⊢ iP ≈ iQ]]$,
+      and (by symmetry) $[[Γ ⊢ iQ ≈ iP]]$.
+
+      When \ruleref{\ottdruleDOneShiftULabel} is applied to $[[Γ ⊢ iP ≈ iQ]]$,
+      it gives us $[[Γ ⊢ ↑iP ≤ ↑iQ]]$; when it is applied to $[[Γ ⊢ iQ ≈ iP]]$,
+      we obtain $[[Γ ⊢ ↑iQ ≤ ↑iP]]$. Together, it implies $[[Γ ⊢ ↑iP ≈ ↑iQ]]$.
+
+    \item $[[iP → iN ≈ iQ → iM]]$\\
+      Then by inversion of \ruleref{\ottdruleDOneArrowLabel},
+      $[[iP ≈ iQ]]$ and $[[iN ≈ iM]]$. By the induction hypothesis,
+      $[[Γ ⊢ iP ≈ iQ]]$ and $[[Γ ⊢ iN ≈ iM]]$, which means by inversion:
+      \begin{enumerate*}
+        \item[(i)] [[Γ ⊢ iP ≥ iQ]],
+        \item[(ii)] [[Γ ⊢ iQ ≥ iP]],
+        \item[(iii)] [[Γ ⊢ iN ≤ iM]],
+        \item[(iv)]  [[Γ ⊢ iM ≤ iN]].
+      \end{enumerate*}
+      Applying \ruleref{\ottdruleDOneArrowLabel} to (i) and (iii), we obtain
+      $[[Γ ⊢ iP → iN ≤ iQ → iM]]$; applying it to (ii) and (iv), we have $[[Γ ⊢
+      iQ → iM ≤ iP → iN]]$. Together, it implies $[[Γ ⊢ iP → iN ≈ iQ → iM]]$.
+    \item $[[∀pas.iN ≈ ∀pbs.iM]]$\\
+      Then by inversion, there exists bijection $[[mu : ({pbs} ∩ fv iM) ↔ ({pas}
+      ∩ fv iN)]]$, such that $[[iN ≈ [mu] iM]]$. By the induction hypothesis,
+      $[[Γ, pas ⊢ iN ≈ [mu] iM]]$. From \cref{corollary:subst-pres-equiv} and
+      the fact that $[[mu]]$ is bijective, we also have
+      $[[Γ, pbs ⊢ [mu-1]iN ≈ iM]]$.
+
+      Let us construct a subsitution $[[pas ⊢ iPs/pbs : pbs]]$ by
+      extending $[[mu]]$ with arbitrary positive types on $[[{pbs} \ fv iM]]$.
+
+      Notice that $[[ [mu]iM ]] = [[ [iPs/pbs]iM ]]$, and therefore,
+      $[[Γ, pas ⊢ iN ≈ [mu] iM]]$ implies $[[Γ, pas ⊢ [iPs/pbs]iM ≤ iN]]$. Then by
+      \ruleref{\ottdruleDOneForallLabel}, $[[Γ ⊢ ∀pbs.iM ≤ ∀pas.iN]]$.
+
+      Analogously, we construct the substitution from $[[mu-1]]$, and use it to
+      instantiate $[[pas]]$ in the application of
+      \ruleref{\ottdruleDOneForallLabel} to infer $[[Γ ⊢ ∀pas.iN ≤ ∀pbs.iM]]$.
+
+      This way, $[[Γ ⊢ ∀pbs.iM ≤ ∀pas.iN]]$ and $[[Γ ⊢ ∀pas.iN ≤ ∀pbs.iM]]$
+      gives us $[[Γ ⊢ ∀pbs.iM ≈ ∀pas.iN]]$.
+  \end{caseof}
+\end{proof}
+
+\begin{lemma}[Completeness of equivalence]
+  \label{lemma:equiv-completeness}
+  Mutual subtyping implies declarative equivalence.
+  \begin{itemize}
+  \item[$+$] if $[[Γ ⊢ iP ≈ iQ]]$ then $[[iP ≈ iQ]]$,
+  \item[$-$] if $[[Γ ⊢ iN ≈ iM]]$ then $[[iN ≈ iM]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  \ilyam{todo}
+\end{proof}
