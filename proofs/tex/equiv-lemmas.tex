@@ -57,10 +57,10 @@
       $[[iP ≈ iQ]]$ and $[[iN ≈ iM]]$. By the induction hypothesis,
       $[[Γ ⊢ iP ≈ iQ]]$ and $[[Γ ⊢ iN ≈ iM]]$, which means by inversion:
       \begin{enumerate*}
-        \item[(i)] [[Γ ⊢ iP ≥ iQ]],
-        \item[(ii)] [[Γ ⊢ iQ ≥ iP]],
-        \item[(iii)] [[Γ ⊢ iN ≤ iM]],
-        \item[(iv)]  [[Γ ⊢ iM ≤ iN]].
+        \item[(i)] $[[Γ ⊢ iP ≥ iQ]]$,
+        \item[(ii)] $[[Γ ⊢ iQ ≥ iP]]$,
+        \item[(iii)] $[[Γ ⊢ iN ≤ iM]]$,
+        \item[(iv)]  $[[Γ ⊢ iM ≤ iN]]$.
       \end{enumerate*}
       Applying \ruleref{\ottdruleDOneArrowLabel} to (i) and (iii), we obtain
       $[[Γ ⊢ iP → iN ≤ iQ → iM]]$; applying it to (ii) and (iv), we have $[[Γ ⊢
@@ -85,8 +85,12 @@
 
       This way, $[[Γ ⊢ ∀pbs.iM ≤ ∀pas.iN]]$ and $[[Γ ⊢ ∀pas.iN ≤ ∀pbs.iM]]$
       gives us $[[Γ ⊢ ∀pbs.iM ≈ ∀pas.iN]]$.
+
+    \item For the cases of the positive types, the proofs are symmetric.
   \end{caseof}
 \end{proof}
+
+
 
 \begin{lemma}[Completeness of equivalence]
   \label{lemma:equiv-completeness}
@@ -99,3 +103,346 @@
 \begin{proof}
   \ilyam{todo}
 \end{proof}
+
+
+\begin{lemma}
+  Informally, this lemma says that if $[[Γ, Ord varset1 ⊢ [σ21]iP ≥ iQ]]$
+  and $[[Γ, Ord varset2 ⊢ [σ12]iQ ≥ iP]]$ holds for substitutions $[[σ12]]$
+  and $[[σ21]]$ then these substitutions are in fact mutually inverse bijections
+  between variables $[[varset1]]$ and $[[varset1]]$.
+
+  \begin{itemize}
+  \item[$+$]
+    For $[[Γ, Ord varset2 ⊢ iP]]$,~ $[[Γ, Ord varset1 ⊢ iQ]]$,~
+    $[[Γ, Ord varset2 ⊢ σ12 : Ord varset1]]$,~
+    $[[Γ, Ord varset1 ⊢ σ21 : Ord varset2]]$,
+    suppose that:
+    \begin{enumerate}
+      \item $\{ [[coh]] \mid [[α±:coh]] \in [[varset1 ∩ fv iQ]] \}$ = $\{ [[coh]] \mid [[α±:coh]] \in [[varset2 ∩ fv iP]] \}$,
+      \item $[[Γ, Ord varset1 ⊢ [σ21]iP ≥ iQ]]$,
+      \item $[[Γ, Ord varset2 ⊢ [σ12]iQ ≥ iP]]$.
+    \end{enumerate}
+    Then there exists a bijection
+    $\mu : [[varset1 ∩ fv iQ]] \leftrightarrow [[varset2 ∩ fv iP]]$ such that:
+    \begin{enumerate}
+    \item $\mu$ preserves cohorts:
+      $\mu ([[α±:coh]]) = [[β±:coh]]$ ($[[α±:coh]]$ and $[[β±:coh]]$
+      have the same cohort label $\pm [[coh]]$).
+    \item $[[Γ, Ord varset2 ⊢ σ12 ≈ Sub μ   : Ord (varset1 ∩ fv iQ) ]]$ (the equivalence is pointwise)
+    \item $[[Γ, Ord varset1 ⊢ σ21 ≈ Sub μ-1 : Ord (varset2 ∩ fv iP) ]]$ (the equivalence is pointwise)
+    \end{enumerate}
+
+  \item[$-$]
+    For $[[Γ, Ord varset2 ⊢ iN]]$,~ $[[Γ, Ord varset1 ⊢ iM]]$,~
+    $[[Γ, Ord varset2 ⊢ σ12 : Ord varset1]]$,~
+    $[[Γ, Ord varset1 ⊢ σ21 : Ord varset2]]$,
+    suppose that:
+    \begin{enumerate}
+    \item $\{ [[coh]] \mid [[α±:coh]] \in [[varset1 ∩ fv iM]] \}$ = $\{ [[coh]] \mid [[β±:coh]] \in [[varset2 ∩ fv iN]] \}$,
+    \item $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$,
+    \item $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$.
+    \end{enumerate}
+    Then there exists a bijection
+    $\mu : [[varset1 ∩ fv iM]] \leftrightarrow [[varset2 ∩ fv iN]]$ such that:
+    \begin{enumerate}
+    \item $\mu$ preserves cohorts:
+      $\mu ([[α±:coh]]) = [[β±:coh]]$ ($[[α±:coh]]$ and $[[β±:coh]]$
+      have the same cohort label $\pm [[coh]]$).
+    \item $[[Γ, Ord varset2 ⊢ σ12 ≈ Sub μ : Ord (varset1 ∩ fv iM) ]]$ (the equivalence is pointwise)
+    \item $[[Γ, Ord varset1 ⊢ σ21 ≈ Sub μ-1 : Ord (varset2 ∩ fv iN)]]$ (the equivalence is pointwise)
+    \end{enumerate}
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Mutual induction on the pair of sizes of inference trees: $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$
+  and $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$ (or the corresponding trees in the
+  positive case).
+
+  \begin{caseof}
+  \item $[[iN]] = [[∀pds.β⁻:coh]]$, for $[[β⁻:coh]] \in
+    [[varset2]]$ and possibly empty $[[pds]]$\\
+    \label{case:double-subtyping-subst-happened}
+    Then by \cref{todo} \ilyam{lemma} $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ ∀pds.β⁻:coh]]$ means that $[[ [σ12]iM ]] =
+    [[∀pcs.β⁻:coh]]$, which (since $[[β⁻:coh]] \notin [[fv iM]]$) is only possible
+    when $[[iM]] = [[∀pcs'.α⁻:coh']]$ (where $[[α⁻:coh']] \in [[varset1]]$ and $[[pcs']]$ is possibly empty), and
+    $[[σ12]] ([[α⁻:coh']]) = [[∀pcs''.β⁻:coh]]$.
+    Notice that by the first condition, the sets of cohort labels of $[[varset1
+    ∩ fv iM]]$ and $[[varset2 ∩ fv iN]]$ must be equal, which means $[[coh]] = [[coh']]$.
+    Also notice that $[[Γ, Ord varset2 ⊢ ∀pcs''.β⁻:coh ≈ β⁻:coh]]$.
+
+    Then $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$ becomes
+    $[[Γ, Ord varset1 ⊢ [σ21]∀pds.β⁻:coh ≤ ∀pcs'.α⁻:coh]]$,
+    which by \cref{todo} \ilyam{lemma} implies that $[[ [σ21] ∀pds.β⁻:coh]] =
+    [[∀pds'.α⁻:coh]]$, and thus,
+    $[[σ21]] ([[β⁻:coh]]) = [[∀pds''.α⁻:coh]]$.
+    Notice that $[[Γ, Ord varset1 ⊢ ∀pds''.α⁻:coh ≈ α⁻:coh]]$.
+
+    This way, we can take $\mu = [[α⁻:coh]] \mapsto [[β⁻:coh]] $, which by
+    construction is a bijection preserving cohorts. Moreover,
+    $[[Γ, Ord varset2 ⊢ ∀pcs''.β⁻:coh ≈ β⁻:coh]]$ means
+    $[[Γ, Ord varset2 ⊢ [σ12] α⁻:coh ≈ [Sub μ] α⁻:coh]]$ implying
+    $[[Γ, Ord varset2 ⊢ σ12 ≈ Sub μ : Ord (varset1 ∩ fv iM) ]]$;
+    and
+    $[[Γ, Ord varset1 ⊢ ∀pds''.α⁻:coh ≈ α⁻:coh]]$ means
+    $[[Γ, Ord varset1 ⊢ [σ21] β⁻:coh ≈ [Sub μ-1] β⁻:coh]]$ implying
+    $[[Γ, Ord varset1 ⊢ σ21 ≈ Sub μ-1 : Ord (varset2 ∩ fv iN)]]$.
+
+  \item The last rule to infer $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$ was
+    \ruleref{\ottdruleDOneNVarLabel}, i.e. $[[ [σ21]iN ]] = [[iM]] = [[γ⁻]]$.\\
+    Then the case when $[[γ⁻]] \in [[varset2]]$, has been covered by
+    \cref{case:double-subtyping-subst-happened}, so we assume
+    that $[[γ⁻]] \notin [[varset2]]$, and thus, $[[iN]] = [[γ⁻]]$.
+
+    Notice that $[[γ⁻]] \notin [[varset1]]$ because otherwise,
+    $[[varset1 ∩ fv iN]] \neq \emptyset$,
+    which would contradict with $[[Γ, Ord varset2 ⊢ iN]]$.
+
+    Then $[[fv iN ∩ varset2]] = [[{γ⁻} ∩ varset2]] = \emptyset$ and $[[fv iM ∩
+    varset1]] = [[{γ⁻} ∩ varset1]] = \emptyset$.
+    Hence, we take the empty $\mu : \emptyset \leftrightarrow \emptyset$, which
+    vacuously satisfies the required properties.
+
+  \item The last rule to infer $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$ was
+    \ruleref{\ottdruleDOneShiftULabel}, i.e. $[[ [σ21]iN ]] = [[↑iP]]$, $[[ iM
+    ]] = [[↑iQ]]$, and $[[Γ, Ord varset1 ⊢ iP ≈ iQ]]$\\
+    Since $[[iN]]$ is not a variable from the domain of $[[σ21]]$ (which has
+    been covered by \cref{case:double-subtyping-subst-happened}),
+    the substitution applied to $[[iN]]$ must preserve its outer shape.
+    Specifically, $[[ [σ21]iN ]] = [[↑iP]]$ means
+    $[[ [σ21]iN ]] = [[ [σ21]↑iP']] = [[ ↑[σ21]iP']] =[[↑iP]]$,
+    i.e. $[[ iN ]] = [[↑iP']]$ and
+    $[[ [σ21]iP']] = [[iP]]$. In particular,
+    $[[Γ, Ord varset1 ⊢ iP ≈ iQ]]$ implies
+    $[[Γ, Ord varset1 ⊢ iP ≥ iQ]]$, i.e.
+    $[[Γ, Ord varset1 ⊢ [σ21]iP' ≥ iQ]]$.
+
+    In addition, $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$ becomes
+    $[[Γ, Ord varset2 ⊢ ↑[σ12]iQ ≤ ↑iP']]$, which is only inferable by
+    \ruleref{\ottdruleDOneShiftULabel}, meaning that
+    $[[Γ, Ord varset2 ⊢ [σ12]iQ ≈ iP']]$, and in particular,
+    $[[Γ, Ord varset2 ⊢ [σ12]iQ ≥ iP']]$.
+
+    Notice that the tree inferring $[[Γ, Ord varset2 ⊢ [σ12]iQ ≥ iP']]$ is a
+    proper subtree of $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$. Analogously,
+    $[[Γ, Ord varset1 ⊢ [σ21]iP' ≥ iQ]]$ is a proper subtree of
+    $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$. This way, we apply the induction
+    hypothesis to $[[Γ, Ord varset1 ⊢ [σ21]iP' ≥ iQ]]$ and $[[Γ, Ord varset2 ⊢
+    [σ12]iQ ≥ iP']]$ (notice that $[[varset1]]$, $[[varset2]]$, and the sets of free variables of
+    the types did not change) and obtain exactly what we aimed.
+
+  \item The last rule to infer $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$ was
+    \ruleref{\ottdruleDOneForallLabel}, i.e. $[[ [σ21]iN ]] = [[∀pcs.iN']]$,
+    $[[iM]] = [[∀pds.iM']]$, and $[[Γ, Ord varset1, pds ⊢ [iPs/pcs]iN' ≤ iM']]$
+    for  $[[Γ, Ord varset1, pds ⊢ iPi]]$ \\
+
+    Since $[[iN]]$ does not have the shape of $[[∀pds.β⁻:coh]]$, for $[[β⁻:coh]]
+    \in [[varset2]]$ (which has been covered by
+    \cref{case:double-subtyping-subst-happened}), the substitution applied to
+    $[[iN]]$ must preserve its outer shape. Specifically,
+    $[[ [σ21]iN ]] = [[∀pcs.iN']]$
+    means that $[[ iN ]]$ ``starts with'' $\forall[[pcs]]$, i.e.
+    $[[ [σ21]iN ]] = [[ [σ21]∀pcs.iN'' ]] = [[ ∀pcs.[σ21]iN'' ]] = [[ ∀pcs.iN'
+    ]]$, where $[[iN]] = [[∀pcs.iN'']]$ and $[[ [σ21]iN'']] = [[iN']]$.
+
+    This way, $[[Γ, Ord varset1, pds ⊢ [iPs/pcs]iN' ≤ iM']]$ becomes
+    $[[Γ, Ord varset1, pds ⊢ [iPs/pcs][σ21]iN'' ≤ iM']]$.
+    Notice that the tree inferring this judgment is a proper subtree of
+    $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$.
+
+
+    On the other hand, $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$
+    becomes $[[Γ, Ord varset2 ⊢ ∀pds.[σ12]iM' ≤ ∀pcs.iN'']]$
+    (where either $[[pds]]$ or $[[pcs]]$ is non-empty),
+    which is only inferable by \ruleref{\ottdruleDOneForallLabel},
+    meaning that
+    $[[Γ, Ord varset2, pcs ⊢ [iQs/pds][σ12]iM' ≤ iN'']]$ for some
+    $[[Γ, Ord varset2, pcs ⊢ iQi]]$.
+    Notice that the tree inferring this judgment is a proper subtree of
+    $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$.
+
+    Let us label $[[pcs]]$ and $[[pds]]$ with a sufficiently large cohort label
+    $[[mcoh]]$ such that $[[mcoh]] > [[coh]]$ for any $[[α⁺:coh]] \in [[varset1 ∪
+    varset2]]$. Then we merge $[[iQs/δ⁺:mcoh*]]$ and $[[σ12]]$ denoting the resulting
+    substitution as $[[σ12']]$ $([[(Γ, Ord varset2, γ⁺:mcoh*) ⊢ σ12' : (Ord varset1, δ⁺:mcoh*)]])$.
+
+    What do we mean by merging? The codomains of $[[iQs/δ⁺:mcoh*]]$ and
+    $[[σ12]]$ are $[[Γ, Ord varset2,  γ⁺:mcoh*]]$ and $[[Γ, Ord varset2]]$,
+    respectively, which are disjoint with both of their domains
+    ($[[δ⁺:mcoh*]]$ and $[[Ord varset1]]$, respectively). In turn, the domains
+    of $[[iQs/δ⁺:mcoh*]]$ and $[[σ12]]$ are themselves mutually disjoint.
+    This way, by merging we mean
+    $[[iQs/δ⁺:mcoh*]] \cup [[σ12]]$ (relationally) or
+    $[[iQs/δ⁺:mcoh* ○ σ12]]$ or
+    $[[σ12 ○ iQs/δ⁺:mcoh*]]$, since these three substitutions are equal.
+
+    Analogously, we merge $[[iPs/γ⁺:mcoh*]]$ and $[[σ21]]$ denoting the
+    resulting substitution as $[[σ21']]$ $([[(Γ, Ord varset1, δ⁺:mcoh*) ⊢ σ21' :
+    (Ord varset2, γ⁺:mcoh*)]])$.
+
+    We wish to apply the induction hypothesis to
+    $[[Γ, Ord varset1, δ⁺:mcoh* ⊢ [σ21']iN'' ≤ iM']]$ and
+    $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12']iM' ≤ iN'']]$.
+    To do so, we need to show that the cohort labels of $[[(varset2 ∪ {γ⁺:mcoh*}) ∩ fv
+    iN'']]$ coincide with those of $[[(varset1 ∪ {δ⁺:mcoh*}) ∩ fv iM']]$ (as sets).
+    \begin{assertion*}
+      The set of cohorts of $[[(varset2 ∪ {γ⁺:mcoh*}) ∩ fv iN'']]$
+      is equal to the set of cohorts of $[[(varset1 ∪ {δ⁺:mcoh*}) ∩ fv iM']]$.
+    \end{assertion*}
+
+    \begin{proof}
+      $
+      \begin{aligned}[t]
+        [[(varset2 ∪ {γ⁺:mcoh*}) ∩ fv iN'']] &= [[(varset2 ∪ {γ⁺:mcoh*}) ∩ (fv
+                                               iN ∪ ({γ⁺:mcoh*} ∩ fv iN''))]]\\
+                                             &= [[varset2 ∩ fv iN ∪ {γ⁺:mcoh*} ∩ fv iN'']]
+                                             && \text{because
+                                                $[[varset2]]$ and $[[fv iN]]$ are disjoint with $[[γ⁺:mcoh*]]$}\\
+        [[(varset1 ∪ {δ⁺:mcoh*}) ∩ fv iM']]  &= [[varset1 ∩ fv iM ∪ {δ⁺:mcoh*} ∩ fv iM']]
+                                             && \text{analogously}\\
+      \end{aligned}\\
+      $
+      Since the cohort labels of $[[varset2 ∩ fv iN]]$ coincide with those of
+      $[[varset1 ∩ fv iM]]$ by the assumption, it suffices to prove that the cohort labels of
+      $[[{γ⁺:mcoh*} ∩ fv iN'']]$ and of $[[{δ⁺:mcoh*} ∩ fv iM']]$ coincide.
+      Note that these sets have the same
+      cohorts labels $[[mcoh]]$, i.e. it is required to show that these sets are
+      either both empty or both non-empty, i.e.
+      $[[{γ⁺:mcoh*} ∩ fv iN'']] = \emptyset \iff [[{δ⁺:mcoh*} ∩ fv iM']] = \emptyset$
+      \begin{itemize}
+      \item [$(\Leftarrow)$] Suppose that $[[{δ⁺:mcoh*} ∩ fv iM']] = \emptyset$.
+        Then by \cref{todo}, since
+        $[[Γ, Ord varset1, δ⁺:mcoh* ⊢ [σ21']iN'' ≤ iM']]$, $[[fv [σ21']iN'']]
+        \subseteq [[fv iM']]$, implying that $[[{δ⁺:mcoh*} ∩ fv [σ21']iN'']] =
+        \emptyset$,
+        and by context strengthening \cref{todo}, $[[Γ, Ord varset1, δ⁺:mcoh* ⊢ [σ21']iN'']]$ reduces to
+        $[[Γ, Ord varset1 ⊢ [σ21']iN'']]$.
+
+
+        Let us restrict $[[σ21']]$ to the set of free variables of $[[fv iN'']]$.
+        Then the domain and codomain of $[[σ21']]$ are the following:
+        $[[Γ, Ord varset1 ⊢ σ21'|fv iN'' : Ord {Ord varset2, γ⁺:mcoh*} ∩ fv iN]]$.
+        By \cref{todo}, $[[ [σ21']iN'' ]] = [[ [σ21'|fv iN'']iN'' ]]$,
+        and then
+        $[[Γ, Ord varset1 ⊢ [σ21']iN'' ≤ iM']]$, can be rewritten as
+        $[[Γ, Ord varset1 ⊢ [σ21'|fv iN'']iN'' ≤ iM']]$.
+
+        Let us apply substitution $[[σ12]]$ ($[[Γ, Ord varset2 ⊢ σ12 : Ord varset1]]$)
+        to both sides of this judgment to obtain: $[[Γ, Ord varset2 ⊢ [σ12 ○ σ21'|fv iN'']iN'' ≤ [σ12]iM']]$.
+        Using the transitivity \cref{todo}, let us compose this subtyping
+        judgment with $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12]iM' ≤ iN'']]$ to
+        form
+        $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12 ○ σ21'|fv iN'']iN'' ≤ iN'']]$.
+
+        What is the codomain of $[[σ12 ○ σ21'|fv iN'']]$?
+        By composing
+        $[[Γ, Ord varset1 ⊢ σ21'|fv iN'' : Ord {Ord varset2, γ⁺:mcoh*} ∩ fv iN]]$
+        and
+        $[[Γ, Ord varset2 ⊢ σ12 : Ord varset1]]$,
+        we have
+        $[[Γ, Ord varset2 ⊢ σ12 ○ σ21'|fv iN'' : Ord {Ord varset2, γ⁺:mcoh*} ∩
+        fv iN]]$, i.e. $[[σ12 ○ σ21'|fv iN'']]$ is a substitution contracting
+        $[[γ⁺:mcoh*]]$.
+        Then by \cref{todo},
+        $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12 ○ σ21'|fv iN'']iN'' ≤ iN'']]$
+        implies that $[[{γ⁺:mcoh*} ∩ fv iN'']] = \emptyset$.
+        \item [$(\Rightarrow)$]
+          Analogous to the previous case.
+      \end{itemize}
+    \end{proof}
+    This way, we can apply the induction hypothesis to
+    $[[Γ, Ord varset1, δ⁺:mcoh* ⊢ [σ21']iN'' ≤ iM']]$ and
+    $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12']iM' ≤ iN'']]$,
+    and obtain
+    $\mu : [[(varset1 ∪ {δ⁺:mcoh*}) ∩ fv iM']] \leftrightarrow [[(varset2 ∪ {γ⁺:mcoh*}) ∩ fv iN'']]$ such that:
+    \begin{enumerate}
+    \item $\mu$ preserves cohorts,
+    \item $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ σ12' ≈ Sub μ : Ord (varset1 ∪ {δ⁺:mcoh*}) ∩ fv iM' ]]$, and
+    \item $[[Γ, Ord varset1, δ⁺:mcoh* ⊢ σ21' ≈ Sub μ-1 : Ord (varset2 ∪ {γ⁺:mcoh*}) ∩ fv iN'']]$
+    \end{enumerate}
+
+    Let us decompose $\mu$ into the union of two bijections: $\mu_1 \sqcup
+    \mu_2$, where $\mu_1$ is defined on the variables whose cohort labels are less
+    than $[[mcoh]]$, and $\mu_2$ is defined on the variables whose cohort labels
+    are equal to $[[mcoh]]$. Notice that since $\mu$ preserves cohorts,
+    this union is disjoint: the \emph{range} of $\mu_1$ is the variables with cohorts
+    $< [[mcoh]]$ and the \emph{range} of $\mu_2$ is the variables with cohorts
+    $= [[mcoh]]$.
+
+    Recalling how $[[mcoh]]$ is chosen, notice that the signatures of $\mu_1$ and
+    $\mu_2$ are the following:
+    \begin{enumerate}
+      \item $\mu_1 : [[varset1 ∩ fv iM']] \leftrightarrow [[varset2 ∩ fv iN'']]$ and
+      \item $\mu_2 : [[{δ⁺:mcoh*} ∩ fv iM']] \leftrightarrow [[{γ⁺:mcoh*} ∩ fv iN'']]$.
+    \end{enumerate}
+
+    This way, $\mu_1$ is a cohort-preserving bijection with the required
+    signature, and what is left to show is the equivalences $[[μ1]] \eqDOne
+    [[σ12]]$, and $[[μ1-1]] \eqDOne [[σ21]]$:
+    \begin{enumerate}[nosep]
+    \item $[[Γ, Ord varset2 ⊢ σ12 ≈ Sub μ1 : Ord (varset1 ∩ fv iM) ]]$\\
+      Let us take an arbitrary $[[α±]] \in [[varset1 ∩ fv iM]]$.\\
+      $
+      \begin{aligned}
+        [[ [σ12] α± ]] &= [[ [σ12 ○ iQs/δ⁺:mcoh*] α± ]]
+                       && \text{because $[[α±]] \neq [[δi⁺:mcoh]]$} \\
+                       &= [[ [σ12'] α± ]]
+                       && \text{by the definition of $[[σ12']]$} \\
+                       &\eqDOne [[ [Sub μ] α± ]]
+                       && \text{since $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ σ12' ≈ Sub μ : Ord ((varset1 ∪ {δ⁺:mcoh*}) ∩ fv iN) ]]$} \\
+                       &= [[ [Sub μ1] α± ]]
+                       && \text{since $[[μ1]] = [[Sub μ | varset1 ∩ fv iM']]$
+                          and  $[[α±]] \in [[varset1 ∩ fv iM]] \subseteq [[varset1 ∩ fv iM']]$} \\
+      \end{aligned}
+      $\\
+      This way, $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12] α± ≈ [Sub μ1] α±  ]]$, which,
+      considering that the codomains of $[[σ12]]$ and $[[μ1]]$ are in $[[Γ, Ord
+      varset2]]$, can be strengthen to $[[Γ, Ord varset2 ⊢ [σ12] α± ≈ [Sub μ1] α± ]]$.
+
+    \item $[[Γ, Ord varset1 ⊢ σ21 ≈ Sub μ1-1 : Ord (varset2 ∩ fv iN)]]$ is proved analogously.
+
+    \end{enumerate}
+
+  \item The last rule to infer $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$ was
+    \ruleref{\ottdruleDOneArrowLabel}, i.e. $[[ [σ21]iN ]] = [[iP → iN']]$, and
+    $[[iM]] = [[iQ → iM']]$; then by inverting this rule,
+    $[[Γ, Ord varset1 ⊢ iP ≥ iQ]]$ and $[[Γ, Ord varset1 ⊢ iN' ≤ iM']]$.
+
+    $[[ [σ21]iN ]] = [[iP → iN']]$ means that either $[[iN]]$ is a variable
+    from the domain of $[[σ21]]$ (which has been covered by
+    \cref{case:double-subtyping-subst-happened})
+    or $[[ [σ21]iN ]] = [[ [σ21] (iP' → iN'')]] = [[ [σ21] iP' → [σ21] iN'' ]] =
+    [[iP → iN']]$, where
+    $[[ iN ]] = [[iP' → iN'']]$, $[[ [σ21] iP' ]] = [[iP]]$, and $[[ [σ21] iN'' ]] = [[iN']]$.
+
+    This way, $[[Γ ⊢ iP ≥ iQ]]$ and $[[Γ ⊢ iN' ≤ iM']]$ can be rewritten as
+    $[[Γ ⊢ [σ21]iP' ≥ iQ]]$ and $[[Γ ⊢ [σ21] iN'' ≤ iM']]$.
+
+    In addition, $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$ becomes
+    $[[Γ, Ord varset2 ⊢ [σ12](iQ → iM') ≤ iP' → iN'']]$,
+    implying by inversion
+    $[[Γ, Ord varset2 ⊢ [σ12]iQ ≥ iP']]$ and
+    $[[Γ, Ord varset2 ⊢ [σ12]iM' ≤ iN'']]$.
+
+  \end{caseof}
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

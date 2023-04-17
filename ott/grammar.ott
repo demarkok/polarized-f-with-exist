@@ -14,20 +14,45 @@ embed {{ tex-preamble
 }}
 
 
-metavar a {{ tex \alpha }}, b {{ tex \beta }}, α {{ tex \alpha }}, β {{ tex \beta }} ::= {{ com type variables }} 
+metavar a {{ tex \alpha }}, b {{ tex \beta }}, α {{ tex \alpha }}, β {{ tex \beta }},
+ γ {{ tex \gamma }},  δ {{ tex \delta }} ::= {{ com type variables }}
 
 indexvar n , m, i , j ::= {{ com index variables }}
+
+
+grammar
+
+coh {{ tex n }}, mcoh {{ tex m }} :: 'n_' ::= {{ com cohort index }}
+    | Z     :: :: Zero {{ tex 0 }}
+    | S coh :: :: Succ {{ tex [[coh]]+1 }}
+
+
 grammar
 
 pa {{ tex \alpha^{+} }},
-pb {{ tex \beta^{+} }} 
+pb {{ tex \beta^{+} }},
+pc {{ tex \gamma^{+} }},
+pd {{ tex \delta^{+} }} 
 :: 'pa_' ::= {{ com positive variable }}
    | a ⁺       :: :: Var {{ tex [[a]]^{+} }}
+   | a ⁺ : coh :: :: VarCoh {{ tex [[a]]^{+ [[coh]] } }}
+   | pnb       :: :: PNVar
 
 na {{ tex \alpha^{-} }},
-nb {{ tex \beta^{-} }}
+nb {{ tex \beta^{-} }},
+nc {{ tex \gamma^{-} }},
+nd {{ tex \delta^{-} }}
 :: 'na_' ::= {{ com negative variable }}
    | a ⁻       :: :: Var {{ tex [[a]]^{-} }}
+   | a ⁻ : coh :: :: VarCoh {{ tex [[a]]^{- [[coh]] } }}
+   | pna       :: :: PNVar
+
+pna {{ tex \alpha^{\pm} }},
+pnb {{ tex \beta^{\pm} }}
+:: 'pna_' ::= {{ com positive or negative variable }}
+   | a ±       :: :: Var {{ tex [[a]]^{\pm} }}
+   | a ± : coh :: :: VarCoh {{ tex [[a]]^{\pm [[coh]] } }}
+
 
 
 grammar
@@ -43,6 +68,7 @@ s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
    | puas / pas           ::   :: PosUSubs
    | nuas / nas           ::   :: NegUSubs
    | nas / nuas           ::   :: NegFromUSubs
+   | Sub μ                ::   :: FromMoving {{ tex [[μ]] }}
    | σ1 ○ σ2              ::   :: Compose
    | ordVars1 / ordVars2  ::   :: VarSubs
    | ( σ )                :: S :: paren
@@ -97,19 +123,25 @@ N, M :: 'N_' ::= {{ com negative types }}
 grammar
 
 pas {{ tex \vv{ \alpha^{+} } }},
-pbs {{ tex \vv{ \beta^{+} } }}
+pbs {{ tex \vv{ \beta^{+} } }},
+pcs {{ tex \vv{ \gamma^{+} } }},
+pds {{ tex \vv{ \delta^{+} } }}
 :: 'pas_' ::= {{ com positive variable list }}
    | ·                    ::   :: empty   {{ com empty list }}
    | pa                   ::   :: Var     {{ com a variable }}
-   % | a+ *                 ::   :: Vars    {{ com variable list }} {{ tex \vv{ [[a+]] } }}
+   | pa *                 ::   :: Vars    {{ com a variable }}
+                                          {{ tex \vv{[[pa]]} }}
    | </ pasi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
 nas {{ tex \vv{ \alpha^{-} } }},
-nbs {{ tex \vv{ \beta^{-} } }}
+nbs {{ tex \vv{ \beta^{-} } }},
+ncs {{ tex \vv{ \gamma^{-} } }},
+nds {{ tex \vv{ \delta^{-} } }}
 :: 'nas_' ::= {{ com negative variables }}
    | ·                    ::   :: empty   {{ com empty list }}
    | na                   ::   :: Var     {{ com a variable }}
-   % | a- *                 ::   :: Vars    {{ com variable list }} {{ tex \vv{ [[a-]] } }}
+   | na *                 ::   :: Vars    {{ com a variable }}
+                                          {{ tex \vv{[[na]]} }}
    | </ nasi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
 
@@ -134,7 +166,8 @@ iN {{ tex N }}, iM {{ tex M }} :: 'iN_' ::= {{ com multi-quantified negative typ
    | ( iN )      :: S :: Paren
 
 
-iPs {{ tex \vv{ P } }}
+iPs {{ tex \vv{ P } }},
+iQs {{ tex \vv{ Q } }}
 :: 'iPs_' ::= {{ com list of positive types }}
    | ·                    ::   :: empty   {{ com empty list }}
    | iP                   ::   :: Var     {{ com a singel type }}
@@ -229,64 +262,58 @@ mu {{ tex \mu }}, μ {{ tex \mu }}:: Mu ::=
     | mu -1               :: M :: inv     {{ com inversion }} 
                                           {{ tex [[mu]]^{-1} }} 
 
+
+% pma {{ tex \widetilde{\alpha}^{+} }} :: pma_ ::= {{ com positive movable variable }}
+%     | a + : coh :: :: Var {{ tex \widetilde{[[a]]}^{+ [[coh]] } }}
+
+
+% nma {{ tex \widetilde{\alpha}^{-} }} :: nma_ ::= {{ com negative movable variable }}
+%     | a - : coh :: :: Var {{ tex \widetilde{[[a]]}^{- [[coh]] } }}
+
+
+% pmas {{ tex \vv{ \widetilde{ \alpha^{+} } } }},
+% pmbs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
+% :: 'pmas_' ::= {{ com positive movable variable list }}
+%    | ·                     ::   :: empty    {{ com empty list }}
+%    | pma                   ::   :: Var      {{ com a variable }}
+%    % | pas : coh             ::   :: FromVars {{ com from a list of non-movable variables }}
+%    %                                          {{ tex \vv{ \widetilde{ [[pas]]^{+[[coh]]} } } }}
+%    | a + * : coh            ::   :: FromVar  {{ com from a non-movable variable }}
+%                                             {{ tex \vv{ \widetilde{ [[a]]^{+[[coh]]} } } }}
+%    | </ pmasi // , // i /> ::   :: concat   {{ com concatenate lists }}
+
+% nmas {{ tex \vv{ \widetilde{ \alpha^{-} } } }},
+% nmbs {{ tex \vv{ \widetilde{ \beta^{-}  } } }}
+% :: 'nmas_' ::= {{ com negatiive movable variable list }}
+%    | ·                     ::   :: empty    {{ com empty list }}
+%    | nma                   ::   :: Var      {{ com a variable }}
+%    % | nas : coh             ::   :: FromVars {{ com transofmed non-movable variables }}
+%    %                                          {{ tex \vv{ \widetilde{ [[nas]]^{-[[coh]]} } } }}
+%    | a - * : coh            ::   :: FromVar  {{ com from a non-movable variable }}
+%                                             {{ tex \vv{ \widetilde{ [[a]]^{-[[coh]]} } } }}
+%    | </ nmasi // , // i /> ::   :: concat   {{ com concatenate lists }}
+
+
+% imP {{ tex P }}, imQ {{ tex Q }}:: 'imP_' ::= {{ com multi-quantified positive types with movable variables }}
+%    | pa          ::   :: Var
+%    | pma         ::   :: MovVar
+%    | ↓ imN       ::   :: Shift
+%    | ∃ nas . imP ::   :: Exists
+%    | [ s ] imP   :: M :: AppSub  
+%    | [ mu ] imP  :: M :: AppMoving 
+
+% imN {{ tex N }}, imM {{ tex M }} :: 'imN_' ::= {{ com multi-quantified negative types with movable variables }}
+%    | na          ::   :: Var
+%    | nma         ::   :: MovVar
+%    | ↑ imP       ::   :: Shift
+%    | imP → imN    ::   :: Fun
+%    | ∀ pas . imN ::   :: Forall
+%    | [ s ] imN   :: M :: AppSub 
+%    | [ mu ] imN  :: M :: AppMoving
+
+
+
 grammar
-
-coh {{ tex n }} :: 'n_' ::= {{ com cohort index }}
-    | Z     :: :: Zero {{ tex 0 }}
-    | S coh :: :: Succ {{ tex [[coh]]+1 }}
-
-grammar
-
-pma {{ tex \widetilde{\alpha}^{+} }} :: pma_ ::= {{ com positive movable variable }}
-    | a + : coh :: :: Var {{ tex \widetilde{[[a]]}^{+ [[coh]] } }}
-
-
-nma {{ tex \widetilde{\alpha}^{-} }} :: nma_ ::= {{ com negative movable variable }}
-    | a - : coh :: :: Var {{ tex \widetilde{[[a]]}^{- [[coh]] } }}
-
-
-pmas {{ tex \vv{ \widetilde{ \alpha^{+} } } }},
-pmbs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
-:: 'pmas_' ::= {{ com positive movable variable list }}
-   | ·                     ::   :: empty    {{ com empty list }}
-   | pma                   ::   :: Var      {{ com a variable }}
-   % | pas : coh             ::   :: FromVars {{ com from a list of non-movable variables }}
-   %                                          {{ tex \vv{ \widetilde{ [[pas]]^{+[[coh]]} } } }}
-   | a + * : coh            ::   :: FromVar  {{ com from a non-movable variable }}
-                                            {{ tex \vv{ \widetilde{ [[a]]^{+[[coh]]} } } }}
-   | </ pmasi // , // i /> ::   :: concat   {{ com concatenate lists }}
-
-nmas {{ tex \vv{ \widetilde{ \alpha^{-} } } }},
-nmbs {{ tex \vv{ \widetilde{ \beta^{-}  } } }}
-:: 'nmas_' ::= {{ com negatiive movable variable list }}
-   | ·                     ::   :: empty    {{ com empty list }}
-   | nma                   ::   :: Var      {{ com a variable }}
-   % | nas : coh             ::   :: FromVars {{ com transofmed non-movable variables }}
-   %                                          {{ tex \vv{ \widetilde{ [[nas]]^{-[[coh]]} } } }}
-   | a - * : coh            ::   :: FromVar  {{ com from a non-movable variable }}
-                                            {{ tex \vv{ \widetilde{ [[a]]^{-[[coh]]} } } }}
-   | </ nmasi // , // i /> ::   :: concat   {{ com concatenate lists }}
-
-
-imP {{ tex P }}, imQ {{ tex Q }}:: 'imP_' ::= {{ com multi-quantified positive types with movable variables }}
-   | pa          ::   :: Var
-   | pma         ::   :: MovVar
-   | ↓ imN       ::   :: Shift
-   | ∃ nas . imP ::   :: Exists
-   | [ s ] imP   :: M :: AppSub  
-   | [ mu ] imP  :: M :: AppMoving 
-
-imN {{ tex N }}, imM {{ tex M }} :: 'imN_' ::= {{ com multi-quantified negative types with movable variables }}
-   | na          ::   :: Var
-   | nma         ::   :: MovVar
-   | ↑ imP       ::   :: Shift
-   | imP → imN    ::   :: Fun
-   | ∀ pas . imN ::   :: Forall
-   | [ s ] imN   :: M :: AppSub 
-   | [ mu ] imN  :: M :: AppMoving
-
-
-
 
 pua {{ tex \widehat{\alpha}^{+} }} :: pua_ ::= {{ com positive unification variable }}
     | a ̂ ⁺        :: :: Var {{ tex \widehat{[[a]]}^{+} }}

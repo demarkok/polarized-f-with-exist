@@ -201,7 +201,20 @@ Another observation we will use is the following.
   \end{aligned}
  \]
 \end{observation}
-    
+
+\begin{observation}
+  \label{observation:dumb-subs-extension}
+  There exist positive and negative types well-formed in empty context,
+  hence, a type substitution can be extended to an arbitrary domain
+  (if its values on the domain extension are irrelevant). Specifically,
+  Suppose that $[[varset1 ⊆ varset2]]$.
+  Then $[[G ⊢ σ|varset1 : Ord varset1]]$
+  implies
+  $\exists~ [[σ']]$ s.t. $[[G ⊢ σ' : Ord varset2]]$ and $[[σ|varset1]] =
+  [[σ'|varset1]]$.
+\end{observation}
+
+
     $\begin{aligned}[t]
       &\mathrel{\phantom{=}} \{ [[nf(iQ)]] \mid [[Γ ⊢ iQ ≥ ↓iM]] \}=\\
       %
@@ -304,7 +317,7 @@ Another observation we will use is the following.
            \text{Notice that}\\
            \text{``$\exists [[σ']]$ s.t. ($[[G ⊢ σ' : nas]]$ and $[[σ|fv(↓iM')]] =
            [[σ'|fv(↓iM')]]$)''}\\
-           \text{is equivalent to $[[G ⊢ σ|fv(↓iM') : nas']]$}\\
+           \text{is equivalent to $[[G ⊢ σ|fv(↓iM') : nas']]$ (\cref{observation:dumb-subs-extension})}\\
          \end{array} \\
          % 
          % 
@@ -323,7 +336,7 @@ Another observation we will use is the following.
          % 
       &= \Set{[[ ∃nas'.↓iM' ]] \ |
         \begin{array}{l}
-          \text{for $[[nas]]$, $[[nas']]$, $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas' ⊢ iM']]$,}\\
+          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas' ⊢ iM']]$,}\\
           \text{$[[G ⊢ σ : nas']]$,\, $[[ord {nas} in iM' = nas']]$}\\
           \text{and $[[ [σ] ↓iM' = ↓iM ]]$}
         \end{array}}
@@ -341,9 +354,9 @@ Another observation we will use is the following.
           \text{and $[[ [σ] ↓iM' = ↓iM ]]$}
         \end{array}}
       && \text{We apply \cref{observation:idemp-replacement} to the ordering of $[[nas]]$}\\
-      &= \Set{ [[ ∃nas.↓iM' ]] \ |
+      &= \Set{ [[ ∃nas'.↓iM' ]] \ |
         \begin{array}{l}
-          \text{for $[[nas']]$, $[[iM']]$, and $[[iNs]]$ s.t. $[[ord {nas'} in iM' = nas]]$,}\\
+          \text{for $[[nas']]$, $[[iM']]$, and $[[iNs]]$ s.t. $[[ord {nas'} in iM' = nas']]$,}\\
           \text{$[[G ⊢ iNi]]$, $[[G,nas' ⊢ iM']]$,  and $[[ [iNs/nas'] ↓iM' = ↓iM ]]$}
         \end{array}} 
       && \text{By reassigning $[[σ]]$ explicitly as $[[iNs/nas']]$}\\
@@ -444,7 +457,7 @@ Another observation we will use is the following.
       the antiunification solutions $[[aus1]]$ and $[[aus2]]$ can be
       put explicitly as $[[aus1]] = [[(nub1 :≈ iN1,..,nubn :≈ iNn)]]$,
       and $[[aus2]] = [[(nub1 :≈ iM1,..,nubn :≈ iMn)]]$.
-      Then 
+      Then
       \begin{equation}
         \label{fact:aus1-is-compose}
         [[ aus1 ]] = [[ (iNs / nas) ○ (nas / ToList Ξ) ]] \text{ (as substitutions)}
@@ -459,11 +472,11 @@ Another observation we will use is the following.
     means
     \begin{equation}
       \label{fact:sub-sub-uP-iN}
-      [[ [iNs / nas][nas / ToList Ξ]uP = ↓iN ]]}
+      [[ [iNs / nas][nas / ToList Ξ]uP = ↓iN ]]
     \end{equation}
     \begin{equation}
       \label{fact:sub-sub-uP-iM}
-      [[ [iMs / nas][nas / ToList Ξ]uP = ↓iM ]]}
+      [[ [iMs / nas][nas / ToList Ξ]uP = ↓iM ]]
     \end{equation}
 
     Then $[[Γ ⊢ ∃nas.[nas / ToList Ξ]uP]]$
@@ -534,7 +547,7 @@ Another observation we will use is the following.
                  \{[[∃nbs.↓iM']]\ \mid \cdots \}
              && \text{by the definition of $\UB{}$}\\
              & = \emptyset
-             && \text{since $[[pa]]$ \neq $[[↓iM']]$ for any $[[iM']]$}\\
+             && \text{since $[[pa]] \neq [[↓iM']]$ for any $[[iM']]$}\\
     \end{aligned}
     $
   \item $[[iP1]] = [[↓iN]]$ and $[[iP2]] = [[pa]]$\\
@@ -551,11 +564,9 @@ Another observation we will use is the following.
                \{[[∃nbs.pb]]\ \mid \cdots \}
            && \text{by the definition of $\UB{}$}\\
            & = \emptyset
-           && \text{since $[[pa]]$ \neq $[[pb]]$}\\
+           && \text{since $[[pa]] \neq [[pb]]$}
     \end{aligned}
     $
-
-
   \item $[[iP1]] = [[pa]]$ and $[[iP2]] = [[pa]]$\\
     Then the algorithm terminates in one step (\ruleref{\ottdruleLUBVarLabel}):
     $[[G ⊨ pa ∨ pa = pa]]$.

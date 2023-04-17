@@ -61,7 +61,7 @@ defns
   G ⊢ ∃nas.iP ≥ ∃nbs.iQ
 
 
-
-
-
+  defn G2 ⊢ σ1 ≈ σ2 : G1 :: :: SEq :: ''
+  {{ com Equivalence of substitutions }}
+  {{ tex [[G2]] [[⊢]] [[σ1]] \eqDOne [[σ2]] : [[G1]] }} by
 
