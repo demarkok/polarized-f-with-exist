@@ -90,359 +90,360 @@
   \end{caseof}
 \end{proof}
 
+\begin{lemma}[Subtyping induced by disjoint substitutions]
+  \label{lemma:subt-ind-disj-subst}
+  If two disjoint substitutions induce subtyping, they are degenerate (so is the
+  subtyping).
+  Suppose that $[[Γ ⊢ σ1 : Γ1]]$ and $[[Γ ⊢ σ2 : Γ1]]$,
+  where $[[{Γi} ⊆ {Γ}]]$ and $[[{Γ1} ∩ {Γ2}= ∅]]$. Then
+  \begin{itemize}
+  \item[$-$] assuming $[[Γ ⊢ iN]]$,~
+    $[[Γ ⊢ [σ1]iN ≤ [σ2]iN]]$ implies $[[Γ ⊢ σi ≈ id : Ord fv iN]]$
+  \item[$+$] assuming $[[Γ ⊢ iP]]$,~
+    $[[Γ ⊢ [σ1]iP ≥ [σ2]iP]]$ implies $[[Γ ⊢ σi ≈ id : Ord fv iP]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Proof by induciton on $[[Γ ⊢ iN]]$ (and mutually on $[[Γ ⊢ iP]]$).
+  \begin{caseof}
+    \item $[[iN]] = [[α⁻]]$\\
+      Then $[[Γ ⊢ [σ1]iN ≤ [σ2]iN]]$ is rewritten as $[[Γ ⊢ [σ1]α⁻ ≤ [σ2]α⁻]]$.
+      Let us consider the following cases:
+      \begin{caseof}
+      \item $[[α⁻ ∉ {Γ1}]]$ and $[[α⁻ ∉ {Γ2}]]$ \label{case:var-not-in-ctxts}\\
+        Then $[[Γ ⊢ σi ≈ id : α⁻]]$ holds immediately,
+        since $[[ [σi] α⁻]] = [[ [id] α⁻]] = [[α⁻]]$ and
+        $[[Γ ⊢ α⁻ ≈ α⁻]]$.
+      \item $[[α⁻ ∊ {Γ1}]]$ and $[[α⁻ ∊ {Γ2}]]$\\
+        This case is not possible by assumption: $[[{Γ1} ∩ {Γ2}= ∅]]$.
+      \item $[[α⁻ ∊ {Γ1}]]$ and $[[α⁻ ∉ {Γ2}]]$\\
+        Then we have $[[Γ ⊢ [σ1]α⁻ ≤ α⁻]]$,
+        which by \cref{corollary:vars-no-proper-subtypes} means $[[Γ ⊢ [σ1]α⁻ ≈ α⁻]]$,
+        and hence, $[[Γ ⊢ σ1 ≈ id : α⁻]]$.
+
+        $[[Γ ⊢ σ2 ≈ id : α⁻]]$ holds since $[[ [σ2]α⁻ ]] = [[α⁻]]$,
+        similarly to \cref{case:var-not-in-ctxts}.
+
+      \item $[[α⁻ ∉ {Γ1}]]$ and $[[α⁻ ∊ {Γ2}]]$\\
+        Then we have $[[Γ ⊢ α⁻ ≤ [σ2]α⁻]]$,
+        which by \cref{corollary:vars-no-proper-subtypes} means $[[Γ ⊢ α⁻ ≈ [σ2]α⁻]]$,
+        and hence, $[[Γ ⊢ σ2 ≈ id : α⁻]]$.
+
+        $[[Γ ⊢ σ1 ≈ id : α⁻]]$ holds since $[[ [σ1]α⁻ ]] = [[α⁻]]$,
+        similarly to \cref{case:var-not-in-ctxts}.
+      \end{caseof}
+  \item $[[iN]] = [[∀pas.iM]]$\\
+    Then by inversion, $[[Γ, pas ⊢ iM]]$.
+    $[[Γ ⊢ [σ1]iN ≤ [σ2]iN]]$ is rewritten as $[[Γ ⊢ [σ1]∀pas.iM ≤ [σ2]∀pas.iM]]$.
+    By the congruence of substitution and by the inversion of
+    \ruleref{\ottdruleDOneForallLabel}, $[[Γ, pas ⊢ [iQs/pas][σ1]iM ≤ [σ2]iM]]$,
+    where $[[Γ, pas ⊢ iQi]]$.
+    Let us denote the (Kleisli) composition of $[[σ1]]$ and $[[iQs/pas]]$ as
+    $[[σ1']]$, noting that $[[Γ, pas ⊢ σ1' : Γ1, pas]]$,
+    and $[[{Γ1, pas} ∩ {Γ2} = ∅]]$.
+
+    Let us apply the induction hypothesis to $[[iM]]$ and the
+    substitutions $[[σ1']]$ and $[[σ2]]$ with
+    $[[Γ, pas ⊢ [σ1']iM ≤ [σ2]iM]]$ to obtain:
+    \begin{align}
+      [[Γ, pas ⊢ σ1' ≈ id : Ord fv iM]] \label{fact:subs-proper-sub:forall-ih}\\
+      [[Γ, pas ⊢ σ2 ≈ id : Ord fv iM]]  \label{fact:subs-proper-sub:forall-ih2}
+    \end{align}
+
+    Then $[[Γ ⊢ σ2 ≈ id : Ord fv ∀pas.iM]]$ holds by strengthening of
+    \ref{fact:subs-proper-sub:forall-ih2}:
+    for any $[[β±]] \in [[fv ∀pas.iM]] = [[fv iM \ {pas}]]$,
+    $[[Γ, pas ⊢ [σ2]β± ≈ β±]]$ is strengthened to $[[Γ ⊢ [σ2]β± ≈ β±]]$, because
+    $[[fv [σ2]β±]] = [[fv β±]] = \{[[β±]]\} \subseteq [[{Γ}]]$.
+
+    To show that $[[Γ ⊢ σ1 ≈ id : Ord fv ∀pas.iM]]$, let us take an arbitrary
+    $[[β±]] \in [[fv ∀pas.iM]] = [[fv iM \ {pas}]]$.
+
+    $
+    \begin{aligned}[t]
+      [[β±]] &= [[ [id]β± ]]
+             && \text{by definition of $[[id]]$}\\
+             &\eqDOne [[ [σ1']β± ]]
+             && \text{by \ref{fact:subs-proper-sub:forall-ih}}\\
+             &= [[ [iQs/pas][σ1]β±]]
+             && \text{by definition of $[[σ1']]$}\\
+             &= [[ [σ1]β± ]]
+             && \text{because $[[{pas} ∩ fv [σ1]β±]] \subseteq [[{pas} ∩ {Γ}]] = \emptyset$}
+    \end{aligned}
+    $\\
+    This way, $[[Γ ⊢ [σ1]β± ≈ β±]]$ for any $[[β±]] \in [[fv ∀pas.iM]]$ and thus,
+    $[[Γ ⊢ σ1 ≈ id : Ord fv ∀pas.iM]]$.
+
+  \item $[[iN]] = [[iP → iM]]$\\
+    Then by inversion, $[[Γ ⊢ iP]]$ and $[[Γ ⊢ iM]]$.
+    $[[Γ ⊢ [σ1]iN ≤ [σ2]iN]]$ is rewritten as
+    $[[Γ ⊢ [σ1](iP → iM) ≤ [σ2](iP → iM)]]$,
+    then by congruence of substitution,
+    $[[Γ ⊢ [σ1]iP → [σ1]iM ≤ [σ2]iP → [σ2]iM]]$,
+    then by inversion
+    $[[Γ ⊢ [σ1]iP ≥ [σ2]iP]]$
+    and
+    $[[Γ ⊢ [σ1]iM ≤ [σ2]iM]]$.
+
+    Applying the induction hypothesis to $[[Γ ⊢ [σ1]iP ≥ [σ2]iP]]$
+    and to $[[Γ ⊢ [σ1]iM ≤ [σ2]iM]]$, we obtain (respectively):
+    \begin{align}
+      &[[Γ ⊢ σi ≈ id : Ord fv iP]] \label{fact:subs-proper-sub:arrow-ih1}\\
+      &[[Γ ⊢ σi ≈ id : Ord fv iM]] \label{fact:subs-proper-sub:arrow-ih2}
+    \end{align}
+
+    Noting that $[[fv (iP → iM)]] = [[fv iP ∪ fv iM]]$,
+    we combine
+    \cref{fact:subs-proper-sub:arrow-ih1,fact:subs-proper-sub:arrow-ih2}
+    to conclude:
+    $[[Γ ⊢ σi ≈ id : Ord fv (iP → iM)]]$.
+
+  \item $[[iN]] = [[↑iP]]$\\
+    Then by inversion, $[[Γ ⊢ iP]]$.
+    $[[Γ ⊢ [σ1]iN ≤ [σ2]iN]]$ is rewritten as
+    $[[Γ ⊢ [σ1]↑iP ≤ [σ2]↑iP]]$,
+    then by congruence of substitution and by inversion,
+    $[[Γ ⊢ [σ1]iP ≥ [σ2]iP]]$
+
+    Applying the induction hypothesis to $[[Γ ⊢ [σ1]iP ≥ [σ2]iP]]$, we obtain
+    $[[Γ ⊢ σi ≈ id : Ord fv iP]]$. Since $[[fv ↑iP]] = [[fv iP]]$, we can
+    conclude: $[[Γ ⊢ σi ≈ id : Ord fv ↑iP]]$.
+  \item The positive cases are proved symmetrically.
+  \end{caseof}
+\end{proof}
+
+\begin{corollary}[Substitution cannot induce proper subtypes or supertypes] \label{corollary:subst-proper-subt}
+  Assuming all mentioned types are well-formed in $[[Γ]]$ and $[[σ]]$ is a
+  substitution $[[Γ ⊢ σ : Γ]]$,
+  \begin{align*}
+    [[Γ ⊢ [σ]iN ≤ iN]] ~&\Rightarrow~ [[Γ ⊢ [σ]iN ≈ iN]]
+                          \text{ and } [[Γ ⊢ σ ≈ id : Ord fv iN]] \\
+    [[Γ ⊢ iN ≤ [σ]iN]] ~&\Rightarrow~ [[Γ ⊢ iN ≈ [σ]iN]]
+                          \text{ and } [[Γ ⊢ σ ≈ id : Ord fv iN]] \\
+    [[Γ ⊢ [σ]iP ≥ iP]] ~&\Rightarrow~ [[Γ ⊢ [σ]iP ≈ iP]]
+                          \text{ and } [[Γ ⊢ σ ≈ id : Ord fv iP]] \\
+    [[Γ ⊢ iP ≥ [σ]iP]] ~&\Rightarrow~ [[Γ ⊢ iP ≈ [σ]iP]]
+                          \text{ and } [[Γ ⊢ σ ≈ id : Ord fv iP]] \\
+  \end{align*}
+\end{corollary}
 
 
-\begin{lemma}[Completeness of equivalence]
-  \label{lemma:equiv-completeness}
+\begin{lemma} \label{lemma:mutual-subst-subtyping}
+  Asssuming that the mentioned types ($[[iP]]$, $[[iQ]]$, $[[iN]]$, and $[[iM]]$)
+  are well-formed in $[[Γ]]$ and that the substitutions ($[[σ1]]$ and $[[σ2]]$) have signature $[[Γ ⊢ σi : Γ]]$,
+  \begin{itemize}
+  \item[$+$] if $[[Γ ⊢ [σ1] iP ≥ iQ]]$ and $[[Γ ⊢ [σ2] iQ ≥ iP]]$\\
+    then there exists a bijection $[[μ : fv iP ↔ fv iQ]]$ such that
+    $[[Γ ⊢ σ1 ≈ Sub μ : Ord fv iP]]$ and $[[Γ ⊢ σ2 ≈ Sub μ-1 : Ord fv iQ]]$;
+  \item[$-$] if $[[Γ ⊢ [σ1] iN ≤ iM]]$ and $[[Γ ⊢ [σ2] iN ≤ iM]]$\\
+    then there exists a bijection $[[μ : fv iN ↔ fv iM]]$ such that
+    $[[Γ ⊢ σ1 ≈ Sub μ : Ord fv iN]]$ and $[[Γ ⊢ σ2 ≈ Sub μ-1 : Ord fv iM]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  \hfill
+  \begin{itemize}
+  \item[$+$]
+    Applying $[[σ2]]$ to both sides of
+    $[[Γ ⊢ [σ1] iP ≥ iQ]]$ (by \cref{todo}),
+    we have: $[[Γ ⊢ [σ2 ○ σ1] iP ≥ [σ2]iQ]]$.
+    Composing it with $[[Γ ⊢ [σ2] iQ ≥ iP]]$ (by transitivity \cref{todo}),
+    we have $[[Γ ⊢ [σ2 ○ σ1] iP ≥ iP]]$.
+    Then by \cref{corollary:subst-proper-subt},
+    $[[Γ ⊢ σ2 ○ σ1 ≈ id : Ord fv iP]]$.
+
+    % Applying $[[σ1]]$ to both sides of
+    % $[[Γ ⊢ [σ2]iQ ≥ iP]]$ (by \cref{todo}),
+    % we have: $[[Γ ⊢ [σ1 ○ σ2] iQ ≥ [σ1]iP]]$.
+    % Composing it with $[[Γ ⊢ [σ1] iP ≥ iQ]]$ (by transitivity \cref{todo}),
+    % we have $[[Γ ⊢ [σ1 ○ σ2] iQ ≥ iQ]]$.
+    % Then by \cref{corollary:subst-proper-subt},
+    By a symmetric argument, we also have:
+    $[[Γ ⊢ σ1 ○ σ2 ≈ id : Ord fv iQ]]$.
+
+    Now, we prove that
+    $[[Γ ⊢ σ2 ○ σ1 ≈ id : Ord fv iP]]$ and
+    $[[Γ ⊢ σ1 ○ σ2 ≈ id : Ord fv iQ]]$
+    implies that $[[σ1]]$ and $[[σ1]]$
+    are (equivalent to) mutually inverse bijections.
+
+    To do so, it suffices to prove that
+    \begin{enumerate}
+    \item[(i)] for any $[[α± ∊ fv iP]]$ there exists $[[β± ∊ fv iQ]]$
+        such that $[[ Γ ⊢ [σ1] α± ≈ β± ]]$ and
+        $[[ Γ ⊢ [σ2] β± ≈ α± ]]$; and
+    \item[(ii)] for any $[[β± ∊ fv iQ]]$ there exists $[[α± ∊ fv iP]]$
+        such that $[[ Γ ⊢ [σ2] β± ≈ α± ]]$ and
+        $[[ Γ ⊢ [σ1] α± ≈ β± ]]$.
+    \end{enumerate}
+    Then the these correspondences between $[[fv iP]]$ and
+    $[[fv iQ]]$ are mutually inverse functions,
+    since for any $[[β±]]$ there can be at most one $[[α±]]$
+    such that $[[ Γ ⊢ [σ2] β± ≈ α± ]]$ (and vice versa).
+
+    \begin{enumerate}
+    \item[(i)] Let us take $[[α± ∊ fv iP]]$.
+      \begin{enumerate}
+      \item if $[[α±]]$ is positive ($[[α± = α⁺]]$),
+        from $[[ Γ ⊢ [σ2][σ1]α⁺ ≈ α⁺ ]]$,
+        by \cref{corollary:vars-no-proper-subtypes},
+        we have
+        $[[ [σ2][σ1]α⁺ = ∃nbs.α⁺ ]]$.
+
+        What shape can $[[ [σ1]α⁺ ]]$ have? It cannot be $[[∃nas.↓iN]]$ (for
+        potentially empty $[[nas]]$), because the outer constructor $\downarrow$
+        would remain after the substitution $[[σ2]]$, whereas $[[∃nbs.α⁺]]$ does
+        not have $[[↓]]$. The only case left is $[[ [σ1]α⁺ = ∃nas.γ⁺ ]]$.
+
+        Notice that $[[Γ ⊢ ∃nas.γ⁺ ≈ γ⁺]]$, meaning that $[[Γ ⊢ [σ1]α⁺ ≈ γ⁺]]$.
+        Also notice that $[[ [σ2]∃nas.γ⁺ = ∃nbs.α⁺ ]]$ implies
+        $[[Γ ⊢ [σ2]γ⁺ ≈ α⁺]]$.
+
+      \item if $[[α±]]$ is negative ($[[α± = α⁻]]$) from $[[ Γ ⊢ [σ2][σ1]α⁻ ≈ α⁻
+        ]]$, by \cref{corollary:vars-no-proper-subtypes}, we have
+        $[[ [σ2][σ1]α⁻ = ∀pbs.α⁻ ]]$.
+
+        What shape can $[[ [σ1]α⁻ ]]$ have? It cannot be $[[∀pas.↑iP]]$
+        nor $[[∀pas.iP → iM]]$ (for potentially empty $[[pas]]$),
+        because the outer constructor ($[[→]]$ or $[[↑]]$), remaining
+        after the substitution $[[σ2]]$, is however absent in the resulting
+        $[[∀pbs.α⁻]]$. Hence, the only case left is $[[ [σ1]α⁻ = ∀pas.γ⁻ ]]$
+        Notice that $[[Γ ⊢ γ⁻ ≈ ∀pas.γ⁻]]$, meaning that $[[Γ ⊢ [σ1]α⁻ ≈ γ⁻]]$.
+        Also notice that $[[ [σ2]∀pas.γ⁻ = ∀pbs.α⁻ ]]$ implies
+        $[[Γ ⊢ [σ2]γ⁻ ≈ α⁻]]$.
+      \end{enumerate}
+    \item[(ii)] The proof is symmetric:
+      We swap $[[iP]]$ and $[[iQ]]$,
+      $[[σ1]]$ and $[[σ2]]$,
+      and exploit $[[ Γ ⊢ [σ1][σ2]α± ≈ α± ]]$ instead of
+      $[[ Γ ⊢ [σ2][σ1]α± ≈ α± ]]$.
+
+    \end{enumerate}
+
+  \item[$-$] The proof is symmetric to the positive case.
+  \end{itemize}
+\end{proof}
+
+\begin{lemma}[Equivalence of polymorphic types]
+  \label{lemma:poly-types-equivalence}
+  \hfill
+  \begin{itemize}
+    \item[$-$] For $[[Γ ⊢ ∀pas.iN]]$ and $[[Γ ⊢ ∀pbs.iM]]$,\\ if $[[Γ ⊢ ∀pas.iN ≈ ∀pbs.iM ]]$
+    then there exists a bijection $[[μ : {pbs} ∩ fv iM ↔ {pas} ∩ fv iN]]$
+    such that $[[ Γ, pas ⊢ iN ≈ [Sub μ] iN ]]$,
+    \item[$+$] For $[[Γ ⊢ ∃nas.iP]]$ and $[[Γ ⊢ ∃nbs.iQ]]$,\\  if $[[Γ ⊢ ∃nas.iP ≈ ∃nbs.iQ ]]$
+    then there exists a bijection $[[μ : {nbs} ∩ fv iQ ↔ {nas} ∩ fv iP]]$
+    such that $[[ Γ, nbs ⊢ iP ≈ [Sub μ] iQ ]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+    \hfill
+  \begin{itemize}
+    \item[$-$]
+    First, by $\alpha$-conversion, we ensure $[[{pas} ∩ fv iM = ∅]]$ and $[[{pbs} ∩ fv iN = ∅]]$.
+    By inversion, $[[Γ ⊢ ∀pas.iN ≈ ∀pbs.iM ]]$ implies 
+    \begin{enumerate} 
+      \item $[[Γ,pbs ⊢ [σ1]iN ≤ iM]]$ for $[[ Γ,pbs ⊢ σ1 : pas ]]$ and 
+      \item $[[Γ,pas ⊢ [σ2]iM ≤ iN]]$ for $[[ Γ,pas ⊢ σ2 : pbs ]]$.
+    \end{enumerate}
+    To apply \cref{lemma:mutual-subst-subtyping}, we weaken 
+    and rearrange the contexts, and extend the substitutions to act as identity
+    outside of their initial domain:
+    \begin{enumerate} 
+      \item $[[Γ,pas,pbs ⊢ [σ1]iN ≤ iM]]$ for $[[ Γ,pas,pbs ⊢ σ1 : Γ,pas,pbs ]]$ and 
+      \item $[[Γ,pas,pbs ⊢ [σ2]iM ≤ iN]]$ for $[[ Γ,pas,pbs ⊢ σ2 : Γ,pas,pbs ]]$.
+    \end{enumerate}
+    Then from \cref{lemma:mutual-subst-subtyping}, 
+    there exists a bijection $[[μ : fv iM ↔ fv iN]]$ such that 
+    $[[Γ,pas,pbs ⊢ σ2 ≈ Sub μ : Ord fv iM]]$ and 
+    $[[Γ,pas,pbs ⊢ σ1 ≈ Sub μ-1 : Ord fv iN]]$. 
+
+    Let us show that if we restrict the domain of $[[μ]]$ to 
+    $[[pbs]]$, its range will be contained in $[[pas]]$.
+    Let us take $[[γ⁺ ∊ {pbs} ∩ fv iM]]$ and 
+    assume $[[ [μ]γ⁺]] \notin [[pas]]$.
+    Then since $[[ Γ,pbs ⊢ σ1 : pas ]]$, 
+    $[[σ1]]$ acts as identity outside of $[[pas]]$, i.e.
+    $[[ [σ1][Sub μ]γ⁺ = [Sub μ]γ⁺ ]]$.
+    Since
+    $[[Γ,pas,pbs ⊢ σ1 ≈ Sub μ-1 : Ord fv iN]]$, 
+    application of $[[σ1]]$ is equivalent to application of $[[Sub μ-1]]$,
+    then 
+    $[[ Γ,pas,pbs ⊢ [Sub μ-1][Sub μ]γ⁺ ≈ [Sub μ]γ⁺ ]]$, i.e.
+    $[[Γ,pas,pbs ⊢ γ⁺ ≈ [Sub μ]γ⁺]]$, 
+    which means $[[γ⁺ ∊ fv [Sub μ]γ⁺]] \subseteq [[fv iN]]$.
+    By assumption, $[[γ⁺ ∊ {pbs} ∩ fv iM]]$, i.e. $[[{pbs} ∩ fv iN]] \neq \emptyset$, hence contradiction.
+
+    By \cref{todo}, 
+    $[[Γ,pas,pbs ⊢ σ2 ≈ Sub μ|{pbs} : Ord fv iM]]$ implies
+    $[[Γ,pas,pbs ⊢ [σ2]iM ≈ [Sub μ|{pbs}]iM]]$.
+    By similar reasoning, $[[Γ,pas,pbs ⊢ [σ1]iN ≈ [Sub μ-1|{pas}]iN]]$.
+
+    This way,
+    \begin{align} 
+      [[Γ,pas,pbs ⊢ [Sub μ-1|{pas}]iN ≤ iM]] \label{fact:mu-inv-n-sub-m}\\
+      [[Γ,pas,pbs ⊢ [Sub μ|{pbs}]iM ≤ iN]] \label{fact:mu-m-subt-n}
+    \end{align}
+
+    By applying $[[μ|_{pbs}]]$ to both sides of \ref{fact:mu-inv-n-sub-m} (\cref{todo})
+    and contracting $[[μ-1|_{pas} ○ μ|_{pbs}]] = [[μ|_{pbs}-1 ○ μ|_{pbs}]] = [[id]]$,
+    we have: $[[Γ,pas,pbs ⊢ iN ≤ [Sub μ|{pbs}]iM]]$, which together with \ref{fact:mu-m-subt-n}
+    means $[[Γ,pas,pbs ⊢ iN ≈ [Sub μ|{pbs}]iM]]$, and by strengthening, $[[Γ,pas⊢ iN ≈ [Sub μ|{pbs}]iM]]$.
+    Symmetrically, $[[Γ,pbs ⊢ iM ≈ [Sub μ|_{pbs}-1]iN]]$.
+    \item{$+$} The proof is symmetric to the proof of the negative case.
+  \end{itemize}
+
+\end{proof}
+
+
+\begin{lemma}[Completeness of equivalence] \label{lemma:equiv-completeness}
   Mutual subtyping implies declarative equivalence.
+  Assuming all the types below are well-formed in $[[Γ]]$: 
   \begin{itemize}
   \item[$+$] if $[[Γ ⊢ iP ≈ iQ]]$ then $[[iP ≈ iQ]]$,
   \item[$-$] if $[[Γ ⊢ iN ≈ iM]]$ then $[[iN ≈ iM]]$.
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  \ilyam{todo}
-\end{proof}
-
-
-\begin{lemma}
-  Informally, this lemma says that if $[[Γ, Ord varset1 ⊢ [σ21]iP ≥ iQ]]$
-  and $[[Γ, Ord varset2 ⊢ [σ12]iQ ≥ iP]]$ holds for substitutions $[[σ12]]$
-  and $[[σ21]]$ then these substitutions are in fact mutually inverse bijections
-  between variables $[[varset1]]$ and $[[varset1]]$.
-
   \begin{itemize}
-  \item[$+$]
-    For $[[Γ, Ord varset2 ⊢ iP]]$,~ $[[Γ, Ord varset1 ⊢ iQ]]$,~
-    $[[Γ, Ord varset2 ⊢ σ12 : Ord varset1]]$,~
-    $[[Γ, Ord varset1 ⊢ σ21 : Ord varset2]]$,
-    suppose that:
-    \begin{enumerate}
-      \item $\{ [[coh]] \mid [[α±:coh]] \in [[varset1 ∩ fv iQ]] \}$ = $\{ [[coh]] \mid [[α±:coh]] \in [[varset2 ∩ fv iP]] \}$,
-      \item $[[Γ, Ord varset1 ⊢ [σ21]iP ≥ iQ]]$,
-      \item $[[Γ, Ord varset2 ⊢ [σ12]iQ ≥ iP]]$.
-    \end{enumerate}
-    Then there exists a bijection
-    $\mu : [[varset1 ∩ fv iQ]] \leftrightarrow [[varset2 ∩ fv iP]]$ such that:
-    \begin{enumerate}
-    \item $\mu$ preserves cohorts:
-      $\mu ([[α±:coh]]) = [[β±:coh]]$ ($[[α±:coh]]$ and $[[β±:coh]]$
-      have the same cohort label $\pm [[coh]]$).
-    \item $[[Γ, Ord varset2 ⊢ σ12 ≈ Sub μ   : Ord (varset1 ∩ fv iQ) ]]$ (the equivalence is pointwise)
-    \item $[[Γ, Ord varset1 ⊢ σ21 ≈ Sub μ-1 : Ord (varset2 ∩ fv iP) ]]$ (the equivalence is pointwise)
-    \end{enumerate}
+    \item[$-$] 
+    Induction on the sum of sizes of  $[[iN]]$ and $[[iM]]$. 
+    By inversion, $[[Γ ⊢ iN ≈ iM]]$ means $[[Γ ⊢ iN ≤ iM]]$ and $[[Γ ⊢ iM ≤ iN ]]$.
+    Let us consider the last rule that forms $[[Γ ⊢ iN ≤ iM]]$:
+    \begin{caseof}
+      \item \ruleref{\ottdruleDOneNVarLabel} i.e. $[[Γ ⊢ iN ≤ iM]]$ is of the form $[[Γ ⊢ α⁻ ≤ α⁻]]$\\
+      Then $[[iN ≈ iM]]$ (i.e. $[[α⁻ ≈ α⁻]]$) holds immediately by \ruleref{\ottdruleEOneNVarLabel}.
 
-  \item[$-$]
-    For $[[Γ, Ord varset2 ⊢ iN]]$,~ $[[Γ, Ord varset1 ⊢ iM]]$,~
-    $[[Γ, Ord varset2 ⊢ σ12 : Ord varset1]]$,~
-    $[[Γ, Ord varset1 ⊢ σ21 : Ord varset2]]$,
-    suppose that:
-    \begin{enumerate}
-    \item $\{ [[coh]] \mid [[α±:coh]] \in [[varset1 ∩ fv iM]] \}$ = $\{ [[coh]] \mid [[β±:coh]] \in [[varset2 ∩ fv iN]] \}$,
-    \item $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$,
-    \item $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$.
-    \end{enumerate}
-    Then there exists a bijection
-    $\mu : [[varset1 ∩ fv iM]] \leftrightarrow [[varset2 ∩ fv iN]]$ such that:
-    \begin{enumerate}
-    \item $\mu$ preserves cohorts:
-      $\mu ([[α±:coh]]) = [[β±:coh]]$ ($[[α±:coh]]$ and $[[β±:coh]]$
-      have the same cohort label $\pm [[coh]]$).
-    \item $[[Γ, Ord varset2 ⊢ σ12 ≈ Sub μ : Ord (varset1 ∩ fv iM) ]]$ (the equivalence is pointwise)
-    \item $[[Γ, Ord varset1 ⊢ σ21 ≈ Sub μ-1 : Ord (varset2 ∩ fv iN)]]$ (the equivalence is pointwise)
-    \end{enumerate}
+      \item \ruleref{\ottdruleDOneShiftULabel} i.e. 
+      $[[Γ ⊢ iN ≤ iM]]$ is of the form $[[Γ ⊢ ↑iP ≤ ↑iQ]]$\\
+      Then by inversion, $[[Γ ⊢ iP ≈ iQ]]$, 
+      and by induction hypothesis, $[[iP ≈ iQ]]$.
+      Then $[[iN ≈ iM]]$ (i.e. $[[↑iP ≈ ↑iQ]]$) holds 
+      by \ruleref{\ottdruleEOneShiftULabel}.
+
+      \item \ruleref{\ottdruleDOneArrowLabel} i.e. $[[Γ ⊢ iN ≤ iM]]$ is of the form $[[Γ ⊢ iP → iN' ≤ iQ → iM']]$\\
+      Then by inversion, $[[Γ ⊢ iP ≥ iQ]]$ and $[[Γ ⊢ iN' ≤ iM']]$.
+      Notice that $[[Γ ⊢ iM ≤ iN]]$ is of the form $[[Γ ⊢ iQ → iM' ≤ iP → iN']]$, 
+      which by inversion means $[[Γ ⊢ iQ ≥ iP]]$ and $[[Γ ⊢ iM' ≤ iN']]$.
+
+      This way, $[[Γ ⊢ iQ ≈ iP]]$ and $[[Γ ⊢ iM' ≈ iN']]$. 
+      Then by induction hypothesis, $[[iQ ≈ iP]]$ and $[[iM' ≈ iN']]$.
+      Then $[[iN ≈ iM]]$ (i.e. $[[iP → iN' ≈ iQ → iM']]$) holds by \ruleref{\ottdruleEOneArrowLabel}.
+
+      \item \ruleref{\ottdruleDOneForallLabel} i.e. $[[Γ ⊢ iN ≤ iM]]$ is of the form $[[Γ ⊢ ∀pas.iN' ≤ ∀pbs.iM']]$\\
+      Then by \cref{lemma:poly-type-equivalence}, $[[Γ ⊢ ∀pas.iN' ≈ ∀pbs.iM']]$ means that 
+      there exists a bijection $[[μ : {pbs} ∩ fv iM' ↔ {pas} ∩ fv iN']]$ such that  
+      $[[Γ,pas ⊢ [Sub μ]iM' ≈ iN']]$. 
+      
+      Notice that the application of bijection $[[μ]]$ to $[[iM']]$ does
+      not change its size (which is less than the size of $[[iM]]$), hence the induction hypothesis applies.
+      This way, $[[ [Sub μ]iM' ≈ iN']]$ (and by symmetry, $[[iN' ≈ [Sub μ]iM']]$) holds by induction. 
+      Then we apply \ruleref{\ottdruleEOneForallLabel} to get $[[∀pas.iN' ≈ ∀pbs.iM']]$, i.e. $[[iN ≈ iM]]$.
+    \end{caseof}
+      
+\item[$+$] The proof is symmetric to the proof of the negative case.
   \end{itemize}
-\end{lemma}
-\begin{proof}
-  Mutual induction on the pair of sizes of inference trees: $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$
-  and $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$ (or the corresponding trees in the
-  positive case).
-
-  \begin{caseof}
-  \item $[[iN]] = [[∀pds.β⁻:coh]]$, for $[[β⁻:coh]] \in
-    [[varset2]]$ and possibly empty $[[pds]]$\\
-    \label{case:double-subtyping-subst-happened}
-    Then by \cref{todo} \ilyam{lemma} $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ ∀pds.β⁻:coh]]$ means that $[[ [σ12]iM ]] =
-    [[∀pcs.β⁻:coh]]$, which (since $[[β⁻:coh]] \notin [[fv iM]]$) is only possible
-    when $[[iM]] = [[∀pcs'.α⁻:coh']]$ (where $[[α⁻:coh']] \in [[varset1]]$ and $[[pcs']]$ is possibly empty), and
-    $[[σ12]] ([[α⁻:coh']]) = [[∀pcs''.β⁻:coh]]$.
-    Notice that by the first condition, the sets of cohort labels of $[[varset1
-    ∩ fv iM]]$ and $[[varset2 ∩ fv iN]]$ must be equal, which means $[[coh]] = [[coh']]$.
-    Also notice that $[[Γ, Ord varset2 ⊢ ∀pcs''.β⁻:coh ≈ β⁻:coh]]$.
-
-    Then $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$ becomes
-    $[[Γ, Ord varset1 ⊢ [σ21]∀pds.β⁻:coh ≤ ∀pcs'.α⁻:coh]]$,
-    which by \cref{todo} \ilyam{lemma} implies that $[[ [σ21] ∀pds.β⁻:coh]] =
-    [[∀pds'.α⁻:coh]]$, and thus,
-    $[[σ21]] ([[β⁻:coh]]) = [[∀pds''.α⁻:coh]]$.
-    Notice that $[[Γ, Ord varset1 ⊢ ∀pds''.α⁻:coh ≈ α⁻:coh]]$.
-
-    This way, we can take $\mu = [[α⁻:coh]] \mapsto [[β⁻:coh]] $, which by
-    construction is a bijection preserving cohorts. Moreover,
-    $[[Γ, Ord varset2 ⊢ ∀pcs''.β⁻:coh ≈ β⁻:coh]]$ means
-    $[[Γ, Ord varset2 ⊢ [σ12] α⁻:coh ≈ [Sub μ] α⁻:coh]]$ implying
-    $[[Γ, Ord varset2 ⊢ σ12 ≈ Sub μ : Ord (varset1 ∩ fv iM) ]]$;
-    and
-    $[[Γ, Ord varset1 ⊢ ∀pds''.α⁻:coh ≈ α⁻:coh]]$ means
-    $[[Γ, Ord varset1 ⊢ [σ21] β⁻:coh ≈ [Sub μ-1] β⁻:coh]]$ implying
-    $[[Γ, Ord varset1 ⊢ σ21 ≈ Sub μ-1 : Ord (varset2 ∩ fv iN)]]$.
-
-  \item The last rule to infer $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$ was
-    \ruleref{\ottdruleDOneNVarLabel}, i.e. $[[ [σ21]iN ]] = [[iM]] = [[γ⁻]]$.\\
-    Then the case when $[[γ⁻]] \in [[varset2]]$, has been covered by
-    \cref{case:double-subtyping-subst-happened}, so we assume
-    that $[[γ⁻]] \notin [[varset2]]$, and thus, $[[iN]] = [[γ⁻]]$.
-
-    Notice that $[[γ⁻]] \notin [[varset1]]$ because otherwise,
-    $[[varset1 ∩ fv iN]] \neq \emptyset$,
-    which would contradict with $[[Γ, Ord varset2 ⊢ iN]]$.
-
-    Then $[[fv iN ∩ varset2]] = [[{γ⁻} ∩ varset2]] = \emptyset$ and $[[fv iM ∩
-    varset1]] = [[{γ⁻} ∩ varset1]] = \emptyset$.
-    Hence, we take the empty $\mu : \emptyset \leftrightarrow \emptyset$, which
-    vacuously satisfies the required properties.
-
-  \item The last rule to infer $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$ was
-    \ruleref{\ottdruleDOneShiftULabel}, i.e. $[[ [σ21]iN ]] = [[↑iP]]$, $[[ iM
-    ]] = [[↑iQ]]$, and $[[Γ, Ord varset1 ⊢ iP ≈ iQ]]$\\
-    Since $[[iN]]$ is not a variable from the domain of $[[σ21]]$ (which has
-    been covered by \cref{case:double-subtyping-subst-happened}),
-    the substitution applied to $[[iN]]$ must preserve its outer shape.
-    Specifically, $[[ [σ21]iN ]] = [[↑iP]]$ means
-    $[[ [σ21]iN ]] = [[ [σ21]↑iP']] = [[ ↑[σ21]iP']] =[[↑iP]]$,
-    i.e. $[[ iN ]] = [[↑iP']]$ and
-    $[[ [σ21]iP']] = [[iP]]$. In particular,
-    $[[Γ, Ord varset1 ⊢ iP ≈ iQ]]$ implies
-    $[[Γ, Ord varset1 ⊢ iP ≥ iQ]]$, i.e.
-    $[[Γ, Ord varset1 ⊢ [σ21]iP' ≥ iQ]]$.
-
-    In addition, $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$ becomes
-    $[[Γ, Ord varset2 ⊢ ↑[σ12]iQ ≤ ↑iP']]$, which is only inferable by
-    \ruleref{\ottdruleDOneShiftULabel}, meaning that
-    $[[Γ, Ord varset2 ⊢ [σ12]iQ ≈ iP']]$, and in particular,
-    $[[Γ, Ord varset2 ⊢ [σ12]iQ ≥ iP']]$.
-
-    Notice that the tree inferring $[[Γ, Ord varset2 ⊢ [σ12]iQ ≥ iP']]$ is a
-    proper subtree of $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$. Analogously,
-    $[[Γ, Ord varset1 ⊢ [σ21]iP' ≥ iQ]]$ is a proper subtree of
-    $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$. This way, we apply the induction
-    hypothesis to $[[Γ, Ord varset1 ⊢ [σ21]iP' ≥ iQ]]$ and $[[Γ, Ord varset2 ⊢
-    [σ12]iQ ≥ iP']]$ (notice that $[[varset1]]$, $[[varset2]]$, and the sets of free variables of
-    the types did not change) and obtain exactly what we aimed.
-
-  \item The last rule to infer $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$ was
-    \ruleref{\ottdruleDOneForallLabel}, i.e. $[[ [σ21]iN ]] = [[∀pcs.iN']]$,
-    $[[iM]] = [[∀pds.iM']]$, and $[[Γ, Ord varset1, pds ⊢ [iPs/pcs]iN' ≤ iM']]$
-    for  $[[Γ, Ord varset1, pds ⊢ iPi]]$ \\
-
-    Since $[[iN]]$ does not have the shape of $[[∀pds.β⁻:coh]]$, for $[[β⁻:coh]]
-    \in [[varset2]]$ (which has been covered by
-    \cref{case:double-subtyping-subst-happened}), the substitution applied to
-    $[[iN]]$ must preserve its outer shape. Specifically,
-    $[[ [σ21]iN ]] = [[∀pcs.iN']]$
-    means that $[[ iN ]]$ ``starts with'' $\forall[[pcs]]$, i.e.
-    $[[ [σ21]iN ]] = [[ [σ21]∀pcs.iN'' ]] = [[ ∀pcs.[σ21]iN'' ]] = [[ ∀pcs.iN'
-    ]]$, where $[[iN]] = [[∀pcs.iN'']]$ and $[[ [σ21]iN'']] = [[iN']]$.
-
-    This way, $[[Γ, Ord varset1, pds ⊢ [iPs/pcs]iN' ≤ iM']]$ becomes
-    $[[Γ, Ord varset1, pds ⊢ [iPs/pcs][σ21]iN'' ≤ iM']]$.
-    Notice that the tree inferring this judgment is a proper subtree of
-    $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$.
-
-
-    On the other hand, $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$
-    becomes $[[Γ, Ord varset2 ⊢ ∀pds.[σ12]iM' ≤ ∀pcs.iN'']]$
-    (where either $[[pds]]$ or $[[pcs]]$ is non-empty),
-    which is only inferable by \ruleref{\ottdruleDOneForallLabel},
-    meaning that
-    $[[Γ, Ord varset2, pcs ⊢ [iQs/pds][σ12]iM' ≤ iN'']]$ for some
-    $[[Γ, Ord varset2, pcs ⊢ iQi]]$.
-    Notice that the tree inferring this judgment is a proper subtree of
-    $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$.
-
-    Let us label $[[pcs]]$ and $[[pds]]$ with a sufficiently large cohort label
-    $[[mcoh]]$ such that $[[mcoh]] > [[coh]]$ for any $[[α⁺:coh]] \in [[varset1 ∪
-    varset2]]$. Then we merge $[[iQs/δ⁺:mcoh*]]$ and $[[σ12]]$ denoting the resulting
-    substitution as $[[σ12']]$ $([[(Γ, Ord varset2, γ⁺:mcoh*) ⊢ σ12' : (Ord varset1, δ⁺:mcoh*)]])$.
-
-    What do we mean by merging? The codomains of $[[iQs/δ⁺:mcoh*]]$ and
-    $[[σ12]]$ are $[[Γ, Ord varset2,  γ⁺:mcoh*]]$ and $[[Γ, Ord varset2]]$,
-    respectively, which are disjoint with both of their domains
-    ($[[δ⁺:mcoh*]]$ and $[[Ord varset1]]$, respectively). In turn, the domains
-    of $[[iQs/δ⁺:mcoh*]]$ and $[[σ12]]$ are themselves mutually disjoint.
-    This way, by merging we mean
-    $[[iQs/δ⁺:mcoh*]] \cup [[σ12]]$ (relationally) or
-    $[[iQs/δ⁺:mcoh* ○ σ12]]$ or
-    $[[σ12 ○ iQs/δ⁺:mcoh*]]$, since these three substitutions are equal.
-
-    Analogously, we merge $[[iPs/γ⁺:mcoh*]]$ and $[[σ21]]$ denoting the
-    resulting substitution as $[[σ21']]$ $([[(Γ, Ord varset1, δ⁺:mcoh*) ⊢ σ21' :
-    (Ord varset2, γ⁺:mcoh*)]])$.
-
-    We wish to apply the induction hypothesis to
-    $[[Γ, Ord varset1, δ⁺:mcoh* ⊢ [σ21']iN'' ≤ iM']]$ and
-    $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12']iM' ≤ iN'']]$.
-    To do so, we need to show that the cohort labels of $[[(varset2 ∪ {γ⁺:mcoh*}) ∩ fv
-    iN'']]$ coincide with those of $[[(varset1 ∪ {δ⁺:mcoh*}) ∩ fv iM']]$ (as sets).
-    \begin{assertion*}
-      The set of cohorts of $[[(varset2 ∪ {γ⁺:mcoh*}) ∩ fv iN'']]$
-      is equal to the set of cohorts of $[[(varset1 ∪ {δ⁺:mcoh*}) ∩ fv iM']]$.
-    \end{assertion*}
-
-    \begin{proof}
-      $
-      \begin{aligned}[t]
-        [[(varset2 ∪ {γ⁺:mcoh*}) ∩ fv iN'']] &= [[(varset2 ∪ {γ⁺:mcoh*}) ∩ (fv
-                                               iN ∪ ({γ⁺:mcoh*} ∩ fv iN''))]]\\
-                                             &= [[varset2 ∩ fv iN ∪ {γ⁺:mcoh*} ∩ fv iN'']]
-                                             && \text{because
-                                                $[[varset2]]$ and $[[fv iN]]$ are disjoint with $[[γ⁺:mcoh*]]$}\\
-        [[(varset1 ∪ {δ⁺:mcoh*}) ∩ fv iM']]  &= [[varset1 ∩ fv iM ∪ {δ⁺:mcoh*} ∩ fv iM']]
-                                             && \text{analogously}\\
-      \end{aligned}\\
-      $
-      Since the cohort labels of $[[varset2 ∩ fv iN]]$ coincide with those of
-      $[[varset1 ∩ fv iM]]$ by the assumption, it suffices to prove that the cohort labels of
-      $[[{γ⁺:mcoh*} ∩ fv iN'']]$ and of $[[{δ⁺:mcoh*} ∩ fv iM']]$ coincide.
-      Note that these sets have the same
-      cohorts labels $[[mcoh]]$, i.e. it is required to show that these sets are
-      either both empty or both non-empty, i.e.
-      $[[{γ⁺:mcoh*} ∩ fv iN'']] = \emptyset \iff [[{δ⁺:mcoh*} ∩ fv iM']] = \emptyset$
-      \begin{itemize}
-      \item [$(\Leftarrow)$] Suppose that $[[{δ⁺:mcoh*} ∩ fv iM']] = \emptyset$.
-        Then by \cref{todo}, since
-        $[[Γ, Ord varset1, δ⁺:mcoh* ⊢ [σ21']iN'' ≤ iM']]$, $[[fv [σ21']iN'']]
-        \subseteq [[fv iM']]$, implying that $[[{δ⁺:mcoh*} ∩ fv [σ21']iN'']] =
-        \emptyset$,
-        and by context strengthening \cref{todo}, $[[Γ, Ord varset1, δ⁺:mcoh* ⊢ [σ21']iN'']]$ reduces to
-        $[[Γ, Ord varset1 ⊢ [σ21']iN'']]$.
-
-
-        Let us restrict $[[σ21']]$ to the set of free variables of $[[fv iN'']]$.
-        Then the domain and codomain of $[[σ21']]$ are the following:
-        $[[Γ, Ord varset1 ⊢ σ21'|fv iN'' : Ord {Ord varset2, γ⁺:mcoh*} ∩ fv iN]]$.
-        By \cref{todo}, $[[ [σ21']iN'' ]] = [[ [σ21'|fv iN'']iN'' ]]$,
-        and then
-        $[[Γ, Ord varset1 ⊢ [σ21']iN'' ≤ iM']]$, can be rewritten as
-        $[[Γ, Ord varset1 ⊢ [σ21'|fv iN'']iN'' ≤ iM']]$.
-
-        Let us apply substitution $[[σ12]]$ ($[[Γ, Ord varset2 ⊢ σ12 : Ord varset1]]$)
-        to both sides of this judgment to obtain: $[[Γ, Ord varset2 ⊢ [σ12 ○ σ21'|fv iN'']iN'' ≤ [σ12]iM']]$.
-        Using the transitivity \cref{todo}, let us compose this subtyping
-        judgment with $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12]iM' ≤ iN'']]$ to
-        form
-        $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12 ○ σ21'|fv iN'']iN'' ≤ iN'']]$.
-
-        What is the codomain of $[[σ12 ○ σ21'|fv iN'']]$?
-        By composing
-        $[[Γ, Ord varset1 ⊢ σ21'|fv iN'' : Ord {Ord varset2, γ⁺:mcoh*} ∩ fv iN]]$
-        and
-        $[[Γ, Ord varset2 ⊢ σ12 : Ord varset1]]$,
-        we have
-        $[[Γ, Ord varset2 ⊢ σ12 ○ σ21'|fv iN'' : Ord {Ord varset2, γ⁺:mcoh*} ∩
-        fv iN]]$, i.e. $[[σ12 ○ σ21'|fv iN'']]$ is a substitution contracting
-        $[[γ⁺:mcoh*]]$.
-        Then by \cref{todo},
-        $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12 ○ σ21'|fv iN'']iN'' ≤ iN'']]$
-        implies that $[[{γ⁺:mcoh*} ∩ fv iN'']] = \emptyset$.
-        \item [$(\Rightarrow)$]
-          Analogous to the previous case.
-      \end{itemize}
-    \end{proof}
-    This way, we can apply the induction hypothesis to
-    $[[Γ, Ord varset1, δ⁺:mcoh* ⊢ [σ21']iN'' ≤ iM']]$ and
-    $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12']iM' ≤ iN'']]$,
-    and obtain
-    $\mu : [[(varset1 ∪ {δ⁺:mcoh*}) ∩ fv iM']] \leftrightarrow [[(varset2 ∪ {γ⁺:mcoh*}) ∩ fv iN'']]$ such that:
-    \begin{enumerate}
-    \item $\mu$ preserves cohorts,
-    \item $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ σ12' ≈ Sub μ : Ord (varset1 ∪ {δ⁺:mcoh*}) ∩ fv iM' ]]$, and
-    \item $[[Γ, Ord varset1, δ⁺:mcoh* ⊢ σ21' ≈ Sub μ-1 : Ord (varset2 ∪ {γ⁺:mcoh*}) ∩ fv iN'']]$
-    \end{enumerate}
-
-    Let us decompose $\mu$ into the union of two bijections: $\mu_1 \sqcup
-    \mu_2$, where $\mu_1$ is defined on the variables whose cohort labels are less
-    than $[[mcoh]]$, and $\mu_2$ is defined on the variables whose cohort labels
-    are equal to $[[mcoh]]$. Notice that since $\mu$ preserves cohorts,
-    this union is disjoint: the \emph{range} of $\mu_1$ is the variables with cohorts
-    $< [[mcoh]]$ and the \emph{range} of $\mu_2$ is the variables with cohorts
-    $= [[mcoh]]$.
-
-    Recalling how $[[mcoh]]$ is chosen, notice that the signatures of $\mu_1$ and
-    $\mu_2$ are the following:
-    \begin{enumerate}
-      \item $\mu_1 : [[varset1 ∩ fv iM']] \leftrightarrow [[varset2 ∩ fv iN'']]$ and
-      \item $\mu_2 : [[{δ⁺:mcoh*} ∩ fv iM']] \leftrightarrow [[{γ⁺:mcoh*} ∩ fv iN'']]$.
-    \end{enumerate}
-
-    This way, $\mu_1$ is a cohort-preserving bijection with the required
-    signature, and what is left to show is the equivalences $[[μ1]] \eqDOne
-    [[σ12]]$, and $[[μ1-1]] \eqDOne [[σ21]]$:
-    \begin{enumerate}[nosep]
-    \item $[[Γ, Ord varset2 ⊢ σ12 ≈ Sub μ1 : Ord (varset1 ∩ fv iM) ]]$\\
-      Let us take an arbitrary $[[α±]] \in [[varset1 ∩ fv iM]]$.\\
-      $
-      \begin{aligned}
-        [[ [σ12] α± ]] &= [[ [σ12 ○ iQs/δ⁺:mcoh*] α± ]]
-                       && \text{because $[[α±]] \neq [[δi⁺:mcoh]]$} \\
-                       &= [[ [σ12'] α± ]]
-                       && \text{by the definition of $[[σ12']]$} \\
-                       &\eqDOne [[ [Sub μ] α± ]]
-                       && \text{since $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ σ12' ≈ Sub μ : Ord ((varset1 ∪ {δ⁺:mcoh*}) ∩ fv iN) ]]$} \\
-                       &= [[ [Sub μ1] α± ]]
-                       && \text{since $[[μ1]] = [[Sub μ | varset1 ∩ fv iM']]$
-                          and  $[[α±]] \in [[varset1 ∩ fv iM]] \subseteq [[varset1 ∩ fv iM']]$} \\
-      \end{aligned}
-      $\\
-      This way, $[[Γ, Ord varset2, γ⁺:mcoh* ⊢ [σ12] α± ≈ [Sub μ1] α±  ]]$, which,
-      considering that the codomains of $[[σ12]]$ and $[[μ1]]$ are in $[[Γ, Ord
-      varset2]]$, can be strengthen to $[[Γ, Ord varset2 ⊢ [σ12] α± ≈ [Sub μ1] α± ]]$.
-
-    \item $[[Γ, Ord varset1 ⊢ σ21 ≈ Sub μ1-1 : Ord (varset2 ∩ fv iN)]]$ is proved analogously.
-
-    \end{enumerate}
-
-  \item The last rule to infer $[[Γ, Ord varset1 ⊢ [σ21]iN ≤ iM]]$ was
-    \ruleref{\ottdruleDOneArrowLabel}, i.e. $[[ [σ21]iN ]] = [[iP → iN']]$, and
-    $[[iM]] = [[iQ → iM']]$; then by inverting this rule,
-    $[[Γ, Ord varset1 ⊢ iP ≥ iQ]]$ and $[[Γ, Ord varset1 ⊢ iN' ≤ iM']]$.
-
-    $[[ [σ21]iN ]] = [[iP → iN']]$ means that either $[[iN]]$ is a variable
-    from the domain of $[[σ21]]$ (which has been covered by
-    \cref{case:double-subtyping-subst-happened})
-    or $[[ [σ21]iN ]] = [[ [σ21] (iP' → iN'')]] = [[ [σ21] iP' → [σ21] iN'' ]] =
-    [[iP → iN']]$, where
-    $[[ iN ]] = [[iP' → iN'']]$, $[[ [σ21] iP' ]] = [[iP]]$, and $[[ [σ21] iN'' ]] = [[iN']]$.
-
-    This way, $[[Γ ⊢ iP ≥ iQ]]$ and $[[Γ ⊢ iN' ≤ iM']]$ can be rewritten as
-    $[[Γ ⊢ [σ21]iP' ≥ iQ]]$ and $[[Γ ⊢ [σ21] iN'' ≤ iM']]$.
-
-    In addition, $[[Γ, Ord varset2 ⊢ [σ12]iM ≤ iN]]$ becomes
-    $[[Γ, Ord varset2 ⊢ [σ12](iQ → iM') ≤ iP' → iN'']]$,
-    implying by inversion
-    $[[Γ, Ord varset2 ⊢ [σ12]iQ ≥ iP']]$ and
-    $[[Γ, Ord varset2 ⊢ [σ12]iM' ≤ iN'']]$.
-
-  \end{caseof}
 \end{proof}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

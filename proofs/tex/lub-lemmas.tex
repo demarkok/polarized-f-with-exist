@@ -42,14 +42,7 @@
   By induction on $[[G ⊢ iP]]$.
   \begin{caseof}
   \item $[[iP]] = [[pb]]$\\
-    Then the last rule that is applied to infer $[[G ⊢ iQ
-    ≥ pb]]$ must be either \ruleref{\ottdruleDOnePVarLabel} or
-    \ruleref{\ottdruleDOneExistsLabel}. The former case means that $[[iQ =
-    pb]]$. In the latter case, $[[iQ = ∃nas.iQ']]$, where $[[iQ']]$ has no outer
-    existential quantifiers. Then by inversion of
-    \ruleref{\ottdruleDOneExistsLabel}, $[[ Γ ⊢ [iNs/nas] iQ' ≥ pb]]$ for some $[[iNs]]$.
-    This time, to infer this judgment, only \ruleref{\ottdruleDOnePVarLabel} is applicable,
-    which means that $[[iQ' = pb]]$, and then $[[iQ = ∃nas.pb]]$.
+    Immediately from \cref{lemma:var-subt}
   \item $[[iP = ∃nbs.iP']]$\\
     Then if $[[G ⊢ iQ ≥ ∃nbs.iP']]$, then by
     \cref{lemma:qant-rule-decomposition}, $[[G, nbs ⊢ iQ ≥ iP']]$, and $[[fv

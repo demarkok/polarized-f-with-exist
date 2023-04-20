@@ -59,6 +59,7 @@ grammar
 
 s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
    | ·                    ::   :: Empty
+   | id                   ::   :: Id {{ tex \mathsf{id} }}
    | P / pa               ::   :: PosSub
    | N / na               ::   :: NegSub
    | iPs / pas            ::   :: PosSubs 
@@ -244,10 +245,11 @@ varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
     | mv imN             ::   :: Nmv       {{ com movable variables }}
     | uv uN              ::   :: Nuv       {{ com unification variables }}
     | uv uP              ::   :: Puv       {{ com unification variables }}
-    | fv uN              ::   :: uNfv       {{ com free variables }}
-    | fv uP              ::   :: uPfv       {{ com free variables }}
+    | fv uN              ::   :: uNfv      {{ com free variables }}
+    | fv uP              ::   :: uPfv      {{ com free variables }}
     | ( varset )         :: S :: paren     {{ com parenthesis }}
     | { ordVars }        ::   :: OrdVars   {{ com ordered list of variables }}
+                                           {{ tex [[ordVars]] }}
     | [ mu ] varset      :: M :: moving    {{ com apply moving to varset }}
 grammar
 
@@ -256,6 +258,7 @@ mu {{ tex \mu }}, μ {{ tex \mu }}:: Mu ::=
     | pma1 ↦ pma2         ::   :: Psingle {{ com Positive unit substitution }}
     | nma1 ↦ nma2         ::   :: Nsingle {{ com Positive unit substitution }}
     | mu1 ∪ mu2           :: M :: Union   {{ com Set-like union of movings }} 
+    | mu1 ○ mu2           :: M :: Compose {{ com Composition }} 
     | </ mui // , // i /> ::   :: concat  {{ com concatenate movings }}
     | mu |_ varset        :: M :: restr   {{ com restriction on a set }} 
                                           {{ tex [[mu]]|_{[[varset]]}  }} 

@@ -1,0 +1,132 @@
+
+\begin{lemma}[Free Variable Propagation]
+  \label{lemma:fv-propagation}
+  In the judgments of negative subtyping or positive supertyping,
+  free variables propagate left-to-right. For a context $[[Γ]]$,
+  \begin{itemize}
+    \item $-$ if $[[Γ ⊢ iN ≤ iM]]$ then $[[fv(iN)]] \subseteq [[fv(iM)]]$
+    \item $+$ if $[[Γ ⊢ iP ≥ iQ]]$ then $[[fv(iP)]] \subseteq [[fv(iQ)]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Mutual induction on $[[Γ ⊢ iN ≤ iM]]$ and $[[Γ ⊢ iP ≥ iQ]]$.
+  \begin{caseof}
+  \item $[[G ⊢ a⁻ ≤ a⁻]]$\\
+    It is self-evident that $[[{a⁻} ⊆ {a⁻}]]$.
+  \item $[[G ⊢ ↑iP ≤ ↑iQ]]$
+    From the inversion (and unfolding $[[G ⊢ iP ≈ iQ]]$ ), we have
+    $[[G ⊢ iP ≥ iQ]]$. Then by the induction hypothesis,
+    $[[fv(iP)]] \subseteq [[fv(iQ)]]$. The desired inclusion
+    inclusion holds, since $[[fv(↑iP)]] = [[fv(iP)]]$ and
+    $[[fv(↑iQ)]] = [[fv(iQ)]]$.
+  \item $[[G ⊢ iP → iN ≤ iQ → iM]]$
+    The induction hypothesis applied to the premises gives:
+    $[[fv(iP)]] \subseteq [[fv(iQ)]]$ and
+    $[[fv(iN)]] \subseteq [[fv(iM)]]$.
+    Then $[[fv(iP → iN)]] = [[fv(iP) ∪ fv(iN)]] \subseteq
+    [[fv(iQ) ∪ fv(iM)]] = [[fv(iQ → iM)]]$.
+
+  \item $[[G ⊢ ∀pas.iN ≤ ∀pbs.iM]]$\\
+    $
+    \begin{aligned}[t]
+      [[fv ∀pas.iN ]] &\subseteq [[fv ([iPs/pas] iN) ]] ~\setminus~ [[{pbs}]] 
+                      &&   \text{here $[[{pbs}]]$ is excluded by the premise $[[fv iN ∩ {pbs} = ∅]]$}\\
+                      &\subseteq [[fv iM]] ~\setminus~ [[{pbs}]]
+                      &&   \text{by the induction hypothesis, } [[fv ([iPs/pas] iN) ]] \subseteq [[fv iM]] \\
+                      &\subseteq [[fv ∀pbs.iM]]
+    \end{aligned}
+    $
+  \item The positive cases are symmetric.
+  \end{caseof}
+\end{proof}
+
+\begin{corollary}[Free Variables of mutual subtypes] \label{corollary:fv-mut-sub}
+  \hfill
+  \begin{itemize}
+    \item [$-$] If $[[Γ ⊢ iN ≈ iM]]$ then $[[fv iN]] = [[fv iM]]$, 
+    \item [$+$] If $[[Γ ⊢ iP ≈ iQ]]$ then $[[fv iP]] = [[fv iQ]]$
+  \end{itemize}
+\end{corollary}
+
+\begin{lemma}[Subtypes and supertypes of a variable]
+  \label{lemma:var-subt}
+  Assuming $[[Γ ⊢  α⁻]]$, $[[Γ ⊢ α⁺]]$, $[[Γ ⊢ iN]]$, and $[[Γ ⊢ iP]]$,
+  \begin{itemize}
+  \item[$+$] if $[[Γ ⊢ iP ≥ α⁺]]$ or $[[Γ ⊢ α⁺ ≥ iP ]]$ then $[[iP]] = [[∃nas.α⁺]]$ (for some potentially empty $[[nas]]$)
+  \item[$-$] if $[[Γ ⊢ iN ≤ α⁻]]$ or $[[Γ ⊢ α⁻ ≤ iN ]]$ then $[[iN]] = [[∀pas.α⁻]]$ (for some potentially empty $[[pas]]$)
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  We prove by induction on the tree
+  inferring $[[Γ ⊢ iP ≥ α⁺]]$ or $[[Γ ⊢ α⁺ ≥ iP ]]$ or
+  or $[[Γ ⊢ iN ≤ α⁻]]$ or $[[Γ ⊢ α⁻ ≤ iN ]]$.
+
+  Let us consider which of these judgments the tree is inferring.
+  \begin{caseof}
+  \item $[[Γ ⊢ iP ≥ α⁺]]$\\
+    If the size of the inference tree is $1$ then the only rule that can infer
+    it is \ruleref{\ottdruleDOnePVarLabel}, which
+    implies that $[[iP = α⁺]]$.
+
+    If the size of the inference tree is $>1$ then the last rule inferring
+    it must be \ruleref{\ottdruleDOneExistsLabel}. By inverting this rule,
+    $[[iP = ∃nas.iP']]$ where $[[iP']]$ does not start with $\exists$ and
+    $[[G ⊢ [iNs/nas] iP' ≥ α⁺]]$ for some $[[G, nbs ⊢ iNi]]$.
+
+    By the induction hypothesis, $[[ [iNs/nas] iP' = ∃nbs.α⁺]]$.
+    Notice that $[[iP']]$ must be a variable, because
+    $[[iP']]$ does not start with $\exists$, nor does it start with
+    $\uparrow$ (otherwise, $[[ [iNs/nas] iP' ]]$ would also
+    started with $\uparrow$ and would not be equal to $[[∃nbs.α⁺]]$).
+    Since $[[iP']]$ is a \emph{positive} variable, $[[ [iNs/nas] iP' = iP']]$,
+    and then $[[iP' = ∃nbs.α⁺]]$ means that $[[iP' = α⁺]]$.
+    This way, $[[iP]] = [[∃nas.iP']] = [[∃nas.α⁺]]$, as required.
+
+  \item $[[Γ ⊢ α⁺ ≥ iP]]$\\
+    If the size of the inference tree is $1$ then the only rule that can infer
+    it is \ruleref{\ottdruleDOnePVarLabel}, which
+    implies that $[[iP = α⁺]]$.
+
+    If the size of the inference tree is $>1$ then the last rule inferring
+    it must be \ruleref{\ottdruleDOneExistsLabel}. By inverting this rule,
+    $[[iP = ∃nbs.iQ]]$ where and $[[G, nbs ⊢ α⁺ ≥ iQ]]$.
+
+    By the induction hypothesis, $[[iQ = ∃nbs'.α⁺]]$.
+    This way, $[[iP]] = [[∃nbs.iQ]] = [[∃nbs.∃nbs'.α⁺]]$, as required.
+
+  \item The negative cases ($[[Γ ⊢ iN ≤ α⁻]]$ and $[[Γ ⊢ α⁻ ≤ iN ]]$)
+    are proved analogously.
+  \end{caseof}
+\end{proof}
+
+\begin{corollary}[Variables have no proper subtypes and supertypes]
+  \label{corollary:vars-no-proper-subtypes}
+  Assuming that all mentioned types are well-formed in $[[Γ]]$,
+  \begin{align*}
+    [[Γ ⊢ iP ≥ α⁺]] ~ &\iff ~ [[iP = ∃nbs.α⁺]]  ~ \iff ~ [[Γ ⊢ iP ≈ α⁺]] ~ \iff ~ [[iP ≈ α⁺]]\\
+    [[Γ ⊢ α⁺≥ iP]]  ~ &\iff ~ [[iP = ∃nbs.α⁺]]  ~ \iff ~ [[Γ ⊢ iP ≈ α⁺]] ~ \iff ~ [[iP ≈ α⁺]]\\
+    [[Γ ⊢ iN ≤ α⁻]] ~ &\iff ~ [[iN = ∀pbs.α⁻]]  ~ \iff ~ [[Γ ⊢ iN ≈ α⁻]] ~ \iff ~ [[iN ≈ α⁻]]\\
+    [[Γ ⊢ α⁻ ≤ iN]] ~ &\iff ~ [[iN = ∀pbs.α⁻]]  ~ \iff ~ [[Γ ⊢ iN ≈ α⁻]] ~ \iff ~ [[iN ≈ α⁻]]\\
+  \end{align*}
+\end{corollary}
+\begin{proof}
+  Notice that $[[Γ ⊢ ∃nas.α⁺ ≈ α⁺]]$ and $[[∃nas.α⁺ ≈ α⁺]]$ and apply
+  \cref{lemma:var-subt}.
+  \ilyam{fix}
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

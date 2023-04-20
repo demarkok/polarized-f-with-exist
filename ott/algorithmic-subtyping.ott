@@ -3,7 +3,6 @@ embed {{ tex-preamble
 \colorlet{colorA}{Purple}
 \newcommand{\subA}{ \mathcolor{colorA}{ [[≤]] } } 
 \newcommand{\supA}{ \mathcolor{colorA}{ [[≥]] } } 
-
 }}
 
 defns

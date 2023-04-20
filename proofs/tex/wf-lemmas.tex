@@ -1,0 +1,48 @@
+\begin{lemma}[Well-formedness agrees with substitution]
+  \label{lemma:wf-subst}
+  Suppose that $[[Γ2 ⊢ σ : Γ1]]$. Then
+  \begin{itemize}
+  \item[$+$] $[[Γ, Γ1 ⊢ iP]] ~\Leftrightarrow~ [[Γ, Γ2 ⊢ [σ]iP]]$
+  \item[$-$] $[[Γ, Γ1 ⊢ iN]] ~\Leftrightarrow~ [[Γ, Γ2 ⊢ [σ]iN]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  \ilyam{todo}
+\end{proof}
+
+
+\begin{corollary}
+  \label{lemma:wf-subst}
+  Suppose that $[[Γ2 ⊢ σ : Γ1]]$. Then
+  \begin{itemize}
+  \item[$+$] $[[Γ1, Γ2 ⊢ iP]] ~\Leftrightarrow~ [[Γ2 ⊢ [σ]iP]]$
+  \item[$-$] $[[Γ1, Γ2 ⊢ iN]] ~\Leftrightarrow~ [[Γ2 ⊢ [σ]iN]]$
+  \end{itemize}
+\end{corollary}
+
+\begin{lemma}[Equivalent Contexts]
+  \label{lemma:wf-ctxt-equiv}
+  In the well-formedness judgment, only used variables matter:
+  \begin{itemize}
+  \item[$+$] if $[[{Γ1} ∩ fv iP]] = [[{Γ2} ∩ fv iP]]$ then
+    $[[Γ1 ⊢ iP]] \iff [[Γ2 ⊢ iP]]$,
+  \item[$-$] if $[[{Γ1} ∩ fv iN]] = [[{Γ2} ∩ fv iN]]$ then
+    $[[Γ1 ⊢ iN]] \iff [[Γ2 ⊢ iN]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  By simple mutual induction on $[[iP]]$ and $[[iQ]]$. 
+\end{proof}
+
+\begin{corollary}
+  \label{lemma:mut-sub-types-wf-equiv}
+  Suppose that all the types below are well-formed in $[[Γ]]$ and
+  $[[{Γ'} ⊆ {Γ}]]$. Then
+  \begin{itemize}
+  \item[$+$] $[[Γ ⊢ iP ≈ iQ]]$ implies $[[Γ' ⊢ iP]] \iff [[Γ' ⊢ iQ]]$
+  \item[$-$] $[[Γ ⊢ iN ≈ iM]]$ implies $[[Γ' ⊢ iN]] \iff [[Γ' ⊢ iM]]$
+  \end{itemize}
+\end{corollary}
+\begin{proof}
+  From \cref{lemma:wf-ctxt-equiv,corollary:fv-mut-sub}.
+\end{proof}

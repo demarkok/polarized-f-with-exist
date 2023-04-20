@@ -1,0 +1,45 @@
+#by ChatGPT
+
+# LaTeX build files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.el
+
+*.fls
+*.fdb_latexmk
+_build
+
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+
+# Other
+*.DS_Store?
+*.bak
+*.backup
+*.glo
+*.idx
+*.lof
+*.lol
+*.lot
+*.nav
+*.nlo
+*.nls
+*.not
+*.snm
+*.toc
+*.vrb
+*.out.bak
+*.pdf.bak
+*.bak.pdf
+*.tar.gz
+*.tar
+*.gz
+*.zip
