@@ -90,6 +90,18 @@
   \end{caseof}
 \end{proof}
 
+\begin{corollary} \label{corollary:nf-sound-wrt-decl-equiv}
+  \hfill
+  \begin{itemize}
+    \item [$+$] if $[[Γ ⊢ iP]]$ then $[[Γ ⊢ iP ≈ nf(iP)]]$,
+    \item [$-$] if $[[Γ ⊢ iN]]$ then $[[Γ ⊢ iN ≈ nf(iN)]]$.
+  \end{itemize}
+\end{corollary}
+\begin{proof}
+  Immediately from \cref{lemma:normalization-soundness,corollary:wf-nf,lemma:equiv-soundness}.
+\end{proof}
+
+
 \begin{lemma}[Subtyping induced by disjoint substitutions]
   \label{lemma:subt-ind-disj-subst}
   If two disjoint substitutions induce subtyping, they are degenerate (so is the

@@ -45,6 +45,6 @@ defns
   G;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ us
 
     
-   upgrade G ⊢ nf(iP) to Δ = iQ
+   upgrade G ⊢ iP to Δ = iQ
   ----------------------------------------------- :: PUVar
   G;Θ ⊨ â⁺ [Δ] ≥ iP ⫤ (Δ ⊢ â⁺ :≥ iQ)

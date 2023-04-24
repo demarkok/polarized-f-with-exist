@@ -141,9 +141,20 @@ nds {{ tex \vv{ \delta^{-} } }}
 :: 'nas_' ::= {{ com negative variables }}
    | ·                    ::   :: empty   {{ com empty list }}
    | na                   ::   :: Var     {{ com a variable }}
-   | na *                 ::   :: Vars    {{ com a variable }}
+   | na *                 ::   :: Vars    {{ com variables }}
                                           {{ tex \vv{[[na]]} }}
    | </ nasi // , // i /> ::   :: concat  {{ com concatenate lists }}
+
+pnas {{ tex \vv{ \alpha^{\pm} } }},
+pnbs {{ tex \vv{ \beta^{\pm} } }},
+pncs {{ tex \vv{ \gamma^{\pm} } }},
+pnds {{ tex \vv{ \delta^{\pm} } }}
+:: 'pnas_' ::= {{ com positive or negative variable list }}
+   | ·                     ::   :: empty   {{ com empty list }}
+   | pna                   ::   :: Var     {{ com a variable }}
+   | pna *                 ::   :: Vars    {{ com variables }}
+                                           {{ tex \vv{[[pa]]} }}
+   | </ pnasi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
 
 iP {{ tex P }}, iQ {{ tex Q }}:: 'iP_' ::= {{ com multi-quantified positive types }}
@@ -187,9 +198,10 @@ grammar
 G {{ tex \Gamma }}, Δ {{ tex \Delta }}, Γ {{ tex \Gamma }} :: DT_Ctxt ::= {{ com declarative type context }}
     | ·                  ::   :: empty   {{ com empty context }}
     % | varset             ::   :: nvar     {{ com a negative variable }}
-    | pas                ::   :: PList     {{ com list of variables }}
-    | nas                ::   :: NList     {{ com list of variables }}
-    | Ord varset         ::   :: fromset   {{ tex [[varset]] }}
+    | pas                ::   :: PList   {{ com list of variables }}
+    | nas                ::   :: NList   {{ com list of variables }}
+    | pnas               ::   :: PNList  {{ com list of variables }}
+    | Ord varset         ::   :: fromset {{ tex [[varset]] }}
     | </ Gi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( G )              :: S :: paren
     % | G1 ∪ G2            ::   :: union
@@ -222,6 +234,7 @@ ordVars {{ tex \vv{ \alpha } }}, ordVarsb {{ tex \vv{ \beta } }} :: OrdVars ::= 
     | ·                         ::   :: empty     {{ com empty list }}
     | pas                       ::   :: PList     {{ com list of variables }}
     | nas                       ::   :: NList     {{ com list of variables }}
+    | pnas                      ::   :: PNList    {{ com list of variables }}
     | ordVars1 \ varset         ::   :: Setminus  {{ com setminus }}
     | G                         ::   :: Cntxt     {{ com context }}
     | Ord varset                ::   :: fromset   {{ tex [[varset]] }}

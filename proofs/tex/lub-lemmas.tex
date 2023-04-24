@@ -377,6 +377,7 @@ Another observation we will use is the following.
 \end{proof}
 
 \begin{lemma}[Soundness of the Least Upper Bound]
+  \label{lemma:lub-soundness}
   For types $[[Γ ⊢ iP1]]$, and $[[Γ ⊢ iP2]]$,
   if $[[Γ ⊨ iP1 ∨ iP2 = iQ]]$ then
   \begin{enumerate}
@@ -393,7 +394,7 @@ Another observation we will use is the following.
    \item $[[Γ ⊨ ∃nas.iP1 ∨ ∃nbs.iP2 = iQ]]$\\
      Then by inversion of $[[Γ ⊢ ∃nas.iPi]]$  and
      weakening, $[[Γ, nas, nbs ⊢ iPi]]$, hence, the induction
-     hypothesis applied to $[[Γ, nas, nbs ⊨ iP1 ∨ iP2 = iQ]]$. Then
+     hypothesis applies to $[[Γ, nas, nbs ⊨ iP1 ∨ iP2 = iQ]]$. Then
      \begin{itemize}
        \item[(i)] $[[Γ, nas, nbs ⊢ iQ]]$,
        \item[(ii)] $[[Γ, nas, nbs ⊢ iQ ≥ iP1]]$,
@@ -438,9 +439,9 @@ Another observation we will use is the following.
      $[[Γ, nas ⊢ iQ]]$ (by weakening), and $[[Γ, nas ⊢ iP1]]$.
 
      Judgment $[[Γ ⊢ iQ ≥ ∃nbs.iP2]]$ is proved symmetrically.
-  \item $[[Γ ⊨ ↓iN ∨ ↓iM = ∃nas.[nas / ToList Ξ]uP]]$
-    By the inversion, $[[G,· ⊨ ↓iN ≈au ↓iM ⫤ (Ξ, uP, aus1, aus2)]]$.
-    Then by \cref{lemma:au-soundness},
+  \item $[[Γ ⊨ ↓iN ∨ ↓iM = ∃nas.[nas / ToList Ξ]uP]]$.
+    By the inversion, $[[G,· ⊨ nf(↓iN) ≈au nf(↓iM) ⫤ (Ξ, uP, aus1, aus2)]]$.
+    Then by the soundness of anti-unification (\cref{lemma:au-soundness}),
     \begin{enumerate}
     \item[(i)] $[[Γ ; Ξ ⊢ uP]]$, then
       by \cref{todo},
@@ -453,11 +454,11 @@ Another observation we will use is the following.
       Then
       \begin{equation}
         \label{fact:aus1-is-compose}
-        [[ aus1 ]] = [[ (iNs / nas) ○ (nas / ToList Ξ) ]] \text{ (as substitutions)}
+        [[ aus1 ]] = [[ (iNs / nas) ○ (nas / ToList Ξ) ]] 
       \end{equation}
       \begin{equation}
         \label{fact:aus2-is-compose}
-        [[ aus2 ]] = [[ (iMs / nas) ○ (nas / ToList Ξ) ]]\text{ (as substitutions)}
+        [[ aus2 ]] = [[ (iMs / nas) ○ (nas / ToList Ξ) ]]
       \end{equation}
     \end{enumerate}
   \item[(iii)] $[[ [aus1] uQ = iP1 ]]$ and $[[ [aus2] uQ = iP1 ]]$,
@@ -465,11 +466,11 @@ Another observation we will use is the following.
     means
     \begin{equation}
       \label{fact:sub-sub-uP-iN}
-      [[ [iNs / nas][nas / ToList Ξ]uP = ↓iN ]]
+      [[ [iNs / nas][nas / ToList Ξ]uP = nf(↓iN) ]]
     \end{equation}
     \begin{equation}
       \label{fact:sub-sub-uP-iM}
-      [[ [iMs / nas][nas / ToList Ξ]uP = ↓iM ]]
+      [[ [iMs / nas][nas / ToList Ξ]uP = nf(↓iM) ]]
     \end{equation}
 
     Then $[[Γ ⊢ ∃nas.[nas / ToList Ξ]uP]]$
@@ -479,7 +480,8 @@ Another observation we will use is the following.
     we apply \ruleref{\ottdruleDOneExistsLabel},
     instantiating $[[nas]]$ with $[[iNs]]$.
     Then $[[Γ ⊢ [iNs / nas][nas / ToList Ξ]uP ≥ ↓iN ]]$ follows
-    from \ref{fact:sub-sub-uP-iN} and reflexivity of subtyping (\cref{todo}).
+    from \ref{fact:sub-sub-uP-iN} and 
+    since $[[Γ ⊢ nf(↓iN) ≥ ↓iN]]$ (by \cref{corollary:nf-sound-wrt-decl-equiv}).
 
     Analogously, instantiating $[[nas]]$ with $[[iMs]]$,
     gives us $[[Γ ⊢ [iMs / nas][nas / ToList Ξ]uP ≥ ↓iM ]]$
@@ -491,21 +493,22 @@ Another observation we will use is the following.
 \end{proof}
 
 
-\begin{lemma}[Completeness of the Least Upper Bound]
+\begin{lemma}[Completeness and Initiality of the Least Upper Bound]
   \label{lemma:lub-completeness}
-  For normalized types $[[Γ ⊢ iP1]]$, $[[Γ ⊢ iP2]]$, and $[[Γ ⊢ iQ]]$
+  For types $[[Γ ⊢ iP1]]$, $[[Γ ⊢ iP2]]$, and $[[Γ ⊢ iQ]]$
   such that $[[Γ ⊢ iQ ≥ iP1]]$ and $[[Γ ⊢ iQ ≥ iP2]]$,
-  there exists $[[iQ']]$ s.t. $[[Γ ⊨ iP1 ∨ iP2 = iQ']]$.
+  there exists $[[iQ']]$ s.t. $[[Γ ⊨ iP1 ∨ iP2 = iQ']]$ 
+  and $[[Γ ⊢ iQ ≥ iQ']]$.
 \end{lemma}
 
 \begin{proof}
   Induction on the pair $([[iP1]], [[iP2]])$.
   From \cref{lemma:shape-supertypes-norm},
   $[[iQ]] \in \UB([[Γ ⊢ iP1]]) \cap \UB([[Γ ⊢ iP2]])$.
-  Let us consider the cases what $[[iP1]]$ and $[[iP2]]$ are (i.e. the last
-  rules to infer $[[Γ ⊢ iP1]]$).
+  Let us consider the cases of what $[[iP1]]$ and $[[iP2]]$ are (i.e. the last
+  rules to infer $[[Γ ⊢ iPi]]$).
   \begin{caseof}
-    \item $[[iP1]] = [[∃nbs1.iQ1]]$, $[[iP2]] = [[∃nbs2.iQ2]]$ where
+    \item $[[iP1]] = [[∃nbs1.iQ1]]$, $[[iP2]] = [[∃nbs2.iQ2]]$, where either
     $[[nbs1]]$ or $[[nbs2]]$ is not empty\\
     \label{case:ub-completeness-exists}
 
@@ -518,15 +521,23 @@ Another observation we will use is the following.
              & =  \UB([[Γ, nbs1, nbs2 ⊢ iQ1]]) \cap \UB([[Γ, nbs1, nbs2 ⊢ iQ2]])
              && \text{by \cref{observation:ub-context-irrelevant}, weakening and
                 exchange}\\
-             & = \{[[iQ']]\ \mid \ [[Γ, nbs1, nbs2  ⊢ iQ ≥ iQ1]] \} \cap
-                 \{[[iQ']]\ \mid \ [[Γ, nbs1, nbs2  ⊢ iQ ≥ iQ2]] \}
+             & = \{[[iQ']]\ \mid \ [[Γ, nbs1, nbs2  ⊢ iQ' ≥ iQ1]] \} \cap
+                 \{[[iQ']]\ \mid \ [[Γ, nbs1, nbs2  ⊢ iQ' ≥ iQ2]] \}
              && \text{by \cref{lemma:shape-of-supertypes},}\\
     \end{aligned}
     $\\
     meaning that $[[Γ, nbs1, nbs2 ⊢ iQ ≥ iQ1]]$ and $[[Γ, nbs1, nbs2 ⊢ iQ ≥
-    iQ2]]$. Then after one step, the algorithm terminates by the induction
-    hypothesis. In other words, $\exists [[iQ']]$ s.t. $[[G, nbs1, nbs2 ⊨ iQ1 ∨
-    iQ2 = iQ']]$, and thus, \ruleref{\ottdruleLUBExistsLabel} is applicable.
+    iQ2]]$. Then the next step of the algorithm---the recursive call 
+    $[[Γ, nbs1, nbs2 ⊨ iQ1 ∨ iQ2 = iQ']]$
+    terminates by the induction hypothesis, 
+    and moreover, $[[ Γ, nbs1, nbs2 ⊢ iQ ≥ iQ' ]]$.
+    This way, the result of the algorithm is $[[iQ']]$, i.e.
+    $[[Γ ⊨ iP1 ∨ iP2 = iQ']]$.
+
+    Since both $[[iQ]]$ and $[[iQ']]$ are sound,
+    $[[Γ ⊢ iQ]]$ and $[[Γ ⊢ iQ']]$, and therefore,
+    $[[ Γ, nbs1, nbs2 ⊢ iQ ≥ iQ' ]]$ can be strengthened to
+    $[[ Γ ⊢ iQ ≥ iQ' ]]$ by \cref{todo}.
 
   \item $[[iP1]] = [[pa]]$ and $[[iP2]] = [[↓iN]]$\\
     \label{case:ub-completeness-unmatching}
@@ -561,112 +572,9 @@ Another observation we will use is the following.
     \end{aligned}
     $
   \item $[[iP1]] = [[pa]]$ and $[[iP2]] = [[pa]]$\\
-    Then the algorithm terminates in one step (\ruleref{\ottdruleLUBVarLabel}):
-    $[[G ⊨ pa ∨ pa = pa]]$.
+    Then the algorithm terminates in one step (\ruleref{\ottdruleLUBVarLabel})
+    and the result is $[[pa]]$, i.e. $[[G ⊨ pa ∨ pa = pa]]$.
 
-
-  \item $[[iP1]] = [[↓iM1]]$ and $[[iP2]] = [[↓iM2]]$\\
-    \label{case:ub-completeness-shift}
-    Then on the next step, the algorithm tries to anti-unify $[[↓iM1]]$ and
-    $[[↓iM2]]$. By \cref{lemma:au-completeness}, to show that the
-    anti-unification algorithm terminates, it suffices to
-    demonstrate that a sound anti-unification solution exists.
-
-    Notice that
-
-    $
-    \begin{aligned}[t]
-      [[nf(iQ)]] &\in         \NFUB([[Γ ⊢ ∃nbs1.iQ1]]) \cap \NFUB([[Γ ⊢ ∃nbs2.iQ2]]) \\
-             &=           \begin{array}{l}
-                            \Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l}
-                                                         \text{for $[[nas]]$, $[[iM']]$, and $[[iNs]]$ s.t. $[[ord {nas} in iM' = nas]]$,}\\
-                                                         \text{$[[G ⊢ iNi]]$, $[[G,nas ⊢ iM']]$,  and $[[ [iNs/nas] ↓iM' = ↓iM1 ]]$}
-                                                       \end{array}}\\ \cap\\
-                            \Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l}
-                                                        \text{for $[[nas]]$, $[[iM']]$, and $[[iNs]]$ s.t. $[[ord {nas} in iM' = nas]]$,}\\
-                                                        \text{$[[G ⊢ iNs1]]$,
-                                                        $[[G ⊢ iNs2]]$, $[[G,nas ⊢ iM']]$,  and $[[ [iNs/nas] ↓iM' = ↓iM2 ]]$}
-                                                      \end{array}}
-                           \end{array}\\
-               &=
-                 \Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l}
-                                             \text{for $[[nas]]$, $[[iM']]$,
-                                             $[[iNs1]]$ and $[[iNs2]]$ s.t. $[[ord {nas} in iM' = nas]]$,}\\
-                                             \text{$[[G ⊢ iNs1]]$, $[[G ⊢ iNs2]]$, $[[G,nas ⊢ iM']]$,
-                                             $[[ [iNs1/nas] ↓iM' = ↓iM1]]$, and
-                                             $[[ [iNs2/nas] ↓iM' = ↓iM2]]$
-                                             }
-                                           \end{array}}\\
-    \end{aligned}
-    $\\
-    The fact that the latter set is non-empty means that there exist $[[nas]],
-    [[iM']]$, $[[iNs1]]$ and $[[iNs2]]$ such that
-    \begin{enumerate}
-    \item[(i)] $[[G,nas ⊢ iM']]$,
-    \item[(ii)] $[[G ⊢ iNs1]]$ and $[[G ⊢ iNs1]]$,
-    \item[(iii)] $[[ [iNs1/nas] ↓iM' = ↓iM1]]$ and $[[ [iNs2/nas] ↓iM' = ↓iM2]]$
-    \end{enumerate}
-
-    For each negative variable $[[α⁻]]$ from $[[nas]]$, let us choose a
-    fresh negative antiunification variable $[[α̂⁻]]$, and denote the
-    list of these variables as $[[nuas]]$.
-    Let us show that $([[nuas]],~ [[ [nuas/nas]↓iM' ]],~ [[iNs1/nuas]],~ [[iNs2/nuas]])$ is a
-    sound anti-unifier of $[[↓iM1]]$ and $[[↓iM2]]$ in context $[[Γ]]$:
-
-    \begin{itemize}
-      \item $[[nuas]]$ is negative by construction,
-      \item $[[Γ ; nuas ⊢ [nuas/nas]↓uM']]$ because $[[Γ, nas ⊢ ↓iM']]$ \ilyam{lemma!},
-      \item $[[Γ ; · ⊢ (iNs1/nuas) : nuas]]$ because $[[Γ ⊢ iNs1]]$ and
-        $[[Γ ; · ⊢ (iNs2/nuas) : nuas]]$ because $[[Γ ⊢ iNs2]]$,
-      \item $[[ [iNs1/nuas] [nuas/nas] ↓uM' ]] = [[ [iNs1/nas] ↓iM' ]] =
-        [[↓iM1]]$; analogously, $[[ [iNs2/nuas] [nuas/nas] ↓uM' ]] =i
-        [[ [iNs2/nas] ↓iM' ]] = [[↓iM2]]$.
-    \end{itemize}
-
-    Then by the completeness of the anti-unification
-    (\cref{lemma:au-completeness}), the anti-unification algorithm
-    terminates, so is the Least Upper Bound algorithm invoking it.
-
-  \end{caseof}
-\end{proof}
-
-\begin{lemma}[Initiality of the Least Upper Bound]
-  For normalized types $[[Γ ⊢ iP1]]$, $[[Γ ⊢ iP2]]$, and $[[Γ ⊢ iQ]]$
-  such that $[[Γ ⊢ iQ ≥ iP1]]$ and $[[Γ ⊢ iQ ≥ iP2]]$,
-  If $[[Γ ⊨ iP1 ∨ iP2 = iQ']]$ then $[[Γ ⊢ iQ ≥ iQ']]$.
-\end{lemma}
-\begin{proof}
-  By induction on a pair $([[iP1]], [[iP2]])$,
-  similarly to the proof of \cref{lemma:lub-completeness}.
-
-  Let us consider the cases what $[[iP1]]$ and $[[iP2]]$ are (i.e. the last
-  rules to infer $[[Γ ⊢ iP1]]$).
-  \begin{caseof}
-    \item $[[iP1]] = [[∃nbs1.iQ1]]$, $[[iP2]] = [[∃nbs2.iQ2]]$ where
-    $[[nbs1]]$ or $[[nbs2]]$ is not empty\\
-
-    Then by the same reasoning as in \cref{case:ub-completeness-exists} of the
-    proof of \cref{lemma:lub-completeness}, $[[Γ, nbs1, nbs2 ⊢ iQ ≥ iQ1]]$ and
-    $[[Γ, nbs1, nbs2 ⊢ iQ ≥ iQ2]]$.
-
-    On the other hand, the inversion of $[[Γ ⊨ ∃nbs1.iQ1 ∨ ∃nbs2.iQ2 = iQ']]$
-    gives us $[[Γ, nbs1, nbs2 ⊨ iQ1 ∨ iQ2 = iQ']]$.
-    Hence, by the induction hypothesis, $[[ Γ, nbs1, nbs2 ⊢ iQ ≥ iQ' ]]$.
-
-    Since both $[[iQ]]$ and $[[iQ']]$ are sound,
-    $[[Γ ⊢ iQ]]$ and $[[Γ ⊢ iQ']]$, and therefore,
-    $[[ Γ, nbs1, nbs2 ⊢ iQ ≥ iQ' ]]$ can be strengthened to
-    $[[ Γ ⊢ iQ ≥ iQ' ]]$. \ilyam{lemma!}
-
-  \item ($[[iP1]] = [[pa]]$ and $[[iP2]] = [[↓iN]]$) or
-    ($[[iP1]] = [[↓iN]]$ and $[[iP2]] = [[pa]]$) or
-    ($[[iP1]] = [[pa]]$ and $[[iP2]] = [[pb]]$) \\
-    By the same argument as in \cref{case:ub-completeness-unmatching} of the
-    proof of \cref{lemma:lub-completeness},
-    the set of common supertypes of $[[iP1]]$ and $[[iP2]]$ is empty, hence
-    contradiction.
-
-  \item $[[iP1]] = [[pa]]$ and $[[iP2]] = [[pa]]$\\
     Since $[[iQ]] \in \UB([[Γ ⊢ pa]])$,
     $[[iQ]] = [[∃nas.pa]]$.
     Then $[[Γ ⊢ ∃nas.pa ≥ pa]]$ by \ruleref{\ottdruleDOneExistsLabel}:
@@ -675,37 +583,73 @@ Another observation we will use is the following.
     $[[ [iNs/nas]pa]] = [[pa]]$,
     and then $[[Γ ⊢ pa ≥ pa]]$ by \ruleref{\ottdruleDOnePVarLabel}.
 
-  \item $[[iP1]] = [[↓iM1]]$ and $[[iP2]] = [[↓iM2]]$\\
-    By the same reasoning as in \cref{case:ub-completeness-shift} of the proof
-    of \cref{lemma:lub-completeness},
-    $[[nf(iQ)]] = [[ ∃nas.↓iM' ]]$
-    for some $[[nas]]$ and $[[↓iM']]$ such that there exist
-    $[[iNs1]]$ and $[[iNs2]]$ such that:
+  \item $[[iP1]] = [[↓iM1]]$ and $[[iP2]] = [[↓iM2]]$ \label{case:ub-completeness-shift}\\
+    Then on the next step, the algorithm tries to anti-unify $[[nf(↓iM1)]]$ and
+    $[[nf(↓iM2)]]$. By \cref{lemma:au-completeness}, to show that the
+    anti-unification algorithm terminates, it suffices to
+    demonstrate that a sound anti-unification solution exists.
+
+    Notice that
+
+    $
+    \begin{aligned}[t]
+      [[nf(iQ)]] &\in \NFUB([[Γ ⊢ nf(↓iM1)]]) \cap \NFUB([[Γ ⊢ nf(↓iM2)]]) \\
+             &= \NFUB([[Γ ⊢ ↓nf(iM1)]]) \cap \NFUB([[Γ ⊢ ↓nf(iM2)]]) \\
+             &=           \begin{array}{l}
+                            \Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l}
+                                                         \text{for $[[nas]]$, $[[iM']]$, and $[[iNs]]$ s.t. $[[ord {nas} in iM' = nas]]$,}\\
+                                                         \text{$[[G ⊢ iNi]]$, $[[G,nas ⊢ iM']]$,  and $[[ [iNs/nas] ↓iM' = ↓nf(iM1) ]]$}
+                                                       \end{array}}\\ \cap\\
+                            \Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l}
+                                                        \text{for $[[nas]]$, $[[iM']]$, and $[[iNs]]$ s.t. $[[ord {nas} in iM' = nas]]$,}\\
+                                                        \text{$[[G ⊢ iNs1]]$,
+                                                        $[[G ⊢ iNs2]]$, $[[G,nas ⊢ iM']]$,  and $[[ [iNs/nas] ↓iM' = ↓nf(iM2) ]]$}
+                                                      \end{array}}
+                           \end{array}\\
+               &=
+                 \Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l}
+                                             \text{for $[[nas]]$, $[[iM']]$,
+                                             $[[iNs1]]$ and $[[iNs2]]$ s.t. $[[ord {nas} in iM' = nas]]$,}\\
+                                             \text{$[[G ⊢ iNs1]]$, $[[G ⊢ iNs2]]$, $[[G,nas ⊢ iM']]$,
+                                             $[[ [iNs1/nas] ↓iM' = ↓nf(iM1)]]$, and
+                                             $[[ [iNs2/nas] ↓iM' = ↓nf(iM2)]]$
+                                             }
+                                           \end{array}}\\
+    \end{aligned}
+    $\\
+    The fact that the latter set is non-empty means that there exist $[[nas]],
+    [[iM']]$, $[[iNs1]]$ and $[[iNs2]]$ such that
     \begin{enumerate}
-    \item[(i)] $[[G,nas ⊢ iM']]$,
+    \item[(i)] $[[G,nas ⊢ iM']]$ (notice that $[[iM']]$ is normal)
     \item[(ii)] $[[G ⊢ iNs1]]$ and $[[G ⊢ iNs1]]$,
-    \item[(iii)] $[[ [iNs1/nas] ↓iM' = ↓iM1]]$ and $[[ [iNs2/nas] ↓iM' = ↓iM2]]$
+    \item[(iii)] $[[ [iNs1/nas] ↓iM' = ↓nf(iM1)]]$ and $[[ [iNs2/nas] ↓iM' = ↓nf(iM2)]]$
     \end{enumerate}
 
     For each negative variable $[[α⁻]]$ from $[[nas]]$, let us choose a
-    fresh negative antiunification variable $[[α̂⁻]]$, and denote the
+    fresh negative anti-unification variable $[[α̂⁻]]$, and denote the
     list of these variables as $[[nuas]]$.
-    As shown in \cref{case:ub-completeness-shift} of the proof
-    of \cref{lemma:lub-completeness},
-    $([[nuas]],~ [[ [nuas/nas]↓iM' ]],~ [[iNs1/nuas]],~ [[iNs2/nuas]])$ is a
-    sound anti-unifier of $[[↓iM1]]$ and $[[↓iM2]]$ in context $[[Γ]]$.
+    Let us show that $([[nuas]],~ [[ [nuas/nas]↓iM' ]],~ [[iNs1/nuas]],~ [[iNs2/nuas]])$ is a
+    sound anti-unifier of $[[nf(↓iM1)]]$ and $[[nf(↓iM2)]]$ in context $[[Γ]]$:
 
-    By the inversion of $[[G ⊨ ↓iM1 ∨ ↓iM2 = iQ']]$,
-    we conclude that $[[iQ']] = [[∃nbs.[nbs / ToList Ξ]uP]]$, where
-    $[[(Ξ, uP, aus1, aus2)]]$ is the result of the antiunification
-    of $[[↓iM1]]$ and $[[↓iM2]]$ in context $[[Γ]]$.
+    \begin{itemize}
+      \item $[[nuas]]$ is negative by construction,
+      \item $[[Γ ; nuas ⊢ [nuas/nas]↓uM']]$ because $[[Γ, nas ⊢ ↓iM']]$ \ilyam{lemma!},
+      \item $[[Γ ; · ⊢ (iNs1/nuas) : nuas]]$ because $[[Γ ⊢ iNs1]]$ and
+        $[[Γ ; · ⊢ (iNs2/nuas) : nuas]]$ because $[[Γ ⊢ iNs2]]$,
+      \item $[[ [iNs1/nuas] [nuas/nas] ↓uM' ]] = [[ [iNs1/nas] ↓iM' ]] =
+        [[↓nf(iM1)]] = [[nf(↓iM1)]]$.
+      \item $[[ [iNs2/nuas] [nuas/nas] ↓uM' ]] = [[ [iNs2/nas] ↓iM' ]] = [[↓nf(iM2)]] = [[nf(↓iM2)]]$.
+    \end{itemize}
 
-    % G,· ⊨ ↓iN ≈au ↓iM ⫤ (Ξ, uP, aus1, aus2)
-    % -------------------------------------------------- :: Shift
-    % G ⊨ ↓iN ∨ ↓iM = ∃nas.[nas / ToList Ξ]uP
+    Then by the completeness of the anti-unification
+    (\cref{lemma:au-completeness}), the anti-unification algorithm
+    terminates, so is the Least Upper Bound algorithm invoking it, 
+    i.e. $[[iQ']] = [[∃nbs.[nbs / ToList Ξ]uP]]$, where
+    $[[(Ξ, uP, aus1, aus2)]]$ is the result of the anti-unification
+    of $[[nf(↓iM1)]]$ and $[[nf(↓iM2)]]$ in context $[[Γ]]$.
 
-    Then by the initiality of the anti-unification
-    (\cref{lemma:au-initiality}), there exisits $[[aus]]$ such that
+    Moreover, \cref{lemma:au-completeness} also says that the found solution 
+    is initial, i.e. there exists $[[aus]]$ such that
      $[[Γ;Ξ ⊢ aus : nuas]]$ and $[[ [aus][nuas/nas]↓uM' = uP ]]$.
 
      Let $[[σ]]$ be a sequential Kleisli composition of the following
@@ -724,28 +668,5 @@ Another observation we will use is the following.
      ∃nbs.[nbs / ToList Ξ]uP]]$, by applying \ruleref{\ottdruleDOneExistsLabel},
      instantiating $[[nas]]$ with respect to $[[σ]]$. Finally, $[[Γ ⊢ iQ ≥ iQ']]$
      since $[[Γ ⊢ nf(iQ) ≈ iQ]]$, and equivalence implies subtyping by \ilyam{lemma}.
-
   \end{caseof}
 \end{proof}
-
-
-
-
-\begin{lemma}[Soundness of Upgrade]
-  For $[[Δ]] \subseteq [[Γ]]$,
-  suppose that $[[upgrade Γ ⊢ iP to Δ = iQ]]$.
-  \begin{enumerate}
-    \item [(i)] $[[Δ ⊢ iQ]]$
-    \item [(ii)] $[[Γ ⊢ iQ ≥ iP]]$
-  \end{enumerate}
-\end{lemma}
-
-\begin{lemma}[Completeness of Upgrade]
-  For $[[Δ]] \subseteq [[Γ]]$,
-  $[[Γ ⊢ iP]]$ and $[[Δ ⊢ iQ']]$,
-  such that $[[Γ ⊢ iQ' ≥ iP]]$,
-  there exists $[[iQ]]$ s.t.
-  $[[upgrade Γ ⊢ iP to Δ = iQ]]$, and
-  $[[Δ ⊢ iQ' ≥ iQ]]$.
-\end{lemma}
-

@@ -9,7 +9,7 @@ defns
   G ⊨ pa ∨ pa = pa
 
 
-  G,· ⊨ ↓iN ≈au ↓iM ⫤ (Ξ, uP, aus1, aus2)
+  G,· ⊨ nf(↓iN) ≈au nf(↓iM) ⫤ (Ξ, uP, aus1, aus2)
   -------------------------------------------------- :: Shift
   G ⊨ ↓iN ∨ ↓iM = ∃nas.[nas / ToList Ξ]uP
 
@@ -22,4 +22,9 @@ defns
 
 
 
-defn upgrade G ⊢ iP to Δ = iQ :: :: Up :: '' by
+  defn upgrade G ⊢ iP to Δ = iQ :: :: Up :: '' by
+
+  Γ = Δ, pnas   {pnbs} is fresh    {pncs} is fresh 
+  Δ, pnbs, pncs ⊨ [pnbs/pnas]iP ∨ [pncs/pnas]iP = iQ
+  --------------------------------------------------- :: Upgrade
+  upgrade Γ ⊢ iP to Δ = iQ 
