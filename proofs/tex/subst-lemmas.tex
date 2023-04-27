@@ -15,22 +15,22 @@
 \begin{lemma}[Substitution preserves subtyping]
   \label{lemma:subst-pres-subt}
 
-  Suppose that $[[Γ2 ⊢ σ : Γ1]]$. Then
+  Suppose that $[[Γ ⊢ σ : Γ1]]$. Then
   \begin{itemize}
-  \item[$+$] if $[[Γ, Γ1 ⊢ iP]]$,~ $[[Γ, Γ1 ⊢ iQ]]$,~ and $[[Γ, Γ1 ⊢ iP ≥ iQ]]$ ~ then $[[Γ, Γ2 ⊢ [σ]iP ≥ [σ]iQ]]$
-  \item[$-$] if $[[Γ, Γ1 ⊢ iN]]$,~ $[[Γ, Γ1 ⊢ iM]]$,~ and $[[Γ, Γ1 ⊢ iN ≤ iM]]$ ~ then $[[Γ, Γ2 ⊢ [σ]iN ≤ [σ]iM]]$
+  \item[$+$] if $[[Γ1 ⊢ iP]]$,~ $[[Γ1 ⊢ iQ]]$,~ and $[[Γ1 ⊢ iP ≥ iQ]]$ ~ then $[[Γ ⊢ [σ]iP ≥ [σ]iQ]]$
+  \item[$-$] if $[[Γ1 ⊢ iN]]$,~ $[[Γ1 ⊢ iM]]$,~ and $[[Γ1 ⊢ iN ≤ iM]]$ ~ then $[[Γ ⊢ [σ]iN ≤ [σ]iM]]$
   \end{itemize}
 \end{lemma}
 \begin{proof}
   \ilyam{todo}
 \end{proof}
 
-\begin{corollary}[Substitution preserves subtyping]
+\begin{corollary}[Substitution preserves equivalence]
   \label{corollary:subst-pres-equiv}
 
-  Suppose that $[[Γ2 ⊢ σ : Γ1]]$. Then
+  Suppose that $[[Γ ⊢ σ : Γ1]]$. Then
   \begin{itemize}
-  \item[$+$] if $[[Γ, Γ1 ⊢ iP]]$,~ $[[Γ, Γ1 ⊢ iQ]]$,~ and $[[Γ, Γ1 ⊢ iP ≈ iQ]]$ ~ then $[[Γ, Γ2 ⊢ [σ]iP ≈ [σ]iQ]]$
-  \item[$-$] if $[[Γ, Γ1 ⊢ iN]]$,~ $[[Γ, Γ1 ⊢ iM]]$,~ and $[[Γ, Γ1 ⊢ iN ≈ iM]]$ ~ then $[[Γ, Γ2 ⊢ [σ]iN ≈ [σ]iM]]$
+  \item[$+$] if $[[Γ1 ⊢ iP]]$,~ $[[Γ1 ⊢ iQ]]$,~ and $[[Γ1 ⊢ iP ≈ iQ]]$ ~ then $[[Γ ⊢ [σ]iP ≈ [σ]iQ]]$
+  \item[$-$] if $[[Γ1 ⊢ iN]]$,~ $[[Γ1 ⊢ iM]]$,~ and $[[Γ1 ⊢ iN ≈ iM]]$ ~ then $[[Γ ⊢ [σ]iN ≈ [σ]iM]]$
   \end{itemize}
 \end{corollary}

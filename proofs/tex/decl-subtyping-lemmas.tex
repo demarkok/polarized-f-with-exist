@@ -113,13 +113,22 @@
   \ilyam{fix}
 \end{proof}
 
+\begin{corollary}[Transitivity of subtyping] \label{corollary:subtyping-transitivity}
+  Assuming the types are well-formed in $[[Γ]]$,
+  \begin{itemize}
+    \item[$-$] if $[[Γ ⊢ iN1 ≤ iN2]]$ and $[[Γ ⊢ iN2 ≤ iN3]]$ then $[[Γ ⊢ iN1 ≤ iN3]]$,
+    \item[$+$] if $[[Γ ⊢ iP1 ≥ iP2]]$ and $[[Γ ⊢ iP2 ≥ iP3]]$ then $[[Γ ⊢ iP1 ≥ iP3]]$.
+  \end{itemize}
+\end{corollary}
 
 
-
-
-
-
-
+\begin{corollary}[Transitivity of equivalence] \label{corollary:equivalence-transitivity}
+  Assuming the types are well-formed in $[[Γ]]$,
+  \begin{itemize}
+    \item[$-$] if $[[Γ ⊢ iN1 ≈ iN2]]$ and $[[Γ ⊢ iN2 ≈ iN3]]$ then $[[Γ ⊢ iN1 ≈ iN3]]$,
+    \item[$+$] if $[[Γ ⊢ iP1 ≈ iP2]]$ and $[[Γ ⊢ iP2 ≈ iP3]]$ then $[[Γ ⊢ iP1 ≈ iP3]]$.
+  \end{itemize}
+\end{corollary}
 
 
 

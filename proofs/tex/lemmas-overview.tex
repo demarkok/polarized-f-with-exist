@@ -127,14 +127,14 @@
                       & \infer
                                      { [[us]] \text{ is sound}
                                       \begin{cases}
-                                         [[Θ ⊢ us]]\\
+                                         [[Γ ⊢ us : Θ]]\\
                                          [[ [us]uP = iQ ]]\\
                                       \end{cases}
                                      }
-                                     {[[Θ ⊨ uP ≈u iQ ⫤ us]]}
+                                     {[[Γ; Θ ⊨ uP ≈u iQ ⫤ us]]}
                                      {}
                               & \infer{\exists [[us]] \text{ s.t. }
-                                [[Θ ⊨ uP ≈u iQ ⫤ us]]
+                                [[Γ; Θ ⊨ uP ≈u iQ ⫤ us]]
                                 }{\exists \text{ sound } [[us']]}{}
                              &  ---
   \\
@@ -145,7 +145,7 @@
                       & \infer
                         { [[us]] \text{ is sound}
                         \begin{cases}
-                          [[Θ ⊢ us]]\\
+                          [[Γ ⊢ us : Θ]]\\
                           [[ Γ ⊢ [us]uN ≤ iM ]]
                         \end{cases}
                         }

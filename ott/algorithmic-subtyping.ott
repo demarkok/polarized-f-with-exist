@@ -15,7 +15,7 @@ defns
   ----------------- :: NVar
   G;Θ ⊨ a⁻ ≤ a⁻ ⫤ · 
 
-  Θ ⊨ nf(uP) ≈u nf(iQ) ⫤ us
+  Γ;Θ ⊨ nf(uP) ≈u nf(iQ) ⫤ us
   ---------------------------- :: ShiftU
   G;Θ ⊨ ↑uP ≤ ↑iQ ⫤ us
 
@@ -26,7 +26,7 @@ defns
   % *[G, pbs]
   G, pbs; Θ, â⁺*[G, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ us
   ----------------------------------- :: Forall
-  G;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ us \ â⁺*
+  G;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ us \ {â⁺*}
 
   defn G ; Θ ⊨ uP ≥ iQ ⫤ us :: :: Psup :: ''
   {{ com Positive supertyping }}
@@ -35,8 +35,8 @@ defns
   ---------------- :: PVar
   G;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·
 
-  Θ ⊨ nf(uN) ≈u nf(iM) ⫤ us
-  ---------------------------- :: ShiftD
+  G;Θ ⊨ nf(uN) ≈u nf(iM) ⫤ us
+  --------------------------- :: ShiftD
   G;Θ ⊨ ↓uN ≥ ↓iM ⫤ us
 
   % *[G, nbs]
@@ -45,6 +45,6 @@ defns
   G;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ us
 
     
-   upgrade G ⊢ iP to Δ = iQ
-  ----------------------------------------------- :: PUVar
-  G;Θ ⊨ â⁺ [Δ] ≥ iP ⫤ (Δ ⊢ â⁺ :≥ iQ)
+  â⁺[Δ] ∊ Θ   upgrade G ⊢ iP to Δ = iQ
+  -------------------------------------- :: PUVar
+  G;Θ ⊨ â⁺ ≥ iP ⫤ (Δ ⊢ â⁺ :≥ iQ)

@@ -1,7 +1,6 @@
 defns
   SM :: 'SM' ::=
 
-
   defn usEntry1 & usEntry2 = usEntry3 :: :: E :: 'E'
   {{ com Unification Solution Entry Merge }}
   {{ tex [[ usEntry1 ]] ~ \& ~ [[ usEntry2 ]] = [[usEntry3]] }}
@@ -28,57 +27,26 @@ defns
   (Γ ⊢ nua :≈ iN) & (Γ ⊢ nua :≈ iN) = (Γ ⊢ nua :≈ iN)
 
 
-
-  % defn usEntry1 matches with usEntry2  :: :: M :: 'M'
-  % {{ com matching Unification Solution Entries }} by
-
-  % -------------------------------- :: SupSup
-  % pua :≥ iP matches with pua :≥ iQ
-
-
-  % ---------------------------------- :: EqSup
-  % pua :≈ iP matches with pua :≥ iQ
-  
-
-  % -------------------------------- :: SupEq
-  % pua :≥ iP matches with pua :≈ iQ
-
-  % -------------------------------- :: PEqEq
-  % pua :≈ iP matches with pua :≈ iP 
-
-  % --------------------------------- :: NEqEq
-  % nua :≈ iN matches with nua :≈ iN
-
-
   defn us1 & us2 = us3 :: :: SM :: ''
   {{ com Merge unification solutions }} by
 
-  % ------------- :: Empty
-  %  · & us = us
+defns
+  SWEAK :: 'SWEAK' ::=
 
-  %  (pua :≈ iP) ∊ us2
-  %  us1 & (us2 \ pua) = us3
-  % ----------------------------------------- :: PEqEq
-  %  (pua :≈ iP, us1) & us2 = (pua :≈ iP, us3)
+  defn usEntry1 ⇒ usEntry2 :: :: E :: 'E'
+  {{ com Weakening of unification solution entries }} by
 
-  %  (pua :≥ iQ) ∊ us2       us1 & (us2 \ pua) = us3
-  % ------------------------------------------------------- :: PSupSup
-  %  (pua :≥ iP, us1) & us2 = (pua :≥ iP ∨ iQ, us3)
+  Γ ⊢ iP1 ≥ iP2
+  ----------------------------------- :: SupSup
+  (Γ ⊢ pua :≥ iP1) ⇒ (Γ ⊢ pua :≥ iP2)
 
+  Γ ⊢ iP1 ≥ iP2
+  ----------------------------------- :: EqSup
+  (Γ ⊢ pua :≈ iP1) ⇒ (Γ ⊢ pua :≥ iP2)
 
-  %  (pua :≈ iQ) ∊ us2     Ord fv iQ ∪ fv iP ⊨ uQ ≥ iP ⫤ us'
-  %  us1 & (us2 \ pua) = us3
-  % ------------------------------------------------------- :: PSupEq
-  %  (pua :≥ iP, us1) & us2 = (pua :≈ iQ, us3)
+  Γ ⊢ iP1 ≈ iP2
+  ----------------------------------- :: EqEq
+  (Γ ⊢ pua :≈ iP1) ⇒ (Γ ⊢ pua :≈ iP2)
 
-
-  %  (pua :≥ iQ) ∊ us2     Ord fv iQ ∪ fv iP ⊨ uP ≥ iQ ⫤ us'
-  %  us1 & (us2 \ pua) = us3
-  % ------------------------------------------------------- :: PEqSup
-  %  (pua :≈ iP, us1) & us2 = (pua :≈ iP, us3)
-
-
-  %  (nua :≈ iN) ∊ us2 
-  %  us1 & (us2 \ nua) = us3
-  % ----------------------------------------- :: NEqEq
-  %  (nua :≈ iN, us1) & us2 = (nua :≈ iN, us3)
+  defn us1 ⇒ us2 :: :: S :: 'S'
+  {{ com Weakening of unification solutions }} by

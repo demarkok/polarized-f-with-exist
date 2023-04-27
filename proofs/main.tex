@@ -5,6 +5,7 @@
 \usepackage{hyperref}
 \usepackage{mathpartir}
 
+
 \input{prelude.tex}
 
 
@@ -130,6 +131,17 @@
 \renewcommand{\ottdruleLUBUpgradeName}[0]{(Upg)}
 
 
+% G ; Θ ⊨ uN ≤ iM ⫤ us
+\renewcommand{\ottdruleANVarName}[0]{(Var$^-$$^{\subA}$)}
+\renewcommand{\ottdruleAShiftUName}[0]{($\uparrow^{\subA}$)}
+\renewcommand{\ottdruleAArrowName}[0]{($\rightarrow^{\subA}$)}
+\renewcommand{\ottdruleAForallName}[0]{($\forall^{\subA}$)}
+
+% G ; Θ ⊨ iP ≥ uQ ⫤ us
+\renewcommand{\ottdruleAPVarName}[0]{(Var$^+$$^{\supA}$)}
+\renewcommand{\ottdruleAShiftDName}[0]{($\downarrow^{\supA}$)}
+\renewcommand{\ottdruleAExistsName}[0]{($\exists^{\supA}$)}
+\renewcommand{\ottdruleAPUVarName}[0]{(UVar$^{\supA}$)}
 
 \begin{document}
 
@@ -183,7 +195,7 @@ First, we present the top-level system, which is easy to understand.
 \subsection{Unification Solution Merge}
 
 Unification solution is represented by a list of unification solution entries.
-Each entry restrict an unification variable in two possible ways: either stating
+Each entry restricts an unification variable in two possible ways: either stating
 that it must be equivalent to a certain type ($[[Δ ⊢ pua :≈ iP]]$ or $[[Δ ⊢ nua :≈
 iN]]$) or that it must be a (positive) supertype of a certain type ($[[Δ ⊢ pua :≥
 iP]]$).
@@ -196,6 +208,11 @@ Two matching entries can be merged in the following way:
 \begin{definition} \hfill \\
 \ottdefnSME\\
 \end{definition}
+Notice that in case of equivalence, the assigned types
+must be equal (i.e. alpha-equivalent) to be merged. This is because
+the unification algorithm assumes that every type is normalized,
+and hence, equivalence is alpha-equivalence 
+(\cref{corollary:nf-complete-wrt-subt-equiv,corollary:nf-sound-wrt-subt-equiv}).
 
 
 To merge two unification solution, we merge each pair of
@@ -242,9 +259,6 @@ matching entries, and unite the results.
 \subsection{Overview}
 \input{../_build/_gen/tex/lemmas-overview.tex}
 
-\subsection{Anti-unification}
-\input{../_build/_gen/tex/au-lemmas.tex}
-
 \subsection{Variable Ordering}
 \input{../_build/_gen/tex/ord-lemmas.tex}
 
@@ -260,5 +274,17 @@ matching entries, and unite the results.
 \subsection{Upper Bounds}
 
 \input{../_build/_gen/tex/lub-lemmas.tex}
+
+\subsection{Unification}
+\input{../_build/_gen/tex/unification-lemmas.tex}\
+
+\subsection{Anti-unification}
+\input{../_build/_gen/tex/anti-unification-lemmas.tex}
+
+\subsection{Solution Merge}
+\input{../_build/_gen/tex/solution-merge-lemmas.tex}
+
+\subsection{Subtyping Algorithm}
+\input{../_build/_gen/tex/alg-subtyping-lemmas.tex}
 
 \end{document}

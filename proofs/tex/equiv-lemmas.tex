@@ -90,7 +90,7 @@
   \end{caseof}
 \end{proof}
 
-\begin{corollary} \label{corollary:nf-sound-wrt-decl-equiv}
+\begin{corollary}[Normalization is sound w.r.t. subtyping-induced equivalence] \label{corollary:nf-sound-wrt-subt-equiv}
   \hfill
   \begin{itemize}
     \item [$+$] if $[[Γ ⊢ iP]]$ then $[[Γ ⊢ iP ≈ nf(iP)]]$,
@@ -455,6 +455,18 @@
       
 \item[$+$] The proof is symmetric to the proof of the negative case.
   \end{itemize}
+\end{proof}
+
+\begin{corollary}[Normalization is complete w.r.t. subtyping-induced equivalence]
+  \label{corollary:nf-complete-wrt-subt-equiv}
+  Assuming all the types below are well-formed in $[[Γ]]$:
+  \begin{itemize}
+    \item [$+$] if $[[Γ ⊢ iP ≈ iQ]]$ then $[[nf(iP) = nf(iQ)]]$,
+    \item [$-$] if $[[Γ ⊢ iN ≈ iM]]$ then $[[nf(iN) = nf(iM)]]$.
+  \end{itemize}
+\end{corollary}  
+\begin{proof}
+  Immediately from \cref{lemma:equiv-completeness,lemma:normalization-completeness}.
 \end{proof}
 
 

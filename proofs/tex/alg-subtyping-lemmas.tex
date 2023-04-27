@@ -1,0 +1,198 @@
+\begin{theorem}[Soundness of Subtyping Algorithm] \hfill
+    \begin{itemize}
+        \item [$-$] 
+        If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, and $[[Γ ; Θ ⊢ uN]]$ then\\ 
+        $[[Γ ; Θ ⊨ uN ≤ iM ⫤ us]]$
+        implies $[[us : Θ ∩ uv uN]]$ and 
+        for any $[[us']]$ such that $[[us' ⇒ us]]$,
+        $[[ Γ ⊢ [us']uN ≤ iM ]]$
+
+        \item [$+$] 
+        If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iQ]]$, and $[[Γ ; Θ ⊢ uP]]$ then\\
+        $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ us]]$
+        implies $[[us : Θ ∩ uv uP]]$ and 
+        for any $[[us']]$ such that $[[us' ⇒ us]]$,
+        $[[ Γ ⊢ [us']uP ≥ iQ ]]$.
+     \end{itemize}
+\end{theorem}
+\begin{proof}
+    We prove it by induction on $[[Γ ; Θ ⊨ uN ≤ iM ⫤ us]]$ (and mutually, on $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ us]]$).
+    Let us consider the last rule to infer this judgment. 
+    \begin{caseof}
+        \item $[[G;Θ ⊨ a⁻ ≤ a⁻ ⫤ ·]]$\\
+        Then $[[uv a⁻ = ∅]]$, and $[[us]] = [[· : ·]]$ satisfies $[[us : Θ ∩ ∅]]$.
+        Since $[[uv a⁻ = ∅]]$, any unification solution $[[us']]$ does not change $[[a⁻]]$, i.e.
+        $[[ [us']a⁻ = a⁻ ]]$. Therefore, $[[Γ ⊢ [us']a⁻ ≤ a⁻]]$ holds by \ruleref{\ottdruleDOneNVarLabel}.
+
+        \item $[[G;Θ ⊨ ↑uP ≤ ↑iQ ⫤ us]]$\\
+        Then the next step of the algorithm is the unification of $[[nf(uP)]]$ and $[[nf(iQ)]]$.
+        By the soundness of the unification algorithm (\cref{lemma:unification-soundness}),
+        it returns an equivalence-only solution $[[us]]$ such that $[[us : Ord uv uP]]$.
+        By \cref{todo}, since $[[us]]$ is equivalence-only and $[[Γ ⊢ Θ]]$, $[[us' ⇒ us]]$ means 
+        $[[ Γ ⊢ Sub us' ≈ Sub us : Ord uv uP ]]$ as substitutions.
+
+        $[[ [us]nf(uP) = nf(iQ) ]]$ implies $[[Γ ⊢ [us]nf(uP) ≈ nf(iQ)]]$, and then 
+        $[[Γ ⊢ [us']nf(uP) ≈ nf(iQ)]]$. \ilyam{add lemmas}
+
+        Let us rewrite the left-hand side and the right-hand side of $[[Γ ⊢ [us']nf(uP) ≈ nf(iQ)]]$ by 
+        transitivity of equivalence (\cref{corollary:equivalence-transitivity}).
+        By \cref{corollary:nf-sound-wrt-subt-equiv,corollary:subst-pres-equiv},
+        $[[Γ ⊢ [us']nf(uP) ≈ [us']uP ]]$. By \cref{corollary:nf-sound-wrt-subt-equiv}, 
+        $[[Γ ⊢ nf(iQ) ≈ iQ ]]$. 
+        This way, we have $[[Γ ⊢ [us']uP ≈ iQ]]$.
+        Then by \ruleref{\ottdruleDOneShiftULabel}
+        and congruence of substitution, $[[Γ ⊢ [us']↑uP ≤ ↑iQ]]$.
+
+        \item $[[G;Θ ⊨ uP → uN' ≤ iQ → iM' ⫤ us]]$\\
+        The next step of the algorithm is two recursive calls:
+        $[[G;Θ ⊨ uP ≥ iQ ⫤ us1]]$ and $[[G;Θ ⊨ uN' ≤ iM' ⫤ us2]]$.
+        By the induction hypothesis, 
+        \begin{enumerate}
+            \item $[[us1 : Θ ∩ uv uP]]$ and $[[ Γ ⊢ [us1']uP ≥ iQ ]]$ for any $[[us1' ⇒ us1]]$
+            \item $[[us2 : Θ ∩ uv uN']]$ and $[[ Γ ⊢ [us2']uN' ≤ iM' ]]$ for any $[[us2' ⇒ us2]]$
+        \end{enumerate}
+
+        Then the algorithm merges two unification solutions $[[us1]]$ and $[[us2]]$.
+        By \cref{lemma:merge-soundness}, since $[[uv uP ∪ uv uN' = uv (uP → uN')]]$, 
+        we have $[[us1 & us2 : Θ ∩ uv (uP → uN')]]$, and also
+        $[[us1 & us2 ⇒ us1]]$ and $[[us1 & us2 ⇒ us2]]$.
+        By the transitivity of solution weakening (\cref{todo}),
+         $[[us' ⇒ us1 & us2]]$ implies $[[us' ⇒ us1]]$ and $[[us' ⇒ us2]]$.
+
+% \[\begin{tikzcd}[arrows=Rightarrow]
+% 	& {[[us']]} \\
+% 	{[[us1]]} & {[[us1 & us2]]} & {[[us2]]}
+% 	\arrow[from=2-2, to=2-3]
+% 	\arrow[from=2-2, to=2-1]
+% 	\arrow[from=1-2, to=2-2]
+% \end{tikzcd}\]
+
+        The application of the induction hypothesis gives us 
+        $[[Γ ⊢ [us']uP ≥ iQ ]]$ and $[[ Γ ⊢ [us']uN' ≤ iM' ]]$.
+        Finally, by \ruleref{\ottdruleDOneArrowLabel}, $[[Γ ⊢ [us'](uP → uN') ≤ iQ → iM']]$.
+
+        \item $[[G;Θ ⊨ ∀pas.uN' ≤ ∀pbs.iM' ⫤ us]]$ s.t. either $[[pas]]$ or $[[pbs]]$ is not empty\\
+        Then the algorithm creates fresh unification variables $[[â⁺*[Γ,pbs] ]]$, 
+        substitutes the old $[[pas]]$ with them in $[[uN']]$, and makes the recursive call:
+        $[[G, pbs; Θ, â⁺*[G, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ us']]$, returning as the resulting solution 
+        $[[us]] = [[us' \ {α̂⁺*}]]$.
+
+        Notice that $[[Γ, pbs ⊢ Θ, â⁺*[G, pbs] ]]$, $[[Γ,pbs ⊢ iM']]$, and 
+        $[[Γ,pbs; Θ, â⁺*[G, pbs] ⊢ [â⁺*/pas] uN ]]$, so the induction hypothesis is applicable,
+        that is $[[us' : Θ ∩ uv [â⁺*/pas]uN']]$ and $[[ Γ, pbs ⊢ [us'2][â⁺*/pas]uN' ≤ iM' ]]$ for any $[[us'2 ⇒ us']]$.
+
+        Since the domain of $[[us']]$ is $[[uv [â⁺*/pas]uN']]$, the domain of 
+        $[[us]] = [[us' \  {α̂⁺*}]]$ is $[[uv [â⁺*/pas]uN \ {â⁺*} = uv uN']] = [[uv ∀pas.uN']]$,
+        this way, $[[us : Θ ∩ uv ∀pas.uN']]$, as required.
+
+        It is left to show that $[[Γ ⊢ [us2]∀pas.uN' ≤ ∀pbs.iM']]$ for any $[[us2 ⇒ us]]$.
+        Let us consider an arbitrary $[[us2 ⇒ us]]$. Let us construct $[[us'2]]$, 
+        extending $[[us2]]$ to the domain $[[Ord uv [â⁺*/pas]uN']]$ with the values of $[[us']]$,
+        i.e.  $[[us'2 : Θ ∩ uv [â⁺*/pas]uN']]$, 
+        and
+        \[
+            [[us'2(β̂±)]]  = 
+            \begin{cases}
+               [[us2(β̂±)]] & \text{if } [[β̂±]] \in [[uv uN']] \\
+               [[us'(β̂±)]] & \text{if } [[β̂±]] \in [[â⁺*]]
+            \end{cases}
+        \] 
+        , where the application of the unification solution to a variable returns the 
+        corresponding \emph{unification entry}. 
+        Notice that $[[Sub us'2|uv uN']] = [[us2]]$.
+    It is easy to see that $[[us'2 ⇒ us']]$: 
+    \begin{enumerate}
+        \item if $[[β̂±]] \in [[uv uN']]$ then $[[us'2(β̂±)]] = [[us2(β̂±) ⇒ us(β̂±)]] = [[us'(β̂±)]]$;
+        \item it $[[β̂±]] \in [[â⁺*]]$ then $[[us'2(β̂±)]] = [[us'(β̂±) ⇒ us'(β̂±)]]$,
+    \end{enumerate}
+    which means that the induction hypothesis can be applied to $[[us'2]]$, i.e.
+    $[[ Γ, pbs ⊢ [us'2][â⁺*/pas]uN' ≤ iM' ]]$.\\
+    Notice that
+    $
+    \begin{aligned}[t]
+                 [[ [us'2][â⁺*/pas]uN' ]] &= [[ [Sub us'2|{â⁺*} ○ â⁺*/pas][Sub us'2|uv uN']uN' ]]
+                                          && \text{by substitution properties \ilyam{todo}}\\
+                                          &= [[ [Sub us'2|{â⁺*} ○ â⁺*/pas][us2]uN' ]]
+                                          && \text{Since $[[Sub us'2|uv uN']] = [[us2]]$}.
+    \end{aligned}
+    $\\
+    Also notice that the domain of $[[Sub us'2|{â⁺*} ○ â⁺*/pas]]$ is $[[pas]]$,
+    and the range is $[[Γ, pbs]]$, i.e. $[[Γ, pbs ⊢ Sub us'2|{â⁺*} ○ â⁺*/pas : pas]]$, 
+    which means that we can apply \ruleref{\ottdruleDOneForallLabel} to 
+    $[[ Γ, pbs ⊢ [Sub us'2|{â⁺*} ○ â⁺*/pas][us2]uN' ≤ iM' ]]$
+    to get $[[ Γ ⊢ [us2]∀pas.uN' ≤ ∀pbs.iM' ]]$, as required.
+
+    \item $[[Γ;Θ ⊨ â⁺ ≥ iP' ⫤ (Δ ⊢ â⁺ :≥ iQ')]]$ where
+    $[[â⁺[Δ] ∊ Θ]]$ and $[[upgrade G ⊢ iP' to Δ = iQ']]$\\
+
+    Notice that $[[â⁺[Δ] ∊ Θ]]$ and $[[Γ ⊢ Θ]]$ 
+    implies $[[Γ = Δ, pnas]]$ for some $[[pnas]]$, hence, the
+    soundness of upgrade (\cref{lemma:upgrade-soundness}) is applicable:
+    \begin{enumerate}
+        \item $[[Δ ⊢ iQ']]$ and
+        \item $[[Γ ⊢ iQ ≥ iP]]$.
+    \end{enumerate}
+
+    Since $[[â⁺[Δ] ∊ Θ]]$ and $[[Δ ⊢ iQ']]$, it is clear that $[[(Δ ⊢ â⁺ :≥ iQ') : Θ ∩ uv â⁺ ]]$.
+
+    It is left to show that $[[Γ ⊢ [us']â⁺ ≥ iP']]$ for any $[[us' ⇒ Δ ⊢ â⁺ :≥ iQ']]$.
+    The latter weakening statement means that either $[[us']] \ni [[Δ ⊢ â⁺ :≥ iQ'']]$ or
+    $[[us']] \ni [[(Δ ⊢ â⁺ :≈ iQ'')]]$ for $[[Δ ⊢ iQ'' ≥ iQ']]$. In any case,
+    $[[Δ ⊢ [us']â⁺ ≥ iQ]]$. By weakening the context to $[[Γ]]$ and combining this judgment
+    transitivity (\cref{todo}) with $[[Γ ⊢ iQ ≥ iP]]$, we have $[[Γ ⊢ [us']â⁺ ≥ iP]]$,
+    as required. 
+
+    \item For the other positive cases, the proof is symmetric to the corresponding negative cases.
+    \end{caseof}
+\end{proof}
+
+Notice that the induction statement in following theorem is not symmetric for the positive and negative cases.
+\begin{theorem}[Completeness and Initiality of the Subtyping Algorithm]
+    \hfill
+    \begin{itemize}
+        \item [$-$] Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$ and $[[Γ ; Θ ⊢ uN]] \neq [[α̂⁻]]$ and there exists $[[us : Θ ∩ uv uN]]$ such that $[[ Γ ⊢ [us]uN ≤ iM ]]$.
+        Then there exists $[[us']]$ such that $[[Γ ; Θ ⊨ uN ≤ iM ⫤ us']]$
+        and $[[us ⇒ us']]$.
+        
+        \item [$+$] Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iQ]]$ and $[[Γ ; Θ ⊢ uP]]$ and
+        there exists $[[us : Θ ∩ uv uP]]$ such that $[[ Γ ⊢ [us]uP ≥ iQ ]]$.
+        Then there exists $[[us']]$ such that $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ us']]$
+        and $[[us ⇒ us']]$.
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+    We prove it by induction on $[[ Γ ⊢ [us]uN ≤ iM ]]$ (and mutually, on $[[ Γ ⊢ [us]uP ≥ iQ ]]$).
+    Let us consider the last rule used in the derivation of $[[ Γ ⊢ [us]uN ≤ iM ]]$ or $[[ Γ ⊢ [us]uP ≥ iQ ]]$,
+    but first consider the base case for the substitution $[[ [us]uP ]]$:
+    \begin{caseof}
+        \item $[[uP]] = [[ α̂⁺ ]]$ is a unification variable\\
+        Then by assumption, there exists $[[us : Θ ∩ uv uP]]$ such that $[[ Γ ⊢ [us]α̂⁺ ≥ iQ ]]$.
+        It means that $[[us]]$ sends $[[α̂⁺]]$ to $[[iP']]$ such that $[[Γ ⊢ iP' ≥ iQ]]$.
+        This way, $[[us]]$ is either $[[ (Δ ⊢ α̂⁺ :≈ iP') ]]$ or $[[ (Δ ⊢ α̂⁺ :≥ iP') ]]$,
+        where $[[α̂⁺[Δ] ∊ Θ]]$.
+
+        In this case, the algorithm tries to apply \ruleref{\ottdruleAPUVarLabel}
+        and the resulting solution is $[[us']] = [[(Δ ⊢ α̂⁺ :≥ iQ')]]$ where
+        $[[upgrade Γ ⊢ iQ to Δ = iQ']]$.
+
+        Why does the upgrade procedure terminates?
+        Because $[[iP']]$ satisfies the pre-conditions of the completeness of the upgrade
+        (\cref{lemma:upgrade-completeness})
+        :
+        \begin{itemize}
+            \item $[[Δ ⊢ iP']]$ because $[[iP' = [us]α̂⁺]]$, $[[us : Θ ∩ uv uP]]$ and 
+            $[[α̂⁺[Δ] ∊ Θ ∩ uv uP]]$,
+            \item $[[Γ ⊢ iP' ≥ iQ]]$ as noted before
+        \end{itemize}
+        Moreover, completeness of the upgrade also gives us $[[Γ ⊢ iP' ≥ iQ']]$
+        and further, we strengthen it to $[[Δ ⊢ iP' ≥ iQ']]$
+        (since by the soundness of the upgrade (\cref{lemma:upgrade-soundness}),
+        $[[Δ ⊢ iQ']]$).
+
+        It means that $[[ (Δ ⊢ α̂⁺ :≈ iP') ⇒ (Δ ⊢ α̂⁺ :≥ iQ') ]]$ and 
+        $[[ (Δ ⊢ α̂⁺ :≥ iP') ⇒ (Δ ⊢ α̂⁺ :≥ iQ') ]]$, which means that in any case, 
+        $[[us ⇒ us']]$.
+    \end{caseof}
+\end{proof}
+
+
