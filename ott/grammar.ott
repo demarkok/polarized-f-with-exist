@@ -78,9 +78,9 @@ s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
 
 
 usEntry  {{ tex e }} :: usE_' ::= {{ com entry of a unification solution }}
-   | Γ ⊢ pua :≈ iP            :: :: PSol {{ tex [[Γ]] \vdash [[pua]] :\approx   [[iP]] }}
-   | Γ ⊢ nua :≈ iN            :: :: NSol {{ tex [[Γ]] \vdash [[nua]] :\approx   [[iN]] }}
-   | Γ ⊢ pua :≥ iP            :: :: PSup {{ tex [[Γ]] \vdash [[pua]] :\geqslant [[iP]] }}
+   | pua :≈ iP            :: :: PSol {{ tex [[pua]] :\approx   [[iP]] }}
+   | nua :≈ iN            :: :: NSol {{ tex [[nua]] :\approx   [[iN]] }}
+   | pua :≥ iP            :: :: PSup {{ tex [[pua]] :\geqslant [[iP]] }}
    % | nua :≤ iN            :: :: PSub {{ tex [[nua]] :[[≤]] [[iN]] }}
    | ( usEntry )              :: S :: paren
    | us ( pua )               :: M :: PSelect
@@ -215,7 +215,8 @@ T {{ tex \Theta }}, Θ {{ tex \Theta }}:: U_Ctxt ::= {{ com unification type var
     | Ord varset         ::   :: fromset {{ tex [[varset]] }}
     | </ Θi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( Θ )              :: S :: paren
-    | Θ ∩ varset         ::   :: filter  {{ com leave only those variables that are in the set }}
+    | Θ | varset         ::   :: restr  {{ com leave only those variables that are in the set }}
+                                        {{ tex [[Θ]]|_{[[varset]]} }}
     % | Ξ ⁻                ::   :: NCtxt {{ tex [[Ξ]]^{-} }}
                                        % {{ com context containing only negative uvars }}
 
@@ -341,7 +342,7 @@ pnua {{ tex \widehat{\alpha}^{\pm} }} :: pnua_ ::= {{ com positive/negative unif
 
 pua {{ tex \widehat{\alpha}^{+} }} :: pua_ ::= {{ com positive unification variable }}
     | a ̂ ⁺        :: :: Var {{ tex \widehat{[[a]]}^{+} }}
-    | a ̂ ⁺ [ Δ ]  :: :: AnnotVar {{ tex \widehat{[[a]]}^{+}\{ [[Δ]] \} }}
+    | pua  [ Δ ]  :: :: AnnotVar {{ tex [[pua]]\{ [[Δ]] \} }}
     | pnua        :: :: PN
 
 nua {{ tex \widehat{\alpha}^{-} }},
@@ -349,7 +350,7 @@ nub {{ tex \widehat{\beta}^{-} }}
 :: nua_ ::= {{ com negative unification variable }}
     | a ̂ ⁻               :: :: Var {{ tex \widehat{[[a]]}^{-} }}
     | a ̂ ⁻ _ { iN , iM } :: :: VarIdxd {{ tex \widehat{[[a]]}^{-}_{\{ [[iN]], [[iM]] \} } }}
-    | a ̂ ⁻ [ Δ ]         :: :: AnnotVar {{ tex \widehat{[[a]]}^{-}\{ [[Δ]] \} }}
+    | nua [ Δ ]          :: :: AnnotVar {{ tex [[nua]]\{ [[Δ]] \} }}
     | pnua               :: :: PN
 
 puas {{ tex \vv{ \widetilde{ \alpha^{+} } } }},

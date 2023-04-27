@@ -19,7 +19,6 @@ defns
   ------------------- :: NVar
   Γ; Θ ⊨ a⁻ ≈u a⁻ ⫤ · 
 
-
   Γ ; Θ ⊨ uP ≈u iQ ⫤ us
   --------------------- :: ShiftU
   Γ ; Θ ⊨ ↑uP ≈u ↑iQ ⫤ us
@@ -34,7 +33,7 @@ defns
 
   â⁻[Δ] ∊ Θ   Δ ⊢ iN  
   ------------------------------------- :: NUVar
-  Γ ; Θ ⊨  â⁻ ≈u iN ⫤ (Δ ⊢ â⁻ :≈ iN)
+  Γ ; Θ ⊨  â⁻ ≈u iN ⫤ (â⁻ :≈ iN)
 
   defn Γ ; Θ ⊨ uP ≈u iQ ⫤ us :: :: PUnif :: ''
   {{ com Positive unification }}
@@ -53,4 +52,4 @@ defns
 
   â⁺[Δ] ∊ Θ   Δ ⊢ iP
   --------------------------------- :: PUVar
-  Γ ; Θ ⊨  â⁺ ≈u iP ⫤ (Δ ⊢ â⁺ :≈ iP)
+  Γ ; Θ ⊨  â⁺ ≈u iP ⫤ (â⁺ :≈ iP)
