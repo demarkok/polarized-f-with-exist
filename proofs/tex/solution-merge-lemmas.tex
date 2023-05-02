@@ -1,1 +1,33 @@
-Hello!
+\begin{lemma} [Soundness of Solution Merge] \label{lemma:merge-soundness}
+    Suppose that $[[us1 : Θ1]]$ and $[[us2 : Θ2]]$ 
+    and $[[us1 & us2]]$ is defined.
+    Then 
+    \begin{enumerate}
+        \item $[[us1 & us2 : Θ1 ∪ Θ2]]$,
+        \item $[[Θ1 ⊢ us1 & us2 ⇒ us1]]$, and
+        \item $[[Θ2 ⊢ us1 & us2 ⇒ us2]]$.
+    \end{enumerate}
+\end{lemma}
+
+
+\begin{lemma} [Completeness and Initiality of Solution Merge] 
+    \label{lemma:merge-completeness}
+    Suppose that $[[us1 : Θ1]]$ and $[[us2 : Θ2]]$
+    and there exists $[[us]]$
+    such that $[[Θ1 ⊢ us1 ⇒ us]]$ and $[[ Θ2 ⊢ us2 ⇒ us]]$.
+    Then $[[us1 & us2]]$ is defined and 
+    $[[ Θ1 ∪ Θ2 ⊢ us1 & us2 ⇒ us]]$.
+\end{lemma}
+
+\begin{lemma} [Solution Weakening is Monotonous]
+    \label{lemma:weakening-monotonicity}
+    if $[[us1 : Θ]]$ and $[[us2 : Θ]]$ and 
+    $[[us1 ⊆ us2]]$ then $[[Θ ⊢ us2 ⇒ us1]]$.
+\end{lemma}
+
+
+\begin{lemma} [Solution Weakening is transitive]
+    \label{lemma:weakening-transitivity}
+    Assuming $[[us1 : Θ]]$, $[[us2 : Θ]]$ and $[[us3 : Θ]]$,
+    if $[[Θ ⊢ us1 ⇒ us2]]$ and $[[Θ ⊢ us2 ⇒ us3]]$ then $[[Θ ⊢ us1 ⇒ us3]]$.
+\end{lemma}

@@ -33,20 +33,35 @@ defns
 defns
   SWEAK :: 'SWEAK' ::=
 
-  defn Θ ⊢ usEntry1 ⇒ usEntry2 :: :: E :: 'E'
+  defn Γ ⊢ usEntry1 ⇒ usEntry2 :: :: EImp :: 'EImp'
   {{ com Weakening of unification solution entries }} by
 
-  pua[Γ] ∊ Θ           Γ ⊢ iP1 ≥ iP2
+  Γ ⊢ iP1 ≥ iP2
   ----------------------------------- :: SupSup
-  Θ ⊢ (pua :≥ iP1) ⇒ (pua :≥ iP2)
+  Γ ⊢ (pua :≥ iP1) ⇒ (pua :≥ iP2)
 
-  pua[Γ] ∊ Θ         Γ ⊢ iP1 ≥ iP2
+  Γ ⊢ iP1 ≥ iP2
   ----------------------------------- :: EqSup
-  Θ ⊢ (pua :≈ iP1) ⇒ (pua :≥ iP2)
+  Γ ⊢ (pua :≈ iP1) ⇒ (pua :≥ iP2)
 
-  pua[Γ] ∊ Θ     Γ ⊢ iP1 ≈ iP2
+  Γ ⊢ iP1 ≈ iP2
   ----------------------------------- :: EqEq
-  Θ ⊢ (pua :≈ iP1) ⇒ (pua :≈ iP2)
+  Γ ⊢ (pua :≈ iP1) ⇒ (pua :≈ iP2)
 
-  defn Θ ⊢ us1 ⇒ us2 :: :: S :: 'S'
+  defn Θ ⊢ us1 ⇒ us2 :: :: SImp :: 'SImp'
   {{ com Weakening of unification solutions }} by
+
+
+  defn Γ ⊢ usEntry1 ≈ usEntry2 :: :: EEq :: 'EEq' by
+
+  Γ ⊢ iP1 ≈ iP2
+  ------------------------------- :: SupSup
+  Γ ⊢ (pua :≥ iP1) ≈ (pua :≥ iP2)
+
+  Γ ⊢ iP1 ≈ iP2
+  ------------------------------- :: EqEq
+  Γ ⊢ (pua :≈ iP1) ≈ (pua :≈ iP2)
+
+
+  defn Θ ⊢ us1 ≈ us2 :: :: SEq :: 'SEq' by
+

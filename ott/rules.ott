@@ -6,6 +6,7 @@ grammar
     | mu is bijective                        ::   :: moving_bij
     | us is functional                       ::   :: unif_solution_fun
     | us1 ∊ us2                              ::   :: in
+    | us1 ⊆ us2                              ::   :: unif_subset
     | varset1 ⊆ varset2                      ::   :: varset_subset
     | varset1 = varset2                      ::   :: varset_eq
     | varset is fresh                        ::   :: fresh

@@ -90,6 +90,7 @@ us {{ tex \widehat{\sigma} }}, uσ {{ tex \widehat{\sigma} }} :: 'us_' ::= {{ co
    | ·                   ::   :: Empty
    | usEntry             ::   :: Entry
    | us \ varset         ::   :: Exclude
+   | us | varset         ::   :: Restr
    | us1 ∪ us2           ::   :: Union
    | </ usi // , // i /> ::   :: concat  {{ com concatenate }}
    | ( us )              :: S :: paren
@@ -204,7 +205,8 @@ G {{ tex \Gamma }}, Δ {{ tex \Delta }}, Γ {{ tex \Gamma }} :: DT_Ctxt ::= {{ c
     | Ord varset         ::   :: fromset {{ tex [[varset]] }}
     | </ Gi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( G )              :: S :: paren
-    % | G1 ∪ G2            ::   :: union
+    | Θ ( pua )          :: M :: pfromUC 
+    | Θ ( nua )          :: M :: nfromUC 
 
 grammar
 
@@ -217,6 +219,7 @@ T {{ tex \Theta }}, Θ {{ tex \Theta }}:: U_Ctxt ::= {{ com unification type var
     | ( Θ )              :: S :: paren
     | Θ | varset         ::   :: restr  {{ com leave only those variables that are in the set }}
                                         {{ tex [[Θ]]|_{[[varset]]} }}
+    | Θ1 ∪ Θ2            ::   :: union
     % | Ξ ⁻                ::   :: NCtxt {{ tex [[Ξ]]^{-} }}
                                        % {{ com context containing only negative uvars }}
 
@@ -467,8 +470,9 @@ fun nf ( uN' ) :: uN :: uNnf by
 fun nf ( uP' ) :: uP :: uPnf by
 fun nf ( iNs' ) :: iNs :: uNsnf by
 fun nf ( iPs' ) :: iPs :: uPsnf by
-fun nf ( σ' ) :: σ :: Snf by
-fun nf ( μ' ) :: μ :: Movnf by
+fun nf ( σ' )   :: σ :: Snf by
+fun nf ( μ' )   :: μ :: Movnf by
+fun nf ( us' )  :: us :: USolnf by
 
 fun  σ' | varset  :: σ :: Restr {{ tex [[σ']]|_{[[varset]]} }} by 
 
