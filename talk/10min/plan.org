@@ -1,0 +1,333 @@
+* Types
+
+In this talk, I will tell you about the
+project I am working on right now.
+
+Let me start with a short introduction into type theory.
+In programming languages, every expression is associated with a type.
+
+For example, Bool is a type of logical values
+True, False, or  1 > 2.
+
+True                : Bool
+False               : Bool
+1 > 2 (= False)     : Bool
+
+Integer is a type of numbers and numeric expressions:
+42                  : Int
+21 * 2 (= 42)       : Int
+
+[Bool] is a type of lists of booleans:
+[]                  : [Bool]
+[True]              : [Bool]
+[True, True, False] : [Bool]
+
+There is also list of integers:
+[2, 3, 9]           : [Int]
+
+There are also functional types.
+[Bool] -> Int is a type of functions that take
+a list of booleans and return an integer.
+For example, *length* is a function of this type:
+
+length                   : [Bool] -> Int
+
+[0:40]
+
+If we apply function length to a list [True], we 
+get the length of this list, which is 1:
+length [True] = 1 
+
+But if we apply it to a list [2, 3] we'll get an error because
+it expects a list of booleans and not integers:
+length ([2, 3]) = TypeError! 
+
+If we change Bool to Int in the type:                  
+length                    : [Int] -> Int
+it will work:
+length [2, 3] = 2
+But then we cannot apply it to a list of booleans:
+length [True] = TypeError!
+
+On the one hand, type errors are good,
+because they allow us to detect bugs at *compile* time,
+and not to *release* an erroneous program.
+On the other hand, it would not be very convenient
+to write a separate function length for each type.
+
+Thankfully, it possible to define a *single* function
+*for all* types. It is called polymorphism.
+
+[1:30]
+* Polymorphism
+
+In this case the type of length is 
+∀α. [α] -> Int, where ∀ indicates 
+you can take a length of a list of any αs, 
+whatever type α is.
+
+
+length                   : ∀α. [α] -> Int
+length [True] = 1
+length [2, 3] = 2
+
+But now the *system* has to *infer* that 
+in the first case α is Bool, and in the second case α is
+instantiated to Int. 
+You might think it is simple: just look at the argument.
+But in general, this problem is more complicated, and in fact, undecidable.
+
+* Subtyping
+
+The general mechanism behind this instantiation is called subtyping:
+
+The polymorphic type 
+∀α. [α] -> Int
+is a subtype of
+[Bool] -> Int
+and also a subtype of
+[Int] -> Int
+
+In general, P is a subtype of Q
+means that an expression of type P can be used in context where Q is expected.
+
+The instantiation is driven by the following inference rule (where T for alpha means substitution):
+
+If:     [T/α]P ≤ Q 
+-----------------
+Then:     ∀α.P ≤ Q
+
+Other rules say that:
+
+Every type is a subtype of itself
+------
+P ≤ P
+
+
+Function is covariant on result and contravariant on argument:
+N ≤ M        P ≥ Q 
+--------------------
+P -> N   ≤   Q -> M
+
+And lists are covariant:
+P ≤ Q
+----------
+[P] ≤ [Q] 
+
+Or if we have mutable arrays, they are invariant:
+
+ P ≈ Q
+----------
+[P] ≤ [Q] 
+
+[3:00]
+* Existential types
+
+As a mathematician might expect, The polymorphic types have a dual: existential types.
+Let me show you an example ...
+
+Let us look at the following type: Int × (Int -> Bool × Int). 
+It is a pair of an Int and a function from Int to a pair Bool Int.
+But we can also look at it as an infinite *stream* of booleans. The first Int corresponds to the initial state,
+and the second argument is a "step" function that takes an old state and returns a pair of a boolean output and a new state.
+
+  Int × (Int -> Bool × Int)
+  ^          ^
+  |          |
+initial      |
+state       step
+             ||
+   old state -> (boolean output × new state)
+
+For instance, this stream generates a sequence of False, True, False, True,...
+(0,     λx. (Odd x, x + 1)) 
+≈ False, True, False, True, ...  : Int × (Int -> Bool × Int)
+
+But we can use a *different* type of internal state to generate a stream of Booleans.
+
+(False, λx. (x, not x))          : Bool × (Bool -> Bool × Bool)
+≈ False, True, False, True, ...
+
+So these two *different* types semantically represent the *same* thing -- stream of Booleans, which is not good.
+
+But there is a way to abstract over the type of internal state.
+We can hide it behind an existential quantifier:
+
+∃α. α × (α -> Bool × α)
+
+Why does it work? Because this existential type is a *supertype* of both of these types.
+
+                        ≥ Int × (Int -> Bool × Int)
+∃α. α × (α -> Bool × α) 
+                        ≥ Bool × (Bool -> Bool × Bool)
+
+* Goal
+
+This way, type checking allows to detect bugs at compile time.
+And the key component of type checking is subtyping.
+The goal of the project is developing the subtyping, 
+and hence, type checking algorithm for (impredicative) polymorphic systems 
+with existential types.
+
+[4:30]
+* Algorithm
+
+Let me describe the flavour of the algorithm on a simple example.
+
+Recalling polymorphic function length, suppose we want to check
+weather its type ∀α. [α] -> Int is a subtype of [Bool] -> Int.
+
+According to the rules, we have to instantiate α to Bool, but how would algorithm know that? 
+∀α. [α] -> Int ≤ [Bool] -> Int
+
+Let us replace α with a metavariable α̂, 
+and promise to instantiate it later. 
+And continue the derivation, as if we already knew the instantiation.
+
+[α̂] -> Int ≤ [Bool] -> Int
+
+By inversion, it means 
+
+                Int ≤ Int 
+----------------------------
+[α̂] -> Int ≤ [Bool] -> Int
+
+(which always holds) 
+
+and [α̂] ≥ [Bool].
+Assuming arrays are invariant, 
+we must then *unify* the left and the right-hand side: α̂ ≈ Bool.
+And the *unification* algorithm (in this case trivially)
+gives us the instantiation: α̂ = Bool.
+
+α̂ = Bool
+-----------
+ α̂ ≈ Bool
+------------
+[α̂] ≥ [Bool]        Int ≤ Int 
+----------------------------
+[α̂] -> Int ≤ [Bool] -> Int
+
+** Anti-unification
+
+Let us consider a slightly different example:
+
+∀α. α -> α -> Int ≤ [Bool] -> [Int] -> Int
+
+Let's do the same procedure. We'll have:
+
+                                  
+                                 --------- 
+α̂ ≥ [Bool]     α̂ ≥ [Int]         Int ≤ Int 
+----------------------------------------------
+    α̂ -> α̂ -> Int ≤ [Bool] -> [Int] -> Int
+-----------------------------------------------
+∀α. α -> α -> Int ≤ [Bool] -> [Int] -> Int
+
+
+α̂ ≥ [Bool] and α̂ ≥ [Int].
+
+This time, we cannot equate α̂ with [Bool] nor with [Int],
+so the unification is not applicable.
+
+However, the solution *exists*, i.e. there is a *common supertype* of [Bool] and [Int].
+This is ∃β.[β].
+But how to find the *least common supertype* algorithmically?
+Well, in our case we are looking for a type with a hole,
+such that with one instantiation it becomes [Bool] and with another [Int],
+
+     [_]
+    /   \
+[Bool] [Int]
+
+and then we abstract over this hole, capturing it with an existential quantifier:
+
+    ∃β.[β]
+      |
+     [_]
+    /    \
+[Bool] [Int]
+
+This process is called anti-unification, because it is dual to unification. This is 
+a well-studied problem, and there are algorithms for it.
+
+So if  we run it, we  instantiate α with "∃β.[β]" and algorithmically 
+infer the subtyping:
+∀α. α -> α -> Int ≤ [Bool] -> [Int] -> Int
+
+I hope running algorithm on this example gave you some intuition,
+at least on where the unification and anti-unification come from. 
+
+                                 Unification ---> Subtyping ---> Inference
+                                                 /
+           Anti-Unification ---> P ∨ Q  ________/
+
+[07:00]
+* Polarization
+
+** Undecidability
+Does it work in general? No!
+In fact, the subtyping problem is undecidable!
+But we can restrict the system to a decidable fragment.
+
+** Polarization
+The mechanism that allowed us to do that 
+is called polarization, also known as call-by-push-value.
+
+In short, the types are divided into two categories:
+positive and negative. 
+Positive types represent data (such as arrays), 
+and negative types represent computations (such as functions). 
+
+Positive: α⁺, [P],   ∃α-.P, ↓N
+Negative: α⁻, P → N, ∀α+.N, ↑P
+
+** Shifts
+There is a way to convert a positive type to a negative type
+and vice versa: we call it upshift and downshift. 
+
+The important restriction that we put on the system is
+the invariance of the shifts:
+
+   P1 ≤ P2 and P2 ≤ P1
+-----------------------------
+       ↑P1 ≤ ↑P2
+
+** Invariants
+Using this approach, we can prove that certain properties are preserved 
+throughout the derivation, and thus, the subtyping is decidable:
+
+1. Metavariables only on one side of "≤" => unification is just matching
+2. Negative metavariables are "protected" by ↓ => the Greatest Lower Bound (∧) is unused
+3. Least Upper Bound∨ is enough
+
+* Summary and plans
+
+To sum up, we solved the type inference problem for a large subset of a polymorphic lambda calculus with existentials.
+To do that, we used the polarization technique, and applied anti-unification, which to the best of our knowledge, has never been done before. 
+
+The polarization approach unveiled several dualities of algorithmic type inference,
+which we plan to explore further using category theory. 
+After submitting this work to POPL, we plan to extrapolate the same approach on 
+dependent types, and mechanize it in Coq. 
+
+
+** [On the slide]
+
+1. Type inference for (a large fragment of) impredicative System F w/∃
+2. Anti-unification can be applied in type inference
+3. The polarization unveils the dualities of the type system:
+
+Duality:
+
+Data             ..  Computations
+∃-types          ..  ∀-types  
+Supertypes       ..  Subtypes
+Inference        ..  Checking
+Anti-Unification ..  Unification
+
+Next:
+1. Submit to POPL 2024
+2. Categorization 
+3. Dependent types
+4. Mechanization
