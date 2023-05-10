@@ -1,7 +1,7 @@
 * Types
 
 In this talk, I will tell you about the
-project I am working on right now.
+project I am working on at the moment.
 
 Let me start with a short introduction into type theory.
 In programming languages, every expression is associated with a type.
@@ -63,7 +63,7 @@ Thankfully, it possible to define a *single* function
 
 In this case the type of length is 
 ∀α. [α] -> Int, where ∀ indicates 
-you can take a length of a list of any αs, 
+that one can take a length of a list of *any* αs, 
 whatever type α is.
 
 
@@ -121,14 +121,18 @@ Or if we have mutable arrays, they are invariant:
 [P] ≤ [Q] 
 
 [3:00]
+
+As a mathematician might expect, The polymorphic types 
+have a dual: existential types.
+Let me show you an example ...
+
 * Existential types
 
-As a mathematician might expect, The polymorphic types have a dual: existential types.
-Let me show you an example ...
 
 Let us look at the following type: Int × (Int -> Bool × Int). 
 It is a pair of an Int and a function from Int to a pair Bool Int.
-But we can also look at it as an infinite *stream* of booleans. The first Int corresponds to the initial state,
+But we can also look at it as an infinite *stream* of booleans. 
+The first Int corresponds to the initial state,
 and the second argument is a "step" function that takes an old state and returns a pair of a boolean output and a new state.
 
   Int × (Int -> Bool × Int)
@@ -227,12 +231,13 @@ Let's do the same procedure. We'll have:
 
 α̂ ≥ [Bool] and α̂ ≥ [Int].
 
-This time, we cannot equate α̂ with [Bool] nor with [Int],
+This time, we cannot equate α̂ with [Bool] nor with [Int] 
+because they contradict each other,
 so the unification is not applicable.
 
 However, the solution *exists*, i.e. there is a *common supertype* of [Bool] and [Int].
 This is ∃β.[β].
-But how to find the *least common supertype* algorithmically?
+But how to find this supertype (or the least upper bound) algorithmically?
 Well, in our case we are looking for a type with a hole,
 such that with one instantiation it becomes [Bool] and with another [Int],
 
@@ -274,7 +279,7 @@ But we can restrict the system to a decidable fragment.
 The mechanism that allowed us to do that 
 is called polarization, also known as call-by-push-value.
 
-In short, the types are divided into two categories:
+The types are divided into two categories:
 positive and negative. 
 Positive types represent data (such as arrays), 
 and negative types represent computations (such as functions). 
@@ -287,14 +292,13 @@ There is a way to convert a positive type to a negative type
 and vice versa: we call it upshift and downshift. 
 
 The important restriction that we put on the system is
-the invariance of the shifts:
+that the sifts are *invariant*
 
    P1 ≤ P2 and P2 ≤ P1
 -----------------------------
        ↑P1 ≤ ↑P2
 
-** Invariants
-Using this approach, we can prove that certain properties are preserved 
+We can prove that certain properties are preserved 
 throughout the derivation, and thus, the subtyping is decidable:
 
 1. Metavariables only on one side of "≤" => unification is just matching
@@ -303,11 +307,14 @@ throughout the derivation, and thus, the subtyping is decidable:
 
 * Summary and plans
 
-To sum up, we solved the type inference problem for a large subset of a polymorphic lambda calculus with existentials.
-To do that, we used the polarization technique, and applied anti-unification, which to the best of our knowledge, has never been done before. 
+To sum up, we solved the type inference problem for a 
+large subset of a polymorphic lambda calculus with existentials.
+To do that, we used the polarization technique, and applied 
+anti-unification, which to the best of our knowledge, 
+has never been done before. 
 
-The polarization approach unveiled several dualities of algorithmic type inference,
-which we plan to explore further using category theory. 
+The polarization unveiled several dualities of algorithmic type inference,
+which we plan to explore in further to formalize this method categorically.
 After submitting this work to POPL, we plan to extrapolate the same approach on 
 dependent types, and mechanize it in Coq. 
 
@@ -331,3 +338,9 @@ Next:
 2. Categorization 
 3. Dependent types
 4. Mechanization
+
+
+Questions:
+1. How large is the decidable fragment you mentioned?
+2. Are there any other benefits of using polarization besides restriction of the system?
+3. What is the difference between anti-unification and unification?
