@@ -1,39 +1,40 @@
 defns
   SM :: 'SM' ::=
 
-  defn Θ ⊢ usEntry1 & usEntry2 = usEntry3 :: :: E :: 'E'
+  defn Γ ⊢ usEntry1 & usEntry2 = usEntry3 :: :: E :: 'E'
   {{ com Unification Solution Entry Merge }}
-  {{ tex [[Θ]] \vdash [[ usEntry1 ]] ~ \& ~ [[ usEntry2 ]] = [[usEntry3]] }}
+  {{ tex [[Γ]] \vdash [[ usEntry1 ]] ~ \& ~ [[ usEntry2 ]] = [[usEntry3]] }}
   by
 
-  pua[Γ] ∊ Θ     Γ ⊨ iP1 ∨ iP2 = iQ
+  Γ ⊨ iP1 ∨ iP2 = iQ
   ----------------------------------------------------- :: SupSup
-  Θ ⊢ (pua :≥ iP1) & (pua :≥ iP2) = (pua :≥ iQ)
+  Γ ⊢ (pua :≥ iP1) & (pua :≥ iP2) = (pua :≥ iQ)
 
 
-  pua[Γ] ∊ Θ    Γ;· ⊨ uP ≥ iQ ⫤ us'
+  Γ;· ⊨ uP ≥ iQ ⫤ us'
   --------------------------------------------------- :: EqSup
-  Θ ⊢ (pua :≈ iP) & (pua :≥ iQ) = (pua :≈ iP)
-  
+  Γ ⊢ (pua :≈ iP) & (pua :≥ iQ) = (pua :≈ iP)
 
-  pua[Γ] ∊ Θ       Γ;· ⊨ uQ ≥ iP ⫤ us'
+  Γ;· ⊨ uQ ≥ iP ⫤ us'
   --------------------------------------------------- :: SupEq
-  Θ ⊢ (pua :≥ iP) & (pua :≈ iQ) = (pua :≈ iQ)
+  Γ ⊢ (pua :≥ iP) & (pua :≈ iQ) = (pua :≈ iQ)
 
+  nf(iP) = nf(iP')
   --------------------------------------------------- :: PEqEq
-  Θ ⊢ (pua :≈ iP) & (pua :≈ iP) = (pua :≈ iP)
+  Γ ⊢ (pua :≈ iP) & (pua :≈ iP') = (pua :≈ iP)
 
+  nf(iN) = nf(iN')
   --------------------------------------------------- :: NEqEq
-  Θ ⊢ (nua :≈ iN) & (nua :≈ iN) = (nua :≈ iN)
+  Γ ⊢ (nua :≈ iN1) & (nua :≈ iN') = (nua :≈ iN)
 
 
   defn Θ ⊢ us1 & us2 = us3 :: :: SM :: ''
   {{ com Merge unification solutions }} by
 
 defns
-  SWEAK :: 'SWEAK' ::=
+  SImp :: 'SImp' ::=
 
-  defn Γ ⊢ usEntry1 ⇒ usEntry2 :: :: EImp :: 'EImp'
+  defn Γ ⊢ usEntry1 ⇒ usEntry2 :: :: E :: 'E'
   {{ com Weakening of unification solution entries }} by
 
   Γ ⊢ iP1 ≥ iP2
@@ -45,10 +46,14 @@ defns
   Γ ⊢ (pua :≈ iP1) ⇒ (pua :≥ iP2)
 
   Γ ⊢ iP1 ≈ iP2
-  ----------------------------------- :: EqEq
+  ----------------------------------- :: PEqEq
   Γ ⊢ (pua :≈ iP1) ⇒ (pua :≈ iP2)
 
-  defn Θ ⊢ us1 ⇒ us2 :: :: SImp :: 'SImp'
+  Γ ⊢ iN1 ≈ iN2
+  ----------------------------------- :: NEqEq
+  Γ ⊢ (nua :≈ iN1) ⇒ (nua :≈ iN2)
+
+  defn Θ ⊢ us1 ⇒ us2 :: :: SImp :: ''
   {{ com Weakening of unification solutions }} by
 
 
@@ -59,8 +64,12 @@ defns
   Γ ⊢ (pua :≥ iP1) ≈ (pua :≥ iP2)
 
   Γ ⊢ iP1 ≈ iP2
-  ------------------------------- :: EqEq
+  ------------------------------- :: PEqEq
   Γ ⊢ (pua :≈ iP1) ≈ (pua :≈ iP2)
+
+  Γ ⊢ iN1 ≈ iN2
+  ------------------------------- :: NEqEq
+  Γ ⊢ (nua :≈ iN1) ≈ (nua :≈ iN2)
 
 
   defn Θ ⊢ us1 ≈ us2 :: :: SEq :: 'SEq' by

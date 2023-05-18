@@ -1,3 +1,37 @@
+\begin{lemma}[Declarative equivalence is transitive]
+  \hfill
+  \label{lemma:decl-equiv-transitivity}
+  \begin{itemize}
+  \item[$+$] if $[[iP1 ≈ iP2]]$ and $[[iP2 ≈ iP3]]$ then $[[iP1 ≈ iP3]]$,
+  \item[$-$] if $[[iN1 ≈ iN2]]$ and $[[iN2 ≈ iN3]]$ then $[[iN1 ≈ iN3]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  \ilyam{should be easy to do by induction since the types are getting smaller}
+\end{proof}
+\begin{lemma}[Algorithmization of declarative equivalence]
+  \label{lemma:decl-equiv-algorithmization}
+  Declarative equivalence is equality of normal forms. 
+  \begin{itemize}
+    \item[$+$] $[[iP ≈ iQ]] \iff [[nf(iP) = nf(iQ)]]$,
+    \item[$-$] $[[iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof} \hfill
+  \begin{itemize}
+    \item[$+$] Let us prove both directions separately.
+    \begin{itemize}
+      \item[$\Rightarrow$] 
+        exactly by \cref{lemma:normalization-completeness},
+      \item[$\Leftarrow$] 
+        from \cref{lemma:normalization-soundness}, we know
+        $[[iP ≈ nf(iP)]] = [[nf(iQ) ≈ iQ]]$, then by transitivity (\cref{lemma:decl-equiv-transitivity}),
+        $[[iP ≈ iQ]]$.
+    \end{itemize}
+    \item[$-$] The proof is exactly the same.
+  \end{itemize}
+\end{proof}
+
 \begin{lemma}[Type well-formedness is invariant under equivalence]
   \label{lemma:wf-equiv}
   Mutual subtyping implies declarative equivalence.
@@ -469,5 +503,21 @@
   Immediately from \cref{lemma:equiv-completeness,lemma:normalization-completeness}.
 \end{proof}
 
-
+\begin{lemma}[Algorithmization of subtyping-induced equivalence]
+  \label{lemma:subt-equiv-algorithmization}
+  Mutual subtyping is equality of normal forms.
+ Assuming all the types below are well-formed in $[[Γ]]$:
+  \begin{itemize}
+    \item [$+$] $[[Γ ⊢ iP ≈ iQ]] \iff [[nf(iP) = nf(iQ)]]$,
+    \item [$-$] $[[Γ ⊢ iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  Let us prove the positive case, the negative case is symmetric.
+  We prove both directions of $\iff$ separately:
+  \begin{itemize}
+    \item [$\Rightarrow$] exactly \cref{corollary:nf-complete-wrt-subt-equiv};
+    \item [$\Leftarrow$] by \cref{lemma:decl-equiv-algorithmization,lemma:equiv-soundness}.
+  \end{itemize}
+\end{proof}
 

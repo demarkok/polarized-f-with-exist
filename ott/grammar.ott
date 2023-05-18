@@ -483,3 +483,7 @@ by
 fun
   us1 & us2 :: us :: MRG {{ tex [[us1]] ~ \& ~[[us2]] }}
 by
+
+fun  dom ( us ) :: varset :: usolDom by
+
+fun  dom ( Θ ) :: varset :: uCtxtDom by

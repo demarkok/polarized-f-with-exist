@@ -1,3 +1,189 @@
+\begin{lemma} \label{lemma:entry-weakening-preorder}
+    Given a fixed context $[[Γ]]$, weakening forms a preorder on the set of entries well-formed in $[[Γ]]$.
+\end{lemma}
+\begin{proof} \hfill 
+  \begin{itemize}
+    \item Reflexivity: $[[Γ ⊢ usEntry ≈ usEntry]]$ then $[[Γ ⊢ usEntry ⇒ usEntry]]$.
+    Let us consider the shape of $[[usEntry]]$. In all cases, there is a rule inferring
+     $[[Γ ⊢ usEntry ⇒ usEntry]]$, since $[[Γ ⊢ iP ≈ iQ]]$ implies $[[Γ ⊢ iP ≥ iQ]]$ by inversion.
+    \item Transitivity: $[[Γ ⊢ usEntry1 ⇒ usEntry2]]$ and $[[Γ ⊢ usEntry2 ⇒ usEntry3]]$ implies $[[Γ ⊢ usEntry1 ⇒ usEntry3]]$.
+    It follows immediately by considering the rules inferring 
+    $[[Γ ⊢ usEntry1 ⇒ usEntry2]]$ and $[[Γ ⊢ usEntry2 ⇒ usEntry3]]$, and applying the 
+    transitivity of subtyping (\cref{corollary:subtyping-transitivity}).
+  \end{itemize}
+\end{proof}
+
+\begin{lemma} [Solution Weakening forms a preorder]
+    \label{lemma:solution-weakening-preorder}
+    Let us consider a set of pairs $([[Θ]], [[us]])$ such that $[[us : Θ]]$.
+    Then the relation defined as 
+    $([[Θ1]], [[us1]]) \Rightarrow ([[Θ2]], [[us2]])$ iff $[[Θ1]] \supseteq [[Θ2]]$ 
+    and $[[Θ2 ⊢ us1 ⇒ us2]]$ forms a preorder.
+\end{lemma}
+\begin{proof} \hfill
+    \begin{itemize}
+        \item Reflexivity: $([[Θ]], [[us]]) \Rightarrow ([[Θ]], [[us]])$.\\ It is clear that $[[Θ]] \supseteq [[Θ]]$.
+        $[[Θ ⊢ us ⇒ us]]$ holds since for any $[[usEntry]]$ in $[[us]]$ restricting $[[α̂±]]$, $[[Θ(α̂±) ⊢ usEntry ⇒ usEntry]]$  
+        by \cref{lemma:entry-weakening-preorder}
+        \item Transitivity: If $([[Θ1]], [[us1]]) \Rightarrow ([[Θ2]], [[us2]])$ and $([[Θ2]], [[us2]]) \Rightarrow ([[Θ3]], [[us3]])$
+        then $([[Θ1]], [[usEntry1]]) \Rightarrow ([[Θ3]], [[usEntry3]])$.\\
+        It is clear that since $[[Θ1]] \subseteq [[Θ2]]$ and $[[Θ2]] \subseteq
+        [[Θ3]]$ then $[[Θ1]] \subseteq [[Θ3]]$. Let us consider $[[usEntry3]]
+        \in [[us3]]$. Then there exists $[[usEntry2]] \in [[us2]]$ such that
+        $[[Θ3 ⊢ usEntry2 ⇒ usEntry3]]$. Also there exists $[[usEntry1]] \in [[us1]]$ 
+        such that $[[Θ2 ⊢ usEntry1 ⇒ usEntry2]]$, and by weakening,
+        $[[Θ3 ⊢ usEntry1 ⇒ usEntry2]]$. Then by transitivity of solution entry
+        weakening (\cref{lemma:entry-weakening-preorder}), $[[Θ3 ⊢ usEntry1 ⇒
+        usEntry3]]$.
+    \end{itemize}
+\end{proof}
+
+\begin{corollary} [Solution Weakening is transitive]
+    \label{lemma:weakening-transitivity}
+    If $[[Θ ⊢ us1 ⇒ us2]]$ and $[[Θ ⊢ us2 ⇒ us3]]$ then $[[Θ ⊢ us1 ⇒ us3]]$.
+\end{corollary}
+
+
+\begin{lemma} [Soundness of Merge of Unification Solution Entries]
+    \label{lemma:unif-sol-ent-merge-soundness}
+    For a fixed context $[[Γ]]$,
+    suppose that  $[[Γ ⊢ usEntry1]]$ and $[[Γ ⊢ usEntry2]]$,
+    where $[[Γ ⊢ usEntryi]]$ is an equivalence-shaped restriction
+    (i.e. it has shape $[[α̂⁺ :≈ iP]]$ or $[[α̂⁻ :≈ iN]]$ but not $[[α̂⁺ :≥ iP]]$).
+    If $[[usEntry1 & usEntry2]]$ is defined then
+    \begin{enumerate}
+    \item $[[Γ ⊢ usEntry1 & usEntry2]]$
+    \item $[[Γ ⊢ usEntry1 & usEntry2 ⇒ usEntry1]]$
+    \item $[[Γ ⊢ usEntry1 & usEntry2 ⇒ usEntry2]]$
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    Let us consider the rule forming $[[Γ ⊢ usEntry1 & usEntry2 = usEntry]]$.
+    \begin{caseof}
+        \item \ruleref{\ottdruleSMEPEqEqLabel}, i.e. 
+        $[[Γ ⊢ usEntry1 & usEntry2 = usEntry]]$
+        has form $[[Γ ⊢ (pua :≈ iP) & (pua :≈ iP') = (pua :≈ iP)]]$
+        and $[[nf(iP) = nf(iP')]]$. Then
+         \begin{enumerate}
+            \item $[[Γ ⊢ usEntry]]$, i.e. $[[Γ ⊢ pua :≈ iP]]$ holds by assumption;
+            \item $[[Γ ⊢ (pua :≈ iP) ⇒ (pua :≈ iP)]]$ holds by reflexivity (\cref{lemma:entry-weakening-preorder});
+            \item $[[Γ ⊢ (pua :≈ iP) ⇒ (pua :≈ iP')]]$ holds
+            because $[[nf(iP) = nf(iP')]]$ implies $[[Γ ⊢ iP ≈ iP']]$
+            (by \cref{lemma:subt-equiv-algorithmization}), and thus, 
+            \ruleref{\ottdruleSImpEPEqEqLabel} applies.
+         \end{enumerate}
+        \item \ruleref{\ottdruleSMENEqEqLabel}. The negative case is proved in exactly the same way.
+    \end{caseof}
+\end{proof}
+
+\begin{lemma} [Soundness of Merge of Unification Solutions]
+    \label{lemma:unif-sol-merge-soundness}
+    Suppose that $[[us1 : Θ | varset1]]$ and $[[us2 : Θ | varset2]]$ 
+    are unification solutions (i.e. $[[us1]]$ and $[[us2]]$ can only have equivalence-shaped restrictions).
+    If $[[us1 & us2]]$ is defined then
+    \begin{enumerate}
+        \item $[[us1 & us2 : Θ|varset1 ∪ varset2]]$,
+        \item $[[Θ|varset1 ⊢ us1 & us2 ⇒ us1]]$, and
+        \item $[[Θ|varset2 ⊢ us1 & us2 ⇒ us2]]$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    Let us prove the properties separately:
+    \begin{enumerate}
+        \item $[[us1 & us2 : Θ|varset1 ∪ varset2]]$.
+        It suffices to prove the following two properties:
+        \begin{itemize}
+            \item The set of variables of the entries of $[[us1 & us2]]$ 
+            coincides with $[[varset1 ∪ varset2]]$\\
+            By definition, $[[us1 & us2]]$ consists of three parts:
+            entries of $[[us1]]$ that do not have matching entries of $[[us2]]$,
+            entries of $[[us2]]$ that do not have matching entries of $[[us1]]$,
+            and the merge of matching entries.
+            It means that $[[dom(us1 & us2)]] = [[dom(us1) \ dom(us2) ∪ dom(us2) \ dom(us1) ∪ 
+            dom(us1) ∩ dom(us2)]] = [[dom(us1) ∪ dom(us2)]]$, which, since 
+            $[[usi : Θ | varseti]]$, is equal to $[[varset1 ∪ varset2]]$. 
+
+            \item Each entry of $[[us1 & us2]]$ restricting $[[α̂±]]$ is well-formed in
+            the corresponding context $[[Θ(α̂±)]]$.\\
+            Let us consider an arbitrary entry $[[usEntry]]$ of $[[us1 & us2]]$ restricting
+            $[[α̂±]]$. Then there are three cases:
+            \begin{enumerate}
+                \item $[[usEntry]]$ the entry is from $[[us1]]$ and does not have a matching entry 
+                in $[[us2]]$, i.e. $[[α̂±]] \in [[dom(us1) \ dom(us2)]]$.
+                Then $[[usEntry]]$ is well-formed in $[[Θ | varset1]]$ by assumption.
+                \item $[[usEntry]]$ the entry is from $[[us2]]$ and does not
+                have a matching entry in $[[us1]]$. This case is symmetric.
+                \item $[[usEntry]]$ is the merge of two matching entries $[[usEntry1]] \in [[us1]]$
+                 and $[[usEntry2]] \in [[us2]]$ restricting $[[α̂±]]$.
+                 Since $[[us1 : Θ | varset1]]$ and $[[us2 : Θ | varset2]]$,
+                 $[[α̂±]] \in [[dom(Θ|varset1) ∩ dom(Θ|varset2)]]$, i.e. there 
+                 is an entry $[[ α̂±[Γ] ]] \in [[Θ]]$, and 
+                 $[[usEntry1]]$ and $[[usEntry2]]$ are well-formed in $[[Γ]]$.
+                 Then by \cref{lemma:unif-sol-ent-merge-soundness}, 
+                 $[[Γ ⊢ usEntry1 & usEntry2]]$, where $[[Γ]] = [[Θ(α̂±)]]$.
+            \end{enumerate}
+        \end{itemize}
+        \item $[[Θ|varset1 ⊢ us1 & us2 ⇒ us1]]$
+        We need to show that for every entry $[[usEntry]]$ from $[[us1]]$,
+        there is an entry $[[usEntry']]$ from $[[us1 & us2]]$ such that
+        $[[Θ|varset1 ⊢ usEntry' ⇒ usEntry]]$. 
+        Let us consider an arbitrary $[[usEntry]]$ from $[[us1]]$ restricting $[[α̂±]]$.
+        Then there are two cases:
+        \begin{itemize}
+            \item $[[usEntry]]$ does not have a matching entry in $[[us2]]$.
+            Then $[[usEntry]]$ is also in $[[us1 & us2]]$ and $[[Θ|varset1 ⊢ usEntry ⇒ usEntry]]$ 
+            by reflexivity (\cref{lemma:entry-weakening-preorder}).
+            \item $[[usEntry]]$ has a matching entry $[[usEntry']]$ in $[[us2]]$.
+            Then $[[usEntry & usEntry']]$ is in $[[us1 & us2]]$ and $[[Θ|varset1 ⊢ usEntry & usEntry' ⇒ usEntry]]$ by \cref{lemma:unif-sol-ent-merge-soundness}.
+        \end{itemize}
+        \item $[[Θ|varset2 ⊢ us1 & us2 ⇒ us2]]$ is proved analogously.
+    \end{enumerate}
+\end{proof}
+
+\begin{lemma} [Soundness of Solution Entry Merge]
+\label{lemma:entry-merge-soundness}
+For a fixed context $[[Γ]]$,
+suppose that  $[[Γ ⊢ usEntry1]]$ and $[[Γ ⊢ usEntry2]]$. 
+If $[[usEntry1 & usEntry2]]$ is defined then
+\begin{enumerate}
+    \item $[[Γ ⊢ usEntry1 & usEntry2]]$
+    \item $[[Γ ⊢ usEntry1 & usEntry2 ⇒ usEntry1]]$
+    \item $[[Γ ⊢ usEntry1 & usEntry2 ⇒ usEntry2]]$
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+    Let us consider the rule forming $[[Γ ⊢ usEntry1 & usEntry2 = usEntry]]$.
+    \begin{caseof}
+        \item \ruleref{\ottdruleSMEPEqEqLabel} or \ruleref{\ottdruleSMENEqEqLabel}
+        The proof is analogous to the proof of \cref{lemma:unif-sol-ent-merge-soundness}.
+        \item \ruleref{\ottdruleSMESupSupLabel} 
+        Then $[[usEntry1]]$ is $[[pua :≥ iP1]]$, $[[usEntry2]]$ is $[[pua :≥ iP2]]$,
+        and $[[usEntry1 & usEntry2]]$ is $[[pua :≥ iQ]]$ where $[[iQ]]$ is the least upper bound of $[[iP1]]$ and $[[iP2]]$.
+        Then by \cref{lemma:lub-soundness},
+        \begin{itemize}
+            \item $[[Γ ⊢ iQ]]$, and hence $[[Γ ⊢ pua :≥ iQ]]$, that is $[[Γ ⊢ usEntry1 & usEntry2]]$,
+            \item $[[Γ ⊢ iQ ≥ iP1]]$, and hence $[[Γ ⊢ pua :≥ iQ ⇒ pua :≥ iP1]]$, that is $[[Γ ⊢ usEntry1 & usEntry2 ⇒ usEntry1]]$,
+            \item $[[Γ ⊢ iQ ≥ iQ1]]$, and hence $[[Γ ⊢ usEntry1 & usEntry2 ⇒ usEntry2]]$.
+        \end{itemize}
+        \item \ruleref{\ottdruleSMESupEqLabel}
+        Then $[[usEntry1]]$ is $[[pua :≥ iP]]$, $[[usEntry2]]$ is $[[pua :≈ iQ]]$, 
+        where $[[Γ;· ⊨ uQ ≥ iP ⫤ us']]$, and the resulting   
+        $[[usEntry1 & usEntry2]]$ is equal to $[[usEntry2]]$, that is $[[pua :≈ iQ]]$.
+    
+        \begin{itemize}
+            \item By assumption, $[[Γ ⊢ iQ]]$, and hence $[[Γ ⊢ pua :≈ iQ]]$, that is $[[Γ ⊢ usEntry1 & usEntry2]]$.
+            \item Since $[[uv(uQ) = ∅]]$, 
+                $[[Γ;· ⊨ uQ ≥ iP ⫤ us']]$ implies $[[Γ ⊢ iQ ≥ iP]]$
+                by the soundness of positive subtyping (\cref{lemma:pos-subt-soundness}), 
+                which means $[[Γ ⊢ pua :≈ iQ ⇒ pua :≥ iP]]$, that is $[[Γ ⊢ usEntry1 & usEntry2 ⇒ usEntry1]]$.
+            \item  $[[Γ ⊢ pua :≈ iQ ⇒ pua :≈ iQ]]$ by reflexivity
+             (\cref{lemma:entry-weakening-preorder}), and hence
+              $[[Γ ⊢ usEntry1 & usEntry2 ⇒ usEntry2]]$.
+        \end{itemize}
+        \item \ruleref{\ottdruleSMEEqSupLabel} Thee proof is analogous to the previous case.
+    \end{caseof}
+\end{proof}
+
 \begin{lemma} [Soundness of Solution Merge] \label{lemma:merge-soundness}
     Suppose that $[[us1 : Θ1]]$ and $[[us2 : Θ2]]$ 
     and $[[us1 & us2]]$ is defined.
@@ -8,6 +194,11 @@
         \item $[[Θ2 ⊢ us1 & us2 ⇒ us2]]$.
     \end{enumerate}
 \end{lemma}
+\begin{proof}
+    The proof repeats the proof of \cref{lemma:unif-sol-merge-soundness},
+    but uses \cref{lemma:entry-merge-soundness} instead of 
+    \cref{lemma:unif-sol-ent-merge-soundness}.
+\end{proof}
 
 
 \begin{lemma} [Completeness and Initiality of Solution Merge] 
@@ -23,11 +214,4 @@
     \label{lemma:weakening-monotonicity}
     if $[[us1 : Θ]]$ and $[[us2 : Θ]]$ and 
     $[[us1 ⊆ us2]]$ then $[[Θ ⊢ us2 ⇒ us1]]$.
-\end{lemma}
-
-
-\begin{lemma} [Solution Weakening is transitive]
-    \label{lemma:weakening-transitivity}
-    Assuming $[[us1 : Θ]]$, $[[us2 : Θ]]$ and $[[us3 : Θ]]$,
-    if $[[Θ ⊢ us1 ⇒ us2]]$ and $[[Θ ⊢ us2 ⇒ us3]]$ then $[[Θ ⊢ us1 ⇒ us3]]$.
 \end{lemma}

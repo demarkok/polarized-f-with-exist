@@ -42,7 +42,7 @@ defns
   % *[G, nbs]
   G, nbs; Θ,â⁻*[G, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ us
   ------------------------------------------ :: Exists
-  G;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ us
+  G;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ us \ {â⁻*}
 
     
   â⁺[Δ] ∊ Θ   upgrade G ⊢ iP to Δ = iQ

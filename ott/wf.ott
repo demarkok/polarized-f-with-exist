@@ -20,3 +20,5 @@ defns
                                {{ tex [[G]] \vdash^{\supseteq}[[Θ]] }} by
 
   defn  Γ1 ⊢ σ : Γ2 :: :: SWF :: '' {{ com Substitution well-formedness }} by
+
+  defn  Γ ⊢ usEntry :: :: UEWF :: '' {{ com Unification solution entry well-formedness }}  by

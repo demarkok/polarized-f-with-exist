@@ -1,10 +1,213 @@
+* Slide 1: Types
+
+In this talk, I will tell you about the latest results of my research. 
+
+I will begin with a short introduction into type theory.
+In programming languages, every expression is associated with 
+a type.
+For example, Bool is a type of logical values: True and False, 
+Integer is a type of numbers,
+[Bool] is a type of arrays of booleans,
+[Int] means array of integers.
+
+
+There are also functional types.
+[Bool] -> Int is a type of functions that take
+an array  of booleans and return an integer.
+For example, *length* is a function of this type,
+
+So if we apply it to an array [True, False], we 
+get 2, because this is the length of this array.
+
+But if we apply it to a list of *integers*, we'll get an error because
+a list of *booleans* was expected.
+
+
+If we change Bool to Int in the type, 
+length of [2, 3, 9] will work,
+but length [True] will not.
+
+On the one hand, type errors are good,
+because they allow us to detect bugs at *compile* time,
+and not to *release* an erroneous program.
+On the other hand, it would not be very convenient
+to write a separate function length for each type.
+
+Thankfully, it possible to define a *single* function
+*for all* types. It is called polymorphism.
+
+In this case the type of length is 
+∀α. [α] -> Int, where ∀ indicates 
+that the length can be applied to an array of *any* αs.
+
+
+But now the *system* has to *infer* that 
+in the first case α is Bool, and in the second case α is
+instantiated to Int. 
+Although it may seem simple, in general this problem is hard, and in fact is undecidable.
+
+The general mechanism behind this instantiation is called subtyping:
+
+This polymorphic type is a subtype of [Bool] -> Int, so we can apply it to [True, False], 
+and also a subtype of
+[Int] -> Int so we can apply it to [2, 3, 9].
+
+* Slide 2: Subtyping
+
+In general, P is a subtype of Q
+means that an expression of type P can be used in context 
+where Q is expected.
+
+The main inference rule, the driver of the instantiation is this one.
+Here "T for alpha" means substitution:
+Other rules say that: Every type is a subtype of itself,
+Function is covariant on result and contravariant on argument,
+and arrays are invariant (if, for example, they are mutable like in java).
+
+* Slide 3: Existential types
+
+Dual to polymorphic forall types, there are existential types.
+Let me show you an example ...
+Let us look at the following type: Int × (Int -> Bool × Int). 
+We can think of it as a *stream* of booleans, that is a process generating an infinite sequence of booleans.
+The *first* Int corresponds to the *initial* state,
+and the *second* argument is a "step" function that takes an old state 
+and returns a pair of a boolean output and a new state.
+
+But we can use a *different* type of internal state to 
+generate a stream of Booleans.
+
+So these two *different* types semantically represent the *same* thing -- stream of Booleans, which is problematic.
+
+But there is a way to abstract over the type of internal state. We can hide it behind an existential quantifier.
+Why does it work? Because of the same subtyping mechanism. Because this existential type is a *supertype* of both of these types.
+
+* Slide 4: Goal
+
+This way, type checking allows to detect bugs at compile time.
+And the key component of type checking is subtyping.
+The goal of the project is developing the subtyping, 
+and hence, type checking algorithm for (impredicative) 
+polymorphic systems with existential types.
+
+* Algorithm
+
+** Slide 6: Unification
+
+Let me describe the flavour of the algorithm on a simple example.
+
+Recalling polymorphic function length, suppose we want to check
+whether its type ∀α. [α] -> Int is a subtype of [Bool] -> Int.
+
+According to the rules, we have to instantiate α to Bool,
+ but how would the algorithm know that? 
+∀α. [α] -> Int ≤ [Bool] -> Int
+
+Let us replace α with a metavariable α̂, 
+and promise to instantiate it later. 
+And continue the derivation, as if α̂ was a regular type.
+
+By inversion, it means Int ≤ Int (which always holds) 
+
+and [α̂] ≥ [Bool].
+Since the arrays are invariant, 
+we must then *unify* the left and the right-hand side: α̂ ≈ Bool.
+And the *unification* algorithm (in this case trivially)
+gives us the instantiation: α̂ = Bool.
+
+** Slide 7: Anti-unification
+
+Now let's consider a slightly different example:
+Let's do the same procedure. We'll have: α̂ ≥ [Bool] and α̂ ≥ [Int].
+
+This time, we cannot equate α̂ with [Bool] nor with [Int] 
+because they contradict each other, so the unification is not applicable.
+
+However, the solution *exists*, i.e. there is a *common supertype* of 
+[Bool] and [Int].
+This is ∃β.[β].
+But how to find this supertype (or the least upper bound) algorithmically?
+Well, in our case we are looking for a type with a hole,
+such that with one instantiation it becomes [Bool] and
+ with another [Int],
+and then we abstract over this hole, capturing it with an 
+existential quantifier:
+This process is called anti-unification, because it is 
+dual to unification. This is 
+a well-studied problem, and there are algorithms for it.
+So if  we run it, we  instantiate α with "∃β.[β]" and algorithmically 
+infer the subtyping:
+
+I hope running algorithm on this example gave you some intuition,
+at least on where the unification and anti-unification come from. 
+
+* Slide 8: Polarization
+
+** Undecidability
+Unfortunately, this algorithm is not complete. In fact, none of the algorithms is, 
+because the subtyping is undecidable!  But we can restrict the system to a decidable fragment.
+
+** Polarization
+The mechanism that allowed us to do that 
+is called polarization, also known as call-by-push-value.
+
+The types are divided into two categories:
+positive and negative. 
+Positive types represent data (such as arrays), 
+and negative types represent computations (such as functions). 
+
+** Shifts
+There is a way to convert a positive type to a negative type
+and vice versa: we call it upshift and downshift. 
+
+The important restriction that we put on the system is
+that the sifts are *invariant*
+
+We can prove that certain properties are preserved 
+throughout the derivation, and thus, the algorithm 
+is sound and complete.
+
+* Summary and plans
+
+To sum up, we solved the type inference problem for a 
+large subset of a polymorphic lambda calculus with existentials.
+To do that, we used the polarization technique, and applied 
+anti-unification, which to the best of our knowledge, 
+has never been done before. 
+
+The polarization unveiled several dualities of algorithmic type inference,
+which we plan to explore further to formalize this method categorically.
+After submitting this work to POPL, we plan to extrapolate 
+the same approach on dependent types, and mechanize it in Coq. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 * Types
 
-In this talk, I will tell you about the
-project I am working on at the moment.
+In this talk, I will tell you about the latest results of my research. 
 
 Let me start with a short introduction into type theory.
-In programming languages, every expression is associated with a type.
+In programming languages, every expression is associated with 
+a type.
 
 For example, Bool is a type of logical values
 True, False, or  1 > 2.
@@ -74,8 +277,7 @@ length [2, 3] = 2
 But now the *system* has to *infer* that 
 in the first case α is Bool, and in the second case α is
 instantiated to Int. 
-You might think it is simple: just look at the argument.
-But in general, this problem is more complicated, and in fact, undecidable.
+Although it looks simple, in general this problem is hard, and in fact is undecidable.
 
 * Subtyping
 
@@ -89,9 +291,11 @@ and also a subtype of
 [Int] -> Int
 
 In general, P is a subtype of Q
-means that an expression of type P can be used in context where Q is expected.
+means that an expression of type P can be used in context 
+where Q is expected.
 
-The instantiation is driven by the following inference rule (where T for alpha means substitution):
+The instantiation is driven by the following inference rule 
+(where T for alpha means substitution):
 
 If:     [T/α]P ≤ Q 
 -----------------
@@ -133,7 +337,8 @@ Let us look at the following type: Int × (Int -> Bool × Int).
 It is a pair of an Int and a function from Int to a pair Bool Int.
 But we can also look at it as an infinite *stream* of booleans. 
 The first Int corresponds to the initial state,
-and the second argument is a "step" function that takes an old state and returns a pair of a boolean output and a new state.
+and the second argument is a "step" function that takes an old state 
+and returns a pair of a boolean output and a new state.
 
   Int × (Int -> Bool × Int)
   ^          ^
@@ -143,11 +348,13 @@ state       step
              ||
    old state -> (boolean output × new state)
 
-For instance, this stream generates a sequence of False, True, False, True,...
+For instance, this stream generates a sequence of 
+False, True, False, True,...
 (0,     λx. (Odd x, x + 1)) 
 ≈ False, True, False, True, ...  : Int × (Int -> Bool × Int)
 
-But we can use a *different* type of internal state to generate a stream of Booleans.
+But we can use a *different* type of internal state to 
+generate a stream of Booleans.
 
 (False, λx. (x, not x))          : Bool × (Bool -> Bool × Bool)
 ≈ False, True, False, True, ...
@@ -159,7 +366,8 @@ We can hide it behind an existential quantifier:
 
 ∃α. α × (α -> Bool × α)
 
-Why does it work? Because this existential type is a *supertype* of both of these types.
+Why does it work? Because this existential type is a 
+*supertype* of both of these types.
 
                         ≥ Int × (Int -> Bool × Int)
 ∃α. α × (α -> Bool × α) 
@@ -170,7 +378,8 @@ Why does it work? Because this existential type is a *supertype* of both of thes
 This way, type checking allows to detect bugs at compile time.
 And the key component of type checking is subtyping.
 The goal of the project is developing the subtyping, 
-and hence, type checking algorithm for (impredicative) polymorphic systems 
+and hence, type checking algorithm for (impredicative) 
+polymorphic systems 
 with existential types.
 
 [4:30]
@@ -181,7 +390,8 @@ Let me describe the flavour of the algorithm on a simple example.
 Recalling polymorphic function length, suppose we want to check
 weather its type ∀α. [α] -> Int is a subtype of [Bool] -> Int.
 
-According to the rules, we have to instantiate α to Bool, but how would algorithm know that? 
+According to the rules, we have to instantiate α to Bool,
+ but how would algorithm know that? 
 ∀α. [α] -> Int ≤ [Bool] -> Int
 
 Let us replace α with a metavariable α̂, 
@@ -235,17 +445,21 @@ This time, we cannot equate α̂ with [Bool] nor with [Int]
 because they contradict each other,
 so the unification is not applicable.
 
-However, the solution *exists*, i.e. there is a *common supertype* of [Bool] and [Int].
+However, the solution *exists*, i.e. there is a *common supertype* of 
+[Bool] and [Int].
 This is ∃β.[β].
-But how to find this supertype (or the least upper bound) algorithmically?
+But how to find this supertype (or the least upper bound)
+ algorithmically?
 Well, in our case we are looking for a type with a hole,
-such that with one instantiation it becomes [Bool] and with another [Int],
+such that with one instantiation it becomes [Bool] and
+ with another [Int],
 
      [_]
     /   \
 [Bool] [Int]
 
-and then we abstract over this hole, capturing it with an existential quantifier:
+and then we abstract over this hole, capturing it with an 
+existential quantifier:
 
     ∃β.[β]
       |
@@ -253,7 +467,8 @@ and then we abstract over this hole, capturing it with an existential quantifier
     /    \
 [Bool] [Int]
 
-This process is called anti-unification, because it is dual to unification. This is 
+This process is called anti-unification, because it is 
+dual to unification. This is 
 a well-studied problem, and there are algorithms for it.
 
 So if  we run it, we  instantiate α with "∃β.[β]" and algorithmically 
@@ -302,7 +517,8 @@ We can prove that certain properties are preserved
 throughout the derivation, and thus, the subtyping is decidable:
 
 1. Metavariables only on one side of "≤" => unification is just matching
-2. Negative metavariables are "protected" by ↓ => the Greatest Lower Bound (∧) is unused
+2. Negative metavariables are "protected" by ↓ => the 
+  Greatest Lower Bound (∧) is unused
 3. Least Upper Bound∨ is enough
 
 * Summary and plans
@@ -315,7 +531,8 @@ has never been done before.
 
 The polarization unveiled several dualities of algorithmic type inference,
 which we plan to explore in further to formalize this method categorically.
-After submitting this work to POPL, we plan to extrapolate the same approach on 
+After submitting this work to POPL, we plan to extrapolate 
+the same approach on 
 dependent types, and mechanize it in Coq. 
 
 
@@ -341,6 +558,23 @@ Next:
 
 
 Questions:
-1. How large is the decidable fragment you mentioned?
-2. Are there any other benefits of using polarization besides restriction of the system?
-3. What is the difference between anti-unification and unification?
+1. Are there any other benefits of using polarization besides restriction of the system?
+2. You mentioned a declarative system. What is it?
+3. Are there any trade-offs to consider when designing subtyping algorithms?
+
+Answers:
+1. Yes, there are. As I mentioned, Polarization is also called call-by-push-value. And the reason for that 
+you can control the evaluation order in the system. In particular, you can choose between call-by-value and call-by-name
+evaluation strategies. Roughly, you can define a term in different ways, and in one case it will be evaluated eagerly, and in another lazily.
+
+2. It is a set of inference rules, that do not represent an algorithm. In particular, there might be some rules that are not syntax directed.
+Or rules might take values out of thin air. The declarative system describes what we consider as subtyping, and then
+we can define an algorithm that implements it. In our case, the declarative system is the one that I showed you on the slides.
+
+3. Yes, there are. Since the subtyping is not decidable, we can only implement it for a certain subset of the language. 
+And thus, we have to choose this subset. Of course if one subset contains another, it is better, but sometimes they are not compatible, 
+so we need to choose considering the application of the system. For example, one can give up impredicativity,
+so that the variables in  forall cannot be instantiated with another forall. Or one can give up existential types.
+Another trade-off is keeping the algorithm simple, so that it is easy to implement and understand, and prove its correctness.
+
+
