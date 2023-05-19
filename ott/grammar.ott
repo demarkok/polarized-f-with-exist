@@ -455,9 +455,9 @@ terminals :: 'terminals_' ::=
 
 funs
   LUBF ::=
-% fun
-%   iP1 ∨ iP2 :: iQ :: LUB 
-% by
+fun
+  iP1 ∨ iP2 :: iQ :: LUB 
+by
 
 fun ord varset in uP :: ordVars :: uPOrd by
 fun ord varset in uN :: ordVars :: uNOrd by

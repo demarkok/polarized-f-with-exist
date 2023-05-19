@@ -43,6 +43,21 @@
     If $[[Θ ⊢ us1 ⇒ us2]]$ and $[[Θ ⊢ us2 ⇒ us3]]$ then $[[Θ ⊢ us1 ⇒ us3]]$.
 \end{corollary}
 
+\begin{lemma} [Solution Weakening is Monotonous]
+    \label{lemma:weakening-monotonicity}
+    if $[[us1 : Θ1]]$, $[[us2 : Θ2]]$,
+    and $[[us1 ⊆ us2]]$ then $[[Θ1 ⊢ us2 ⇒ us1]]$.
+\end{lemma}
+\begin{proof}
+    We need to show that for any $[[usEntry]] \in [[us1]]$,
+    there exists $[[usEntry']] \in [[us2]]$ such that 
+    $[[Θ1 ⊢ usEntry' ⇒ usEntry]]$.
+    Let us consider an arbitrary $[[usEntry]] \in [[us1]] \subseteq [[us2]]$
+    restricting $[[α̂±]]$. 
+    Notice that $[[Θ1(α̂±) ⊢ usEntry ]]$ since 
+    $[[usEntry]] \in [[us1 : Θ1]]$.
+    By \cref{lemma:entry-weakening-preorder}, $[[Θ1 ⊢ usEntry ⇒ usEntry]]$. 
+\end{proof}
 
 \begin{lemma} [Soundness of Merge of Unification Solution Entries]
     \label{lemma:unif-sol-ent-merge-soundness}
@@ -201,17 +216,151 @@ If $[[usEntry1 & usEntry2]]$ is defined then
 \end{proof}
 
 
-\begin{lemma} [Completeness and Initiality of Solution Merge] 
-    \label{lemma:merge-completeness}
-    Suppose that $[[us1 : Θ1]]$ and $[[us2 : Θ2]]$
-    and there exists $[[us]]$
-    such that $[[Θ1 ⊢ us1 ⇒ us]]$ and $[[ Θ2 ⊢ us2 ⇒ us]]$.
-    Then $[[us1 & us2]]$ is defined and 
-    $[[ Θ1 ∪ Θ2 ⊢ us1 & us2 ⇒ us]]$.
+\begin{lemma} [Completeness of Unification Solution Entry Merge]
+    \label{lemma:unif-entry-merge-completeness}
+    For a fixed context $[[Γ]]$,
+    suppose that  $[[Γ ⊢ usEntry1]]$ and $[[Γ ⊢ usEntry2]]$, 
+    where $[[Γ ⊢ usEntryi]]$ are equivalence-shaped restrictions.
+    Suppose there exists an equivalence-shaped restriction 
+    $[[Γ ⊢ usEntry]]$ such that $[[Γ ⊢ usEntry ⇒ usEntry1]]$ and $[[Γ ⊢ usEntry ⇒ usEntry2]]$.
+    Then $[[usEntry1 & usEntry2]]$ is defined and
+    $[[Γ ⊢ usEntry ⇒ usEntry1 & usEntry2]]$.
 \end{lemma}
+\begin{proof}
+    By the soundness of unification solution entry merge (\cref{lemma:unif-sol-ent-merge-soundness}),
+    Since the restrictions are equivalence-shaped, 
+    the only possible rules inferring the weakening judgments are
+    the positive \ruleref{\ottdruleSImpEPEqEqLabel} and the negative \ruleref{\ottdruleSImpENEqEqLabel}.
+    Since $[[usEntry1]]$, $[[usEntry2]]$, and $[[usEntry]]$ 
+    have the same polarity, we consider the positive case,
+    and the negative case is proved analogously.
 
-\begin{lemma} [Solution Weakening is Monotonous]
-    \label{lemma:weakening-monotonicity}
-    if $[[us1 : Θ]]$ and $[[us2 : Θ]]$ and 
-    $[[us1 ⊆ us2]]$ then $[[Θ ⊢ us2 ⇒ us1]]$.
+    Let us assume that $[[usEntry1]]$ is $[[pua :≈ iP1]]$,
+    $[[usEntry2]]$ is $[[pua :≈ iP2]]$, $[[usEntry]]$ is $[[pua :≈ iQ]]$.
+    Then by inversion of \ruleref{\ottdruleSImpEPEqEqLabel},
+    \begin{itemize}
+        \item $[[Γ ⊢ iQ ≈ iP1]]$, and hence $[[nf(iQ) = nf(iP1)]]$ by \cref{lemma:subt-equiv-algorithmization},
+        \item $[[Γ ⊢ iQ ≈ iP2]]$, and hence $[[nf(iQ) = nf(iP2)]]$ by \cref{lemma:subt-equiv-algorithmization},
+    \end{itemize}
+    which implies $[[nf(iP1) = nf(iP2)]]$.
+    It means that the merge of $[[usEntry1]]$ and $[[usEntry2]]$ is defined by \ruleref{\ottdruleSMEPEqEqLabel}:
+    $[[Γ ⊢ (pua :≈ iP1) & (pua :≈ iP2) = (pua :≈ iP1)]]$.
+
+    To show that $[[Γ ⊢ (pua :≈ iQ) ⇒ (pua :≈ iP1)]]$, we apply \ruleref{\ottdruleSImpEPEqEqLabel}:
+    $[[Γ ⊢ iP1 ≈ iQ]]$ is obtained from $[[Γ ⊢ iQ ≈ iP1]]$ by symmetry of equivalence.
+\end{proof}
+
+\begin{lemma} [Completeness of Unification Solution Merge] 
+    \label{lemma:unif-sol-merge-completeness}
+    Suppose that $[[us1 : Θ|varset1]]$ and $[[us2 : Θ|varset2]]$ 
+    are equivalence-only unification solutions
+    and there exists $[[us]]$
+    such that $[[Θ ⊢ us ⇒ us1]]$ and $[[ Θ ⊢ us ⇒ us2]]$.
+    Then $[[us1 & us2]]$ is defined and 
+    $[[ Θ ⊢ us ⇒ us1 & us2 ]]$.
 \end{lemma}
+\begin{proof}
+    By  definition, $[[us1 & us2]]$ is a union of entries of $[[us1]]$, which do not have matching entries in $[[us2]]$,
+    entries of $[[us2]]$, which do not have matching entries in $[[us1]]$, and the merge of matching entries.
+    It is clear that the first two components of this union exist. Let us show that the third component exists, 
+    i.e. that for every two entries $[[usEntry1]] \in [[us1]]$ and $[[usEntry2]] \in [[us2]]$
+    restricting the same variable $[[α̂±]]$, $[[usEntry1 & usEntry2]]$ is defined.
+
+    $[[Θ|varset1 ⊢ us ⇒ us1]]$ means that there exists $[[usEntry]] \in [[us]]$ restricting $[[α̂±]]$ such that
+    $[[Θ(α̂±) ⊢ usEntry ⇒ usEntry1]]$. Similarly, since there can be only one entry in $[[usEntry]]$ restricting 
+    the same variable$[[α̂±]]$, $[[Θ2 ⊢ us ⇒ us2]]$ means $[[Θ(α̂±) ⊢ usEntry ⇒ usEntry2]]$.
+    Then by \cref{lemma:unif-sol-ent-merge-soundness}, $[[usEntry1 & usEntry2]]$ is defined and 
+    $[[Θ(α̂±) ⊢ usEntry ⇒ usEntry1 & usEntry2]]$.
+
+
+    Let us show: $[[ Θ ⊢ us ⇒ us1 & us2 ]]$, i.e. for every $[[usEntry']] \in [[us1 & us2]]$ restricting 
+    $[[α̂±]]$, there exists $[[usEntry]] \in [[us]]$ such that $[[Θ(α̂±) ⊢ usEntry ⇒ usEntry']]$.
+    Let us consider three cases:
+    \begin{caseof}
+        \item $[[usEntry']]$ is from $[[us1]]$ and does not have a matching entry in $[[us2]]$.
+        Then $[[Θ|varset1 ⊢ us ⇒ us1]]$ means that there exists $[[usEntry]] \in [[us]]$ such that
+        $[[Θ(α̂±) ⊢ usEntry ⇒ usEntry']]$, as required.
+        \item $[[usEntry']]$ is from $[[us2]]$ and does not have a matching entry in $[[us1]]$.
+        This case is symmetric to the previous one.
+        \item $[[usEntry']]$ is the merge of two matching entries $[[usEntry1]] \in [[us1]]$
+        and $[[usEntry2]] \in [[us2]]$ restricting $[[α̂±]]$.
+        Then as noted previously, $[[Θ(α̂±) ⊢ usEntry ⇒ usEntry1 & usEntry2]] = [[usEntry']]$.
+    \end{caseof}
+\end{proof}
+
+\begin{lemma} [Completeness of Solution Entry Merge]
+    \label{lemma:entry-merge-completeness}
+    For a fixed context $[[Γ]]$,
+    suppose that  $[[Γ ⊢ usEntry1]]$ and $[[Γ ⊢ usEntry2]]$.
+    Suppose there exists an entry $[[Γ ⊢ usEntry]]$ such that $[[Γ ⊢ usEntry ⇒ usEntry1]]$ and $[[Γ ⊢ usEntry ⇒ usEntry2]]$.
+    Then $[[usEntry1 & usEntry2]]$ is defined and
+    $[[Γ ⊢ usEntry ⇒ usEntry1 & usEntry2]]$.
+\end{lemma}
+\begin{proof}
+    Notice that $[[usEntry1]]$, $[[usEntry2]]$, and $[[usEntry]]$
+    restrict the same variable and have the same polarity. If the polarity is negative,
+    then the proof is analogous to the proof of \cref{lemma:unif-entry-merge-completeness}.
+
+    Let us consider the shape of $[[usEntry]]$.
+    \begin{caseof}
+        \item $[[usEntry]]$ is $[[pua :≥ iP]]$.
+        \label{case:entry-merge-completeness-sup-sup}
+         Then the only rule inferring 
+        $[[Γ ⊢ usEntry ⇒ usEntryi]]$ is \ruleref{\ottdruleSImpESupSupLabel}.
+        This way, $[[usEntry1]]$ is $[[pua :≥ iP1]]$ and $[[usEntry2]]$ is $[[pua :≥ iP2]]$,
+        and $[[iP]]$ is a common supertype of $[[iP1]]$ and $[[iP2]]$, i.e. $[[Γ⊢ iP ≥ iP1]]$ and $[[Γ ⊢ iP ≥ iP2]]$.
+        Then by \cref{lemma:lub-completeness}, $[[iP1 ∨ iP2]]$ is defined and $[[Γ ⊢ iP ≥ iP1 ∨ iP2]]$.
+        Then $[[usEntry1 & usEntry2]]$, that is $[[pua :≥ iP1 & pua :≥ iP1]]$, is defined as 
+        $[[pua :≥ iP1 ∨ iP2]]$ by \ruleref{\ottdruleSMESupSupLabel}.
+        Moreover, $[[Γ ⊢ usEntry ⇒ usEntry1 & usEntry2]]$, that is $[[Γ ⊢ pua :≥ iP ⇒ pua :≥ iP1 ∨ iP2]]$,
+        holds by \ruleref{\ottdruleSImpESupSupLabel}.
+
+        \item $[[usEntry]]$ is $[[pua :≈ iP]]$. Then let us consider the rules inferring
+        $[[Γ ⊢ usEntry ⇒ usEntry1]]$ and $[[Γ ⊢ usEntry ⇒ usEntry2]]$ respectively:
+        \begin{caseof}
+            \item \ruleref{\ottdruleSImpEPEqEqLabel} and \ruleref{\ottdruleSImpEPEqEqLabel}.
+            Then $[[usEntry1]]$ is $[[pua :≈ iP1]]$, $[[usEntry2]]$ is $[[pua :≈ iP2]]$, 
+            where $[[Γ ⊢ iP ≈ iP1]]$ and $[[Γ ⊢ iP ≈ iP2]]$.
+            Then $[[usEntry1 & usEntry2]]$ is defined as $[[pua :≈ iP1]]$ by \ruleref{\ottdruleSMEPEqEqLabel}, 
+            and $[[Γ ⊢ pua :≈ iP ⇒ pua :≈ iP1]]$ holds by \ruleref{\ottdruleSImpEPEqEqLabel},
+            since $[[Γ ⊢ iP ≈ iP1]]$.
+
+            \item \ruleref{\ottdruleSImpEPEqEqLabel} and \ruleref{\ottdruleSImpEEqSupLabel}.
+            Then $[[usEntry1]]$ is $[[pua :≈ iP1]]$, $[[usEntry2]]$ is $[[pua :≥ iP2]]$, 
+            where $[[Γ ⊢ iP ≈ iP1]]$ and $[[Γ ⊢ iP ≥ iP2]]$.
+
+            Then by transitivity of subtyping (\cref{corollary:subtyping-transitivity}),
+            $[[Γ ⊢ iP1 ≥ iP2]]$. The completeness of positive subtyping algorithm 
+            (\cref{lemma:pos-subt-completeness}) implies that
+            $[[Γ;· ⊨ uP1 ≥ iP2 ⫤ us']]$.
+            Then $[[usEntry1 & usEntry2]]$ is defined as $[[pua :≈ iP1]]$ by \ruleref{\ottdruleSMEPEqEqLabel}.
+            Moreover, $[[Γ ⊢ pua :≈ iP ⇒ pua :≈ iP1]]$ holds by \ruleref{\ottdruleSImpEPEqEqLabel}, 
+            as required.
+
+            \item \ruleref{\ottdruleSImpEEqSupLabel} and \ruleref{\ottdruleSImpEPEqEqLabel}.
+            This case is symmetric to the previous one.
+
+            \item \ruleref{\ottdruleSImpEEqSupLabel} and \ruleref{\ottdruleSImpEEqSupLabel}.
+            Then $[[usEntry1]]$ is $[[pua :≥ iP1]]$, $[[usEntry2]]$ is $[[pua :≥ iP2]]$, 
+            where $[[Γ ⊢ iP ≥ iP1]]$ and $[[Γ ⊢ iP ≥ iP2]]$.
+            And similarly to \cref{case:entry-merge-completeness-sup-sup},
+            $[[usEntry1 & usEntry2]]$ is defined as $[[pua :≥ iP1 ∨ iP2]]$.
+            Moreover, $[[Γ ⊢ pua :≈ iP ⇒ pua :≥ iP1 ∨ iP2]]$ holds by \ruleref{\ottdruleSImpEEqSupLabel},
+            since $[[Γ ⊢ iP ≥ iP1 ∨ iP2]]$ by completeness of the least upper bound algorithm (\cref{lemma:lub-completeness}).
+        \end{caseof}
+    \end{caseof}
+\end{proof}
+
+\begin{lemma} [Completeness of Solution Merge] 
+    \label{lemma:merge-completeness}
+    Suppose that $[[us1 : Θ|varset1]]$ and $[[us2 : Θ|varset2]]$
+    and there exists $[[us]]$
+    such that $[[Θ ⊢ us ⇒ us1]]$ and $[[Θ ⊢ us ⇒ us2]]$.
+    Then $[[us1 & us2]]$ is defined and 
+    $[[ Θ ⊢ us ⇒ us1 & us2]]$.
+\end{lemma}
+\begin{proof}
+    The proof is analogous to the proof of \cref{lemma:unif-sol-merge-completeness}.
+    The only difference is that we use \cref{lemma:entry-merge-completeness} instead of
+    \cref{lemma:unif-entry-merge-completeness}.
+\end{proof}
