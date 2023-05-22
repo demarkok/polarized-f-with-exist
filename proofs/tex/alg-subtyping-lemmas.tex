@@ -29,13 +29,13 @@
     transitively (\cref{todo}) with $[[Γ ⊢ iQ ≥ iP]]$, we have $[[Γ ⊢ [us']â⁺ ≥ iP]]$,
     as required. 
 
-    \item  \ruleref{\ottdruleAPVarLabel} then
-    $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ us]]$ has shape $[[Γ;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·]]$ .
+    \item \label{case:pos-subt-soundness:var} \ruleref{\ottdruleAPVarLabel}  
+    then $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ us]]$ has shape $[[Γ;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·]]$ .
     Then $[[uv a⁺ = ∅]]$, and $[[us]] = [[· : ·]]$ satisfies $[[us : Θ|∅]]$.
     Since $[[uv a⁺ = ∅]]$, application of any unification solution $[[us']]$ does not change $[[a⁺]]$, i.e.
     $[[ [us'] a⁺ = a⁺]]$. Therefore, $[[Γ ⊢ [us']a⁺ ≥ a⁺]]$ holds by \ruleref{\ottdruleDOneNVarLabel}.
 
-    \item \label{case:pos-subt-soundness:arrow} 
+    \item \label{case:pos-subt-soundness:shift} 
      \ruleref{\ottdruleAShiftDLabel} then
     $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ us]]$ has shape $[[Γ;Θ ⊨ ↓uN ≥ ↓iM ⫤ us]]$.\\
     Then the next step of the algorithm is the unification of $[[nf(uN)]]$ and $[[nf(iM)]]$.
@@ -65,53 +65,49 @@
 
         Notice that $[[Γ, nbs ⊢ Θ, â⁻*[Γ, nbs] ]]$, $[[Γ,nbs ⊢ iQ']]$, and 
         $[[Γ,nbs; Θ, â⁻*[Γ, nbs] ⊢ [â⁻*/nas] uP' ]]$, so the induction hypothesis is applicable,
-        that is $[[us' : Θ | uv [â⁻*/nas]uP']]$ and $[[ Γ, nbs ⊢ [us'2][â⁻*/nas]uP' ≥ iQ' ]]$ for any
-        $[[us'2]]$ s.t. $[[Θ ⊢ us'2 ⇒ us']]$.
+        that is $[[us' : Θ, â⁻*[Γ, nbs] | uv [â⁻*/nas]uP']]$ and $[[ Γ, nbs ⊢ [us'2][â⁻*/nas]uP' ≥ iQ' ]]$ for any
+        $[[us'2]]$ s.t. $[[Θ, â⁻*[Γ, nbs] ⊢ us'2 ⇒ us']]$.
 
-        Since the domain of $[[us']]$ is $[[uv [â⁺*/pas]uN']]$, the domain of 
-        $[[us]] = [[us' \  {α̂⁺*}]]$ is $[[uv [â⁺*/pas]uN \ {â⁺*} = uv uN']] = [[uv ∀pas.uN']]$,
-        this way, $[[us : Θ | uv ∀pas.uN']]$, as required.
+        Since the domain of $[[us']]$ is $[[uv [â⁻*/nas]uP']]$, the domain of 
+        $[[us]] = [[us' \  {α̂⁻*}]]$ is $[[uv [â⁻*/nas]uP' \ {â⁻*}]] = [[uv ∃nas.uP']]$,
+        this way, $[[us : Θ | uv ∃nas.uP']]$, as required.
 
-        It is left to show that $[[Γ ⊢ [us2]∀pas.uN' ≤ ∀pbs.iM']]$ for any $[[us2]]$ s.t. $[[Θ ⊢ us2 ⇒ us]]$.
+        It is left to show that $[[Γ ⊢ [us2]∃nas.uP' ≥ ∃nbs.iQ']]$ for any $[[us2]]$ s.t. $[[Θ ⊢ us2 ⇒ us]]$.
         Let us consider an arbitrary such $[[us2]]$. Let us construct $[[us'2]]$, 
-        extending $[[us2]]$ to the domain $[[Ord uv [â⁺*/pas]uN']]$ with the values of $[[us']]$,
-        i.e.  $[[us'2 : Θ | uv [â⁺*/pas]uN']]$, 
+        extending $[[us2]]$ to the domain $[[uv [â⁻*/nas]uP']]$ with the values of $[[us']]$,
+        i.e.  $[[us'2 : Θ | uv [â⁻*/nas]uP']]$, 
         and
         \[
             [[us'2(β̂±)]]  = 
             \begin{cases}
-               [[us2(β̂±)]] & \text{if } [[β̂±]] \in [[uv uN']] \\
-               [[us'(β̂±)]] & \text{if } [[β̂±]] \in [[â⁺*]]
+               [[us2(β̂±)]] & \text{if } [[β̂±]] \in [[uv uP']] \\
+               [[us'(β̂±)]] & \text{if } [[β̂±]] \in [[â⁻*]]
             \end{cases}
         \] 
         , where the application of the unification solution to a variable returns the 
         corresponding \emph{unification entry}. 
-        Notice that $[[Sub us'2|uv uN']] = [[us2]]$.
+        Notice that $[[Sub us'2|uv uP']] = [[us2]]$.
     It is easy to see that $[[Θ ⊢ us'2 ⇒ us']]$: 
     \begin{enumerate}
-        \item if $[[β̂±]] \in [[uv uN']]$ then $[[us'2(β̂±)]] = [[us2(β̂±)]] \Rightarrow [[us(β̂±)]] = [[us'(β̂±)]]$;
-        \item it $[[β̂±]] \in [[â⁺*]]$ then $[[us'2(β̂±)]] = [[us'(β̂±)]] \Rightarrow [[us'(β̂±)]]$,
+        \item if $[[β̂±]] \in [[uv uP']]$ then $[[us'2(β̂±)]] = [[us2(β̂±)]] \Rightarrow [[us(β̂±)]] = [[us'(β̂±)]]$;
+        \item it $[[β̂±]] \in [[â⁻*]]$ then $[[us'2(β̂±)]] = [[us'(β̂±)]] \Rightarrow [[us'(β̂±)]]$,
     \end{enumerate}
     which means that the induction hypothesis can be applied to $[[us'2]]$, i.e.
-    $[[ Γ, pbs ⊢ [us'2][â⁺*/pas]uN' ≤ iM' ]]$.\\
+    $[[ Γ, nbs ⊢ [us'2][â⁻*/nas]uP' ≥ iQ' ]]$.\\
     Notice that
     $
     \begin{aligned}[t]
-                 [[ [us'2][â⁺*/pas]uN' ]] &= [[ [Sub us'2|{â⁺*} ○ â⁺*/pas][Sub us'2|uv uN']uN' ]]
+                 [[ [us'2][â⁻*/nas]uP' ]] &= [[ [Sub us'2|{â⁻*} ○ â⁻*/nas][Sub us'2|uv uP']uP' ]]
                                           && \text{by substitution properties \ilyam{todo}}\\
-                                          &= [[ [Sub us'2|{â⁺*} ○ â⁺*/pas][us2]uN' ]]
-                                          && \text{since $[[Sub us'2|uv uN']] = [[us2]]$}.
+                                          &= [[ [Sub us'2|{â⁻*} ○ â⁻*/nas][us2]uP' ]]
+                                          && \text{since $[[Sub us'2|uv uP']] = [[us2]]$}.
     \end{aligned}
     $\\
-    Also notice that the domain of $[[Sub us'2|{â⁺*} ○ â⁺*/pas]]$ is $[[pas]]$,
-    and the range is $[[Γ, pbs]]$, i.e. $[[Γ, pbs ⊢ Sub us'2|{â⁺*} ○ â⁺*/pas : pas]]$, 
+    Also notice that the domain of $[[Sub us'2|{â⁻*} ○ â⁻*/nas]]$ is $[[nas]]$,
+    and the range is $[[Γ, nbs]]$, i.e. $[[Γ, nbs ⊢ Sub us'2|{â⁻*} ○ â⁻*/nas : nas]]$, 
     which means that we can apply \ruleref{\ottdruleDOneForallLabel} to 
-    $[[ Γ, pbs ⊢ [Sub us'2|{â⁺*} ○ â⁺*/pas][us2]uN' ≤ iM' ]]$
-    to get $[[ Γ ⊢ [us2]∀pas.uN' ≤ ∀pbs.iM' ]]$, as required.
-
-
-
-
+    $[[ Γ, nbs ⊢ [Sub us'2|{â⁻*} ○ â⁻*/nas][us2]uN' ≤ iM' ]]$
+    to obtain $[[ Γ ⊢ [us2]∃nas.uP' ≥ ∃nbs.iQ' ]]$, as required.
     \end{caseof}
 \end{proof}
 
@@ -127,32 +123,9 @@
     We prove it by induction on $[[Γ ; Θ ⊨ uN ≤ iM ⫤ us]]$.
     Let us consider the last rule to infer this judgment. 
     \begin{caseof}
-        \item $[[G;Θ ⊨ a⁻ ≤ a⁻ ⫤ ·]]$\\
-        Then $[[uv a⁻ = ∅]]$, and $[[us]] = [[· : ·]]$ satisfies $[[us : Θ|∅]]$.
-        Since $[[uv a⁻ = ∅]]$, application of any unification solution $[[us']]$ does not change $[[a⁻]]$, i.e.
-        $[[ [us']a⁻ = a⁻ ]]$. Therefore, $[[Γ ⊢ [us']a⁻ ≤ a⁻]]$ holds by \ruleref{\ottdruleDOneNVarLabel}.
-
-        \item $[[G;Θ ⊨ ↑uP ≤ ↑iQ ⫤ us]]$\\
-        Then the next step of the algorithm is the unification of $[[nf(uP)]]$ and $[[nf(iQ)]]$.
-        By the soundness of the unification algorithm (\cref{lemma:unification-soundness}),
-        it returns an equivalence-only solution $[[us]]$ such that $[[us : Ord uv uP]]$.
-        By \cref{todo}, since $[[us]]$ is equivalence-only and $[[Γ ⊢ Θ]]$, $[[Θ ⊢ us' ⇒ us]]$ means 
-        $[[ Γ ⊢ Sub us' ≈ Sub us : Ord uv uP ]]$ as substitutions.
-
-        $[[ [us]nf(uP) = nf(iQ) ]]$ implies $[[Γ ⊢ [us]nf(uP) ≈ nf(iQ)]]$, and then 
-        $[[Γ ⊢ [us']nf(uP) ≈ nf(iQ)]]$. \ilyam{add lemmas}
-
-        Let us rewrite the left-hand side and the right-hand side of $[[Γ ⊢ [us']nf(uP) ≈ nf(iQ)]]$ by 
-        transitivity of equivalence (\cref{corollary:equivalence-transitivity}).
-        By \cref{corollary:nf-sound-wrt-subt-equiv,corollary:subst-pres-equiv},
-        $[[Γ ⊢ [us']nf(uP) ≈ [us']uP ]]$. By \cref{corollary:nf-sound-wrt-subt-equiv}, 
-        $[[Γ ⊢ nf(iQ) ≈ iQ ]]$. 
-        This way, we have $[[Γ ⊢ [us']uP ≈ iQ]]$.
-        Then by \ruleref{\ottdruleDOneShiftULabel}
-        and congruence of substitution, $[[Γ ⊢ [us']↑uP ≤ ↑iQ]]$.
-
-        \item $[[G;Θ ⊨ uP → uN' ≤ iQ → iM' ⫤ us]]$\\
-        The next step of the algorithm is two recursive calls:
+        \item \ruleref{\ottdruleAArrowLabel}, and then $[[Γ ; Θ ⊨ uN ≤ iM ⫤ us]]$ has shape
+        $[[G;Θ ⊨ uP → uN' ≤ iQ → iM' ⫤ us]]$\\
+        On the next step, the the algorithm makes two recursive calls:
         $[[G;Θ ⊨ uP ≥ iQ ⫤ us1]]$ and $[[G;Θ ⊨ uN' ≤ iM' ⫤ us2]]$.
         By the soundness of positive subtyping (\cref{lemma:pos-subt-soundness}) and induction hypothesis, respectively 
         \begin{enumerate}
@@ -179,57 +152,14 @@
         $[[Γ ⊢ [us']uP ≥ iQ ]]$ and $[[ Γ ⊢ [us']uN' ≤ iM' ]]$.
         Finally, by \ruleref{\ottdruleDOneArrowLabel}, $[[Γ ⊢ [us'](uP → uN') ≤ iQ → iM']]$.
 
-        \item $[[G;Θ ⊨ ∀pas.uN' ≤ ∀pbs.iM' ⫤ us]]$ s.t. either $[[pas]]$ or $[[pbs]]$ is not empty\\
-        Then the algorithm creates fresh unification variables $[[â⁺*[Γ,pbs] ]]$, 
-        substitutes the old $[[pas]]$ with them in $[[uN']]$, and makes the recursive call:
-        $[[G, pbs; Θ, â⁺*[G, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ us']]$, returning as the resulting solution 
-        $[[us]] = [[us' \ {α̂⁺*}]]$.
+        \item \ruleref{\ottdruleANVarLabel}, and then $[[Γ ; Θ ⊨ uN ≤ iM ⫤ us]]$ has shape $[[G;Θ ⊨ a⁻ ≤ a⁻ ⫤ ·]]$\\
+        This case is symmetric to \cref{case:pos-subt-soundness:var} of \cref{lemma:pos-subt-soundness}.
 
-        Notice that $[[Γ, pbs ⊢ Θ, â⁺*[G, pbs] ]]$, $[[Γ,pbs ⊢ iM']]$, and 
-        $[[Γ,pbs; Θ, â⁺*[G, pbs] ⊢ [â⁺*/pas] uN' ]]$, so the induction hypothesis is applicable,
-        that is $[[us' : Θ | uv [â⁺*/pas]uN']]$ and $[[ Γ, pbs ⊢ [us'2][â⁺*/pas]uN' ≤ iM' ]]$ for any
-        $[[us'2]]$ s.t. $[[Θ ⊢ us'2 ⇒ us']]$.
+        \item \ruleref{\ottdruleAShiftULabel}, and then $[[Γ ; Θ ⊨ uN ≤ iM ⫤ us]]$ has shape $[[G;Θ ⊨ ↑uP ≤ ↑iQ ⫤ us]]$\\
+        This case is symmetric to \cref{case:pos-subt-soundness:shift} of \cref{lemma:pos-subt-soundness}.
 
-        Since the domain of $[[us']]$ is $[[uv [â⁺*/pas]uN']]$, the domain of 
-        $[[us]] = [[us' \  {α̂⁺*}]]$ is $[[uv [â⁺*/pas]uN \ {â⁺*} = uv uN']] = [[uv ∀pas.uN']]$,
-        this way, $[[us : Θ | uv ∀pas.uN']]$, as required.
-
-        It is left to show that $[[Γ ⊢ [us2]∀pas.uN' ≤ ∀pbs.iM']]$ for any $[[us2]]$ s.t. $[[Θ ⊢ us2 ⇒ us]]$.
-        Let us consider an arbitrary such $[[us2]]$. Let us construct $[[us'2]]$, 
-        extending $[[us2]]$ to the domain $[[Ord uv [â⁺*/pas]uN']]$ with the values of $[[us']]$,
-        i.e.  $[[us'2 : Θ | uv [â⁺*/pas]uN']]$, 
-        and
-        \[
-            [[us'2(β̂±)]]  = 
-            \begin{cases}
-               [[us2(β̂±)]] & \text{if } [[β̂±]] \in [[uv uN']] \\
-               [[us'(β̂±)]] & \text{if } [[β̂±]] \in [[â⁺*]]
-            \end{cases}
-        \] 
-        , where the application of the unification solution to a variable returns the 
-        corresponding \emph{unification entry}. 
-        Notice that $[[Sub us'2|uv uN']] = [[us2]]$.
-    It is easy to see that $[[Θ ⊢ us'2 ⇒ us']]$: 
-    \begin{enumerate}
-        \item if $[[β̂±]] \in [[uv uN']]$ then $[[us'2(β̂±)]] = [[us2(β̂±)]] \Rightarrow [[us(β̂±)]] = [[us'(β̂±)]]$;
-        \item it $[[β̂±]] \in [[â⁺*]]$ then $[[us'2(β̂±)]] = [[us'(β̂±)]] \Rightarrow [[us'(β̂±)]]$,
-    \end{enumerate}
-    which means that the induction hypothesis can be applied to $[[us'2]]$, i.e.
-    $[[ Γ, pbs ⊢ [us'2][â⁺*/pas]uN' ≤ iM' ]]$.\\
-    Notice that
-    $
-    \begin{aligned}[t]
-                 [[ [us'2][â⁺*/pas]uN' ]] &= [[ [Sub us'2|{â⁺*} ○ â⁺*/pas][Sub us'2|uv uN']uN' ]]
-                                          && \text{by substitution properties \ilyam{todo}}\\
-                                          &= [[ [Sub us'2|{â⁺*} ○ â⁺*/pas][us2]uN' ]]
-                                          && \text{since $[[Sub us'2|uv uN']] = [[us2]]$}.
-    \end{aligned}
-    $\\
-    Also notice that the domain of $[[Sub us'2|{â⁺*} ○ â⁺*/pas]]$ is $[[pas]]$,
-    and the range is $[[Γ, pbs]]$, i.e. $[[Γ, pbs ⊢ Sub us'2|{â⁺*} ○ â⁺*/pas : pas]]$, 
-    which means that we can apply \ruleref{\ottdruleDOneForallLabel} to 
-    $[[ Γ, pbs ⊢ [Sub us'2|{â⁺*} ○ â⁺*/pas][us2]uN' ≤ iM' ]]$
-    to get $[[ Γ ⊢ [us2]∀pas.uN' ≤ ∀pbs.iM' ]]$, as required.
+        \item \ruleref{\ottdruleAForallLabel}, and then $[[Γ ; Θ ⊨ uN ≤ iM ⫤ us]]$ has shape $[[G;Θ ⊨ ∀pas.uN' ≤ ∀pbs.iM' ⫤ us]]$ s.t. either $[[pas]]$ or $[[pbs]]$ is not empty\\
+        This case is symmetric to \cref{case:pos-subt-soundness:exists} of \cref{lemma:pos-subt-soundness}.
 
 \end{caseof}
 \end{proof}
@@ -252,7 +182,7 @@
     but first consider the base case for the substitution $[[ [us]uP ]]$:
 
     \begin{caseof}
-        \item \label{case:subt-complete-base} $[[uP]] = [[ ∃nbs.α̂⁺ ]]$ (for potentially empty $[[pbs]]$)\\
+        \item \label{case:pos-subt-complete-base} $[[uP]] = [[ ∃nbs.α̂⁺ ]]$ (for potentially empty $[[pbs]]$)\\
         Then by assumption, there exists $[[us : Θ | uv uP]]$ such that $[[ Γ ⊢ ∃nbs.[us]α̂⁺ ≥ iQ ]]$.
         $[[us : Θ | uv α̂⁺]]$ means that  $[[us]]$ is either $[[ (α̂⁺ :≈ iP') ]]$ or $[[ (α̂⁺ :≥ iP') ]]$,
         where $[[Δ ⊢ iP']]$ and $[[α̂⁺[Δ] ∊ Θ]]$.
@@ -286,37 +216,133 @@
         $[[ Θ ⊢ (α̂⁺ :≥ iP') ⇒ (α̂⁺ :≥ iQ') ]]$, which means that in any case, 
         $[[ Θ ⊢ us ⇒ us']]$.
 
-        \item \label{case:subt-complete-nvar}
-        $[[ Γ ⊢ [us]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneNVarLabel}, 
-        i.e. $[[ [us]uN ]] = [[iM]] = [[ α⁻ ]] = [[iN]]$ 
-        (the latter equality holds because $[[uN]] \neq [[α̂⁻]]$).
+        \item \label{case:pos-subt-complete-pvar}
+        $[[ Γ ⊢ [us]uP ≥ iQ ]]$ is derived by \ruleref{\ottdruleDOnePVarLabel}, 
+        i.e. $[[iP]] = [[ [us]uP ]] = [[ α⁺ ]] = [[iQ]]$.
+        Here the first equality holds because $[[uP]]$ is not a unification variable:
+        this case has been covered by \cref{case:pos-subt-complete-base}.
+        The second equality hold because \ruleref{\ottdruleDOnePVarLabel} was applied.
 
-        Notice that $[[us : Θ | uv α⁻]]$ = $[[us : Θ | ∅]]$ = $[[·]]$.
+        Notice that $[[us : Θ | uv α⁺]]$ = $[[us : Θ | ∅]]$ = $[[·]]$.
 
-        The algorithm applies \ruleref{\ottdruleANVarLabel} and 
-        infers $[[us']] = [[·]]$, i.e. $[[Γ;Θ ⊨ a⁻ ≤ a⁻ ⫤ ·]]$.
+        The algorithm applies \ruleref{\ottdruleAPVarLabel} and 
+        infers $[[us']] = [[·]]$, i.e. $[[Γ;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·]]$.
 
         Since $[[Θ ⊢ · ⇒ ·]]$, we have $[[Θ ⊢ us ⇒ us']]$.
 
-       \item The positive case when $[[Γ ⊢ [us]uP ≥ iQ]]$ is derived by 
-       \ruleref{\ottdruleDOneShiftDLabel} is symmetric to the corresponding negative
-        \cref{case:subt-complete-upshift}. Notice that the algorithm does not 
-        make a recursive call in this case but rather invoke the unification.
-        This way, the proof does not apply the induction hypothesis, and hence, 
-        the absence of negative unification variables in a negative type
-        ($[[α̂⁻]] \notin [[uN]]$ for $[[↓uN]] =[[uP]]$) is not required.
+
+        \item \label{case:pos-subt-complete-upshift} $[[ Γ ⊢ [us]uP ≥ iQ ]]$ is derived by \ruleref{\ottdruleDOneShiftDLabel},
+        
+        Then $[[ uP ]] = [[ ↓uN ]]$, since the substitution $[[ [us]uP ]]$ must preserve the 
+        top-level constructor of $[[uP]]\neq [[α̂⁺]]$ (the case $[[uP]] = [[α̂⁺]]$ has been covered
+        by \cref{case:pos-subt-complete-base}), and $[[uQ]] = [[ ↓iM ]]$,
+        and by inversion, $[[ Γ ⊢ [us]uN ≈ iM ]]$.
+
+        Since both types start with $[[↓]]$, 
+        the algorithm tries to apply \ruleref{\ottdruleAShiftDLabel}: 
+        $[[G;Θ ⊨ ↓uN ≥ ↓iM ⫤ us']]$. The premise of this rule is the
+        unification of $[[nf(uN)]]$ and $[[nf(iM)]]$:
+        $[[Γ;Θ ⊨ nf(uN) ≈u nf(iM) ⫤ us']]$. Let us show that the unification successfully 
+        terminates and returns $[[us']] = [[nf(us)]]$.
+
+        To demonstrate that the unification terminates, we apply the completeness 
+        of the unification algorithm (\cref{lemma:unification-completeness}). 
+        In order to do that, we need to provide a unifier of 
+        $[[nf(uN)]]$ and $[[nf(iM)]]$. Thankfully, $[[nf(us)]]$ does it. 
+
+        \begin{itemize}
+            \item $[[nf(uN)]]$ and $[[nf(iM)]]$ are normalized 
+            \item $[[Γ ; Θ ⊢ nf(uN)]]$ because $[[Γ ; Θ ⊢ uN]]$ (\cref{todo})
+            \item $[[Γ ⊢ nf(iM)]]$ because $[[Γ ⊢ iM]]$ (\cref{corollary:wf-nf})
+            \item $[[nf(us) : Θ | uv nf(uN)]]$ because $[[us: Θ | uv uN]]$ (\cref{todo})
+            \item $ \begin{aligned}[t]
+                    [[ Γ ⊢ [us]uN ≈ iM ]] &\Rightarrow [[ [us]uN ≈ iM ]]
+                                          && \text {by \cref{lemma:equiv-completeness}}\\
+                                          &\Rightarrow [[ nf([us]uN) = nf(iM) ]]
+                                          && \text {by \cref{lemma:normalization-completeness}}\\
+                                          &\Rightarrow [[ [nf(us)]nf(uN) = nf(iM) ]]
+                                          && \text {by \cref{lemma:norm-subst-distr}}\\
+                    \end{aligned}
+                  $
+        \end{itemize}
+        Then by the completeness of the unification,
+        $[[Γ ; Θ ⊨ nf(uN) ≈u nf(iM) ⫤ nf(us)]]$.
+        This way, the subtyping algorithm terminates and the resulting solution is
+        $[[nf(us)]]$. 
+        
+        It is left to note that $[[Θ ⊢ us ⇒ nf(us)]]$, by \cref{todo}, since $[[Θ ⊢ us ≈ nf(us)]]$ 
 
 
-
-      \item The positive case when $[[Γ ⊢ [us]uP ≥ iQ]]$ is derived by 
-      \ruleref{\ottdruleDOneExistsLabel} is symmetric to the corresponding negative
-      \cref{case:subt-complete-forall}. Notice that we only consider the case
+      \item $[[ Γ ⊢ [us]uP ≥ iQ ]]$ is derived by \ruleref{\ottdruleDOneExistsLabel}.\\
+      We should only consider the case
       when the substitution $[[ [us]uP ]]$ results in the existential type 
-      $[[∃nas.iP']]$ (for $[[iP']] \neq [[∃]]\dots$) by congruence, 
-      i.e. $[[uP = ∃nas.uP'']]$ (for $[[uP'']] \neq [[∃]]\dots$) and $[[ [us]uP'' = iP' ]]$.
+      $[[∃nas.iP'']]$ (for $[[iP'']] \neq [[∃]]\dots$) by congruence, 
+      i.e. $[[uP = ∃nas.uP']]$ (for $[[uP']] \neq [[∃]]\dots$) and $[[ [us]uP' = iP'' ]]$.
       This is because the case when $[[uP = ∃nbs.α̂⁺]]$ has been covered
-      (\cref{case:subt-complete-base}), and thus, the substitution $[[us]]$ must
+      (\cref{case:pos-subt-complete-base}), and thus, the substitution $[[us]]$ must
       preserve all the outer quantifiers of $[[uP]]$ and does not generate any new ones.
+
+      This way, $[[uP]] = [[∃nas.uP']]$, $[[ [us]uP ]] = [[ ∃nas.[us]uP' ]]$ 
+      (assuming $[[nas]]$ does not intersect with the range of $[[us]]$)
+      and $[[iQ]] = [[ ∃nbs.iQ' ]]$, where either $[[nas]]$ or $[[nbs]]$ is not empty.
+
+      By inversion, $[[ Γ ⊢ [σ][us]uP' ≥ iQ' ]]$ for some $[[Γ, nbs ⊢ σ : nas]]$.
+      Since $[[σ]]$ and $[[us]]$ have disjoint domains,
+      and the range of one does not intersect with the domain of the other,
+      they commute, i.e. $[[ Γ, nbs ⊢ [us][σ]uP' ≥ iQ' ]]$
+      (notice that the tree inferring this judgement is 
+      a proper subtree of the tree inferring 
+      $[[ Γ ⊢ [us]uP ≥ iQ ]]$).
+
+      At the next step, 
+      the algorithm creates fresh (disjoint with $[[uv uP']]$) 
+      unification variables $[[â⁻*]]$, replaces $[[nas]]$ with them in $[[ uP' ]]$,
+      and makes the recursive call:
+      $[[G, nbs; Θ, â⁻*[G, nbs] ⊨ uP0 ≥ iQ ⫤ us1]]$,
+      (where $[[uP0]] = [[ [â⁻*/nas]uP' ]]$),
+      returning $[[us1 \ {â⁻*}]]$ as the result.
+
+       Notice that $[[ [us][σ][nas/â⁻*]uP0 = [us][σ]uP' ]]$,
+       and thus, $[[ Γ, nbs ⊢ [us][σ][nas/â⁻*]uP0 ≥ iQ' ]]$.
+       Let us combine $[[us]]$ and $[[σ  ○ nas/â⁻*]]$ into one 
+       $[[us0]]$---a unification solution for $[[uP0]]$:
+        \[
+            [[us0(β̂±)]]  = 
+            \begin{cases}
+               [[ β̂± :≈ [σ]αi⁻ ]] & \text{if } [[β̂±]] = [[αî⁻]] \in [[â⁻*]] \\
+               [[us(β̂±)]] & \text{if } [[β̂±]] \in [[uv uP']]
+            \end{cases}
+       \]
+
+       Let us show that the induction hypothesis is applicable to 
+       $[[Γ, nbs ⊢ [us0]uP0 ≥ iQ' ]]$, with the meta-context $[[ Θ, â⁻*[Γ, nbs] ]]$
+       \begin{itemize}
+        \item $[[ us0 : (Θ, â⁻*[Γ, nbs])|uv uP0 ]]$. Notice that for every $[[αî⁻]] \in [[â⁻*]]$, 
+            the type corresponding to the entry $[[us0(αî⁻)]]$ 
+            is well-formed in $[[Γ, nbs]]$ since $[[Γ, nbs ⊢ σ : nas ]]$;
+            and for every $[[β̂±]] \in [[uv uP']]$, 
+            the type corresponding to the entry $[[us0(β̂±)]]$ is well-formed in
+            context $[[Θ(β̂±)]]$ since $[[us : Θ | uv uP']]$.
+        \item $[[Γ, nbs ⊢ [us0]uP0 ≥ iQ' ]]$. This is because
+            $[[ [us0]uP0 ]] = [[ [us][σ][nas/â⁻*]uP0 ]] = [[ [us][σ]uP' ]]$.
+        \item $[[ Γ, nbs ⊢ Θ, â⁻*[Γ, nbs] ]]$ since
+            $[[Γ, nbs ⊢ Θ]]$ and $[[ {Γ, nbs} ⊆ {Γ, nbs} ]]$.
+        \item $[[Γ, nbs ; Θ, â⁻*[Γ, nbs] ⊢ uP0 ]]$
+       \end{itemize}
+
+       This way, we apply the induction hypothesis to $[[Γ, nbs ⊢ [us0]uP0 ≥ iQ' ]]$ and 
+       infer that there exists\\
+        $[[us0' :  (Θ, â⁻*[Γ, nbs]) | uv uP0]]$ such that
+       $[[G, nbs; Θ, â⁻*[G, nbs] ⊨ uP0 ≥ iQ ⫤ us0']]$,
+       and $[[Θ, â⁻*[G, nbs] ⊢ us0' ⇒ us0]]$.
+
+       This way, the algorithm terminates with the result $[[us0' \ {â⁻*}]]$
+       and it is left to show $[[ Θ ⊢ us ⇒ us0' \ {â⁻*} ]]$. Notice that
+       $[[us0' \ {â⁻*} : Θ | uv uP' ]]$. To show $[[ Θ ⊢ us ⇒ us0' \
+       {â⁻*} ]]$, it suffices to consider a unification variable $[[β̂±]] \in 
+       [[uv uP']]$ and show that $[[Γ ⊢ us(β̂±) ⇒ us0'(β̂±)]]$. It holds by the
+       reflexivity of weakening (\cref{lemma:entry-weakening-preorder}) since
+       $[[us0'(β̂±)]] = [[us(β̂±)]]$.
 
       \item The positive case when $[[Γ ⊢ [us]uP ≥ iQ]]$ is derived by 
       \ruleref{\ottdruleDOnePVarLabel} is symmetric to the corresponding negative
@@ -324,7 +350,6 @@
       Notice that $[[ [us]uP = β⁺ ]]$ 
       implies $[[uP = β⁺]]$ because the case when $[[uP = α̂⁺]]$ has been covered 
       (\cref{case:subt-complete-base}).
-
 
     \end{caseof}
 \end{proof}
@@ -341,45 +366,15 @@
     We prove it by induction on $[[ Γ ⊢ [us]uN ≤ iM ]]$.
     Let us consider the last rule used in the derivation of $[[ Γ ⊢ [us]uN ≤ iM ]]$.
     \begin{caseof}
-        \item $[[ Γ ⊢ [us]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneShiftULabel},
-        \label{case:subt-complete-upshift}
-        i.e. $[[ [us]uN ]] = [[ ↑[us]uP ]]$ (since the substitution $[[ [us]uN ]]$ must preserve the 
-        top-level constructor of $[[uN]]\neq [[α̂⁻]]$), and $[[uM]] = [[ ↑iQ ]]$,
-        and by inversion, $[[ Γ ⊢ [us]uP ≈ iQ ]]$.
-
-        Since both types start with $[[↑]]$, 
-        the algorithm tries to apply \ruleref{\ottdruleAShiftULabel}: 
-        $[[G;Θ ⊨ ↑uP ≤ ↑iQ ⫤ us']]$. The premise of this rule is the
-        unification of $[[nf(uP)]]$ and $[[nf(iQ)]]$:
-        $[[Γ;Θ ⊨ nf(uP) ≈u nf(iQ) ⫤ us']]$. Let us show that the unification successfully 
-        terminates and returns $[[us']] = [[nf(us)]]$.
-
-        To demonstrate that the unification terminates, we apply the completeness 
-        of the unification algorithm (\cref{lemma:unification-completeness}). 
-        In order to do that, we need to provide a unifier of 
-        $[[nf(uP)]]$ and $[[nf(iQ)]]$. Thankfully, $[[nf(us)]]$ does it. 
-
-        \begin{itemize}
-            \item $[[nf(uP)]]$ and $[[nf(iQ)]]$ are normalized 
-            \item $[[Γ ; Θ ⊢ nf(uP)]]$ because $[[Γ ; Θ ⊢ uP]]$ (\cref{todo})
-            \item $[[Γ ⊢ nf(iQ)]]$ because $[[Γ ⊢ iQ]]$ (\cref{corollary:wf-nf})
-            \item $[[nf(us) : Θ | uv nf(uP)]]$ because $[[us: Θ | uv uP]]$ (\cref{todo})
-            \item $ \begin{aligned}[t]
-                    [[ Γ ⊢ [us]uP ≈ iQ ]] &\Rightarrow [[ [us]uP ≈ iQ ]]
-                                          && \text {by \cref{lemma:equiv-completeness}}\\
-                                          &\Rightarrow [[ nf([us]uP) = nf(iQ) ]]
-                                          && \text {by \cref{lemma:normalization-completeness}}\\
-                                          &\Rightarrow [[ [nf(us)]nf(uP) = nf(iQ) ]]
-                                          && \text {by \cref{lemma:norm-subst-distr}}\\
-                    \end{aligned}
-                  $
-        \end{itemize}
-        Then by the completeness of the unification,
-        $[[Γ ; Θ ⊨ nf(uP) ≈u nf(iQ) ⫤ nf(us)]]$.
-        This way, the subtyping algorithm terminates and the resulting solution is
-        $[[nf(us)]]$. 
-        
-        It is left to note that $[[Θ ⊢ us ⇒ nf(us)]]$, by \cref{todo}, since $[[Θ ⊢ us ≈ nf(us)]]$ 
+        \item $[[ Γ ⊢ [us]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneShiftULabel}\\
+        Then $[[ uN ]] = [[ ↑uP ]]$, since
+        the substitution $[[ [us]uN ]]$ must preserve the 
+        top-level constructor of $[[uN]] \neq [[α̂⁻]]$ (since by assumption, $[[α̂⁻]] \notin [[uv uN]]$), 
+        and $[[uQ]] = [[ ↓iM ]]$, and by inversion, $[[ Γ ⊢ [us]uN ≈ iM ]]$.
+        The rest of the proof is symmetric to \cref{case:pos-subt-complete-upshift} of
+         \cref{lemma:pos-subt-completeness}: notice that the algorithm does not make a recursive call, 
+        and the difference in the induction statement for the positive and 
+        the negative case here does not matter.
 
         \item $[[ Γ ⊢ [us]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneArrowLabel}, 
         i.e. $[[ [us]uN ]] = [[ [us]uP → [us]uN' ]]$ and $[[iM]] = [[iQ → iM']]$, 
@@ -418,75 +413,30 @@
        we have $[[Θ ⊢ us ⇒ us'1 & us'2]]$, as required.
 
        \item \label{case:subt-complete-forall}
-       $[[ Γ ⊢ [us]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneForallLabel},
-       i.e. $[[ [us]uN ]] = [[ ∀pas.[us]uN' ]]$
-       (assuming $[[pas]]$ does not intersect with the 
-       range of $[[us]]$)
-       and 
-       $[[iM]] = [[∀pbs.iM']]$, where either $[[pas]]$ or $[[pbs]]$
-       is non-empty.
-       
-       By inversion, 
-       $[[ Γ, pbs ⊢ [σ][us]uN' ≤ iM' ]]$ for 
-       $[[Γ, pbs ⊢ σ : pas ]]$.
-       Since $[[σ]]$ and $[[us]]$ have disjoint domains,
-       and the range of one does not intersect with the domain of the other,
-       they commute, i.e. $[[ Γ, pbs ⊢ [us][σ]uN' ≤ iM' ]]$
-       (notice that the tree inferring this judgement is 
-       a proper subtree of the tree inferring 
-       $[[ Γ ⊢ [us]uN ≤ iM ]]$).
+       $[[ Γ ⊢ [us]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneForallLabel}.
+       Since $[[uN]]$ does not contain negative unification variables,
+       $[[uN]]$ must be of the form $[[∀pas.uN']]$,
+       such that $[[ [us]uN = ∀pas.[us]uN' ]]$ and $[[ [us]uN']] \neq [[∀]]\dots$
+       (assuming $[[pas]]$ does not intersect with the range of $[[us]]$).
+       Also, $[[iM]] = [[∀pbs.iM']]$ and either $[[pas]]$ or $[[pbs]]$ is non-empty.
 
-       On the next step, 
-       the algorithm creates fresh (disjoint with $[[uv uN']]$) 
-       unification variables $[[â⁺*]]$, replaces $[[pas]]$ with them in $[[ [us]uN' ]]$,
-       and makes the recursive call:
-       $[[G, pbs; Θ, â⁺*[G, pbs] ⊨ uN0 ≤ iM ⫤ us1]]$,
-       (where $[[uN0]] = [[ [â⁺*/pas]uN' ]]$),
-       returning $[[us1 \ {â⁺*}]]$ as the result.
+       The rest of the proof is symmetric to \cref{case:pos-subt-complete-exists} of
+       \cref{lemma:pos-subt-completeness}.
+       To apply the induction hypothesis, we need to show additionally that
+       there are no negative unification variables in $[[uN0]] = [[ [â⁺*/pas]uN' ]]$.
+       This is because $[[ uv uN0 ⊆ uv uN ∪ {â⁺*} ]]$, and $[[uN]]$ is free of negative
+       unification variables by assumption.
 
-       Notice that $[[ [us][σ][pas/â⁺*]uN0 = [us][σ]uN' ]]$,
-       and thus, $[[ Γ, pbs ⊢ [us][σ][pas/â⁺*]uN0 ≤ iM' ]]$.
-       Let us combine $[[us]]$ and $[[σ  ○ pas/â⁺*]]$ into one 
-       $[[us0]]$ an unification solution for $[[uN0]]$:
-        \[
-            [[us0(β̂±)]]  = 
-            \begin{cases}
-               [[ β̂± :≈ [σ]αi⁺ ]] & \text{if } [[β̂±]] = [[αî⁺]] \in [[â⁺*]] \\
-               [[us(β̂±)]] & \text{if } [[β̂±]] \in [[uv uN']]
-            \end{cases}
-       \]
+       \item $[[ Γ ⊢ [us]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneNVarLabel}.\\
+       Then $[[iN]] = [[ [us]uN ]] = [[ α⁻ ]] = [[iM]]$. 
+       Here the first equality holds because $[[uN]]$ is not a unification variable:
+       by assumption, $[[uN]]$ is free of negative unification variables.
+       The second and the third equations hold because \ruleref{\ottdruleDOneNVarLabel}
+       was applied. 
 
-       Let us show that the induction hypothesis is applicable to 
-       $[[Γ, pbs ⊢ [us0]uN0 ≤ iM' ]]$.
-       \begin{itemize}
-        \item $[[ us0 : Θ|uv uN', â⁺*[Γ, pbs] ]]$. Notice that for every $[[αî⁺]]$, 
-            the type corresponding to the entry $[[us0(αî⁺)]]$ 
-            is well-formed in $[[Γ, pbs]]$ since $[[Γ, pbs ⊢ σ : pas ]]$;
-            and for every $[[β̂±]] \in [[uv uN']]$, 
-            the type corresponding to the entry $[[us0(β̂±)]]$ is well-formed in
-            context $[[Θ(β̂±)]]$ since $[[us : Θ | uv uN']]$.
-        \item $[[Γ, pbs ⊢ [us0]uN0 ≤ iM' ]]$. This is because
-            $[[ [us0]uN0 ]] = [[ [us][σ][pas/â⁺*]uN0 ]] = [[ [us][σ]uN' ]]$.
-        \item $[[ Γ, pbs ⊢ Θ, â⁺*[Γ, pbs] ]]$ since
-            $[[Γ, pbs ⊢ Θ]]$ and $[[ {Γ, pbs} ⊆ {Γ, pbs} ]]$.
-        \item $[[Γ, pbs ; Θ, â⁺*[Γ, pbs] ⊢ uN0 ]]$
-        \item There are no negative unification variables in $[[uN0]]$ because
-            $[[ uv uN0 ⊆ uv uN ∪ {â⁺*} ]]$.
-       \end{itemize}
+       The rest of the proof is symmetric to \cref{case:pos-subt-complete-pvar} of
+       \cref{lemma:pos-subt-completeness}.
 
-       This way, we apply the induction hypothesis to $[[Γ, pbs ⊢ [us0]uN0 ≤ iM' ]]$ and 
-       infer that there exists\\
-        $[[us0' :  (Θ, â⁺*[Γ, pbs]) | uv uN0]]$ such that
-       $[[G, pbs; Θ, â⁺*[G, pbs] ⊨ uN0 ≤ iM ⫤ us0']]$,
-       and $[[Θ, â⁺*[G, pbs] ⊢ us0' ⇒ us0]]$.
-
-       This way, the algorithm terminates with the result $[[us0' \ {â⁺*}]]$
-       and it is left to show $[[ Θ ⊢ us ⇒ us0' \ {â⁺*} ]]$. Notice that
-       $[[us0' \ {â⁺*} : Θ | uv uN' ]]$. This way, to show $[[ Θ ⊢ us ⇒ us0' \
-       {â⁺*} ]]$. it suffices to consider an unification variable $[[β̂±]] ∊
-       [[uv uN']]$ and show that $[[Γ, pbs ⊢ us(β̂±) ⇒ us0'(β̂±)]]$. It holds by the
-       reflexivity of weakening (\cref{lemma:weakening-reflexivity}) since
-       $[[us0'(β̂±)]] = [[us(β̂±)]]$.
     \end{caseof}
 \end{proof}
 
