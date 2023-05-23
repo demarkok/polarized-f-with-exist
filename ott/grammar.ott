@@ -475,6 +475,7 @@ fun nf ( μ' )   :: μ :: Movnf by
 fun nf ( us' )  :: us :: USolnf by
 
 fun  σ' | varset  :: σ :: Restr {{ tex [[σ']]|_{[[varset]]} }} by 
+fun  us' | varset  :: us :: USRestr {{ tex [[us']]|_{[[varset]]} }} by 
 
 fun
   usEntry1 & usEntry2 :: usEntry :: USEM {{ tex [[usEntry1]] ~ \& ~ [[usEntry2]] }}

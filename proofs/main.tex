@@ -150,6 +150,19 @@
 \renewcommand{\ottdruleSImpEPEqEqName}[0]{$([[≈]]\Rightarrow^{+}[[≈]])$}
 \renewcommand{\ottdruleSImpENEqEqName}[0]{$([[≈]]\Rightarrow^{-}[[≈]])$}
 
+% Γ ; Θ ⊨ uN ≈u iM ⫤ us 
+\renewcommand{\ottdruleUNVarName}[0]{(Var$^{-[[≈u]]}$)}
+\renewcommand{\ottdruleUShiftUName}[0]{($\uparrow^{[[≈u]]}$)}
+\renewcommand{\ottdruleUArrowName}[0]{($\rightarrow^{[[≈u]]}$)}
+\renewcommand{\ottdruleUForallName}[0]{($\forall^{[[≈u]]}$)}
+\renewcommand{\ottdruleUNUVarName}[0]{(UVar$^{-[[≈u]]}$)}
+
+% Γ ; Θ ⊨ uP ≈u iQ ⫤ us 
+\renewcommand{\ottdruleUPVarName}[0]{(Var$^{+[[≈u]]}$)}
+\renewcommand{\ottdruleUShiftDName}[0]{($\downarrow^{[[≈u]]}$)}
+\renewcommand{\ottdruleUExistsName}[0]{($\exists^{[[≈u]]}$)}
+\renewcommand{\ottdruleUPUVarName}[0]{(UVar$^{+[[≈u]]}$)}
+
 \begin{document}
 
 \section{The Vanilla System}
