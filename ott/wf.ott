@@ -11,6 +11,7 @@ defns
 
   defn G ; Θ ⊢ uN  :: :: NuWF :: '' {{ com Negative unification type well-formedness }} by
   defn G ; Θ ⊢ uP  :: :: PuWF :: '' {{ com Positive unifiication type well-formedness }} by
+  defn G ; Ξ ⊢ uN  :: :: NauWF :: '' {{ com Negative anti-unification type well-formedness }} by
   defn G ; Ξ ⊢ uP  :: :: PauWF :: '' {{ com Positive anti-unification type well-formedness }} by
 
   % defn  Γ ⊢ uσ : Θ :: :: USWFa :: '' {{ com Unification solution well-formedness }} by

@@ -49,7 +49,7 @@
             \item $[[ [us2]uN' = iM' ]]$.
         \end{itemize}
 
-        By the soundness of the unification solution merge (\cref{lemma:unif-sol-merge-soundness}), we have:
+        By the soundness of the unification solution merge (\cref{corollary:unif-sol-merge-soundness}), we have:
         \begin{itemize}
             \item $[[us1 & us2 : Θ | uv uP ∪ uv uN']]$, and hence, $[[us1 & us2 : Θ | uv uN]]$; 
             \item $[[us1 & us2]]$ is equivalence-only; 
@@ -92,13 +92,13 @@
     \begin{itemize}
         \item [$+$] For normalized $[[uP]]$ and $[[iQ]]$ such that
         $[[Γ ; Θ ⊢ uP]]$ and $[[Γ ⊢ iQ]]$,\\ 
-        assume there exists an equivalence-only unification solution
+        assume there exists a normalized unification solution
         $[[us : Θ | uv uP]]$ such that $[[ [us]uP = iQ ]]$.
-        Then $[[Γ ; Θ ⊨ uN ≈u iM ⫤ us]]$.
+        Then $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ us]]$.
         
         \item [$-$] For normalized $[[uN]]$ and $[[iM]]$ such that
         $[[Γ ; Θ ⊢ uN]]$ and $[[Γ ⊢ iM]]$,\\
-        assume there exists an equivalence-only unification solution
+        assume there exists a normalized unification solution
         $[[us : Θ | uv uN]]$        
         such that $[[ [us]uN = iM ]]$.
         Then $[[Γ ; Θ ⊨ uN ≈u iM ⫤ us]]$.
@@ -155,11 +155,15 @@
             $[[Γ ; Θ ⊨ uN' ≈u iM' ⫤ us|uv uN']]$.
             To apply \ruleref{\ottdruleUArrowLabel} and infer the required
             $[[Γ ; Θ ⊨ uN ≈u iM ⫤ us]]$, we need to show that
-            $[[us|uv uP & us|uv uN']] = [[us]]$. 
-            By the completeness of the unification solution merge 
-            (\cref{lemma:unif-sol-merge-completeness}), 
-            $[[us|uv uP & us|uv uN']] = [[us|uv uP ∪ uv uN']]$,
-            and $[[us|uv uP ∪ uv uN']] = [[us|uv uN]] = [[us]]$, since $[[us : Θ | uv uN]]$.
+            $[[us|uv uP & us|uv uN']]$ is defined and equal to $[[us]]$. 
+            It holds by the completeness  of the unification solution merge 
+            (\cref{lemma:unif-sol-merge-completeness}):
+            \begin{itemize}
+                \item $[[us|uv uP : Θ | uv uP]]$,
+                \item $[[us|uv uN' : Θ | uv uN']]$,
+                \item $[[us|uv uP]]$ and  $[[us|uv uN']]$ are normalized unification solution since so is $[[us]]$,
+                \item $[[us : Θ | uv uP ∪ uv uN']]$ since $[[uv uP ∪ uv uN']] = [[uv uN]]$
+            \end{itemize}
 
         \item $[[uN]] = [[∀pas.uN']]$\\
             Notice that $[[ [us]uN = iM ]]$ means $[[ ∀pas.[us]uN' = iM ]]$, i.e.

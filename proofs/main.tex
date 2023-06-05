@@ -163,6 +163,20 @@
 \renewcommand{\ottdruleUExistsName}[0]{($\exists^{[[≈u]]}$)}
 \renewcommand{\ottdruleUPUVarName}[0]{(UVar$^{+[[≈u]]}$)}
 
+% G ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )
+\renewcommand{\ottdruleAUPVarName}[0]{(Var$^{+[[≈au]]}$)}
+\renewcommand{\ottdruleAUShiftDName}[0]{($\downarrow^{[[≈au]]}$)}
+\renewcommand{\ottdruleAUExistsName}[0]{($\exists^{[[≈au]]}$)}
+
+% G ⊨ iN1 ≈au iN2 ⫤ ( Ξ , uM , aus1 , aus2 )
+\renewcommand{\ottdruleAUNVarName}[0]{(Var$^{-[[≈au]]}$)}
+\renewcommand{\ottdruleAUShiftUName}[0]{($\uparrow^{[[≈au]]}$)}
+\renewcommand{\ottdruleAUForallName}[0]{($\forall^{[[≈au]]}$)}
+\renewcommand{\ottdruleAUArrowName}[0]{($\rightarrow^{[[≈au]]}$)}
+\renewcommand{\ottdruleAUAUName}[0]{(AU$^{-}$)}
+
+
+
 \begin{document}
 
 \section{The Vanilla System}
@@ -305,6 +319,7 @@ matching entries, and unite the results.
 \subsection{Overview}
 \input{../_build/_gen/tex/lemmas-overview.tex}
 
+
 \subsection{Variable Ordering}
 \input{../_build/_gen/tex/ord-lemmas.tex}
 
@@ -313,6 +328,10 @@ matching entries, and unite the results.
 
 \subsection{Equivalence}
 \input{../_build/_gen/tex/equiv-lemmas.tex}
+
+
+\subsection{Unification Solution Merge}
+\input{../_build/_gen/tex/unif-solution-merge-lemmas.tex}
 
 \subsection{Upgrade}
 \input{../_build/_gen/tex/upgrade-lemmas.tex}
@@ -327,7 +346,7 @@ matching entries, and unite the results.
 \subsection{Anti-unification}
 \input{../_build/_gen/tex/anti-unification-lemmas.tex}
 
-\subsection{Solution Merge}
+\subsection{Subtyping Solution Merge}
 \input{../_build/_gen/tex/solution-merge-lemmas.tex}
 
 \subsection{Subtyping Algorithm}

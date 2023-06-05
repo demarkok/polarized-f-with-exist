@@ -97,7 +97,7 @@ us {{ tex \widehat{\sigma} }}, uσ {{ tex \widehat{\sigma} }} :: 'us_' ::= {{ co
 
 grammar
 
-aus {{ tex \widehat{\tau} }} :: 'aus_' ::= {{ com anti-unification substitution }}
+aus {{ tex \widehat{\tau} }}, ausr {{ tex \widehat{\rho} }} :: 'aus_' ::= {{ com anti-unification substitution }}
    | ·                    ::   :: Empty
    | nua :≈ iN            ::   :: NSol  {{ tex [[nua]] :\approx [[iN]] }}
    | nua :≈ uN            ::   :: NuSol {{ tex [[nua]] :\approx [[uN]] }}
@@ -174,6 +174,7 @@ iN {{ tex N }}, iM {{ tex M }} :: 'iN_' ::= {{ com multi-quantified negative typ
    | iP → iN     ::   :: Fun
    | ∀ pas . iN  ::   :: Forall {{ com $[[iN]] \neq \forall\dots$ }}
    | [ s ] iN    :: M :: AppSub 
+   | [ aus ] uN  :: M :: AppAUSub
    | [ mu ] iN   :: M :: AppMoving
    | [ us ] uN   :: M :: AppUSub  
    | ( iN )      :: S :: Paren
@@ -227,7 +228,7 @@ grammar
 
 Xi {{ tex \Xi }}, Ξ {{ tex \Xi }} :: AU_Ctxt ::= {{ com anti-unification type variable context }}
     | ·                  ::   :: empty   {{ com empty context }}
-    | puas               ::   :: PAUList {{ com list of variables }}
+   %  | puas               ::   :: PAUList {{ com list of variables }}
     | nuas               ::   :: NAUList {{ com list of variables }}
     | </ Ξi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( Ξ )              :: S :: paren
@@ -400,12 +401,14 @@ uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative al
    | uP → uN        ::   :: Fun
    | ∀ pas . uN     ::   :: Forall
    | [ s ] uN       :: M :: AppSub 
+   | [ aus ] uN     :: M :: AppUSub
    | [ mu ] uN      :: M :: AppMoving
    | ( uN )         :: S :: Paren
 
 
 auSol :: 'auSOL_' ::=
-   | ( Ξ , uQ , aus1 , aus2 ) :: :: Sol
+   | ( Ξ , uQ , aus1 , aus2 ) :: :: PSol
+   | ( Ξ , uN , aus1 , aus2 ) :: :: NSol
 
 terminals :: 'terminals_' ::=
   | ∃  :: :: exists    {{ tex \exists }}
@@ -476,6 +479,8 @@ fun nf ( us' )  :: us :: USolnf by
 
 fun  σ' | varset  :: σ :: Restr {{ tex [[σ']]|_{[[varset]]} }} by 
 fun  us' | varset  :: us :: USRestr {{ tex [[us']]|_{[[varset]]} }} by 
+fun aus' | varset :: aus :: AURestr {{ tex [[aus']]|_{[[varset]]} }} by
+fun Xi' | varset :: Xi :: XiRestr {{ tex [[Xi']]|_{[[varset]]} }} by
 
 fun
   usEntry1 & usEntry2 :: usEntry :: USEM {{ tex [[usEntry1]] ~ \& ~ [[usEntry2]] }}
@@ -485,6 +490,12 @@ fun
   us1 & us2 :: us :: MRG {{ tex [[us1]] ~ \& ~[[us2]] }}
 by
 
+fun 
+  aus1 & aus2 :: aus :: AUMRG {{ tex [[aus1]] ~ \& ~[[aus2]] }}
+by
+
 fun  dom ( us ) :: varset :: usolDom by
+
+fun  dom ( aus ) :: varset :: ausolDom by
 
 fun  dom ( Θ ) :: varset :: uCtxtDom by

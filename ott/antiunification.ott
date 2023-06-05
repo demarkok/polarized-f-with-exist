@@ -1,30 +1,35 @@
 defns
   AU :: 'AU' ::=
-  defn G ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )  :: :: AUP :: 'P' by
+  defn G ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )  :: :: AUP :: '' by
 
-  -------------------------- :: Var
+  -------------------------- :: PVar
   G ⊨ pa ≈au pa ⫤ (·, pa, ·, ·)
 
   G ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)
-  ---------------------------------------- :: Shift
+  ---------------------------------------- :: ShiftD
   G ⊨ ↓iN1 ≈au ↓iN2 ⫤ (Ξ, ↓uM, aus1, aus2)
 
   {nas} ∩ {G} = ∅    G ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)
   -------------------------------------------------------- :: Exists
   G ⊨ ∃nas.iP1 ≈au ∃nas.iP2 ⫤ (Ξ, ∃nas.uQ, aus1, aus2)
 
-  defn G ⊨ iN1 ≈au iN2 ⫤ ( Ξ ,  uM , aus1 , aus2 )  :: :: AUN :: 'N' by
+  defn G ⊨ iN1 ≈au iN2 ⫤ ( Ξ ,  uM , aus1 , aus2 )  :: :: AUN :: '' by
 
-  ---------------------- :: Var
-  G ⊨ na ≈au na ⫤ (Ξ, na, ·, ·)
+  ---------------------- :: NVar
+  G ⊨ na ≈au na ⫤ (·, na, ·, ·)
 
   G ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)
-  ---------------------------------------- :: Shift
+  ---------------------------------------- :: ShiftU
   G ⊨ ↑iP1 ≈au ↑iP2 ⫤ (Ξ, ↑uQ, aus1, aus2)
+
+  {pas} ∩ {G} = ∅    G ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)
+  -------------------------------------------------------- :: Forall
+  G ⊨ ∀pas.iN1 ≈au ∀pas.iN2 ⫤ (Ξ, ∀pas.uM, aus1, aus2)
 
   G ⊨ iP1 ≈au iP2 ⫤ (Ξ1, uQ, aus1, aus2)    G ⊨ iN1 ≈au iN2 ⫤ (Ξ2, uM, aus'1, aus'2)
   ----------------------------------------------------------------------------------  :: Arrow
-  G ⊨ iP1 → iN1 ≈au iP2 → iN2 ⫤ (Ξ1 ∪ Ξ2, uQ → uM, aus1 ∪ aus'1, aus2 ∪ aus'2)
+  G ⊨ iP1 → iN1 ≈au iP2 → iN2 ⫤ (Ξ1 ∪ Ξ2, uQ → uM, aus1 & aus'1, aus2 & aus'2)
+
 
   otherwise   G ⊢ iN     G ⊢ iM 
   --------------------------------------------------------------------------------------------  :: AU

@@ -1,15 +1,445 @@
 \begin{lemma}[Soundness of Anti-Unification] \label{lemma:anti-unification-soundness}
     \hfill
     \begin{itemize}
-        \item [$+$] 
-        \item [$-$] 
+        \item [$+$]  Assuming $[[iP1]]$ and $[[iP2]]$ are normalized,
+        if $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
+        then 
+        \begin{enumerate}
+            \item $[[Γ ; Ξ ⊢ uQ]]$,
+            \item $[[Γ ; · ⊢ ausi : Ξ]]$ for $i \in \{1,2\}$, and
+            \item $[[ [ausi] uQ = iPi ]]$ for $i \in \{1,2\}$.
+        \end{enumerate}
+
+        \item [$-$] Assuming $[[iN1]]$ and $[[iN2]]$ are normalized,
+        if $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$
+        then
+        \begin{enumerate}
+            \item $[[Γ ; Ξ ⊢ uM]]$,
+            \item $[[Γ ; · ⊢ ausi : Ξ]]$ for $i \in \{1,2\}$, and
+            \item $[[ [ausi] uM = iNi ]]$ for $i \in \{1,2\}$.
+        \end{enumerate}
     \end{itemize}
 \end{lemma}
+\begin{proof}
+    We prove it by induction on 
+    $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$
+    and mutually, $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$.
+    Let us consider the last rule applied to infer this judgement.
+    \begin{caseof}
+        \item \ruleref{\ottdruleAUNVarLabel}, then $[[iN1]] = [[α⁻]] = [[iN2]]$,
+              $[[Ξ]] = [[·]]$, $[[uM]] = [[α⁻]]$, and $[[aus1]] = [[aus2]] = [[·]]$.
+            \begin{enumerate}
+                \item $[[Γ ; · ⊢ α⁻]]$ follows from the assumption $[[Γ ⊢ α⁻]]$,
+                \item $[[Γ ; · ⊢ · : ·]]$ holds trivially, and
+                \item $[[ [·] α⁻ = α⁻ ]]$ holds trivially.
+            \end{enumerate}
+        \item \label{case:anti-unification-soundness:shiftu}
+         \ruleref{\ottdruleAUShiftULabel}, then $[[iN1]] = [[↑iP1]]$,
+                $[[iN2]] = [[↑iP2]]$, and the algorithm makes the recursive call:
+                $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$, 
+                returning $[[(Ξ, ↑uQ, aus1, aus2)]]$ as the result.
+
+                Since $[[iN1]] = [[↑iP1]]$ and $[[iN2]] = [[↑iP2]]$ are normalized, 
+                so are $[[iP1]]$ and $[[iP2]]$, and thus, the induction hypothesis 
+                is applicable to $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$:
+                \begin{enumerate}
+                    \item $[[Γ ; Ξ ⊢ uQ]]$, and hence, $[[Γ ; Ξ ⊢ ↑uQ]]$,
+                    \item $[[Γ ; · ⊢ ausi : Ξ]]$ for $i \in \{1,2\}$, and
+                    \item $[[ [ausi] uQ = iPi ]]$ for $i \in \{1,2\}$, and then by 
+                    the definition of the substitution, $[[ [ausi] ↑uQ = ↑iPi ]]$ for $i \in \{1,2\}$.
+                \end{enumerate}
+
+        \item \ruleref{\ottdruleAUArrowLabel}, then $[[iN1]] = [[iP1 → iN'1]]$,
+                $[[iN2]] = [[iP2 → iN'2]]$, and the algorithm makes two recursive calls:
+                $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$ and
+                $[[Γ ⊨ iN'1 ≈au iN'2 ⫤ (Ξ', uM, aus'1, aus'2)]]$ and
+                and returns $[[(Ξ ∪ Ξ', uQ → uM, aus1 ∪ aus'1, aus2 ∪ aus'2)]]$ as the result.
+                
+                Notice, that the induction hypothesis is applicable to 
+                $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$:
+                $[[iP1]]$ and $[[iP2]]$ are normalized, since $[[iN1]] = [[iP1 → iN'1]]$
+                and $[[iN2]] = [[iP2 → iN'2]]$ are normalized.
+                Similarly, the induction hypothesis is applicable to
+                $[[Γ ⊨ iN'1 ≈au iN'2 ⫤ (Ξ', uM, aus'1, aus'2)]]$.
+
+                This way, by the induction hypothesis:
+                \begin{enumerate}
+                    \item $[[Γ ; Ξ ⊢ uQ]]$ and $[[Γ ; Ξ' ⊢ uM]]$. 
+                    Then by weakening (\cref{todo}), $[[Γ ; Ξ ∪ Ξ' ⊢ uQ]]$ and 
+                    $[[Γ ; Ξ ∪ Ξ' ⊢ uM]]$, which implies $[[Γ ; Ξ ∪ Ξ' ⊢ uQ → uM]]$;
+
+                    \item $[[Γ ; · ⊢ ausi : Ξ]]$ and $[[Γ ; · ⊢ aus'i : Ξ']]$, 
+                           and hence, $[[Γ ; · ⊢ ausi ∪ aus'i : Ξ ∪ Ξ']]$ (\cref{todo});
+
+                    \item $[[ [ausi] uQ = iPi ]]$ and $[[ [aus'i] uM = iN'i ]]$.
+                    Since $[[ausi ∪ aus'i]]$ restricted to $[[Ξ]]$ is $[[ausi]]$,
+                    we have $[[ [ausi ∪ aus'i] uQ = iPi ]]$ and 
+                    $[[ [ausi ∪ aus'i] uM = iN'i ]]$, and thus, 
+                    $[[ [ausi ∪ aus'i] uQ → uM = iP1 → iN'1 ]]$
+                \end{enumerate}
+
+        \item \ruleref{\ottdruleAUForallLabel}, then $[[iN1]] = [[∀pas.iN'1]]$,
+                $[[iN2]] = [[∀pas.iN'2]]$, and the algorithm makes a recursive call:
+                $[[Γ ⊨ iN'1 ≈au iN'2 ⫤ (Ξ, uM, aus1, aus2)]]$ and
+                returns $[[(Ξ, ∀pas.uM, aus1, aus2)]]$ as the result.
+
+                Similarly to \cref{case:anti-unification-soundness:shiftu}, 
+                we apply the induction hypothesis to
+                $[[Γ ⊨ iN'1 ≈au iN'2 ⫤ (Ξ, uM, aus1, aus2)]]$ to obtain:
+                \begin{enumerate}
+                    \item $[[Γ; Ξ ⊢ uM]]$, and hence, $[[Γ ; Ξ ⊢ ∀pas.uM]]$;
+                    \item $[[Γ; · ⊢ ausi : Ξ]]$ for $i \in \{1,2\}$, and
+                    \item $[[ [ausi] uM = iN'i ]]$ for $i \in \{1,2\}$,
+                        and then by the definition of the substitution,
+                        $[[ [ausi] ∀pas.uM = ∀pas.iN'i ]]$ for $i \in \{1,2\}$. 
+                \end{enumerate}
+
+        \item \ruleref{\ottdruleAUAULabel}, which applies 
+        when other rules do not, and $[[G ⊢ iNi]]$,
+        returning as the result $[[(Ξ, uM, aus1, aus2)]] = $
+        $[[(â⁻_{iN1, iN2}, â⁻_{iN1, iN2}, (â⁻_{iN1, iN2} :≈ iN1) ,  (â⁻_{iN1, iN2} :≈ iN2))]]$.
+
+        \begin{enumerate}
+            \item $[[Γ ; Ξ ⊢ uM]]$ is rewritten as $[[Γ ; â⁻_{iN1, iN2} ⊢ â⁻_{iN1, iN2}]]$,
+                which holds trivially;
+            \item $[[Γ ; · ⊢ ausi : Ξ]]$ is rewritten as $[[Γ ; · ⊢ (â⁻_{iN1, iN2} :≈ iNi) : â⁻_{iN1, iN2}]]$,
+                which holds since $[[Γ ⊢ iNi]]$ by the premise of the rule;
+            \item $[[ [ausi] uM = iNi ]]$ is rewritten as $[[ [â⁻_{iN1, iN2} :≈ iNi] â⁻_{iN1, iN2} = iNi ]]$,
+                which holds trivially by the definition of substitution.
+        \end{enumerate}
+
+        \item Positive cases are proved symmetrically.
+    \end{caseof}
+\end{proof}
+
+\begin{observation} \label{obs:names-defined-by-mapping}
+    Names of the anti-unification variables are uniquely defined by
+    the types they are mapped to by the resulting substitutions. 
+
+    \begin{itemize}
+        \item [$+$]  Assuming $[[iP1]]$ and $[[iP2]]$ are normalized,
+        if $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
+        then for any $[[β̂⁻]] \in [[Ξ]]$,
+        $[[β̂⁻]] = [[â⁻_{[aus1]β̂⁻, [aus2]β̂⁻}]]$
+        \item [$-$]  Assuming $[[iN1]]$ and $[[iN2]]$ are normalized,
+        if $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$
+        then for any $[[β̂⁻]] \in [[Ξ]]$,
+        $[[β̂⁻]] = [[â⁻_{[aus1]β̂⁻, [aus2]β̂⁻}]]$
+    \end{itemize}
+\end{observation}
+\begin{proof}
+    By simple induction on $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
+    and mutually on $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$.
+    Let us consider tha last rule applied to infer this judgment.
+    \begin{caseof}
+        \item \ruleref{\ottdruleAUPVarLabel} or \ruleref{\ottdruleAUNVarLabel},
+        then $[[Ξ]] = [[·]]$, and the property holds vacuously.
+
+        \item \ruleref{\ottdruleAUAULabel}
+        Then  $[[Ξ]] = [[â⁻_{iN1, iN2}]]$,
+        $[[aus1]] = [[â⁻_{iN1, iN2} :≈ iN1]]$, and $[[aus2]] = [[â⁻_{iN1, iN2} :≈ iN2]]$.
+        So the property holds trivially.
+
+        \item \ruleref{ottdruleAUArrowLabel}
+        In this case, $[[Ξ]] = [[Ξ' ∪ Ξ'']]$, $[[aus1]] = [[aus'1 & aus''1]]$, and 
+        $[[aus2]] = [[aus'2 & aus''2]]$,
+        where the property holds for ($[[Ξ']]$, $[[aus'1]]$, $[[aus'2]]$) and 
+        ($[[Ξ'']]$, $[[aus''1]]$, $[[aus''2]]$) by the induction hypothesis.
+        Then since the merge of solutions does not change the types the variables are mapped to,
+        the required property holds for $[[Ξ]]$, $[[aus1]]$, and $[[aus2]]$.
+
+        \item For the other rules, the resulting $[[Ξ]]$ is taken from the recursive call
+        and the required property holds immediately by the induction hypothesis.
+    \end{caseof}
+\end{proof}
+
+\begin{observation}[Anti-unification algorithm is deterministic]
+    \label{obs:anti-unification-deterministic}
+    \hfill\\
+\begin{itemize}
+    \item [$+$] If $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$ and 
+    $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ', uQ', aus'1, aus'2)]]$,
+    then $[[Ξ]] = [[Ξ']]$, $[[uQ]] = [[uQ']]$, $[[aus1]] = [[aus'1]]$, and $[[aus2]] = [[aus'2]]$.
+    \item [$-$] If $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$ and
+    $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ', uM', aus'1, aus'2)]]$,
+    then $[[Ξ]] = [[Ξ']]$, $[[uM]] = [[uM']]$, $[[aus1]] = [[aus'1]]$, and $[[aus2]] = [[aus'2]]$.
+\end{itemize}
+\end{observation}
+\begin{proof}
+    By trivial induction on $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
+    and mutually on $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$.
+\end{proof}
+
+
+% \renewcommand{\ottdruleAUPVarName}[0]{(Var$^{+[[≈au]]}$)}
+% \renewcommand{\ottdruleAUShiftDName}[0]{($\downarrow^{[[≈au]]}$)}
+% \renewcommand{\ottdruleAUExistsName}[0]{($\exists^{[[≈au]]}$)}
+
+% G ⊨ iN1 ≈au iN2 ⫤ ( Ξ , uM , aus1 , aus2 )
+% \renewcommand{\ottdruleAUNVarName}[0]{(Var$^{-[[≈au]]}$)}
+% \renewcommand{\ottdruleAUShiftUName}[0]{($\uparrow^{[[≈au]]}$)}
+% \renewcommand{\ottdruleAUForallName}[0]{($\forall^{[[≈au]]}$)}
+% \renewcommand{\ottdruleAUArrowName}[0]{($\rightarrow^{[[≈au]]}$)}
+% \renewcommand{\ottdruleAUAUName}[0]{(AU$^{-}$)}
+
 
 \begin{lemma}[Completeness of Anti-Unification] \label{lemma:anti-unification-completeness}
     \hfill
     \begin{itemize}
         \item [$+$] 
+            Assume that $[[iP1]]$ and $[[iP2]]$ are normalized, and
+            there exists $[[(Ξ', uQ', aus'1, aus'2)]]$ such that
+            \begin{enumerate}
+                \item $[[Γ ; Ξ' ⊢ uQ']]$,
+                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$, and
+                \item $[[ [aus'i] uQ' = iPi ]]$ for $i \in \{1,2\}$.
+            \end{enumerate}
+
+            Then the anti-unification algorithm terminates, that is there exists
+            $[[(Ξ, uQ, aus1, aus2)]]$ such that $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
+
         \item [$-$] 
+            Assume that $[[iN1]]$ and $[[iN2]]$ are normalized, and
+            there exists $[[(Ξ', uM', aus'1, aus'2)]]$ such that
+            \begin{enumerate}
+                \item $[[Γ ; Ξ' ⊢ uM']]$,
+                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$, and
+                \item $[[ [aus'i] uM' = iNi ]]$ for $i \in \{1,2\}$.
+            \end{enumerate}
+
+            Then the anti-unification algorithm succeeds, that is 
+            there exists $[[(Ξ, uM, aus1, aus2)]]$ such that
+            $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$.
     \end{itemize}
 \end{lemma}
+\begin{proof}
+    We prove it by the induction on $[[uM']]$ and mutually on $[[uQ']]$.
+    \begin{caseof}
+        \item $[[uM']] = [[â⁻]]$ 
+            Then since $[[Γ ; · ⊢ aus'i : Ξ']]$,
+            $[[Γ ⊢ [aus'i] uM']] = [[ iNi ]]$. 
+            This way, \ruleref{\ottdruleAUAULabel} is always applicable
+            if other rules are not.
+
+        \item $[[uM']] = [[α⁻]]$
+            Then $[[α⁻]] = [[ [aus'i] α⁻]] = [[ iNi ]]$, which means
+            that \ruleref{\ottdruleAUNVarLabel} is applicable.
+
+        \item $[[uM']] = [[↑uQ']]$
+            Then $[[ ↑[aus'i]uQ']] = [[ [aus'i]↑uQ']] = [[ iNi ]]$, that is
+            $[[iN1]]$ and $[[iN2]]$ have form $[[↑iP1]]$ and $[[↑iP2]]$ respectively.
+
+            Moreover, $[[ [aus'i]uQ' = iPi ]]$, which means that 
+            $[[(Ξ', uQ', aus'1, aus'2)]]$ is an anti-unifier of $[[iP1]]$ and $[[iP2]]$.
+            Then by the induction hypothesis, there exists $[[(Ξ, uQ, aus1, aus2)]]$ such that
+            $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$, and hence, 
+            $[[Γ ⊨ ↑iP1 ≈au ↑iP2 ⫤ (Ξ, ↑uQ, aus1, aus2)]]$ by \ruleref{\ottdruleAUShiftULabel}.
+        \item $[[uM']] = [[∀pas.uM'']]$ This case is similar to the previous one:
+            we consider $\forall[[pas]]$ as a constructor. 
+            Notice that $[[∀pas.[aus'i]uM'']] = [[ [aus'i]∀pas.uM'']] = [[ iNi ]]$, that is
+            $[[iN1]]$ and $[[iN2]]$ have form $[[∀pas.iN''1]]$ and $[[∀pas.iN''2]]$ respectively.
+
+            Moreover, $[[ [aus'i]uM'' = iN''i ]]$, which means that
+            $[[(Ξ', uM'', aus'1, aus'2)]]$ is an anti-unifier of $[[iN''1]]$ and $[[iN''2]]$.
+            Then by the induction hypothesis, there exists $[[(Ξ, uM, aus1, aus2)]]$ such that
+            $[[Γ ⊨ iN''1 ≈au iN''2 ⫤ (Ξ, uM, aus1, aus2)]]$, and hence,
+            $[[Γ ⊨ ∀pas.iN''1 ≈au ∀pas.iN''2 ⫤ (Ξ, ∀pas.uM, aus1, aus2)]]$ by 
+            \ruleref{\ottdruleAUForallLabel}.
+        \item $[[uM']] = [[uQ' → uM'']]$
+            Then $[[ [aus'i]uQ' → [aus'i]uM'']] = [[ [aus'i](uQ' → uM'')]] = [[ iNi ]]$, that is
+            $[[iN1]]$ and $[[iN2]]$ have form $[[uP1 → uN'1]]$ and $[[uP2 → uN'2]]$ respectively.
+
+            Moreover, $[[ [aus'i]uQ' = iPi ]]$ and $[[ [aus'i]uM'' = iN''i ]]$, which means that
+            $[[(Ξ', uQ', aus'1, aus'2)]]$ is an anti-unifier of $[[iP1]]$ and $[[iP2]]$,
+            and $[[(Ξ', uM'', aus'1, aus'2)]]$ is an anti-unifier of $[[iN''1]]$ and $[[iN''2]]$.
+            Then by the induction hypothesis, 
+            $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ1, uQ, aus1, aus2)]]$ and 
+            $[[Γ ⊨ iN''1 ≈au iN''2 ⫤ (Ξ2, uM, aus3, aus4)]]$ succeed.
+            The result of the algorithm is $[[(Ξ1 ∪ Ξ2, uQ → uM, aus1 & aus3, aus2 & aus4)]]$,
+            and it is left to show that $[[aus1 & aus3]]$ and $[[aus2 & aus4]]$ are defined.
+
+            From \cref{obs:names-defined-by-mapping}, we know that 
+            if $[[β̂⁻ ∊ dom(aus1) ∩ dom(aus3)]]$ then $[[ [aus1]β̂⁻ = [aus3]β̂⁻ ]]$,
+            and if $[[β̂⁻ ∊ dom(aus2) ∩ dom(aus4)]]$ then $[[ [aus2]β̂⁻ = [aus4]β̂⁻ ]]$.
+            This way, $[[aus1 & aus3]]$ and $[[aus2 & aus4]]$ are defined.
+
+        \item $[[uQ']] = [[â⁺]]$ 
+            This case if not possible, since $[[Γ ; Ξ' ⊢ uQ']]$ means 
+            $[[â⁺]] \in [[Ξ']]$, but $[[Ξ']]$ can only contain negative variables. 
+
+        \item Other positive cases are proved symmetrically to the corresponding negative ones.
+    \end{caseof}
+\end{proof}
+
+\begin{lemma}[Initiality of Anti-Unification] \label{lemma:anti-unification-initial}
+    \hfill
+    \begin{itemize}
+        \item [$+$] 
+            Assume that $[[iP1]]$ and $[[iP2]]$ are normalized, and
+            $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$, 
+            then $[[(Ξ, uQ, aus1, aus2)]]$ is more specific than
+            any other sound anti-unifier $[[(Ξ', uQ', aus'1, aus'2)]]$, i.e.
+            if 
+            \begin{enumerate}
+                \item $[[Γ ; Ξ' ⊢ uQ']]$,
+                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$, and
+                \item $[[ [aus'i] uQ' = iPi ]]$ for $i \in \{1,2\}$
+            \end{enumerate}
+            then there exists $[[ausr]]$ such that
+            $[[Γ ; Ξ ⊢ ausr : (Ξ' | uv uQ')]]$ and $[[ [ausr] uQ' = uQ ]]$. 
+            Moreover, $[[ [ausr]β̂⁻]]$ can
+            be uniquely determined by $[[ [aus'1]β̂⁻ ]]$, $[[ [aus'2]β̂⁻ ]]$, and
+            $[[Γ]]$.
+        \item [$-$] 
+            Assume that $[[iN1]]$ and $[[iN2]]$ are normalized, and
+            $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$, 
+            then $[[(Ξ, uM, aus1, aus2)]]$ is more specific than
+            any other sound anti-unifier $[[(Ξ', uM', aus'1, aus'2)]]$, i.e.
+            if
+            \begin{enumerate}
+                \item $[[Γ ; Ξ' ⊢ uM']]$,
+                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$, and
+                \item $[[ [aus'i] uM' = iNi ]]$ for $i \in \{1,2\}$
+            \end{enumerate}
+            then there exists $[[ausr]]$ such that
+            $[[Γ ; Ξ ⊢ ausr : (Ξ' | uv uM')]]$ and $[[ [ausr] uM' = uM ]]$.
+            Moreover, $[[ [ausr]β̂⁻]]$ can
+            be uniquely determined by $[[ [aus'1]β̂⁻ ]]$, $[[ [aus'2]β̂⁻ ]]$, and
+            $[[Γ]]$.
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    First, let us assume that $[[uM']]$ is a metavariable $[[α̂⁻]]$. 
+    Then we can take $[[ausr]] = [[α̂⁻]] \mapsto [[uM]]$, which satisfies the required properties:
+    \begin{itemize}
+        \item $[[Γ ; Ξ ⊢ ausr : (Ξ' | uv uM')]]$ holds since 
+        $[[Ξ' | uv uM']] = [[{α̂⁻}]]$ and $[[Γ ; Ξ ⊢ uM]]$ by the soundness of anti-unification (\cref{lemma:anti-unification-soundness});
+        \item $[[ [ausr] uM' = uM ]]$ holds by construction
+        \item $[[ [ausr]α̂⁻]] = [[uM]]$ is the anti-unifier of 
+            $[[iN1]] = [[ [aus'1] α̂⁻]]$ and $[[iN2]] = [[ [aus'2] α̂⁻]]$
+            in context $[[Γ]]$, and hence, it is uniquely determined by them (\cref{obs:anti-unification-deterministic}).
+    \end{itemize}
+
+    Now, we can assume that $[[uM']]$ is not a metavariable. 
+    We prove by induction on the derivation of $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
+    and mutually on the derivation of $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$.
+
+    Since $[[uM']]$ is not a metavariable, 
+    the substitution acting on $[[uM']]$ preserves its outer constructor. 
+    In other words, 
+    $[[ [aus'i] uM' = iNi ]]$ means that $[[uM']]$, 
+    $[[iN1]]$ and $[[iN2]]$ have the same outer constructor. 
+    Let us consider the algorithmic anti-unification rule corresponding to this constructor, 
+    and show that it was successfully applied to anti-unify $[[iN1]]$ and $[[iN2]]$ 
+    (or $[[iP1]]$ and $[[iP2]]$).
+
+    \begin{caseof}
+        \item \ruleref{\ottdruleAUNVarLabel}, i.e. $[[iN1]] = [[α⁻]] = [[iN2]]$.
+        \label{case:anti-unification-initial:nvar}
+        This rule is applicable since it has no premises. 
+        
+        Then $[[Ξ]] = [[·]]$, $[[uM]] = [[α⁻]]$, 
+        and $[[aus1]] = [[aus2]] = [[·]]$.
+        Since $[[ [aus'i] uM' = iNi ]] = [[α⁻]]$
+        and $[[uM']]$ is not a metavariable, $[[uM']] = [[α⁻]]$.
+        Then we can take $[[ausr]] = [[·]]$, which satisfies the required properties:
+        \begin{itemize}
+            \item $[[Γ ; Ξ ⊢ ausr : (Ξ' | uv uM')]]$ holds vacuously since 
+            $[[Ξ' | uv uM']] = [[∅]]$; 
+            \item $[[ [ausr] uM' = uM ]]$, that is $[[ [·] α⁻ = α⁻ ]]$
+            holds by substitution properties;
+            \item the unique determination of $[[ [ausr]α̂⁻]]$ for $[[α̂⁻]] \in [[Ξ' | uv uM']] = [[∅]]$ holds vacuously.
+        \end{itemize}
+
+        \item \ruleref{\ottdruleAUShiftULabel}, i.e. 
+        $[[iN1]] = [[↑iP1]]$ and $[[iN2]] = [[↑iP2]]$.
+        \label{case:anti-unification-initial:shiftu}
+
+        Then since $[[ [aus'i] uM' = iNi ]] = [[↑iPi]]$ and $[[uM']]$ is not a metavariable,
+        $[[uM']] = [[↑uQ']]$, where $[[ [aus'i] uQ' = iPi ]]$. 
+        Let us show that $[[(Ξ', uQ', aus'1, aus'2)]]$ 
+        is an anti-unifier of $[[iP1]]$ and $[[iP2]]$.
+        \begin{enumerate}
+            \item $[[Γ ; Ξ' ⊢ uQ']]$ holds by inversion of $[[Γ ; Ξ' ⊢ ↑uQ']]$;
+            \item $[[Γ ; · ⊢ aus'i : Ξ']]$ holds by assumption;
+            \item $[[ [aus'i] uQ' = iPi ]]$ holds by assumption.
+        \end{enumerate}
+
+        This way, by the completeness of anti-unification 
+        (\cref{lemma:anti-unification-completeness}),
+        the anti-unification algorithm succeeds on $[[iP1]]$ and $[[iP2]]$:
+        $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$,
+        which means that \ruleref{\ottdruleAUShiftULabel} is applicable to infer 
+        $[[Γ ⊨ ↑iP1 ≈au ↑iP2 ⫤ (Ξ, ↑uQ, aus1, aus2)]]$.
+
+        Moreover, by the induction hypothesis,
+        $[[(Ξ, uQ, aus1, aus2)]]$ is more specific than $[[(Ξ', uQ', aus'1, aus'2)]]$,
+        which immediately implies that $[[(Ξ, ↑uQ, aus1, aus2)]]$ is more specific than
+        $[[(Ξ', ↑uQ', aus'1, aus'2)]]$ (we keep the same $[[ausr]]$).
+
+        \item \ruleref{\ottdruleAUForallLabel}, i.e. 
+        $[[iN1]] = [[∀pas.iN'1]]$ and $[[iN2]] = [[∀pas.iN'2]]$.
+        \label{case:anti-unification-initial:forall}
+        The proof is symmetric to the previous case.
+        Notice that the context $[[Γ]]$ is not changed in \ruleref{\ottdruleAUForallLabel}, 
+        as it represents the context in which the anti-unification variables must be instantiated,
+        rather than the context forming the types that are being anti-unified.
+
+        \item \ruleref{\ottdruleAUArrowLabel}, i.e.
+        $[[iN1]] = [[iP1 → iN'1]]$ and $[[iN2]] = [[iP2 → iN'2]]$.
+
+        Then since $[[ [aus'i] uM' = iNi ]] = [[iPi → iN'i]]$ and $[[uM']]$ is not a metavariable,
+        $[[uM']] = [[uQ' → uM'']]$, where $[[ [aus'i] uQ' = iPi ]]$ and $[[ [aus'i] uM'' = iN''i ]]$.
+
+        Let us show that $[[(Ξ', uQ', aus'1, aus'2)]]$
+        is an anti-unifier of $[[iP1]]$ and $[[iP2]]$.
+        \begin{enumerate}
+            \item $[[Γ ; Ξ' ⊢ uQ']]$ holds by inversion of $[[Γ ; Ξ' ⊢ uQ' → uM'']]$;
+            \item $[[Γ ; · ⊢ aus'i : Ξ']]$ holds by assumption;
+            \item $[[ [aus'i] uQ' = iPi ]]$ holds by assumption.
+        \end{enumerate}
+
+        Similarly, $[[(Ξ', uM'', aus'1, aus'2)]]$ is an anti-unifier of $[[iN''1]]$ and $[[iN''2]]$.
+
+        Then by the completeness of anti-unification (\cref{lemma:anti-unification-completeness}),
+        the anti-unification algorithm succeeds on $[[iP1]]$ and $[[iP2]]$:
+        $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ1, uQ, aus1, aus2)]]$;
+        and on $[[iN'1]]$ and $[[iN'2]]$:
+        $[[Γ ⊨ iN''1 ≈au iN''2 ⫤ (Ξ2, uM''', aus3, aus4)]]$.
+        Notice that $[[aus1 & aus3]]$ and $[[aus2 & aus4]]$ are defined, 
+        in other words, for any $[[β̂⁻]] \in [[Ξ1]] \cap [[Ξ2]]$,
+        $[[ [aus1] β̂⁻ = [aus2] β̂⁻ ]]$ and $[[ [aus3] β̂⁻ = [aus4] β̂⁻ ]]$,
+        which follows immediately from \cref{obs:names-defined-by-mapping}.
+        This way, the algorithm proceeds by applying \ruleref{\ottdruleAUArrowLabel} and returns
+        $[[(Ξ1 ∪ Ξ2, uQ → uM''', aus1 & aus3, aus2 & aus4)]]$.
+
+        It is left to construct $[[ausr]]$ such that $[[Γ ; Ξ ⊢ ausr : (Ξ' | uv uM')]]$ and $[[ [ausr] uM' = uM ]]$.
+        By the induction hypothesis, there exist $[[ausr1]]$ and $[[ausr2]]$ such that
+        $[[Γ ; Ξ1 ⊢ ausr1 : (Ξ' | uv uQ')]]$, 
+        $[[Γ ; Ξ2 ⊢ ausr2 : (Ξ' | uv uM'')]]$,
+        $[[ [ausr1] uQ' = uQ ]]$, and $[[ [ausr2] uM'' = uM''' ]]$.
+
+        Let us show that $[[ausr]] = [[ausr1 & ausr2]]$ is defined, 
+        in other words, for any $[[β̂⁻]] \in [[(Ξ' | uv uQ')]] \cap [[(Ξ' | uv uM'')]]$,
+        $[[ [ausr1] β̂⁻ = [ausr2] β̂⁻ ]]$.It holds because by the induction hypothesis,
+        $[[ [ausri] β̂⁻ ]]$ is uniquely determined by $[[ [aus'1] β̂⁻ ]]$, $[[ [aus'2] β̂⁻ ]]$, and $[[Γ]]$,
+        none of which depends on $i$.
+
+        Let us show that $[[ausr]] = [[ausr1 & ausr2]]$ satisfies the required properties:
+        \begin{itemize}
+            \item $[[Γ ; Ξ1 ∪ Ξ2 ⊢ ausr1 & ausr2 : (Ξ' | uv uM')]]$ holds since 
+            $[[Ξ' | uv uM']] = [[Ξ' | uv uQ' → uM'']] = [[(Ξ' | uv uQ') ∪ (Ξ' | uv uM'')]]$,
+            $[[Γ ; Ξ1 ⊢ ausr1 : (Ξ' | uv uQ')]]$ and $[[Γ ; Ξ2 ⊢ ausr2 : (Ξ' | uv uM'')]]$
+            \ilyam{add a lemma?};
+            \item $[[ [ausr] uM' ]] = [[ [ausr] (uQ' → uM'') ]] = [[ [ausr | uv uQ'] uQ' → [ausr | uv uM''] uM'' ]] =
+            [[ [ausr1] uQ' → [ausr2] uM'' ]] = [[ uQ → uM''']] = [[ uM ]]$;
+            \item Since $[[ [ausr]β̂⁻]]$ is either equal to  $[[ [ausr1]β̂⁻]]$ or $[[ [ausr2]β̂⁻]]$,
+            it inherits their property that it is uniquely determined by $[[ [aus'1]β̂⁻]]$, $[[ [aus'2]β̂⁻]]$, and $[[Γ]]$.
+        \end{itemize}
+
+        \item $[[iP1]] = [[iP2]] = [[a⁺]]$. This case is symmetric to \cref{case:anti-unification-initial:nvar}.
+        \item $[[iP1]] = [[↓iN1]]$ and $[[iP2]] = [[↓iN2]]$. This case is symmetric to \cref{case:anti-unification-initial:shiftu}
+        \item $[[iP1]] = [[∃nas.iP'1]]$ and $[[iP2]] = [[∃nas.iP'2]]$. This case is symmetric to \cref{case:anti-unification-initial:forall}
+        \end{caseof}
+
+\end{proof}

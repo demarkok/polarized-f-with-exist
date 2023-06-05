@@ -15,11 +15,14 @@ grammar
     | pa ∉ varset                            ::   :: pa_notin_set
     | na ∊ varset                            ::   :: na_in_set
     | pa ∊ varset                            ::   :: pa_in_set
+    | pua ∊ varset                           ::   :: pua_in_set
+    | nua ∊ varset                           ::   :: nua_in_set
     | nua ∊ Θ                                ::   :: nua_in_ctxt
     | pua ∊ Θ                                ::   :: pua_in_ctxt
     | otherwise                              ::   :: otherwise {{ tex \text{if any other rule is not applicable} }}
     | ordVars1 = ordVars2                    ::   :: ordVars_eq
     | usEntry1 = usEntry2                    ::   :: usEntry_eq
+    | uN = uM                                ::   :: uN_eq_uM
     % | xs ⊆ T                                 ::   :: xs_in_T
     % | let T1 = T2                            ::   :: let_T
     % | let xs = vars                          ::   :: let_vars
