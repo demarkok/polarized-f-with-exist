@@ -233,6 +233,7 @@ Xi {{ tex \Xi }}, Ξ {{ tex \Xi }} :: AU_Ctxt ::= {{ com anti-unification type v
     | </ Ξi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( Ξ )              :: S :: paren
     | Ξ1 ∪ Ξ2            ::   :: union
+    | Ξ1 ∩ Ξ2            ::   :: intersect
 
                                        % {{ com context containing only negative uvars }}
 grammar
