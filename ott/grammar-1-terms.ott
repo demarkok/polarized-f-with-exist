@@ -1,0 +1,23 @@
+metavar x, y, z ::= {{ com term variables }}
+
+
+grammar
+
+v, w :: 'v_' ::= {{ com value terms }}
+  | x          ::   :: Var
+  | { c }      ::   :: Thunk
+  | ( v : P )  ::   :: Annot
+  | ( v )      :: M :: Paren
+
+args {{ tex \vv{ v } }} :: 'args_' ::= {{ com list of arguments }}
+    | ·                     ::   :: Empty
+    | </ argsi // , // i /> ::   :: Concat  {{ com concatenate }}
+
+c, d :: 'c_' ::= {{ com computation terms }}
+  | λ x : P . c                   ::   :: Lam    
+  | Λ pa . c                      ::   :: BigLam 
+  | return v                      ::   :: Return
+  | let x : P = v ( args ) ; c    ::   :: LetAnn 
+  | let x     = v ( args ) ; c    ::   :: Let   
+  | let∃ ( na , x ) = v    ; c    ::   :: Unpack 
+

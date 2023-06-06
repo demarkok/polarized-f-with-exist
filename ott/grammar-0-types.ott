@@ -13,7 +13,6 @@ embed {{ tex-preamble
 
 }}
 
-
 metavar a {{ tex \alpha }}, b {{ tex \beta }}, α {{ tex \alpha }}, β {{ tex \beta }},
  γ {{ tex \gamma }},  δ {{ tex \delta }} ::= {{ com type variables }}
 
@@ -447,6 +446,9 @@ terminals :: 'terminals_' ::=
   | ⇓ :: :: norm       {{ tex \Downarrow }}
   | :≥ :: :: solGeq    {{ tex :[[≥]] }}
   | :≈ :: :: solEq     {{ tex :[[≈]] }}
+  | Λ    :: :: bigLam    {{ tex \Lambda }}
+  | λ    :: :: lam       {{ tex \lambda }}
+  | let∃ :: :: letExists {{ tex \ottkw{let}^{\exists} }}
 
 
 % subrules
@@ -500,3 +502,4 @@ fun  dom ( us ) :: varset :: usolDom by
 fun  dom ( aus ) :: varset :: ausolDom by
 
 fun  dom ( Θ ) :: varset :: uCtxtDom by
+

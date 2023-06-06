@@ -26,7 +26,7 @@ defs.pdf: $(GEN)/defs.tex $(CACHE) | $(BUILD)
 
 $(GEN)/defs.tex: %: $(OTTS) | $(GEN)
 	echo "embed {{ tex-preamble \input{../proofs/$(PRELUDE)} }}" | tee prelude.ott
-	ott -i prelude.ott $(addprefix -i , $^)  -writesys $@ -o $(GEN)/defs.tex
+	ott -i prelude.ott $(addprefix -i , $^) -merge true  -writesys $@ -o $(GEN)/defs.tex
 	rm prelude.ott
 
 $(BUILD) $(GEN) $(GEN_TEX): %:
@@ -41,7 +41,8 @@ $(GEN)/included.tex: $(CACHE) | $(GEN)
 	    -tex_wrap false \
 	    -tex_show_categories true \
 	    -tex_suppress_category X \
-      -tex_show_meta false \
+     	-tex_show_meta false \
+		-merge true
   # For rubber
 	touch $@.aux
 
