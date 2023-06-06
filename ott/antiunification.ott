@@ -28,7 +28,7 @@ defns
 
   G ⊨ iP1 ≈au iP2 ⫤ (Ξ1, uQ, aus1, aus2)    G ⊨ iN1 ≈au iN2 ⫤ (Ξ2, uM, aus'1, aus'2)
   ----------------------------------------------------------------------------------  :: Arrow
-  G ⊨ iP1 → iN1 ≈au iP2 → iN2 ⫤ (Ξ1 ∪ Ξ2, uQ → uM, aus1 & aus'1, aus2 & aus'2)
+  G ⊨ iP1 → iN1 ≈au iP2 → iN2 ⫤ (Ξ1 ∪ Ξ2, uQ → uM, aus1 ∪ aus'1, aus2 ∪ aus'2)
 
 
   otherwise   G ⊢ iN     G ⊢ iM 
