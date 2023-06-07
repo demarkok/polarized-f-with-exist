@@ -429,8 +429,8 @@ terminals :: 'terminals_' ::=
   | \  :: :: setminus  {{ tex \setminus }}
   | ⊆  :: :: subset    {{ tex \subseteq }}
   | ↦  :: :: mapsto    {{ tex \mapsto }}
-  | ≈u :: :: unify     {{ tex \overset{u}{\simeq} }}
-  | ≈au :: :: antiunify  {{ tex \overset{a}{\simeq} }}
+  | ≈u :: :: unify      {{ tex \overset{u}{\simeq} }}
+  | ≈au :: :: antiunify {{ tex \overset{a}{\simeq} }}
   | ∅ :: :: empty      {{ tex \emptyset }}
   | ○ :: :: compose    {{ tex \circ }}
   | ⇒ :: :: implies    {{ tex \Rightarrow }}
@@ -441,7 +441,7 @@ terminals :: 'terminals_' ::=
   % | ⫥  :: :: DashV     {{ tex \mathcolor{\ccolor}{\DashV} }}
   | ≠  :: :: neq       {{ tex \neq }}
   % | ≡  :: :: equiv     {{ tex \mathcolor{\rcolor}{\equiv} }}
-  | ≡n  :: :: equivn    {{ tex \equiv_{n} }}
+  | ≡n  :: :: equivn   {{ tex \equiv_{n} }}
   | ∨  :: :: LUB       {{ tex \vee }}
   | ⇓ :: :: norm       {{ tex \Downarrow }}
   | :≥ :: :: solGeq    {{ tex :[[≥]] }}
@@ -449,6 +449,9 @@ terminals :: 'terminals_' ::=
   | Λ    :: :: bigLam    {{ tex \Lambda }}
   | λ    :: :: lam       {{ tex \lambda }}
   | let∃ :: :: letExists {{ tex \ottkw{let}^{\exists} }}
+  | ●    :: :: bullet    {{ tex \bullet }}
+  | ⇒>   :: :: spinInf   {{ tex \Rightarrow \hspace{-3pt} > }}
+
 
 
 % subrules

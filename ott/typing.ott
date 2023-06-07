@@ -1,0 +1,64 @@
+defns
+  DT :: 'DT' ::=
+
+  defn Γ ; Y ⊢ v : iP :: :: PInf :: ''
+  {{ com Positive type inference }}
+  {{ tex [[Γ]] ; [[Y]] \vdash [[v]] \colon [[iP]] }} by 
+
+  v : iP ∊ Y
+  --------------- :: Var
+  Γ ; Y ⊢ v : iP
+
+  Γ ; Y ⊢ c : iN
+  ------------------- :: Thunk
+  Γ ; Y ⊢ {c} : ↓iN
+
+  Γ ; Y ⊢ v : iP    Γ ⊢ iQ ≥ iP
+  ------------------------------ :: Annot
+  Γ ; Y ⊢ (v : iQ) : iQ
+
+  defn Γ ; Y ⊢ c : iN :: :: NInf :: ''
+  {{ com Negative type inference }}
+  {{ tex [[Γ]] ; [[Y]] \vdash [[c]] \colon [[iN]] }} by
+
+  Γ ; Y, x:iP ⊢ c : iN 
+  ---------------------------- :: tLam
+  Γ ; Y ⊢ λx:iP . c : iP → iN
+
+  Γ, α⁺ ; Y ⊢ c : iN
+  ------------------------- :: TLam
+  Γ ; Y ⊢ Λα⁺ . c : ∀α⁺.iN
+
+  Γ ; Y ⊢ v : iP
+  ----------------------- :: Return
+  Γ ; Y ⊢ return v : ↑iP
+
+  Γ ; Y ⊢ v : ↓iM   Γ ; Y ⊢ iM ● args ⇒> ↑iQ   Γ ⊢ ↑iQ ≤ ↑iP   Γ; Y, x:iP ⊢ c : iN
+  ------------------------------------------------------------- :: LetAnn
+  Γ ; Y ⊢ let x:iP = v(args); c : iN
+
+  Γ ; Y ⊢ v : ↓iM   Γ ; Y ⊢ iM ● args ⇒> ↑iQ uniq   Γ; Y, x:iQ ⊢ c : iN
+  ------------------------------------------------------------------ :: Let
+  Γ ; Y ⊢ let x = v(args); c : iN
+
+  Γ, α⁻ ; Y ⊢ v : ∃α⁻.iP   Γ, α⁻ ; Y, x:iP ⊢ c : iN
+  ---------------------------------------------------- :: Unpack
+  Γ ; Y ⊢ let∃ (α⁻, x) = v; c : iN
+
+
+defn Γ ; Y ⊢ iN ● args ⇒> iM :: :: SpinInf :: ''
+{{ com Spin Application type inference }} by
+
+iN ≠ ∀pas.iM
+---------------------- :: Emtpty
+Γ ; Y ⊢ iN ● · ⇒> iN 
+
+Γ ; Y ⊢ v : iP   Γ ; Y ⊢ iN ● args ⇒> iM
+----------------------------------------- :: Arrow
+Γ ; Y ⊢ iP → iN ● v , args ⇒> iM
+
+ Γ ⊢ iPs       Γ ; Y ⊢ [iPs/pas]iN ● args ⇒> iM
+------------------------------------------------ :: Forall
+Γ ; Y ⊢ ∀pas.iN ● args ⇒> iM
+
+
