@@ -108,13 +108,13 @@ aus {{ tex \widehat{\tau} }}, ausr {{ tex \widehat{\rho} }} :: 'aus_' ::= {{ com
 
 grammar
 
-P, Q :: 'P_' ::= {{ com positive types }}
+P, Q, R :: 'P_' ::= {{ com positive types }}
    | pa       ::   :: Var
    | ↓ N      ::   :: Shift
    | ∃ na . P ::   :: Exists
    | [ s ] P  :: M :: AppSub 
 
-N, M :: 'N_' ::= {{ com negative types }}
+N, M, K :: 'N_' ::= {{ com negative types }}
    | na       ::   :: Var
    | ↑ P      ::   :: Shift
    | ∀ pa . N ::   :: Forall
