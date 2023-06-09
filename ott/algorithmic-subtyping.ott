@@ -19,9 +19,9 @@ defns
   ---------------------------- :: ShiftU
   G;Θ ⊨ ↑uP ≤ ↑iQ ⫤ us
 
-  G;Θ ⊨ uP ≥ iQ ⫤ us1    G;Θ ⊨ uN ≤ iM ⫤ us2
-  ---------------------------------------- :: Arrow
-  G;Θ ⊨ uP → uN ≤ iQ → iM ⫤ us1 & us2
+  G;Θ ⊨ uP ≥ iQ ⫤ us1    G;Θ ⊨ uN ≤ iM ⫤ us2    Θ ⊢ us1 & us2 = us
+  ----------------------------------------------------------------:: Arrow
+  G;Θ ⊨ uP → uN ≤ iQ → iM ⫤ us
 
   % *[G, pbs]
   G, pbs; Θ, â⁺*[G, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ us

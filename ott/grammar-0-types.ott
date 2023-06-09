@@ -213,6 +213,7 @@ grammar
 T {{ tex \Theta }}, Θ {{ tex \Theta }}:: U_Ctxt ::= {{ com unification type variable context }}
     | ·                  ::   :: empty     {{ com empty context }}
     | ordVars [ Δ ]      ::   :: FromVList {{ com from an ordered list of variables }}
+                                           {{ tex [[ordVars]] \{[[Δ]]\} }}
     | pua * [ Δ ]        ::   :: FromVarS  {{ com from a variable to a list }}
                                            {{ tex \vv{ [[pua]] \{[[Δ]]\} } }}
     | </ Θi // , // i /> ::   :: concat    {{ com concatenate contexts }}
