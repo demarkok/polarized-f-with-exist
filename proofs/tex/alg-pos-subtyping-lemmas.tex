@@ -40,7 +40,7 @@
     $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ us]]$ has shape $[[Γ;Θ ⊨ ↓uN ≥ ↓iM ⫤ us]]$.\\
     Then the next step of the algorithm is the unification of $[[nf(uN)]]$ and $[[nf(iM)]]$.
     By the soundness of the unification algorithm (\cref{lemma:unification-soundness}),
-    it returns an equivalence-only solution $[[us]]$ such that $[[us : Ord uv uN]]$.
+    it returns an equivalence-only solution $[[us]]$ such that $[[us : Θ | uv uN]]$.
     By \cref{todo}, since $[[us]]$ is equivalence-only and $[[Γ ⊢ Θ]]$, $[[Θ ⊢ us' ⇒ us]]$ means 
     $[[ Γ ⊢ Sub us' ≈ Sub us : Ord uv uN ]]$ as substitutions.
     $[[ [us]nf(uN) = nf(iM) ]]$ implies $[[Γ ⊢ [us]nf(uN) ≈ nf(iM)]]$, and then 

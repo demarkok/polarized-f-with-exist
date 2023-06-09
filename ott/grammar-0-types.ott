@@ -211,18 +211,15 @@ G {{ tex \Gamma }}, Δ {{ tex \Delta }}, Γ {{ tex \Gamma }} :: DT_Ctxt ::= {{ c
 grammar
 
 T {{ tex \Theta }}, Θ {{ tex \Theta }}:: U_Ctxt ::= {{ com unification type variable context }}
-    | ·                  ::   :: empty   {{ com empty context }}
-    | puas               ::   :: PUList  {{ com list of variables }}
-    | nuas               ::   :: NUList  {{ com list of variables }}
-    | Ord varset         ::   :: fromset {{ tex [[varset]] }}
-    | </ Θi // , // i /> ::   :: concat  {{ com concatenate contexts }}
+    | ·                  ::   :: empty     {{ com empty context }}
+    | ordVars [ Δ ]      ::   :: FromVList {{ com from an ordered list of variables }}
+    | pua * [ Δ ]        ::   :: FromVarS  {{ com from a variable to a list }}
+                                           {{ tex \vv{ [[pua]] \{[[Δ]]\} } }}
+    | </ Θi // , // i /> ::   :: concat    {{ com concatenate contexts }}
     | ( Θ )              :: S :: paren
-    | Θ | varset         ::   :: restr  {{ com leave only those variables that are in the set }}
-                                        {{ tex [[Θ]]|_{[[varset]]} }}
+    | Θ | varset         ::   :: restr   {{ com leave only those variables that are in the set }}
+                                         {{ tex [[Θ]]|_{[[varset]]} }}
     | Θ1 ∪ Θ2            ::   :: union
-    % | Ξ ⁻                ::   :: NCtxt {{ tex [[Ξ]]^{-} }}
-                                       % {{ com context containing only negative uvars }}
-
 grammar
 
 Xi {{ tex \Xi }}, Ξ {{ tex \Xi }} :: AU_Ctxt ::= {{ com anti-unification type variable context }}
@@ -362,8 +359,6 @@ pubs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
 :: 'puas_' ::= {{ com positive unification variable list }}
    | ·                     ::   :: empty    {{ com empty list }}
    | pua                   ::   :: Var      {{ com a variable }}
-   | pua * [ Δ ]           ::   :: FromVarC {{ com from a normal variable }}
-                                            {{ tex \vv{ [[pua]] \{[[Δ]]\} } }}
    | pua *                 ::   :: FromVar  {{ com from a normal variable, context unspecified }}
                                             {{ tex \vv{ [[pua]] } }}
    | </ puasi // , // i /> ::   :: concat   {{ com concatenate lists }}

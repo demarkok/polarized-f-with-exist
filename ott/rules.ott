@@ -7,7 +7,7 @@ grammar
     | mu is bijective                        ::   :: moving_bij
     | us is functional                       ::   :: unif_solution_fun
     | us1 ∊ us2                              ::   :: us_in
-    | v : iP ∊ Y                              ::   :: v_in_Y
+    | v : iP ∊ Φ                             ::   :: v_in_Y
     | us1 ⊆ us2                              ::   :: unif_subset
     | varset1 ⊆ varset2                      ::   :: varset_subset
     | varset1 = varset2                      ::   :: varset_eq
@@ -37,6 +37,8 @@ grammar
     | P ≠ Q                                    ::   :: Nneq
     | iN ≠ iM                                  ::   :: iNneq
     | iP ≠ iQ                                  ::   :: iPneq
+    | uP ≠ uQ                                  ::   :: uPneq
+    | uN ≠ uM                                  ::   :: uNneq
     % | xs = vars                              ::   :: xs_assignment
     % | arity f = [ arn1 ,.., arnn ]           ::   :: arity
     % | judgement etc                          ::   :: etc  {{ tex [[ judgement ]]... }}
