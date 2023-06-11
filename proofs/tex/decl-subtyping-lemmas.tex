@@ -113,10 +113,140 @@
   \ilyam{fix}
 \end{proof}
 
-
-\begin{lemma}
-  
+\begin{lemma}[Reflexivity of subtyping] \label{lemma:subtyping-reflexivity}
+  Assuming all the types are well-formed in $[[Γ]]$,
+  \begin{itemize}
+    \item [$-$] $[[Γ ⊢ iN ≤ iN]]$
+    \item [$+$] $[[Γ ⊢ iP ≥ iP]]$
+  \end{itemize}
 \end{lemma}
+\begin{proof}
+  Let us prove it by the size of $[[iN]]$ and mutually, $[[iP]]$.
+  \begin{caseof}
+    \item $[[iN]] = [[α⁻]]$\\
+      Then $[[Γ ⊢ α⁻ ≤ α⁻]]$ is inferred immediately by \ruleref{\ottdruleDOneNVarLabel}.
+    \item $[[iN]] = [[∀pas.iN']]$ where $[[pas]]$ is not empty\\
+      First, we rename $[[pas]]$ to fresh $[[pbs]]$ in $[[∀pas.iN']]$ to avoid
+      name clashes: $[[∀pas.iN']] = [[∀pbs.[pas/pbs]iN']]$.
+      Then to infer $[[Γ ⊢ ∀pas.iN' ≤ ∀pbs.[pas/pbs]iN']]$ we can apply 
+      \ruleref{\ottdruleDOneForallLabel}, instantiating $[[pas]]$ with $[[pbs]]$:
+      \begin{itemize}
+        \item $[[fv iN ∩ {pbs} = ∅ ]]$ by choice of $[[pbs]]$,
+        \item $[[G, pbs ⊢ pbi]]$,
+        \item $[[G, pbs ⊢ [pbs/pas] iN' ≤ [pbs/pas] iN']]$ by the induction hypothesis,
+        since the size of $[[ [pbs/pas]iN' ]]$ is equal to the size of $[[iN']]$,
+        which is smaller than the size of $[[iN]] = [[∀pas.iN']]$.
+      \end{itemize}
+    \item $[[iN]] = [[iP → iM]]$\\
+      Then $[[Γ ⊢ iP → iM ≤ iP → iM]]$ is inferred by \ruleref{\ottdruleDOneArrowLabel},
+      since $[[Γ ⊢ iP ≥ iP]]$ and $[[Γ ⊢ iM ≤ iM]]$ hold the induction hypothesis. 
+    \item $[[iN]] = [[↑iP]]$\\
+      Then $[[Γ ⊢ ↑iP ≤ ↑iP]]$ is inferred by \ruleref{\ottdruleDOneShiftULabel},
+      since $[[Γ ⊢ iP ≥ iP]]$ holds by the induction hypothesis.
+    \item The positive cases are symmetric to the negative ones.
+  \end{caseof}
+\end{proof}
+
+\begin{lemma}[Substitution preserves subtyipng]
+  \label{lemma:subst-pres-subt}
+  Assuming that all mentioned types are well-formed in $[[Γ]]$,
+  and $[[Γ' ⊢ σ : Γ]]$, where $[[Γ']]$ is disjoint from $[[Γ]]$,
+  \begin{itemize}
+    \item $-$ If $[[Γ ⊢ iN ≤ iM]]$ then $[[Γ' ⊢ [σ]iN ≤ [σ]iM]]$
+    \item $+$ If $[[Γ ⊢ iP ≥ iQ]]$ then $[[Γ' ⊢ [σ]iP ≥ [σ]iQ]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  We prove it by induction on the size of the derivation of $[[Γ ⊢ iN ≤ iM]]$
+  and mutually, $[[Γ ⊢ iP ≥ iQ]]$. Let us consider the last rule 
+  used in the derivation:
+  \begin{caseof}
+    \item \ruleref{\ottdruleDOneNVarLabel}. Then by inversion, 
+      $[[iN = α⁻]]$ and $[[iM = α⁻]]$. By reflexivity of subtyping
+      (\cref{lemma:subtyping-reflexivity}),
+      we have $[[Γ' ⊢ [σ]α⁻ ≤ [σ]α⁻]]$, i.e. $[[Γ' ⊢ [σ]iN ≤ [σ]iM]]$,
+      as required.
+    \item  \ruleref{\ottdruleDOneForallLabel}. Then by inversion,
+      $[[iN = ∀pas.iN']]$, $[[iM = ∀pbs.iM']]$, where $[[pas]]$ or $[[pbs]]$ is not empty.
+      Moreover, $[[Γ,pbs ⊢ [iPs/pas]iN' ≤ iM']]$ for some $[[Γ, pbs ⊢ iPs]]$, and 
+      $[[fv iN ∩ {pbs} = ∅ ]]$.
+
+      Notice that since the derivation of $[[Γ,pbs ⊢ [iPs/pas]iN' ≤ iM']]$ is
+      a subderivation of the derivation of $[[Γ ⊢ iN ≤ iM]]$, its size is smaller, 
+      and hence, the induction hypothesis applies:
+      $[[Γ', pbs ⊢ [σ][iPs/pas]iN' ≤ [σ]iM']]$.
+
+      First, let us assume that $[[{pas} ∩ {Γ'} = ∅]]$ and $[[{pbs} ∩ {Γ'} = ∅]]$
+      (otherwise, we rename $[[pas]]$ and $[[pbs]]$ to fresh $[[pas']]$ and $[[pbs']]$).
+      Then $[[ [σ]∀pas.iN' ]] = [[ ∀pas.[σ]iN' ]]$ and $[[ [σ]∀pbs.iM' ]] = [[ ∀pbs.[σ]iM' ]]$, 
+      which means that the required $[[Γ' ⊢ [σ]∀pas.iN' ≤ [σ]∀pbs.iM']]$ is rewritten as
+      $[[Γ' ⊢ ∀pas.[σ]iN' ≤ ∀pbs.[σ]iM']]$.
+
+      To infer it, we apply \ruleref{\ottdruleDOneForallLabel}, 
+      instantiating $[[pai]]$ with $[[ [σ]iPi ]]$:
+      \begin{itemize}
+        \item $[[fv iN ∩ {pbs} = ∅ ]]$ as noted before, from the inversion;
+        \item $[[Γ', pbs ⊢ [σ]iPi]]$, by \cref{lemma:wf-subst} since from the inversion,
+        $[[Γ, pbs ⊢ iPi]]$;
+        \item $[[Γ, pbs ⊢ [ [σ]iPs/pas ][σ]iN' ≤ [σ]iM']]$ holds because 
+        $[[ [ [σ]iPs/pas ][σ]iN' ]] = [[ [σ][iPs/pas]iN ]]$ (since $[[{pas} ∩ {Γ} = ∅]]$), 
+        and $[[Γ', pbs ⊢ [σ][iPs/pas]iN' ≤ [σ]iM']]$ holds by the induction hypothesis.
+      \end{itemize}
+    \item \ruleref{\ottdruleDOneArrowLabel}. Then by inversion,
+      $[[iN = iP → iN1]]$, $[[iM = iQ → iM1]]$, $[[Γ ⊢ iP ≥ iQ]]$, and $[[Γ ⊢ iN1 ≤ iM1]]$.
+      And by the induction hypothesis, $[[Γ' ⊢ [σ]iP ≥ [σ]iQ]]$ and $[[Γ' ⊢ [σ]iN1 ≤ [σ]iM1]]$.
+      Then $[[Γ' ⊢ [σ]iN ≤ [σ]iM]]$, i.e. $[[Γ' ⊢ [σ]iP → [σ]iN1 ≤ [σ]iQ → [σ]iM1]]$,
+      is inferred by \ruleref{\ottdruleDOneArrowLabel}.
+    \item \ruleref{\ottdruleDOneShiftULabel}. Then by inversion,
+      $[[iN = ↑iP]]$, $[[iM = ↑iQ]]$, and $[[Γ ⊢ iP ≈ iQ]]$,
+      which by inversion means that $[[Γ ⊢ iP ≥ iQ]]$ and $[[Γ ⊢ iQ ≥ iP]]$.
+      Then the induction hypothesis applies, and we have $[[Γ' ⊢ [σ]iP ≥ [σ]iQ]]$
+      and $[[Γ' ⊢ [σ]iQ ≥ [σ]iP]]$. 
+      Then by sequential application of \ruleref{\ottdruleDOneNDefLabel} 
+      and \ruleref{\ottdruleDOneShiftULabel} to these judgments,
+      we have $[[Γ' ⊢ ↑[σ]iP ≤ ↑[σ]iQ]]$, i.e.
+      $[[Γ' ⊢ [σ]iN ≤ [σ]iM]]$, as required.
+    \item The positive cases are proved symmetrically.
+  \end{caseof}
+\end{proof}
+
+
+
+\begin{lemma}[Strong transitivity of subtyping] \label{lemma:subtyping-transitivity}
+  Assuming all the types are well-formed in $[[Γ]]$,
+  \begin{itemize}
+    \item $-$ if $[[Γ ⊢ iN ≤ iM1]]$, $[[Γ ⊢ iM2 ≤ iK]]$, and for 
+    $[[Γ' ⊢ σ : Γ]]$, $[[ [σ]iM1 = [σ]iM2 ]]$ then $[[Γ' ⊢ [σ]iN ≤ [σ]iK]]$
+    \item $+$ if $[[Γ ⊢ iP ≥ iQ1]]$, $[[Γ ⊢ iQ2 ≥ iR]]$, and for
+    $[[Γ' ⊢ σ : Γ]]$, $[[ [σ]iQ1 = [σ]iQ2 ]]$ then $[[Γ' ⊢ [σ]iP ≥ [σ]iR]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  We prove it by induction on $\depth{[[Γ ⊢ iN ≤ iM1]]} + \depth{[[Γ ⊢ iM2 ≤ iK]]}$ and mutually, 
+  on $\depth{[[Γ ⊢ iP ≥ iQ1]]} + \depth{[[Γ ⊢ iQ2 ≥ iR]]}$.
+
+  \begin{caseof}
+    \item Firs, let us consider the case when the last rule applied to infer 
+    $[[Γ ⊢ iN ≤ iM1]]$ is \ruleref{\ottdruleDOneNVarLabel}.
+    Notice that this case covers the base of the induction: 
+    the sum of the depths is minimal when both derivations are inferred by
+    the non-recursive rules (i.e. \ruleref{\ottdruleDOneNVarLabel}).
+
+    By inverting the rule, $[[iN = α⁻]]$ and $[[iM1 = α⁻]]$
+    Then $[[ [σ]iN ]] = [[ [σ]α⁻ ]] = [[ [σ]iM1 ]] = [[ [σ]iM2 ]]$. 
+    And $[[Γ' ⊢ [σ]iM2 ≤ [σ]iK]]$ by \cref{}
+
+
+
+
+
+    
+  \end{caseof}
+
+
+
+  
+\end{proof}
 
 \begin{corollary}[Transitivity of subtyping] \label{corollary:subtyping-transitivity}
   Assuming the types are well-formed in $[[Γ]]$,

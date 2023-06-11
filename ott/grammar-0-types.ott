@@ -157,7 +157,7 @@ pnds {{ tex \vv{ \delta^{\pm} } }}
    | </ pnasi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
 
-iP {{ tex P }}, iQ {{ tex Q }}:: 'iP_' ::= {{ com multi-quantified positive types }}
+iP {{ tex P }}, iQ {{ tex Q }}, iR {{ tex R }} :: 'iP_' ::= {{ com multi-quantified positive types }}
    | pa         ::   :: Var
    | ↓ iN       ::   :: Shift
    | ∃ nas . iP ::   :: Exists {{ com $[[iP]] \neq \exists\dots$ }}
@@ -167,7 +167,7 @@ iP {{ tex P }}, iQ {{ tex Q }}:: 'iP_' ::= {{ com multi-quantified positive type
    | [ mu ] iP  :: M :: AppMoving 
    | ( iP )     :: S :: Paren
 
-iN {{ tex N }}, iM {{ tex M }} :: 'iN_' ::= {{ com multi-quantified negative types }}
+iN {{ tex N }}, iM {{ tex M }}, iK {{ tex K }} :: 'iN_' ::= {{ com multi-quantified negative types }}
    | na          ::   :: Var
    | ↑ iP        ::   :: Shift
    | iP → iN     ::   :: Fun
@@ -184,6 +184,7 @@ iQs {{ tex \vv{ Q } }}
 :: 'iPs_' ::= {{ com list of positive types }}
    | ·                    ::   :: empty   {{ com empty list }}
    | iP                   ::   :: Var     {{ com a singel type }}
+   | [ s ] iPs            :: M :: AppSub
    | </ iPsi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
 iNs {{ tex \vv{ N } }},
@@ -191,6 +192,7 @@ iMs {{ tex \vv{ M } }}
 :: 'iNs_' ::= {{ com list of negative types }}
    | ·                    ::   :: empty   {{ com empty list }}
    | iN                   ::   :: Var     {{ com a singel type }}
+   | [ s ] iNs            :: M :: AppSub
    | </ iNsi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
 

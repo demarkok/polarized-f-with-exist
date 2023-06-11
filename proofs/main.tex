@@ -48,6 +48,8 @@
 % \makeatother
 
 
+\newcommand{\depth}[1]{\mathsc{depth}(#1)}
+
 \newcommand{\ruleref}[1]{Rule \nameref{#1}}
 
 % ord varset in uN = varset'
@@ -316,11 +318,12 @@ matching entries, and unite the results.
 
 \section{Proofs}
 
+\subsection{Substitution}
+\input{../_build/_gen/tex/subst-lemmas.tex}
+
 \subsection{Declarative Subtyping}
 \input{../_build/_gen/tex/decl-subtyping-lemmas.tex}
 
-\subsection{Substitution}
-\input{../_build/_gen/tex/subst-lemmas.tex}
 
 \subsection{Type well-formedness}
 \input{../_build/_gen/tex/wf-lemmas.tex}
