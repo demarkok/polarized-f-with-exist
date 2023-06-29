@@ -69,30 +69,52 @@ s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
    | nuas / nas           ::   :: NegUSubs
    | nas / nuas           ::   :: NegFromUSubs
    | Sub μ                ::   :: FromMoving {{ tex [[μ]] }}
-   | Sub us               ::   :: FromUs {{ tex [[us]] }}
+   % | Sub us               ::   :: FromUs {{ tex [[us]] }}
    | σ1 ○ σ2              ::   :: Compose
    | ordVars1 / ordVars2  ::   :: VarSubs
    | ( σ )                :: S :: paren
    | </ si // , // i />   ::   :: concat  {{ com concatenate }}
 
+scE {{ tex e }} :: 'scE_' ::= {{ com entry of a subtyping constraint }}
+   | pua :≈ iP            ::   :: PEq {{ tex [[pua]] :\approx   [[iP]] }}
+   | nua :≈ iN            ::   :: NEq {{ tex [[nua]] :\approx   [[iN]] }}
+   | pua :≥ iP            ::   :: Sup {{ tex [[pua]] :\geqslant [[iP]] }}
+   | ( scE )              :: S :: paren
+   | SC ( nua )           :: M :: NSelect
 
-usEntry  {{ tex e }} :: usE_' ::= {{ com entry of a unification solution }}
-   | pua :≈ iP            :: :: PSol {{ tex [[pua]] :\approx   [[iP]] }}
-   | nua :≈ iN            :: :: NSol {{ tex [[nua]] :\approx   [[iN]] }}
-   | pua :≥ iP            :: :: PSup {{ tex [[pua]] :\geqslant [[iP]] }}
-   % | nua :≤ iN            :: :: PSub {{ tex [[nua]] :[[≤]] [[iN]] }}
-   | ( usEntry )              :: S :: paren
-   | us ( pua )               :: M :: PSelect
-   | us ( nua )               :: M :: NSelect
+ucE  {{ tex e }} :: 'ucE_' ::= {{ com entry of a unification constraint }}
+   | pua :≈ iP            :: :: PEq {{ tex [[pua]] :\approx   [[iP]] }}
+   | nua :≈ iN            :: :: NEq {{ tex [[nua]] :\approx   [[iN]] }}
+   | ( ucE )              :: S :: paren
 
-us {{ tex \widehat{\sigma} }}, uσ {{ tex \widehat{\sigma} }} :: 'us_' ::= {{ com unification solution (substitution) }}
+
+UC :: 'UC_' ::= {{ com unification constraint }}
    | ·                   ::   :: Empty
-   | usEntry             ::   :: Entry
-   | us \ varset         ::   :: Exclude
-   | us | varset         ::   :: Restr
-   | us1 ∪ us2           ::   :: Union
-   | </ usi // , // i /> ::   :: concat  {{ com concatenate }}
-   | ( us )              :: S :: paren
+   | ucE                 ::   :: Entry
+   | UC \ varset         ::   :: Exclude
+   | UC | varset         ::   :: Restr
+   | UC1 ∪ UC2           ::   :: Union
+   | </ UCi // , // i /> ::   :: concat  {{ com concatenate }}
+   | ( UC )              :: S :: paren
+
+SC :: 'SC_' ::= {{ com subtyping constraint }}
+   | ·                   ::   :: Empty
+   | scE                 ::   :: Entry
+   | SC \ varset         ::   :: Exclude
+   | SC | varset         ::   :: Restr
+   | SC1 ∪ SC2           ::   :: Union
+   | lift UC             ::   :: Lift    {{ tex [[UC]] }}
+   | </ SCi // , // i /> ::   :: concat  {{ com concatenate }}
+   | ( SC )              :: S :: paren
+
+us {{ tex \widehat{\sigma} }}, uσ {{ tex \widehat{\sigma} }} :: 'us_' ::= {{ com unification substitution }}
+   | ·                   ::   :: Empty
+   | iP / pua            ::   :: PosSub
+   | iN / nua            ::   :: NegSub
+   | iPs / puas          ::   :: PosSubs 
+   | iNs / nuas          ::   :: NegSubs
+   | ( uσ )               :: S :: paren
+   | </ uσi // , // i />  ::   :: concat  {{ com concatenate }}
 
 grammar
 
@@ -161,9 +183,9 @@ iP {{ tex P }}, iQ {{ tex Q }}, iR {{ tex R }} :: 'iP_' ::= {{ com multi-quantif
    | pa         ::   :: Var
    | ↓ iN       ::   :: Shift
    | ∃ nas . iP ::   :: Exists {{ com $[[iP]] \neq \exists\dots$ }}
-   | [ s ]  iP  :: M :: AppSub  
+   | [ σ ]  iP  :: M :: AppSub  
    | [ aus ] uP :: M :: AppAUSub  
-   | [ us ] uP  :: M :: AppUSub  
+   | [ uσ ] uP  :: M :: AppUSub  
    | [ mu ] iP  :: M :: AppMoving 
    | ( iP )     :: S :: Paren
 
@@ -172,10 +194,10 @@ iN {{ tex N }}, iM {{ tex M }}, iK {{ tex K }} :: 'iN_' ::= {{ com multi-quantif
    | ↑ iP        ::   :: Shift
    | iP → iN     ::   :: Fun
    | ∀ pas . iN  ::   :: Forall {{ com $[[iN]] \neq \forall\dots$ }}
-   | [ s ] iN    :: M :: AppSub 
+   | [ σ ] iN    :: M :: AppSub 
    | [ aus ] uN  :: M :: AppAUSub
    | [ mu ] iN   :: M :: AppMoving
-   | [ us ] uN   :: M :: AppUSub  
+   | [ uσ ] uN   :: M :: AppUSub  
    | ( iN )      :: S :: Paren
 
 
@@ -471,36 +493,52 @@ fun ord varset in uN :: ordVars :: uNOrd by
 fun ord varset in iP :: ordVars :: NOrd by
 fun ord varset in iN :: ordVars :: POrd by
 
-fun nf ( iN' ) :: iN :: Nnf by
-fun nf ( iP' ) :: iP :: Pnf by
-fun nf ( uN' ) :: uN :: uNnf by
-fun nf ( uP' ) :: uP :: uPnf by
-fun nf ( iNs' ) :: iNs :: uNsnf by
-fun nf ( iPs' ) :: iPs :: uPsnf by
-fun nf ( σ' )   :: σ :: Snf by
+fun nf ( iN' )  :: iN :: NNf by
+fun nf ( iP' )  :: iP :: PNf by
+fun nf ( uN' )  :: uN :: uNNf by
+fun nf ( uP' )  :: uP :: uPNf by
+fun nf ( iNs' ) :: iNs :: uNsNf by
+fun nf ( iPs' ) :: iPs :: uPsNf by
+fun nf ( σ' )   :: σ :: SubNf by
+fun nf ( uσ' )   :: uσ :: USubNf by
 fun nf ( μ' )   :: μ :: Movnf by
-fun nf ( us' )  :: us :: USolnf by
 
-fun  σ' | varset  :: σ :: Restr {{ tex [[σ']]|_{[[varset]]} }} by 
-fun  us' | varset  :: us :: USRestr {{ tex [[us']]|_{[[varset]]} }} by 
+fun σ'   | varset :: σ :: Restr {{ tex [[σ']]|_{[[varset]]} }} by 
+fun uσ'  | varset :: uσ :: USRestr {{ tex [[uσ']]|_{[[varset]]} }} by 
 fun aus' | varset :: aus :: AURestr {{ tex [[aus']]|_{[[varset]]} }} by
-fun Xi' | varset :: Xi :: XiRestr {{ tex [[Xi']]|_{[[varset]]} }} by
+fun Xi'  | varset :: Xi :: XiRestr {{ tex [[Xi']]|_{[[varset]]} }} by
+fun SC'  | varset :: SC :: SCRestr {{ tex [[SC]]|_{[[varset]]} }} by
+fun UC'  | varset :: UC :: UCRestr {{ tex [[UC]]|_{[[varset]]} }} by
 
 fun
-  usEntry1 & usEntry2 :: usEntry :: USEM {{ tex [[usEntry1]] ~ \& ~ [[usEntry2]] }}
+   ucE1 & ucE2 :: ucE :: UCEM {{ tex [[ucE1]] ~ \& ~ [[ucE2]] }}
 by
 
 fun
-  us1 & us2 :: us :: MRG {{ tex [[us1]] ~ \& ~[[us2]] }}
+   scE1 & scE2 :: scE :: SCEM {{ tex [[scE1]] ~ \& ~ [[scE2]] }}
+by
+
+
+fun
+   UC1 & UC2 :: UC :: UCM {{ tex [[UC1]] ~ \& ~[[UC2]] }}
+by
+
+fun 
+   UC1 ∪ UC2 :: UC :: UCUnion {{ tex [[UC1]] \cup [[UC2]] }}
+by 
+
+fun
+   SC1 & SC2 :: SC :: SCM {{ tex [[SC1]] ~ \& ~[[SC2]] }}
 by
 
 fun 
   aus1 & aus2 :: aus :: AUMRG {{ tex [[aus1]] ~ \& ~[[aus2]] }}
 by
 
-fun  dom ( us ) :: varset :: usolDom by
+fun dom ( UC )  :: varset :: UCDom by
+fun dom ( SC )  :: varset :: SCDom by
+fun dom ( uσ )  :: varset :: uSubDom by
+fun dom ( aus ) :: varset :: ausolDom by
+fun dom ( Θ )   :: varset :: uCtxtDom by
 
-fun  dom ( aus ) :: varset :: ausolDom by
-
-fun  dom ( Θ ) :: varset :: uCtxtDom by
-
+fun | SC | :: UC :: SCFlatten by

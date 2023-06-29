@@ -1,0 +1,22 @@
+defns
+  SING :: 'SING' ::=
+
+  defn scE1 singular :: :: scE :: ''
+  {{ com Subtyping Constraint Entry Is Singular }} by
+  
+  ------------------- :: PEq
+  pua :≈ iP singular
+
+  ------------------- :: NEq
+  nua :≈ iN singular
+
+  ----------------------- :: SupVar
+  pua :≥ ∃nas.pa singular
+
+           iN ≈ nai
+  ------------------------ :: SupShift
+  pua :≥ ∃nas.↓iN singular
+
+  defn SC singular :: :: SC :: ''
+  {{ com Subtyping Constraint Is Singular }} by
+

@@ -1,0 +1,18 @@
+defns
+  SATSCE :: 'SATSCE' ::=
+
+  defn Γ ⊢ iP : scE :: :: SATSCEP :: '' {{ com Positive type satisfies with the subtyping constraint entry }} by
+
+  Γ ⊢ iP ≥ iQ
+  -------------------- :: Sup
+  Γ ⊢ iP : (α̂⁺ :≥ iQ)
+
+  Γ ⊢ iP ≈ iQ
+  -------------------- :: PEq
+  Γ ⊢ iP : (α̂⁺ :≈ iQ)
+
+  defn Γ ⊢ iN : scE :: :: SATSCEN :: '' {{ com Negative type satisfies with the subtyping constraint entry }} by
+
+  Γ ⊢ iN ≈ iM
+  -------------------- :: NEq
+  Γ ⊢ iN : (α̂⁻ :≈ iM)

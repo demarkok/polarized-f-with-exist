@@ -14,12 +14,24 @@ defns
   defn G ; Ξ ⊢ uN  :: :: NauWF :: '' {{ com Negative anti-unification type well-formedness }} by
   defn G ; Ξ ⊢ uP  :: :: PauWF :: '' {{ com Positive anti-unification type well-formedness }} by
 
-  % defn  Γ ⊢ uσ : Θ :: :: USWFa :: '' {{ com Unification solution well-formedness }} by
   defn  Γ ; Ξ2 ⊢ aus : Ξ1 :: :: AUSWF :: '' {{ com Antiunification substitution well-formedness }} by
-  defn  us : Θ :: :: USWF :: '' {{ com Unification substitution well-formedness }} by
-  defn  G ⊢ Θ :: :: UCWF :: '' {{ com Unification context well-formedness }} 
-                               {{ tex [[G]] \vdash^{\supseteq}[[Θ]] }} by
+  % defn  us : Θ :: :: USWF :: '' {{ com Unification substitution well-formedness }} by
+  defn  G ⊢ Θ :: :: UCtxtWF :: '' {{ com Unification context well-formedness }} 
+                                  {{ tex [[G]] \vdash^{\supseteq}[[Θ]] }} by
 
   defn  Γ1 ⊢ σ : Γ2 :: :: SWF :: '' {{ com Substitution well-formedness }} by
+  defn  Θ ⊢ uσ :: :: USWF :: '' {{ com Unification substitution well-formedness }} by
+  defn  Θ ⊢ uσ : UC :: :: USUCWF :: '' {{ com Unification substitution satisfies unification constraint }} by
+  defn  Θ ⊢ uσ : SC :: :: USSCWF :: '' {{ com Unification substitution satisfies subtyping constraint }} by
 
-  defn  Γ ⊢ usEntry :: :: UEWF :: '' {{ com Unification solution entry well-formedness }}  by
+  defn Γ ⊢ ucE :: :: UEWF :: '' {{ com Unification constraint entry well-formedness }}  by
+  defn Γ ⊢ scE :: :: SEWF :: '' {{ com Subtyping constraint entry well-formedness }}  by
+
+  defn  Γ ⊢ iP : ucE :: :: PUCWF :: '' {{ com Positive type satisfies unification constraint }} by
+  defn Γ ⊢ iN : ucE :: :: NUCWF :: '' {{ com Negative type satisfies unification constraint }} by
+
+  defn Γ ⊢ iP : scE  :: :: PSCWF :: '' {{ com Positive type satisfies subtyping constraint }} by
+  defn Γ ⊢ iN : scE :: :: NSCWF :: '' {{ com Negative type satisfies subtyping constraint }} by
+
+  defn Θ ⊢ UC :: :: UCWF :: '' {{ com Unification constraint well-formedness }} by
+  defn Θ ⊢ SC :: :: SCWF :: '' {{ com Subtyping constraint well-formedness }} by

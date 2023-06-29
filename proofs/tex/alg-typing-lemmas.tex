@@ -1,0 +1,715 @@
+\begin{lemma}[Soundness of typing] \label{lemma:typing-soundness}
+    \hfill
+    \begin{itemize}
+        \item [$+$] If $[[Γ; Φ ⊨ v : iP]]$ then $[[Γ ⊢ iP]]$ and $[[Γ; Φ ⊢ v : iP]]$
+        \item [$-$] If $[[Γ; Φ ⊨ c : iN]]$ then $[[Γ ⊢ iN]]$ and $[[Γ; Φ ⊢ c : iN]]$
+        \item  For $[[Γ ⊢ Θ]]$ and $[[Γ; Θ ⊢ uN]]$, if $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$ then
+        \begin{enumerate}
+            \item $[[Γ ⊢ Θ']]$
+            \item $[[Θ]] \subseteq [[Θ']]$
+            \item $[[Γ; Θ' ⊢ uM]]$
+            \item $[[Θ' ⊢ SC]]$
+            \item for any $[[Θ' ⊢ uσ : SC]]$, we have $[[ Γ ; Φ ⊢ [uσ]uN ● args ⇒> [uσ]uM ]]$
+        \end{enumerate}
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    We prove it by induction on the typing derivation.
+    Let us consider the last rule used to infer the derivation.
+    \begin{caseof}
+        \item \ruleref{\ottdruleATVarLabel}
+        \item \ruleref{\ottdruleATThunkLabel}
+        \item \ruleref{\ottdruleATPAnnotLabel}
+        \item \ruleref{\ottdruleATNAnnotLabel}
+        \item \ruleref{\ottdruleATtLamLabel}
+        \item \ruleref{\ottdruleATTLamLabel}
+        \item \ruleref{\ottdruleATReturnLabel}
+        \item \ruleref{\ottdruleATVarLetLabel}
+        \item \ruleref{\ottdruleATAppLetAnnLabel}
+        By inversion, we have:
+        \begin{enumerate}
+            \item $[[c]]$ is $[[let x : iP = v(args); c']]$
+            \item $[[Γ ⊢ iP]]$
+            \item $[[Γ; Φ ⊨ v : ↓iM]]$
+            \item $[[Γ; Φ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC1]]$
+            \item $[[Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2]]$
+            \item $[[Θ ⊢ SC1 & SC2 = SC]]$
+            \item $[[Γ; Φ, x:iP ⊨ c' : iN]]$
+        \end{enumerate}
+
+        By the soundness of constraint merge (\cref{lemma:merge-soundness}), we have 
+        $[[Θ ⊢ SC]]$. Let us take $[[uσ]]$ such that $[[Θ ⊢ uσ : SC]]$
+        (it exists by \cref{lemma:substitution-existence}). Notice that by the soundness of 
+        constraint merge, $[[Θ ⊢ uσ : SC1]]$ and $[[Θ ⊢ uσ : SC2]]$.
+
+        By the induction hypothesis applied to $[[Γ; Φ ⊨ v : ↓iM]]$, we have
+        $[[Γ; Φ ⊢ v : ↓iM]]$ and $[[Γ ⊢ ↓iM]]$ (and hence,$[[Γ ; Θ ⊢ uM]]$).
+
+        By the induction hypothesis applied to I$[[Γ; Φ, x:iP ⊨ c' : iN]]$, we have
+        $[[Γ; Φ, x:iP ⊢ c' : iN]]$ and $[[Γ ⊢ iN]]$. 
+
+        By the induction hypothesis applied to $[[Γ; Φ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC1]]$, we have:
+        \begin{enumerate}
+            \item \label{typing-soundness:theta-wf} $[[Γ ⊢ Θ]]$,
+            \item $[[Γ; Θ ⊢ ↑uQ]]$,
+            \item $[[Θ' ⊢ SC1]]$,
+            \item for any $[[Θ' ⊢ uσ : SC1]]$, we have $[[ Γ ; Φ ⊢ [uσ]uM ● args ⇒> [uσ]↑uQ ]]$.
+            In particular, it holds for the $[[uσ]]$ chosen above. 
+        \end{enumerate}
+
+        By the soundness of negative subtyping (\cref{lemma:neg-subtyping-soundness})
+        applied to $[[Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC]]$, we have $[[Γ ⊢ ↑[uσ]uQ ≤ ↑iP]]$.
+
+        To infer $[[Γ ; Φ ⊢ let x : iP = v(args); c' : iN ]]$,
+        we apply the corresponding declarative rule \ruleref{\ottdruleDTAppLetAnnLabel}, where
+        $[[iQ]]$ is $[[ [uσ]uQ  ]]$. Notice that all the premises were already shown to
+        hold above:
+        \begin{enumerate}
+            \item $[[Γ ⊢ iP]]$ and $[[Γ; Φ ⊢ v : ↓iM]]$ from the inversion,
+            \item $[[Γ; Φ ⊢ iM ● args ⇒> ↑[uσ]uQ]]$ holds since $[[ [uσ]↑uQ ]] = [[ ↑[uσ]uQ ]]$,
+            \item $[[Γ ⊢ ↑[uσ]uQ ≤ ↑iP]]$ by the soundness of negative subtyping,
+            \item $[[Γ; Φ, x:iP ⊢ c' : iN]]$ from the the induction hypothesis.
+        \end{enumerate}
+
+        \item \ruleref{\ottdruleATAppLetLabel}
+        By the inversion, we have:
+        \begin{enumerate}
+            \item $[[c]]$ is $[[let x = v(args) ; c']]$
+            \item $[[Γ; Φ ⊨ v : ↓iM]]$ 
+            \item $[[Γ ; Φ ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC]]$
+            \item $[[uv uQ ⊆ dom(SC)]]$
+            \item $[[SC|uv(uQ) singular]]$
+            \item $[[Γ; Φ, x:iQ ⊨ c' : iN]]$
+        \end{enumerate}
+
+        By the induction hypothesis applied to $[[Γ; Φ ⊨ v : ↓iM]]$, we have    
+        $[[Γ; Φ ⊢ v : ↓iM]]$ and $[[Γ ⊢ ↓iM]]$ (and thus, $[[Γ ; Θ  ⊢ uM]]$).
+       
+        By the induction hypothesis applied to $[[Γ; Φ, x:iQ ⊨ c' : iN]]$, we have
+        $[[Γ ⊢ iN]]$ and $[[Γ; Φ, x:iQ ⊢ c' : iN]]$.
+
+        By the induction hypothesis applied to 
+        $[[Γ ; Φ ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC]]$, we have:
+        \begin{enumerate}
+            \item $[[Γ ⊢ Θ]]$
+            \item $[[Γ; Θ ⊢ ↑uQ]]$
+            \item $[[Θ ⊢ SC]]$
+            \item for any $[[Θ ⊢ uσ : SC]]$, we have $[[ Γ ; Φ ⊢ [uσ]uM ● args ⇒> [uσ]↑uQ ]]$, 
+                which, since  $[[iM]]$ is ground means $[[ Γ ; Φ ⊢ iM ● args ⇒> ↑[uσ]uQ]]$
+        \end{enumerate}
+
+        To infer $[[Γ ; Φ ⊢ let x = v(args) ; c' : iN ]]$, 
+        we apply the corresponding 
+        declarative rule \ruleref{\ottdruleDTAppLetLabel}.
+        Let us show that the premises hold:
+        \begin{itemize}
+            \item $[[Γ; Φ ⊢ v : ↓iM]]$ holds by the induction hypothesis;
+            \item $[[Γ; Φ, x:iQ ⊢ c' : iN]]$ also holds by the induction hypothesis, as noted above;
+            \item Let us take an arbitrary substitution $[[uσ]]$ 
+                satisfying $[[Θ ⊢ uσ : SC]]$ (it exists by \cref{lemma:constraint-sat}).
+                Then $[[Γ; Φ ⊢ iM ● args ⇒> ↑[uσ]uQ ]]$ holds, as noted above;
+            \item To show the uniqueness of $[[↑[uσ]uQ]]$,
+                we assume that for some other type $[[iK]]$ 
+                holds $[[Γ; Φ ⊢ iM ● args ⇒> iK ]]$
+                that is $[[Γ; Φ ⊢ [·]uM ● args ⇒> iK ]]$.
+                Then by the completeness of typing 
+                (\cref{lemma:typing-completeness}),
+                there exist $[[uN']]$, $[[Θ']]$, and $[[SC']]$ such that
+                \begin{enumerate}
+                    \item $[[ Γ; Φ; · ⊨ uM ● args ⇒> uN' ⫤ Θ'; SC' ]]$ and
+                    \item there exists a substitution $[[Θ' ⊢ uσ' : SC']]$ such that
+                    $[[Γ ⊢ [uσ']uN' ≈ iK]]$.
+                \end{enumerate}
+            By the determinicity of the typing algorithm (\cref{lemma:typing-determinicity})
+            $[[ Γ; Φ; · ⊨ uM ● args ⇒> uN' ⫤ Θ'; SC' ]]$,
+            means that $[[SC']]$ is $[[SC]]$, $[[Θ']]$ is $[[Θ]]$, and $[[uN']]$ is
+            $[[↑uQ]]$. 
+            This way, $[[Γ ⊢ [uσ']↑uQ ≈ iK]]$ for a substitution 
+            $[[Θ ⊢ uσ' : SC]]$. 
+
+            It is left to show that $[[Γ ⊢ [uσ']↑uQ ≈ [uσ]↑uQ]]$, 
+            then by transitivity of the equivalence, we will have $[[Γ ⊢ [uσ]↑uQ ≈ iK]]$.
+            Since $[[Θ ⊢ uσ : SC|uv(uQ)]]$ and $[[Θ ⊢ uσ' : SC|uv(uQ)]]$, 
+            and $[[SC|uv(uQ) singular]]$, we have $[[Θ ⊢ uσ ≈ uσ' : dom(SC|uv(uQ))]]$.
+            Then since $[[uv(uQ) ⊆ dom(SC)]]$, we have $[[dom(SC|uv(uQ)) = uv(uQ)]]$.
+            This way, $[[Θ ⊢ uσ ≈ uσ' : uv(uQ)]]$, which implies
+            $[[Γ ⊢ [uσ']↑uQ ≈ [uσ]↑uQ]]$. 
+        \end{itemize}
+
+        \item \ruleref{\ottdruleATUnpackLabel}
+        By the inversion, we have:
+        \begin{enumerate}
+            \item $[[c]]$ is $[[let∃ (α⁻, x) = v; c']]$
+            \item $[[Γ; Φ ⊨ v : ∃α⁻.iP]]$
+            \item $[[Γ, α⁻ ; Φ, x:iP ⊨ c' : iN]]$
+            \item $[[Γ ⊢ iN]]$
+        \end{enumerate}
+
+        By the induction hypothesis applied to 
+        $[[Γ; Φ ⊨ v : ∃α⁻.iP]]$, we have $[[Γ; Φ ⊢ v : ∃α⁻.iP]]$.
+        By the induction hypothesis applied to
+        $[[Γ, α⁻ ; Φ, x:iP ⊨ c' : iN]]$, we have $[[Γ, α⁻ ; Φ, x:iP ⊢ c' : iN]]$.
+
+        To show $[[Γ; Φ ⊢ let∃ (α⁻, x) = v; c' : iN]]$, we apply the corresponding
+        declarative rule \ruleref{\ottdruleDTUnpackLabel}. Let us show that the premises hold:
+        \begin{enumerate}
+            \item $[[Γ ; Φ ⊢ v : ∃α⁻.iP]]$ holds by the induction hypothesis, as noted above,
+            \item $[[Γ, α⁻ ; Φ, x:iP ⊢ c' : iN]]$ also holds by the induction hypothesis,
+            \item $[[Γ ⊢ iN]]$ holds by the inversion, as noted above.
+        \end{enumerate}
+
+        \item \ruleref{\ottdruleATEmptyAppLabel}
+        Then by assumption:
+        \begin{itemize}
+            \item $[[Γ ⊢ Θ]]$,
+            \item $[[Γ; Θ ⊢ uN]]$,
+            \item $[[Γ; Φ; Θ ⊨ uN ● · ⇒> uN ⫤ Θ; ·]]$, which by inversion means that $[[uN ≠ ∀pas.uM]]$.
+        \end{itemize}
+
+        Let us show the required properties: 
+        \begin{enumerate}
+            \item $[[Γ ⊢ Θ]]$ holds by assumption,
+            \item $[[Θ]] \subseteq [[Θ]]$ holds trivially,
+            \item $[[Γ; Θ ⊢ uN]]$ holds by assumption,
+            \item $[[Θ ⊢ ·]]$ holds trivially,
+            \item for any $[[Θ ⊢ uσ : ·]]$, we have $[[ Γ ; Φ ⊢ [uσ]uN ● · ⇒> [uσ]uN ]]$.
+                To show $[[ Γ ; Φ ⊢ [uσ]uN ● · ⇒> [uσ]uN ]]$, we apply the corresponding 
+                declarative rule \ruleref{\ottdruleDTEmptyAppLabel}. 
+        \end{enumerate}
+
+   
+        \item \ruleref{\ottdruleATArrowAppLabel}\\
+        By assumption:
+        \begin{enumerate}
+            \item $[[Γ ⊢ Θ]]$,
+            \item $[[Γ; Θ ⊢ uQ → uN]]$,
+            \item $[[Θ ⊢ SC1 & SC2 = SC]]$,
+            \item $[[Γ; Φ; Θ ⊨ uQ → uN ● v , args ⇒> uM ⫤ Θ'; SC]]$, 
+                and by inversion: 
+                \begin{enumerate}
+                    \item $[[Γ; Φ ⊨ v : iP]]$,
+                        and by the induction hypothesis applied to this judgment,
+                        $[[Γ; Φ ⊢ v : iP]]$,
+                    \item $[[Γ; Θ ⊨ uQ ≥ iP ⫤ SC1]]$,
+                        and by the soundness of subtyping:
+                        $[[Θ ⊢ SC]]$ and
+                        for any $[[Θ ⊢ uσ : SC1]]$, we have $[[Γ ⊢ [uσ]uQ ≥ iP]]$,
+                    \item $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC2]]$,
+                        and by the induction hypothesis applied to this judgment,
+                        \begin{enumerate}
+                            \item $[[Γ ⊢ Θ']]$,
+                            \item $[[Θ ⊆ Θ']]$,
+                            \item $[[Γ; Θ' ⊢ uM]]$,
+                            \item $[[Θ' ⊢ SC2]]$,
+                            \item for any $[[Θ' ⊢ uσ : SC2]]$, we have 
+                                $[[ Γ ; Φ ⊢ [uσ]uN ● args ⇒> [uσ]uM ]]$.
+                        \end{enumerate}
+                \end{enumerate}
+        \end{enumerate}
+
+        Let us show the required properties:
+        \begin{enumerate}
+            \item $[[Γ ⊢ Θ']]$ is shown above,
+            \item $[[Θ ⊆ Θ']]$ is shown above,
+            \item $[[Γ; Θ' ⊢ uM]]$ is shown above,
+            \item $[[Θ' ⊢ SC]]$ holds:  
+            $[[Θ ⊢ SC1]]$ implies $[[Θ' ⊢ SC1]]$,
+            then we apply the soundness of constraint merge (\cref{lemma:merge-soundness})
+            to $[[Θ' ⊢ SC1 & SC2]]$,
+            \begin{enumerate}
+                \item $[[Θ' ⊢ SC1]]$,
+                \item for any $[[Θ' ⊢ uσ : SC]]$, $[[Θ' ⊢ uσ : SCi]]$ holds;
+            \end{enumerate}
+            \item suppose that $[[Θ' ⊢ uσ : SC]]$. Then to 
+                show $[[ Γ ; Φ ⊢ [uσ](uQ → uN) ● v , args ⇒> [uσ]uM ]]$, 
+                that is $[[ Γ ; Φ ⊢ [uσ]uQ → [uσ]uN ● v , args ⇒> [uσ]uM ]]$,
+                we apply the corresponding declarative rule \ruleref{\ottdruleDTArrowAppLabel}.
+                Let us show the required premises:
+                \begin{enumerate}
+                    \item $[[Γ; Φ ⊢ v : iP]]$ holds as shown above,
+                    \item $[[Γ ⊢ [uσ]uQ ≥ iP]]$ holds by the soundness of subtyping 
+                        as noted above,
+                        since $[[Θ' ⊢ uσ : SC]]$ implies $[[Θ ⊢ uσ : SC1]]$.
+                    \item $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> [uσ]uM]]$ holds by the induction hypothesis
+                        as shown above,
+                        since $[[Θ' ⊢ uσ : SC]]$ implies $[[Θ' ⊢ uσ : SC2]]$.
+                \end{enumerate}
+        \end{enumerate}
+
+        \item \ruleref{\ottdruleATForallAppLabel}\\
+        By assumption:
+        \begin{enumerate}
+            \item $[[Γ ⊢ Θ]]$,
+            \item $[[Γ; Θ ⊢ ∀pas.uN]]$,
+            \item $[[Γ; Φ; Θ ⊨ ∀pas.uN ● args ⇒> uM ⫤ Θ'; SC]]$, which by inversion means
+                $[[args ≠ ·]]$ and $[[Γ; Φ; Θ, â⁺*[Γ] ⊨ [â⁺*/pas]uN ● args ⇒> uM ⫤ Θ'; SC]]$.
+                It is easy to see that the induction hypothesis is applicable to the latter judgment:
+                $[[Γ ⊢ Θ, â⁺*[Γ] ]]$ is implied by $[[Γ ⊢ Θ]]$, and $[[Γ; Θ, â⁺*[Γ] ⊢ [â⁺*/pas]uN]]$
+                is holds since $[[Γ; Θ ⊢ ∀pas.uN]]$.
+                Let us apply the inductive hypothesis to the latter judgment to obtain:
+                \begin{enumerate}
+                    \item $[[Γ ⊢ Θ']]$,
+                    \item $[[Θ, â⁺*[Γ] ⊆ Θ']]$,
+                    \item $[[Γ; Θ' ⊢ uM]]$,
+                    \item $[[Θ' ⊢ SC]]$,
+                    \item for any $[[Θ' ⊢ uσ : SC]]$, we have $[[ Γ ; Φ ⊢ [uσ][â⁺*/pas]uN ● args ⇒> [uσ]uM ]]$.
+                \end{enumerate}
+        \end{enumerate}
+
+        Let us show the required properties:
+        \begin{enumerate}
+            \item $[[Γ ⊢ Θ']]$ is shown above,
+            \item $[[Θ ⊆ Θ']]$ since $[[Θ, â⁺*[Γ] ⊆ Θ']]$,
+            \item $[[Γ; Θ' ⊢ uM]]$ is shown above,
+            \item $[[Θ' ⊢ SC]]$ is shown above,
+            \item let us assume $[[Θ' ⊢ uσ : SC]]$
+            Then to show $[[ Γ ; Φ ⊢ [uσ]∀pas.uN ● args ⇒> [uσ]uM ]]$,
+            we apply the corresponding declarative rule \ruleref{\ottdruleDTForallAppLabel}
+            with substitution $[[ Γ ⊢ σ : pas ]]$  defined in the following way:
+            $[[ [σ]αi⁺ ]] = [[ [uσ]αî⁺ ]]$.
+
+            Let us show that its premises hold:
+            \begin{enumerate}
+                \item $[[Γ ⊢ σ : pas]]$, i.e.
+                $[[ Γ ⊢ [σ] αi⁺ ]]$ holds since $[[ Θ' ⊢ uσ ]]$ and $[[Γ ⊢ Θ']]$;
+                \item $[[Γ; Φ ⊢ [σ][uσ]uN ● args ⇒> [uσ]uM ]]$ 
+                    holds by rewriting 
+                    $[[ Γ ; Φ ⊢ [uσ][â⁺*/pas]uN ● args ⇒> [uσ]uM ]]$
+                    using equality $[[ [uσ][â⁺*/pas]uN = [σ][uσ]uN ]]$:
+                    \begin{enumerate}
+                        \item for $[[ αi⁺ ]] \in [[ pas ]]$, $[[ [uσ][â⁺*/pas] αi⁺ ]] = [[ [uσ]αî⁺ ]] = [[ [σ]αi⁺ ]] = [[ [σ][uσ]αi⁺ ]]$,
+                        \item for $[[ β̂± ]] \in [[ dom(uσ) ]]$, $[[ [uσ][â⁺*/pas]β̂±  ]] = [[ [uσ]β̂±  ]] = [[ [σ][uσ]β̂± ]] $, 
+                            where the latter equality holds since $[[ {pas} ∩ {Γ} = ∅ ]]$.
+                    \end{enumerate}
+
+                \item $[[args ≠ ·]]$ holds by assumption
+            \end{enumerate}
+        \end{enumerate}
+    \end{caseof}
+\end{proof}
+
+\begin{lemma} \label{lemma:app-inf-equ-stable}
+    If $[[Γ; Φ ⊢ iN1 ● args ⇒> iM]]$ and $[[Γ ⊢ iN1 ≈ iN2]]$ 
+    then $[[Γ; Φ ⊢ iN2 ● args ⇒> iM]]$.
+\end{lemma}
+\begin{proof}
+    Induction on $[[Γ; Φ ⊢ iN1 ● args ⇒> iM]]$.
+    Let us consider the last rule used in the derivation:
+    \begin{caseof}
+        \item \ruleref{\ottdruleDTEmptyAppLabel}
+            Then $[[args = ·]]$ and by inversion of $[[Γ; Φ ⊢ iN1 ● · ⇒> iM]]$,
+            $[[Γ ⊢ iN1 ≈ iM]]$.
+            By transitivity \cref{corollary:equivalence-transitivity}, 
+            $[[Γ ⊢ iN2 ≈ iM]]$, and then \ruleref{\ottdruleDTEmptyAppLabel} is applicable to infer
+            $[[Γ; Φ ⊢ iN2 ● · ⇒> iM]]$.
+        \item \ruleref{\ottdruleDTArrowAppLabel}
+            Then we are proving that  
+            $[[Γ; Φ ⊢ (iQ1 → iN1) ● v, args ⇒> iM]]$ and $[[Γ ⊢ (iQ1 → iN1) ≈ (iQ2 → iN2)]]$
+            imply $[[Γ; Φ ⊢ (iQ2 → iN2) ● v, args ⇒> iM]]$.
+            
+            By inversion, $[[Γ ⊢ (iQ1 → iN1) ≈ (iQ2 → iN2)]]$
+            means $[[Γ ⊢ iQ1 ≈ iQ2]]$ and $[[Γ ⊢ iN1 ≈ iN2]]$.
+
+            By inversion of $[[Γ; Φ ⊢ (iQ1 → iN1) ● v, args ⇒> iM]]$:
+            \begin{enumerate}
+                \item $[[Γ ; Φ ⊢ v : iP]]$
+                \item $[[Γ ⊢ iQ1 ≥ iP]]$,
+                    and then by transitivity \cref{corollary:subtyping-transitivity},
+                    $[[Γ ⊢ iQ2 ≥ iP]]$;
+                \item $[[Γ ; Φ ⊢ iN1 ● args ⇒> iM]]$, 
+                    and then by induction hypothesis, $[[Γ ; Φ ⊢ iN2 ● args ⇒> iM]]$.
+            \end{enumerate}
+
+            Since we have $[[Γ ; Φ ⊢ v : iP]]$, $[[Γ ⊢ iQ2 ≥ iP]]$ and 
+            $[[Γ ; Φ ⊢ iN2 ● args ⇒> iM]]$, we can apply \ruleref{\ottdruleDTArrowAppLabel}
+            to infer $[[Γ; Φ ⊢ (iQ2 → iN2) ● v, args ⇒> iM]]$.
+        \item \ruleref{\ottdruleDTArrowAppLabel}
+            Then we are proving that 
+            $[[Γ ; Φ ⊢ ∀pas1.iN1' ● args ⇒> iM]]$ and $[[Γ ⊢ ∀pas1.iN1' ≈ iN2]]$
+            imply $[[Γ ; Φ ⊢ iN2 ● args ⇒> iM]]$.
+
+            Let us write $[[iN2]]$ as $[[∀pas2.iN2']]$ with potentially empty
+            $[[pas2]]$.
+
+            By \cref{lemma:equiv-completeness}, $[[Γ ⊢ ∀pas1.iN1' ≈ ∀pas2.iN2']]$ 
+            means $[[∀pas1.iN1' ≈ ∀pas2.iN2']]$, and by inversion: 
+            \begin{enumerate}
+                \item $[[{pas2} ∩ fv iN1 = ∅]]$,
+                \item there exists a bijection 
+                    $[[mu : ({pas2} ∩ fv iN2') ↔ ({pas1} ∩ fv iN1')]]$
+                    such that $[[iN1' ≈ [mu] iN2']]$.
+            \end{enumerate}
+
+            By inversion of $[[Γ ; Φ ⊢ ∀pas1.iN1' ● args ⇒> iM]]$:
+            \begin{enumerate}
+                \item $[[Γ ⊢ σ : pas1]]$        
+                \item $[[Γ ; Φ ⊢ [σ]iN1' ● args ⇒> iM]]$
+                \item $[[args ≠ ·]]$
+            \end{enumerate}
+
+            Let us construct $[[Γ ⊢ σ0 : pas2]]$ in the following way:
+            $$
+            \begin{cases}
+                [[ [σ0]α⁺ =  [σ][mu]α⁺ ]] & \text{if } [[α⁺]] \in [[ {pas2} ∩ fv iN2' ]] \\
+                [[ [σ0]α⁺ =  ∃β⁻.↓β⁻ ]] & \text{otherwise (the type does not matter here)} \\
+            \end{cases}
+            $$
+
+            Then to infer $[[Γ ; Φ ⊢ iN2 ● args ⇒> iM]]$, we 
+            apply \ruleref{\ottdruleDTArrowAppLabel} with $[[σ0]]$. 
+            Let us show the required premises:
+            \begin{enumerate}
+                \item $[[Γ ⊢ σ0 : pas2]]$ by construction;
+                \item $[[args ≠ ·]]$ as noted above;
+                \item To show $[[Γ ; Φ ⊢ [σ0]iN2' ● args ⇒> iM]]$,
+                Notice that $[[ [σ0]iN2' = [σ][mu]iN2' ]]$   
+                and since $[[ [mu]iN2' ≈ iN1' ]]$, $[[ [σ][mu]iN2' ≈ [σ]iN1' ]]$.
+                This way, by \cref{lemma:equiv-soundness}, $[[Γ ⊢ [σ]iN1' ≈ [σ0]iN2']]$.
+                Then the required judgement holds by the induction hypothesis
+                applied to $[[Γ ; Φ ⊢ [σ]iN1' ● args ⇒> iM]]$.
+            \end{enumerate}
+    \end{caseof}
+\end{proof}
+
+\begin{lemma}[Completeness of Typing]
+    \label{lemma:typing-completeness}
+    \hfill
+    \begin{itemize}
+        \item [$+$] If $[[Γ; Φ ⊢ v : iP]]$ then 
+            there exists $[[iP']]$ such that $[[Γ; Φ ⊨ v : iP']]$ and 
+            $[[Γ ⊢ iP' ≈ iP]]$;
+        \item [$-$] If $[[Γ; Φ ⊢ c : iN]]$ then 
+            there exists $[[iN']]$ such that $[[Γ; Φ ⊨ c : iN']]$
+            and $[[Γ ⊢ iN' ≈ iN]]$;
+        \item [$\bullet$] Suppose that 
+            $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$ holds for some
+            $[[Γ ⊢ Θ]]$,
+            $[[Γ; Θ ⊢ uN]]$ (free from negative metavariables, that is $[[α̂⁻]] \notin [[uv uN]]$), 
+            $[[Θ ⊢ uσ]]$, and $[[Γ ⊢ iM]]$. Then
+            there exist $[[uM']]$, $[[Θ']]$, and $[[SC]]$ such that
+            \begin{enumerate}
+                \item $[[ Γ; Φ; Θ ⊨ uN ● args ⇒> uM' ⫤ Θ'; SC ]]$ and
+                \item for any $[[Θ ⊢ uσ]]$ and $[[Γ ⊢ iM]]$
+                    such that $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$, 
+                    there exists $[[uσ']]$ such that 
+                    \begin{enumerate}
+                        \item $[[Θ' ⊢ uσ' : SC]]$,
+                        \item $[[Θ ⊢ uσ' ≈ uσ : dom(Θ)]]$, and 
+                        \item $[[Γ ⊢ [uσ']uM' ≈ iM]]$.
+                    \end{enumerate}
+            \end{enumerate}
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    By induction on the typing derivation.
+    Let us consider the last rule applied to infer the derivation.
+    % First, let us consider the case of $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$, 
+    % when the substitution $[[uσ]]$ can change the outer shape of $[[uN]]$.
+    % after that, we consider the last rule applied to infer the derivation
+    % (assuming that $[[ uσ ]]$ preserves the outer shape of the type it applied to).
+    \begin{caseof}
+
+        \item \ruleref{\ottdruleDTAppLetLabel}\\
+            Then by assumption, 
+            $[[c]]$ is $[[let x = v(args); c']]$. Then by inversion of
+            $[[Γ ; Φ ⊢ let x = v(args); c' : iN]]$: 
+            \begin{itemize}
+                \item $[[Γ ; Φ ⊢ v : ↓iM]]$, 
+                    which by the induction hypothesis means 
+                    that there exists $[[iM2]]$ such that
+                    $[[Γ; Φ ⊨ v : ↓iM2]]$ and $[[Γ ⊢ ↓iM2 ≈ ↓iM]]$;
+                \item $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ uniq]]$. 
+                    Then by \cref{lemma:app-inf-equ-stable}, since 
+                    $[[Γ ⊢ iM ≈ iM2]]$,
+                    $[[Γ ; Φ ⊢ iM2 ● args ⇒> ↑iQ]]$.
+                    Then by the induction hypothesis applied to 
+                    $[[Γ ; Φ ⊢ [·]uM2 ● args ⇒> ↑iQ]]$
+                    means that there exist $[[uM']]$, $[[Θ']]$, and $[[SC]]$ such that
+                    (considering $[[iM]]$ is ground):
+                    \begin{enumerate}
+                        \item $[[ Γ; Φ; · ⊨ uM2 ● args ⇒> uM' ⫤ Θ'; SC ]]$ and
+                        \item for any  $[[Γ ⊢ iM'']]$
+                            such that $[[Γ; Φ ⊢ [·]uM ● args ⇒> iM'']]$,
+                            and in particular, for $[[Γ ⊢ ↑iQ]]$,
+                            there exists $[[uσ']]$ such that 
+                            \begin{enumerate}
+                                \item $[[Θ' ⊢ uσ' : SC]]$, and 
+                                \item $[[Γ ⊢ [uσ']uM' ≈ ↑iQ]]$.
+                            \end{enumerate}
+                    \end{enumerate}
+                \item $[[Γ; Φ, x:iQ ⊢ c' : iN]]$
+                    \label{point:typing-completeness:AppLet:body},
+                    which by the induction hypothesis means
+                    that there exists $[[iN2]]$ such that
+                    $[[Γ; Φ, x:iQ ⊨ c' : iN2]]$ and $[[Γ ⊢ iN2 ≈ iN]]$.
+            \end{itemize}
+
+            Let us show that $[[iN2]]$ from \ref{point:typing-completeness:AppLet:body}
+            satisfies the required properties.
+            $[[Γ ⊢ iN2 ≈ iN]]$ holds as noted above. 
+            To infer $[[Γ ; Φ ⊢ let x = v(args); c' : iN2]]$, 
+            let us apply the corresponding algorithmic rule (\ruleref{\ottdruleATAppLetLabel})
+            with the type of $[[v]]$ being $[[↓iM2]]$:
+            \begin{enumerate}
+                \item $[[Γ ; Φ ⊨ v : ↓iM2]]$ holds as noted above;
+
+                \item $[[Γ; Φ ; · ⊨ uM2 ● args ⇒> ↑uQ ⫤ Θ; SC]]$
+
+                \item $[[uv uQ ⊆ dom(SC)]]$
+                
+                \item $[[SC | uv uQ singular]]$ 
+
+                \item $[[Γ; Φ, x:iQ ⊨ c' : iN2]]$ holds as noted above.
+            \end{enumerate}
+
+
+
+
+
+
+
+
+
+        \item \ruleref{\ottdruleDTForallAppLabel}\\
+            Since $[[uN]]$ cannot be a metavariable,  
+            if $[[ [uσ]uN ]]$ starts from $[[∀]]$,
+            so does $[[uN]]$. This way,
+            $[[uN = ∀pas.uN1]]$.
+            Then by assumption:
+            \begin{enumerate}
+                \item $[[Γ; Θ ⊢ ∀pas.uN1]]$ is free from negative metavariables, 
+                    and then $[[Γ, pas; Θ ⊢ uN1]]$ is free from negative metavariables;
+                \item $[[Θ ⊢ uσ]]$;
+                \item $[[Γ ⊢ iM]]$;
+                \item $[[Γ; Φ ⊢ [uσ]∀pas.uN1 ● args ⇒> iM]]$, 
+                    \label{point:typing-completeness-forall-app-inversion}
+                    that is $[[Γ; Φ ⊢ (∀pas.[uσ]uN1) ● args ⇒> iM]]$.
+                    Then by inversion there exists $[[σ]]$ such that 
+                    \begin{enumerate}
+                        \item $[[Γ ⊢ σ : pas]]$;
+                        \item $[[args ≠ ·]]$; and
+                        \item $[[Γ ; Φ ⊢ [σ][uσ]uN1 ● args ⇒> iM]]$.
+                            \label{point:typing-completeness-forall-app-inversion-2}
+                            Notice that $[[σ]]$ and $[[uσ]]$ commute because 
+                            the codomain of $[[σ]]$ does not contain
+                            metavariables (and thus, does not intersect with 
+                            the domain of $[[uσ]]$), and the codomain of $[[uσ]]$ is 
+                            $[[Γ]]$ and does not intersect with $[[pas]]$---the domain of $[[σ]]$.
+
+                            Let us construct $[[uN0]]$ = $[[ [â⁺*/pas]uN1 ]]$
+                            and $[[Θ, â⁺*[Γ] ⊢ uσ0]]$ defined as
+                            $$
+                            \begin{cases}
+                                [[ [uσ0]αî⁺ = [σ]αi⁺ ]] & \text{for $[[αî⁺]] \in  [[â⁺*]]$ }\\
+                                [[ [uσ0]β̂± = [uσ]β̂± ]] & \text{for $[[β̂±]] \in [[dom(Θ)]]$}
+                            \end{cases}
+                            $$
+
+                            Then it is easy to see that $[[ [uσ0][â⁺*/pas]uN1 = [σ][uσ]uN1 ]]$
+                            because this substitution compositions coincide on 
+                            $[[ {pas} ∪ dom(Θ) ]]$, their domain.
+                            In other words, $[[ [uσ0]uN0 = [σ][uσ]uN1 ]]$.
+
+                            Then let us apply the induction hypothesis
+                            to $[[Γ; Φ ⊢ [uσ0]uN0 ● args ⇒> iM]]$ and obtain 
+                            $[[uM']]$, $[[Θ']]$, and $[[SC]]$ such that
+                            \begin{itemize}
+                                \item $[[ Γ; Φ; Θ, â⁺*[Γ] ⊨ uN0 ● args ⇒> uM' ⫤ Θ'; SC ]]$ and
+                                \item \label{point:typing-completeness-forall-app-inversion-3}
+                                for any $[[Θ, â⁺*[Γ]  ⊢ uσ0]]$ and $[[Γ ⊢ iM]]$
+                                    such that $[[Γ; Φ ⊢ [uσ0]uN0 ● args ⇒> iM]]$, 
+                                    there exists $[[uσ0']]$ such that 
+                                \begin{enumerate}
+                                    \item $[[Θ' ⊢ uσ0' : SC]]$,
+                                    \item $[[Θ, â⁺*[Γ] ⊢ uσ0' ≈ uσ0 : dom(Θ) ∪ {â⁺*}]]$, and 
+                                    \item $[[Γ ⊢ [uσ0']uM' ≈ iM]]$.
+                                \end{enumerate}
+                            \end{itemize}
+                    \end{enumerate}
+            \end{enumerate}
+            Let us take $[[uM']]$, $[[Θ']]$, and $[[SC]]$ from the induction hypothesis
+            (\ref{point:typing-completeness-forall-app-inversion-2}) and show they 
+            satisfy the required properties.
+            \begin{enumerate}
+                \item to infer $[[ Γ; Φ; Θ ⊨ ∀pas.uN1 ● args ⇒> uM' ⫤ Θ'; SC ]]$
+                    we apply the corresponding algorithmic rule \ruleref{\ottdruleATForallAppLabel},
+                    not that the required premises hold, as noted above:
+                    \begin{enumerate}
+                        \item $[[args ≠ ·]]$, and 
+                        \item $[[Γ; Φ; Θ, â⁺*[Γ] ⊨ [â⁺*/pas]uN1 ● args ⇒> uM' ⫤ Θ'; SC]]$
+                            can be rewritten as 
+                            $[[ Γ; Φ; Θ, â⁺*[Γ] ⊨ uN0 ● args ⇒> uM' ⫤ Θ'; SC ]]$.
+                    \end{enumerate}
+                \item Let us take and arbitrary $[[Θ ⊢ uσ]]$ and $[[Γ ⊢ iM]]$
+                    and assume $[[Γ; Φ ⊢ [uσ]∀pas.uN1  ● args ⇒> iM]]$. 
+                    Then the same reasoning as in 
+                    \ref{point:typing-completeness-forall-app-inversion-2}
+                    applies. In particular, we construct 
+                    $[[Θ, â⁺*[Γ] ⊢ uσ0]]$ as an extension of $[[uσ]]$
+                    and obtain 
+                    $[[Γ; Φ ⊢ [uσ0]uN0 ● args ⇒> iM]]$.
+
+                    It means, we can apply the property inferred from the induction hypothesis 
+                    (\ref{point:typing-completeness-forall-app-inversion-3})
+                    to obtain $[[uσ0']]$ such that 
+                    \begin{enumerate}
+                        \item $[[Θ' ⊢ uσ0' : SC]]$,
+                        \item $[[Θ, â⁺*[Γ] ⊢ uσ0' ≈ uσ0 : dom(Θ) ∪ {â⁺*}]]$, and 
+                        \item $[[Γ ⊢ [uσ0']uM' ≈ iM]]$.
+                    \end{enumerate}
+
+                    Let us show that the obtained $[[uσ0']]$ satisfies the required properties.
+                    \begin{enumerate}
+                        \item $[[Θ' ⊢ uσ0' : SC]]$ holds as shown,
+                        \item $[[Γ ⊢ [uσ0']uM' ≈ iM]]$ holds as shown,
+                        \item $[[Θ ⊢ uσ0' ≈ uσ : dom(Θ)]]$,
+                            holds. Let us take an arbitrary 
+                            $[[β̂±]] \in [[dom(Θ)]] \subseteq [[dom(Θ) ∪ {â⁺*}]]$. Then 
+                            since $[[Θ, â⁺*[Γ] ⊢ uσ0' ≈ uσ0 : dom(Θ) ∪ {â⁺*}]]$, 
+                            we have $[[ [uσ0']β̂±  = [uσ0]β̂± ]]$ and 
+                            by definition of $[[uσ0]]$, $[[ [uσ0]β̂±  = [uσ]β̂± ]]$.
+                    \end{enumerate}
+            \end{enumerate}
+            
+        \item \ruleref{\ottdruleDTArrowAppLabel}\\
+            Since $[[uN]]$ cannot be a metavariable,  
+            if the shape of $[[ [uσ]uN ]]$ is an arrow, 
+            so is the shape of $[[uN]]$. This way, 
+            $[[uN = uQ → uN1]]$.
+            Then by assumption:
+            \begin{enumerate}
+                \item $[[Γ; Θ ⊢ uQ → uN1]]$ is free from negative metavariables;
+                \item $[[Θ ⊢ uσ]]$;
+                \item $[[Γ ⊢ iM]]$;
+                \item $[[Γ; Φ ⊢ [uσ](uQ → uN1) ● v, args ⇒> iM]]$, 
+                    \label{point:typing-completeness-arrow-app-inversion}
+                    that is $[[Γ; Φ ⊢ ([uσ]uQ → [uσ]uN1) ● v, args ⇒> iM]]$,
+                    and by inversion:
+                    \begin{enumerate}
+                        \item $[[Γ; Φ ⊢ v : iP]]$,
+                            and by the induction hypothsis, 
+                            $[[Γ; Φ ⊨ v : iP']]$ for some $[[iP']]$
+                            such that $[[Γ ⊢ iP' ≈ iP]]$;
+                        \item $[[Γ ⊢ [uσ]uQ ≥ iP]]$, 
+                            which by transitivity (\cref{lemma:subtyping-transitivity}) means 
+                            $[[Γ ⊢ [uσ]uQ ≥ iP']]$,
+                            and then by completeness of subtyping 
+                            (\cref{lemma:pos-subt-completeness}),
+                            $[[ Γ; Θ ⊨ uQ ≥ iP' ⫤ SC1 ]]$, 
+                            for some $[[Θ ⊢ SC1]]$, and moreover, $[[Θ ⊢ uσ : SC1]]$;
+                        \item $[[Γ; Φ ⊢ [uσ]uN1 ● args ⇒> iM]]$. 
+                            \label{point:completeness-arrow-app-ih}
+                            Notice that the induction hypothesis is applicable to this case:
+                            $[[Γ ; Θ ⊢ uN1]]$ is free from negative metavariables because
+                            so is $[[uQ → uN1]]$. This way, there exist 
+                            $[[uM']]$, $[[Θ']]$, and $[[SC2]]$ such that 
+                            \begin{enumerate}
+                                \item $[[ Γ; Φ; Θ ⊨ uN1 ● args ⇒> uM' ⫤ Θ'; SC2 ]]$
+                                    and then by the soundness of typing 
+                                    (i.e. the induction hypothesis), 
+                                    \begin{enumerate}
+                                        \item $[[Θ ⊆ Θ']]$
+                                        \item $[[Γ; Θ' ⊢ uM']]$
+                                    \end{enumerate}
+                                \item  \label{point:new-subdst}
+                                    for any $[[Θ ⊢ uσ]]$ and $[[Γ ⊢ iM]]$
+                                    such that $[[Γ; Φ ⊢ [uσ]uN1 ● args ⇒> iM]]$, 
+                                    there exists $[[uσ']]$ such that 
+                                    \begin{enumerate}
+                                        \item $[[Θ' ⊢ uσ' : SC2]]$,
+                                        \item $[[Θ ⊢ uσ' ≈ uσ : dom(Θ)]]$, and 
+                                        \item $[[Γ ⊢ [uσ']uM' ≈ iM]]$.
+                                    \end{enumerate}
+                            \end{enumerate}
+                    \end{enumerate}
+            \end{enumerate}
+
+            Let us take $[[Θ ⊢ uσ]]$ and $[[iM]]$
+            and construct $[[Θ' ⊢ uσ']]$ 
+            by the induction hypothesis (\ref{point:new-subdst}).
+            Then $[[Θ' ⊢ uσ' : SC2]]$ and $[[Θ' ⊢ uσ' : SC1]]$ 
+            holds and since $[[Θ ⊢ uσ : SC1]]$ and $[[Θ ⊢ uσ' ≈ uσ : dom(Θ)]]$.
+            Then by the completeness of constraint merge 
+            (\cref{lemma:merge-completeness}),
+            $[[Θ' ⊢ SC1 & SC2 = SC]]$ exists, $[[Θ' ⊢ SC]]$, and 
+            $[[Θ' ⊢ uσ : SC]]$.
+
+            To show the required properties, we take
+            $[[uM']]$ and $[[Θ']]$ from the induction hypothesis (\ref{point:new-subdst}), 
+            and $[[SC]]$ defined above. Then
+            \begin{enumerate}
+                \item $[[ Γ; Φ; Θ ⊨ uQ → uN1 ● v,args ⇒> uM' ⫤ Θ'; SC ]]$
+                    is inferred by \ruleref{\ottdruleATArrowAppLabel}:
+                    \begin{enumerate}
+                        \item $[[Γ; Φ ⊨ v : iP']]$ as noted above,
+                        \item $[[Γ; Θ ⊨ uQ ≥ iP' ⫤ SC1]]$ as noted above,
+                        \item $[[Γ; Φ; Θ ⊨ uN1 ● args ⇒> uM' ⫤ Θ'; SC2]]$ as noted above;
+                    \end{enumerate}
+                \item let us take an arbitrary $[[Θ ⊢ uσ0]]$ and $[[Γ ⊢ iM0]]$
+                    such that $[[Γ; Φ ⊢ [uσ0](uQ → uN1) ● v,args ⇒> iM0]]$.
+                    Then by inversion
+                    of $[[Γ; Φ ⊢ [uσ0]uQ → [uσ0]uN1 ● v,args ⇒> iM0]]$,
+                    we have the same properties as in 
+                    \ref{point:typing-completeness-arrow-app-inversion}.
+                    In particular,
+                    \begin{itemize}
+                        \item $[[Γ; Φ ⊢ [uσ0]uN1 ● args ⇒> iM0]]$. 
+                            Then by \ref{point:new-subdst}, there exists $[[uσ']]$ such that 
+                            \begin{enumerate}
+                                \item $[[Θ' ⊢ uσ' : SC2]]$,
+                                \item $[[Θ ⊢ uσ' ≈ uσ0 : dom(Θ)]]$, and 
+                                \item $[[Γ ⊢ [uσ']uM' ≈ iM0]]$.
+                            \end{enumerate}
+                        \item $[[Γ ⊢ [uσ0]uQ ≥ iP']]$
+                            and by the completeness of subtyping 
+                            (\cref{lemma:pos-subt-completeness}),
+                            $[[ Θ ⊢ uσ0 : SC1 ]]$.
+                    \end{itemize}
+                    This way,
+                    \begin{itemize}
+                        \item $[[Θ ⊢ uσ' ≈ uσ0 : dom(Θ)]]$ holds as noted above;
+                        \item $[[Θ' ⊢ uσ' : SC1]]$ holds because $[[Θ ⊢ uσ0 : SC1]]$ and 
+                            $[[Θ ⊢ uσ' ≈ uσ0 : dom(Θ)]]$, 
+                            and $[[Θ' ⊢ uσ' : SC1]]$ together with $[[Θ' ⊢ uσ' : SC2]]$  
+                            implies $[[Θ' ⊢ uσ' : SC]]$ by the completeness of constraint merge 
+                            (\cref{lemma:merge-completeness}); and
+                        \item $[[Γ ⊢ [uσ']uM' ≈ iM0]]$ holds as noted above.
+                    \end{itemize}
+            \end{enumerate}
+
+        \item \ruleref{\ottdruleDTEmptyAppLabel}\\
+            By assumption: 
+            \begin{enumerate}
+                \item $[[Γ; Θ ⊢ uN]]$,
+                \item $[[Θ ⊢ uσ]]$,
+                \item $[[Γ; Φ ⊢ [uσ]uN ● · ⇒> [uσ]uN ]]$.
+            \end{enumerate}
+            Then we can apply the corresponding algorithmic rule
+            \ruleref{\ottdruleATEmptyAppLabel} to infer
+            $[[ Γ; Φ; Θ ⊨ uN ● · ⇒> uN ⫤ Θ; · ]]$.
+            Let us show the required properties. 
+            Let us take an arbitrary 
+            $[[Θ ⊢ uσ1]]$ and $[[Γ ⊢ iM]]$
+            such that $[[Γ; Φ ⊢ [uσ1]uN ● · ⇒> iM]]$. 
+            Then we can take $[[uσ' = uσ1]]$:
+            \begin{enumerate}
+                \item $[[Θ ⊢ uσ' : ·]]$ holds vacuously,
+                \item $[[Θ ⊢ uσ' ≈ uσ1 : dom(Θ)]]$ holds by reflexivity of equivalence,
+                \item $[[Γ ⊢ [uσ']uN ≈ iM]]$ or equivalently, 
+                    $[[Γ ⊢ [uσ]uN ≈ iM]]$ holds because 
+                    $[[Γ; Φ ⊢ [uσ1]uN ● · ⇒> iM]]$ can only be inferred by 
+                    \ruleref{\ottdruleDTEmptyAppLabel}, meaning 
+                        $[[ [uσ1]uN =  iM ]]$.
+            \end{enumerate}
+        \item \ruleref{\ottdruleDTVarLabel}\\
+        \item \ruleref{\ottdruleDTThunkLabel}\\
+        \item \ruleref{\ottdruleDTPAnnotLabel}\\
+        \item \ruleref{\ottdruleDTtLamLabel}\\
+        \item \ruleref{\ottdruleDTTLamLabel}\\
+        \item \ruleref{\ottdruleDTReturnLabel}\\
+        \item \ruleref{\ottdruleDTVarLetLabel}\\
+        \item \ruleref{\ottdruleDTAppLetAnnLabel}\\
+        \item \ruleref{\ottdruleDTUnpackLabel}\\
+        \item \ruleref{\ottdruleDTNAnnotLabel}\\
+    \end{caseof}
+\end{proof}

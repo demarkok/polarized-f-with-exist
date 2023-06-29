@@ -8,41 +8,41 @@ embed {{ tex-preamble
 defns
   A :: 'A' ::=
 
-  defn G ; Θ ⊨ uN ≤ iM ⫤ us :: :: Nsub :: ''
+  defn G ; Θ ⊨ uN ≤ iM ⫤ SC :: :: Nsub :: ''
   {{ com Negative subtyping }}
-  {{ tex [[G]] ;\, [[Θ]] [[⊨]] [[uN]] \subA [[iM]] [[⫤]] [[us]] }} by
+  {{ tex [[G]] ;\, [[Θ]] [[⊨]] [[uN]] \subA [[iM]] [[⫤]] [[SC]] }} by
 
   ----------------- :: NVar
   G;Θ ⊨ a⁻ ≤ a⁻ ⫤ · 
 
-  Γ;Θ ⊨ nf(uP) ≈u nf(iQ) ⫤ us
+  Γ;Θ ⊨ nf(uP) ≈u nf(iQ) ⫤ UC 
   ---------------------------- :: ShiftU
-  G;Θ ⊨ ↑uP ≤ ↑iQ ⫤ us
+  G;Θ ⊨ ↑uP ≤ ↑iQ ⫤ lift UC
 
-  G;Θ ⊨ uP ≥ iQ ⫤ us1    G;Θ ⊨ uN ≤ iM ⫤ us2    Θ ⊢ us1 & us2 = us
+  G;Θ ⊨ uP ≥ iQ ⫤ SC1    G;Θ ⊨ uN ≤ iM ⫤ SC2    Θ ⊢ SC1 & SC2 = SC
   ----------------------------------------------------------------:: Arrow
-  G;Θ ⊨ uP → uN ≤ iQ → iM ⫤ us
+  G;Θ ⊨ uP → uN ≤ iQ → iM ⫤ SC 
 
   % *[G, pbs]
-  G, pbs; Θ, â⁺*[G, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ us
+  G, pbs; Θ, â⁺*[G, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ SC
   ----------------------------------- :: Forall
-  G;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ us \ {â⁺*}
+  G;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ SC \ {â⁺*}
 
-  defn G ; Θ ⊨ uP ≥ iQ ⫤ us :: :: Psup :: ''
+  defn G ; Θ ⊨ uP ≥ iQ ⫤ SC :: :: Psup :: ''
   {{ com Positive supertyping }}
-  {{ tex [[G]] ;\, [[Θ]] [[⊨]] [[uP]] \supA [[iQ]] [[⫤]] [[us]] }} by
+  {{ tex [[G]] ;\, [[Θ]] [[⊨]] [[uP]] \supA [[iQ]] [[⫤]] [[SC]] }} by
 
   ---------------- :: PVar
   G;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·
 
-  G;Θ ⊨ nf(uN) ≈u nf(iM) ⫤ us
+  G;Θ ⊨ nf(uN) ≈u nf(iM) ⫤ UC
   --------------------------- :: ShiftD
-  G;Θ ⊨ ↓uN ≥ ↓iM ⫤ us
+  G;Θ ⊨ ↓uN ≥ ↓iM ⫤ lift UC 
 
   % *[G, nbs]
-  G, nbs; Θ,â⁻*[G, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ us
+  G, nbs; Θ,â⁻*[G, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ SC
   ------------------------------------------ :: Exists
-  G;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ us \ {â⁻*}
+  G;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ SC \ {â⁻*}
 
     
   â⁺[Δ] ∊ Θ   upgrade G ⊢ iP to Δ = iQ

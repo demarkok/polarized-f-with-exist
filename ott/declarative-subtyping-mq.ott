@@ -65,3 +65,15 @@ defns
   {{ com Equivalence of substitutions }}
   {{ tex [[G2]] [[⊢]] [[σ1]] \eqDOne [[σ2]] : [[G1]] }} by
 
+
+  defn Γ ⊢ σ1 ≈ σ2 : varset :: :: SubsEq :: 'SubsEq'
+  {{ com Equivalence of substitutions }}
+  {{ tex [[Γ]] [[⊢]] [[σ1]] \eqDOne [[σ2]] : [[varset]] }} by
+
+  defn Θ ⊢ uσ1 ≈ uσ2 : varset :: :: USubsEq :: 'USubsEq'
+  {{ com Equivalence of unification substitutions }}
+  {{ tex [[Θ]] [[⊢]] [[uσ1]] \eqDOne [[uσ2]] : [[varset]] }} by
+
+  % Γ ⊢ [σ1] α± ≈ [σ2] α±
+  % ----------------------
+  % Γ ⊢ σ1 ≈ σ2 : varset

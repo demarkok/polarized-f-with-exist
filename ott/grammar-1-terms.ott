@@ -19,8 +19,9 @@ c, d :: 'c_' ::= {{ com computation terms }}
   | λ x : iP . c                  ::   :: Lam    
   | Λ pa . c                      ::   :: BigLam 
   | return v                      ::   :: Return
-  | let x : iP = v ( args ) ; c   ::   :: LetAnn 
-  | let x     = v ( args ) ; c    ::   :: Let   
+  | let x = v ; c                 ::   :: VarLet 
+  | let x : iP = v ( args ) ; c   ::   :: AppLetAnn 
+  | let x     = v ( args ) ; c    ::   :: AppLet   
   | let∃ ( na , x ) = v    ; c    ::   :: Unpack 
 
 vctx, Φ {{ tex \Phi }} :: 'vctxt_' ::= {{ com variable context }}

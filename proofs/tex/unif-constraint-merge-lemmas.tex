@@ -1,0 +1,146 @@
+\begin{lemma} [Soundness of Unification Constraint Merge]
+    \label{lemma:unif-merge-soundness}
+    Suppose that $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$ 
+    are normalized unification constraints.
+    If $[[Θ ⊢ UC1 & UC2 = UC]]$ is defined then
+    $[[UC = UC1 ∪ UC2]]$.
+\end{lemma}
+\begin{proof}
+    \hfill
+    \begin{itemize}
+        \item $[[UC1 & UC2]] \subseteq [[UC1]] \cup [[UC2]]$\\
+        By definition, 
+        $[[UC1 & UC2]]$ consists of three parts:
+        entries of $[[UC1]]$ that do not have matching entries of $[[UC2]]$,
+        entries of $[[UC2]]$ that do not have matching entries of $[[UC1]]$,
+        and the merge of matching entries.
+
+        If $[[ucE]]$ is from the first or the second part, 
+        then $[[ucE]] \in [[UC1]] \cup [[UC2]]$ holds immediately.
+        If $[[ucE]]$ is from the third part,
+        then $[[ucE]]$ is the merge of two matching entries
+        $[[ucE1]] \in [[UC1]]$ and $[[ucE2]] \in [[UC2]]$.
+        Since $[[UC1]]$ and $[[UC2]]$ are normalized unification , 
+        $[[ucE1]]$ and $[[ucE2]]$ have one of the following forms:
+        \begin{itemize}
+            \item $[[α̂⁺ :≈ iP1]]$ and $[[α̂⁺ :≈ iP2]]$, 
+                where $[[iP1]]$ and $[[iP2]]$ are normalized,
+                and then since $[[Θ(α̂⁺) ⊢ ucE1 & ucE2 = ucE]]$ exists, 
+                \ruleref{\ottdruleUCMEPEqEqLabel} was applied to infer it.
+                It means that $[[ucE]] = [[ucE1]] = [[ucE2]]$;
+            \item $[[α̂⁻ :≈ iN1]]$ and $[[α̂⁻ :≈ iN2]]$, 
+               then symmetrically, 
+               $[[Θ(α̂⁻) ⊢ ucE1 & ucE2 = ucE]] = [[ucE1]] = [[ucE2]]$
+        \end{itemize}
+        In both cases, $[[ucE]] \in [[UC1]] \cup [[UC2]]$.
+
+        \item $[[UC1]] \cup [[UC2]] \subseteq [[UC1 & UC2]]$\\
+        Let us take 
+        an arbitrary $[[ucE1]] \in [[UC1]]$.
+        Then since $[[UC1]]$ is a unification constraint,
+         $[[ucE1]]$ has one of the following forms:
+        \begin{itemize}
+            \item $[[α̂⁺ :≈ iP]]$ where $[[iP]]$ is normalized.
+            If $[[α̂⁺]] \notin [[dom(UC2)]]$, then $[[ucE1]] \in [[UC1 & UC2]]$.
+            Otherwise, there is a normalized matching
+            $[[ucE2]] = [[(α̂⁺ :≈ iP')]] \in [[UC2]]$ and then
+            since $[[UC1 & UC2]]$ exists, 
+            \ruleref{\ottdruleUCMEPEqEqLabel} was applied to construct
+            $[[ucE1 & ucE2]] \in [[UC1 & UC2]]$.
+            By inversion of \ruleref{\ottdruleUCMEPEqEqLabel},
+            $[[ucE1 & ucE2]] = [[ucE1]]$, and
+            $[[nf(iP) = nf(iP')]]$, which since $[[iP]]$
+            and $[[iP']]$ are normalized, implies that $[[iP = iP']]$, 
+            that is $[[ucE1]] = [[ucE2]] \in [[UC1 & UC2]]$.
+            \item $[[α̂⁻ :≈ iN]]$ where $[[iN]]$ is normalized.
+            Then symmetrically, $[[ucE1]] = [[ucE2]] \in [[UC1 & UC2]]$.
+        \end{itemize}
+        Similarly, if we take an arbitrary $[[ucE2]] \in [[UC2]]$,
+        then $[[ucE1]] = [[ucE2]] \in [[UC1 & UC2]]$. 
+    \end{itemize}
+\end{proof}
+
+\begin{corollary}
+    \label{corollary:unif-merge-soundness}
+    Suppose that $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$ 
+    are normalized unification constraints.
+    If $[[Θ ⊢ UC1 & UC2 = UC]]$ is defined then
+    \begin{enumerate}
+        \item $[[Θ ⊢ UC]]$ is normalized unification constraint,
+        \item for any substitution $[[Θ ⊢ uσ]]$, $[[Θ ⊢ uσ : lift UC]]$ implies 
+        $[[Θ ⊢ uσ : lift UC1]]$ and $[[Θ ⊢ uσ : lift UC2]]$.
+    \end{enumerate}
+\end{corollary}
+\begin{proof}
+    It is clear that since $[[UC = UC1 ∪ UC2]]$ (by \cref{lemma:unif-merge-soundness}),
+    and being normalized means that all entries are normalized,
+    $[[UC]]$ is a normalized unification constraint.
+    Analogously, $[[Θ ⊢ UC]] = [[UC1 ∪ UC2]]$ holds immediately, 
+    since $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$.
+
+    Let us take an arbitrary substitution $[[Θ ⊢ uσ]]$ and assume that 
+    $[[Θ ⊢ uσ : lift UC]]$.
+    Then $[[Θ ⊢ uσ : lift UCi]]$ holds by definition:
+    If $[[ucE]] \in [[lift UCi]] \subseteq [[lift UC1 ∪ lift UC2]] = [[lift UC]]$.
+    So $[[Θ(α̂±) ⊢ [uσ]α̂± : ucE]]$ holds.
+\end{proof}
+
+
+% \begin{lemma} [Completeness of Unification Constraint Merge]
+%     \label{lemma:unif-merge-completeness}
+%     Suppose that $[[Θ ⊢ UC|varset1]]$ and $[[Θ ⊢ UC|varset2]]$.
+%     Then $[[Θ ⊢ UC|varset1 & UC|varset2 = UC']]$ exists and
+%     $[[UC' = UC|varset1 ∪ varset2]]$.
+% \end{lemma}
+% \begin{proof}
+%     $[[Θ ⊢ UC|varset1 & UC|varset2 = UC']]$ is defined as the union of three parts:
+%     entries of $[[UC|varset1]]$ that do not have matching entries of $[[UC|varset2]]$,
+%     entries of $[[UC|varset2]]$ that do not have matching entries of $[[UC|varset1]]$,
+%     and the merge of matching entries.
+%     The first two parts are defined. The merge of matching entries is defined
+%     by \ruleref{\ottdruleUCMEPEqEqLabel}, since the matching entries must be equal
+%     if they both belong to $[[UC]]$.
+
+%     It remains to show that $[[UC' = UC|varset1 ∪ varset2]]$.
+%     It is easy to see that the three parts comprising $[[UC']]$ 
+%     correspond to the three parts comprising 
+%     $[[UC|varset1 ∪ varset2]] = [[UC | (varset1 \ varset2) ∪ UC | (varset2 \ varset1) ∪ UC | varset1 ∩ varset2]]$. 
+% \end{proof}
+
+\begin{lemma} [Completeness of Unification Constraint Entry Merge]
+    \label{lemma:unif-entry-merge-completeness}
+    For a fixed context $[[Γ]]$,
+    suppose that $[[Γ ⊢ ucE1]]$ and $[[Γ ⊢ ucE2]]$ are matching constraint entries.
+    \begin{itemize}
+        \item for a type $[[iP]]$ such that $[[Γ ⊢ iP : ucE1]]$ and $[[Γ ⊢ iP : ucE2]]$,
+        $[[Γ ⊢ ucE1 & ucE2 = ucE]]$ is defined and $[[Γ ⊢ iP : ucE]]$.
+        \item for a type $[[iN]]$ such that $[[Γ ⊢ iN : ucE1]]$ and $[[Γ ⊢ iN : ucE2]]$,
+        $[[Γ ⊢ ucE1 & ucE2 = ucE]]$ is defined and $[[Γ ⊢ iN : ucE]]$.
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    The proof repeats the one of \cref{lemma:entry-merge-completeness}
+    and is done by the case analysis on the shape of $[[ucE1]]$ and $[[ucE2]]$.
+    However, it only needs to consider two cases.
+    \begin{caseof}
+        \item $[[ucE1]]$ is $[[pua :≈ iQ1]]$ and $[[ucE2]]$ is $[[pua :≈ iQ2]]$.
+        \item $[[ucE1]]$ is $[[nua :≈ iN1]]$ and $[[ucE2]]$ is $[[nua :≈ iM2]]$.
+    \end{caseof}
+    The proof of these cases is based only on \cref{lemma:subt-equiv-algorithmization}
+    and \cref{corollary:equivalence-transitivity}, and does not require the properties of 
+    the least upper bound or subtyping.
+\end{proof}
+
+\begin{lemma} [Completeness of Unification Constraint Merge] 
+    \label{lemma:unif-merge-completeness}
+    Suppose that $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$.
+    Then for any substitution $[[Θ ⊢ uσ]]$ such that $[[Θ ⊢ uσ : lift UC1]]$ and $[[Θ ⊢ uσ : lift UC2]]$, 
+    \begin{enumerate}
+        \item $[[Θ ⊢ UC1 & UC2 = UC]]$ is defined and
+        \item $[[Θ ⊢ uσ : UC]]$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    The proof repeats the proof of \cref{lemma:merge-completeness} but 
+    uses \cref{lemma:unif-entry-merge-completeness} instead of \cref{lemma:entry-merge-completeness}.
+\end{proof}

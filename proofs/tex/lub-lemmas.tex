@@ -308,10 +308,9 @@ Another observation we will use is the following.
         \end{array}}
       &&\begin{array}{l}
            \text{Notice that}\\
-           \text{``$\exists [[σ']]$ s.t. ($[[G ⊢ σ' : nas]]$ and $[[σ|fv(↓iM')]] =
-           [[σ'|fv(↓iM')]]$)''}\\
+           \text{<<$\exists [[σ']]$ s.t. ($[[G ⊢ σ' : nas]]$ and $[[σ|fv(↓iM')]] = [[σ'|fv(↓iM')]]$)>>}\\
            \text{is equivalent to $[[G ⊢ σ|fv(↓iM') : nas']]$ (\cref{observation:dumb-subs-extension})}\\
-         \end{array} \\
+        \end{array} \\
          % 
          % 
       &= \Set{[[ ∃nas'.↓iM' ]] \ |
@@ -358,6 +357,7 @@ Another observation we will use is the following.
       %
       %
     \end{aligned}$
+    hello
   \end{caseof}
 \end{proof}
 
@@ -648,8 +648,8 @@ Another observation we will use is the following.
     $[[(Ξ, uP, aus1, aus2)]]$ is the result of the anti-unification
     of $[[nf(↓iM1)]]$ and $[[nf(↓iM2)]]$ in context $[[Γ]]$.
 
-    Moreover, \cref{lemma:au-completeness} also says that the found solution 
-    is initial, i.e. there exists $[[aus]]$ such that
+    Moreover, \cref{lemma:au-completeness} also says that the found anti-unification 
+    solution is initial, i.e. there exists $[[aus]]$ such that
      $[[Γ;Ξ ⊢ aus : nuas]]$ and $[[ [aus][nuas/nas]↓uM' = uP ]]$.
 
      Let $[[σ]]$ be a sequential Kleisli composition of the following

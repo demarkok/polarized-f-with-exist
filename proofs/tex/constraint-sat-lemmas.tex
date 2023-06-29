@@ -1,0 +1,34 @@
+\begin{lemma}
+    \label{lemma:constraint-sat}
+    Suppose that $[[Θ ⊢ SC]]$ then there exist
+    s $[[uσ]]$ such that $[[Θ ⊢ uσ : SC]]$.
+\end{lemma}
+\begin{proof}
+    Let us define $[[uσ]]$
+    on $[[dom(SC)]]$ in the following way: 
+    $$
+    [[ [uσ]α̂± ]] = 
+    \begin{cases}
+        [[iP]] & \text{if $[[(α̂± :≈ iP)]] \in [[SC]]$} \\
+        [[iP]] & \text{if $[[(α̂± :≥ iP)]] \in [[SC]]$} \\
+        [[iN]] & \text{if $[[(α̂± :≈ iN)]] \in [[SC]]$} \\
+    \end{cases}
+    $$
+    Then $[[Θ ⊢ uσ : SC]]$ follows immediately
+    from the reflexivity of equivalence and subtyping
+    (\cref{lemma:subtyping-reflexivity}) and the corresponding
+    rules 
+    \ruleref{\ottdruleSATSCEPEqLabel}, 
+    \ruleref{\ottdruleSATSCENEqLabel},
+    and \ruleref{\ottdruleSATSCESupLabel}.
+\end{proof}
+
+\begin{lemma}
+    Suppose $[[Θ ⊢ SC]]$,
+    and $[[SC singular]]$. 
+    Then there exist a unique (up-to equivalence)
+    $[[Θ ⊢ uσ : SC]]$.
+\end{lemma}
+\begin{proof}
+
+\end{proof}

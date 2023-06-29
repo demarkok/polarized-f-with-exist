@@ -1,0 +1,62 @@
+defns
+  SCM :: 'SCM' ::=
+
+  defn Γ ⊢ scE1 & scE2 = scE3 :: :: E :: 'E'
+  {{ com Subtyping Constraint Entry Merge }}
+  {{ tex [[Γ]] \vdash [[ scE1 ]] ~ \& ~ [[ scE2 ]] = [[scE3]] }}
+  by
+
+  Γ ⊨ iP1 ∨ iP2 = iQ
+  ----------------------------------------------------- :: SupSup
+  Γ ⊢ (pua :≥ iP1) & (pua :≥ iP2) = (pua :≥ iQ)
+
+  Γ;· ⊨ uP ≥ iQ ⫤ · 
+  --------------------------------------------------- :: EqSup
+  Γ ⊢ (pua :≈ iP) & (pua :≥ iQ) = (pua :≈ iP)
+
+  Γ;· ⊨ uQ ≥ iP ⫤ · 
+  --------------------------------------------------- :: SupEq
+  Γ ⊢ (pua :≥ iP) & (pua :≈ iQ) = (pua :≈ iQ)
+
+  nf(iP) = nf(iP')
+  --------------------------------------------------- :: PEqEq
+  Γ ⊢ (pua :≈ iP) & (pua :≈ iP') = (pua :≈ iP)
+
+  nf(iN) = nf(iN')
+  --------------------------------------------------- :: NEqEq
+  Γ ⊢ (nua :≈ iN1) & (nua :≈ iN') = (nua :≈ iN)
+
+  defn Θ ⊢ SC1 & SC2 = SC3 :: :: SCM :: ''
+  {{ com Merge of subtyping constraints }} by
+
+defns 
+  UCM :: 'UCM' ::=
+  defn Γ ⊢ ucE1 & ucE2 = ucE3 :: :: E :: 'E' by
+
+  nf(iP) = nf(iP')
+  --------------------------------------------------- :: PEqEq
+  Γ ⊢ (pua :≈ iP) & (pua :≈ iP') = (pua :≈ iP)
+
+  nf(iN) = nf(iN')
+  --------------------------------------------------- :: NEqEq
+  Γ ⊢ (nua :≈ iN1) & (nua :≈ iN') = (nua :≈ iN)
+
+
+  defn Θ ⊢ UC1 & UC2 = UC3 :: :: UC :: 'UC' by
+
+  % defn Θ ⊢ SC1 ≈ SC2 :: :: SCEq :: 'SCEq' by
+
+  % defn Γ ⊢ usEntry1 ≈ usEntry2 :: :: EEq :: 'EEq' by
+
+  % Γ ⊢ iP1 ≈ iP2
+  % ------------------------------- :: SupSup
+  % Γ ⊢ (pua :≥ iP1) ≈ (pua :≥ iP2)
+
+  % Γ ⊢ iP1 ≈ iP2
+  % ------------------------------- :: PEqEq
+  % Γ ⊢ (pua :≈ iP1) ≈ (pua :≈ iP2)
+
+  % Γ ⊢ iN1 ≈ iN2
+  % ------------------------------- :: NEqEq
+  % Γ ⊢ (nua :≈ iN1) ≈ (nua :≈ iN2)
+

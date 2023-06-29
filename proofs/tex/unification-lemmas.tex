@@ -3,184 +3,184 @@
     \begin{itemize}
         \item [$+$] For normalized $[[uP]]$ and $[[iQ]]$ such that 
         $[[Γ ; Θ ⊢ uP]]$ and $[[Γ ⊢ iQ]]$,\\ 
-        if $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ us]]$ then $[[us : Θ | uv uP]]$, 
-        $[[us]]$ is equivalence-only, and $[[ [us]uP = iQ ]]$.
+        if $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$ then 
+        $[[Θ ⊢ UC]]$ and for any normalized $[[uσ]]$ such that $[[Θ ⊢ uσ : lift UC]]$,
+        $[[ [uσ]uP = iQ ]]$.
 
         \item [$-$] For normalized $[[uN]]$ and $[[iM]]$ such that
         $[[Γ ; Θ ⊢ uN]]$ and $[[Γ ⊢ iM]]$,\\
-        if $[[Γ ; Θ ⊨ uN ≈u iM ⫤ us]]$ then $[[us : Θ | uv uN]]$,
-        $[[us]]$ is equivalence-only, and $[[ [us]uN = iM ]]$.
+        if $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$ then 
+        $[[Θ ⊢ UC]]$ and for any normalized $[[uσ]]$ such that $[[Θ ⊢ uσ : lift UC]]$,
+        $[[ [uσ]uN = iM ]]$.
     \end{itemize}
 \end{lemma}
 \begin{proof}
     We prove by induction on the derivation of 
-    $[[ Γ ; Θ ⊨ uN ≈u iM ⫤ us ]]$ and mutually $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ us]]$.
+    $[[ Γ ; Θ ⊨ uN ≈u iM ⫤ UC ]]$ and mutually $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$.
     Let us consider the last rule forming this derivation. 
     \begin{caseof}
         \item \ruleref{\ottdruleUNVarLabel}, then $[[uN]] = [[α⁻]] = [[iM]]$.
-        The resulting unification solution is empty: $[[us]] = [[·]]$.
-        Since $[[uv uN]] = [[∅]]$, it satisfies $[[us : Θ | uv uP]]$.
-        Vacuously, it is equivalence-only, and $[[ [us]α⁻ = α⁻ ]]$, that is $[[ [us]uN = iM ]]$.
+        The resulting unification constraint is empty: $[[UC]] = [[·]]$.
+        It satisfies $[[Θ ⊢ UC]]$ vacuously, and $[[ [us]α⁻ = α⁻ ]]$, that is $[[ [us]uN = iM ]]$.
 
         \item \ruleref{\ottdruleUShiftULabel}, then $[[uN]] = [[↑uP]]$ and $[[iM]] = [[↑iQ]]$.
-        The algorithm makes a recursive call to $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ us]]$ returning $[[us']]$.
-        By induction hypothesis, $[[us' : Θ | uv uP]]$,
-        and since $[[uv uN]] = [[uv ↑uP]] = [[uv uP]]$,  $[[us' : Θ | uv uN]]$.
-        Finally, $[[ [us]uN ]] = [[ [us]↑uP ]] = [[ ↑[us]uP ]] = [[ ↑iQ ]] = [[ iM ]]$.
+        The algorithm makes a recursive call to $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$ returning $[[UC]]$.
+        By induction hypothesis, $[[Θ ⊢ UC]]$ and for any $[[Θ ⊢ uσ : lift UC]]$,
+        $[[ [uσ]uN ]] = [[ [uσ]↑uP ]] = [[ ↑[uσ]uP ]] = [[ ↑iQ ]] = [[ iM ]]$, as 
+        required.
 
         \item \ruleref{\ottdruleUArrowLabel}, then $[[uN]] = [[uP → uN']]$ and $[[iM]] = [[iQ → iM']]$.
-        The algorithm makes two recursive calls to $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ us1]]$ and
-        $[[Γ ; Θ ⊨ uN' ≈u iM' ⫤ us2]]$ returning $[[us1 & us2]]$ as the result.
+        The algorithm makes two recursive calls to $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC1]]$ and
+        $[[Γ ; Θ ⊨ uN' ≈u iM' ⫤ UC2]]$ returning $[[Θ ⊢ UC1 & UC2 = UC]]$ as the result.
 
         It is clear that $[[uP]]$, $[[uN']]$, $[[iQ]]$, and $[[iM']]$ are normalized,
         and that $[[Γ ; Θ ⊢ uP]]$, $[[Γ ; Θ ⊢ uN']]$, $[[Γ ⊢ iQ]]$, and $[[Γ ⊢ iM']]$.
         This way, the induction hypothesis is applicable to both recursive calls.
-        By applying the induction hypothesis to $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ us1]]$,
+
+        By applying the induction hypothesis to $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC1]]$,
         we have:
         \begin{itemize}
-            \item $[[us1 : Θ | uv uP]]$,
-            \item $[[us1]]$ is equivalence-only, and
-            \item $[[ [us1]uP = iQ ]]$.
+            \item $[[Θ ⊢ UC1]]$,
+            \item for any $[[Θ ⊢ uσ' : lift UC1]]$, $[[ [uσ']uP = iQ ]]$.
         \end{itemize}
-        By applying it to $[[Γ ; Θ ⊨ uN' ≈u iM' ⫤ us2]]$, we have:
+        By applying it to $[[Γ ; Θ ⊨ uN' ≈u iM' ⫤ UC2]]$, we have:
         \begin{itemize}
-            \item $[[us2 : Θ | uv uN']]$,
-            \item $[[us2]]$ is equivalence-only, and
-            \item $[[ [us2]uN' = iM' ]]$.
+            \item $[[Θ ⊢ UC2]]$,
+            \item for any $[[Θ ⊢ uσ' : lift UC2]]$, $[[ [uσ']uN' = iM' ]]$.
         \end{itemize}
 
-        By the soundness of the unification solution merge (\cref{corollary:unif-sol-merge-soundness}), we have:
-        \begin{itemize}
-            \item $[[us1 & us2 : Θ | uv uP ∪ uv uN']]$, and hence, $[[us1 & us2 : Θ | uv uN]]$; 
-            \item $[[us1 & us2]]$ is equivalence-only; 
-            \item $[[us1 & us2]]$ is normalized;
-            \item $[[us1 & us2 | uv uP]] = [[us1]]$ and hence, $[[ [us1 & us2]uP ]] = [[ [us1]uP ]] = [[iQ]]$;
-            \item $[[us1 & us2 | uv uN']] = [[us2]]$ and hence, $[[ [us1 & us2]uN' ]] = [[ [us2]uN' ]] = [[iM']]$.
-        \end{itemize}
-        This way, $[[ [us1 & us2]uN ]] = [[ [us1 & us2]uP → [us1 & us2]uN' ]] = [[ iQ → iM' ]] = [[ iM ]]$.
+
+        Let us take an arbitrary $[[Θ ⊢ uσ : lift UC]]$.
+        By the soundness of the constraint merge (\cref{lemma:merge-soundness}), 
+        $[[Θ ⊢ lift UC1 & lift UC2 = lift UC]]$ implies
+        $[[Θ ⊢ uσ : lift UC1 ]]$ and $[[Θ ⊢ uσ : lift UC2]]$.
+
+        Applying the induction hypothesis to $[[Θ ⊢ uσ : lift UC1]]$, we have
+        $[[ [uσ]uP = iQ ]]$; applying it to $[[Θ ⊢ uσ : lift UC2]]$, we have
+        $[[ [uσ]uN' = iM' ]]$.
+        This way, $[[ [uσ]uN ]] = [[ [uσ]uP → [uσ]uN' ]] = [[ iQ → iM' ]] = [[ iM ]]$.
 
         \item \ruleref{\ottdruleUForallLabel}, then $[[uN]] = [[∀pas.uN']]$ and $[[iM]] = [[∀pas.iM']]$.
-        The algorithm makes a recursive call to $[[Γ,pas ; Θ ⊨ uN' ≈u iM' ⫤ us]]$
-        returning $[[us]]$ as the result.
+        The algorithm makes a recursive call to $[[Γ,pas ; Θ ⊨ uN' ≈u iM' ⫤ UC]]$
+        returning $[[UC]]$ as the result.
 
         The induction hypothesis is applicable: $[[Γ,pas ; Θ ⊢ uN']]$ and $[[Γ,pas ⊢ iM']]$ hold
         by inversion, and $[[uN']]$ and $[[iM']]$ are normalized, since $[[uN]]$ and $[[iM]]$ are.
-
-        By the induction hypothesis, $[[us : Θ | uv uN']]$, then, since
-        $[[uv uN]] = [[uv ∀pas.uN']] = [[uv uN']]$, we have $[[us : Θ | uv uN]]$.
-        Finally, $[[ [us]uN ]] = [[ [us]∀pas.uN' ]] = [[ ∀pas.[us]uN' ]] = [[ ∀pas.iM' ]] = [[ iM ]]$.
+        Let us take an arbitrary $[[Θ ⊢ uσ : lift UC]]$.
+        By the induction hypothesis, $[[ [uσ]uN' ]] = [[ iM' ]]$. 
+        Then $[[ [uσ]uN ]] = [[ [uσ]∀pas.uN' ]] = [[ ∀pas.[uσ]uN' ]] = [[ ∀pas.iM' ]] = [[ iM ]]$.
 
         \item \ruleref{\ottdruleUNUVarLabel}, then $[[uN]] = [[α̂⁻]]$, $[[â⁻[Δ] ∊ Θ]]$, and $[[Δ ⊢ iM]]$.
-        As the result, the algorithm returns $[[us]] = [[ (â⁻ :≈ iM) ]]$.
+        As the result, the algorithm returns $[[UC]] = [[ (â⁻ :≈ iM) ]]$.
 
-        It is clear that $[[(â⁻ :≈ iM) : (α̂⁻[Δ])]]$, since $[[Δ ⊢ iM]]$.
-        Notice that since $[[Θ|uv uN]] = [[Θ|{α̂⁻}]] = [[(α̂⁻[Δ])]]$, we can rewrite 
-        $[[(â⁻ :≈ iM) : (α̂⁻[Δ])]]$ as $[[us : Θ | uv uN]]$, as required.
+        It is clear that $[[α̂⁻[Δ] ⊢ (â⁻ :≈ iM) ]]$, since $[[Δ ⊢ iM]]$, 
+        meaning that $[[Θ ⊢ UC]]$.
 
-        It is also clear that $[[us]] = [[ (â⁻ :≈ iM) ]]$ is equivalence-only, 
-        and that $[[ [us]uN ]] = [[ [â⁻ :≈ iM]α̂⁻ ]] = [[ iM ]]$, as required.
+        Let us take an arbitrary $[[uσ]]$ such that  $[[Θ ⊢ uσ : lift UC]]$.
+        Since $[[UC]] = [[ (â⁻ :≈ iM) ]]$, $[[Θ ⊢ uσ : lift UC]]$ implies 
+        $[[Θ(â⁻) ⊢ [uσ]â⁻ : (â⁻ :≈ iM) ]]$.
+        By inversion of \ruleref{\ottdruleSATSCENEqLabel}, it  means $[[Θ(â⁻) ⊢ [uσ]â⁻ ≈ iM]]$.
+        This way, $[[Θ(â⁻) ⊢ [uσ]uN ≈ iM]]$. 
+        Notice that $[[uσ]]$ and $[[uN]]$ are normalized, and by \cref{todo}, so is $[[ [uσ]uN ]]$.
+        Since both sides of $[[Θ(â⁻) ⊢ [uσ]uN ≈ iM]]$ are normalized,
+        by \cref{lemma:subt-equiv-algorithmization}, we have $[[ [uσ]uN = iM ]]$.
 
         \item The positive cases are proved symmetrically.
-
     \end{caseof}
-
-
 \end{proof}
 
 \begin{lemma}[Completeness of Unification] \label{lemma:unification-completeness}
     \hfill
     \begin{itemize}
         \item [$+$] For normalized $[[uP]]$ and $[[iQ]]$ such that
-        $[[Γ ; Θ ⊢ uP]]$ and $[[Γ ⊢ iQ]]$,\\ 
-        assume there exists a normalized unification solution
-        $[[us : Θ | uv uP]]$ such that $[[ [us]uP = iQ ]]$.
-        Then $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ us]]$.
+        $[[Γ ; Θ ⊢ uP]]$ and $[[Γ ⊢ iQ]]$, 
+        for any $[[Θ ⊢ uσ]]$ such that $[[ [uσ]uP = iQ ]]$,
+        there exists $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$,
+        and $[[Θ ⊢ uσ : lift UC]]$.
         
         \item [$-$] For normalized $[[uN]]$ and $[[iM]]$ such that
         $[[Γ ; Θ ⊢ uN]]$ and $[[Γ ⊢ iM]]$,\\
-        assume there exists a normalized unification solution
-        $[[us : Θ | uv uN]]$        
-        such that $[[ [us]uN = iM ]]$.
-        Then $[[Γ ; Θ ⊨ uN ≈u iM ⫤ us]]$.
+        for any $[[Θ ⊢ uσ]]$ such that $[[ [uσ]uN = iM ]]$,
+        there exists $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$,
+        and $[[Θ ⊢ uσ : lift UC]]$.
    \end{itemize}
 \end{lemma}
 \begin{proof}
     We prove it by induction on the structure of $[[uP]]$ and mutually, $[[uN]]$.
     \begin{caseof}
         \item $[[uN]] = [[α̂⁻]]$\\
-            Since $[[uv uN]]$ = $[[α̂⁻]]$, 
-            $[[us : Θ | {α̂⁻}]]$ means that $[[ α̂⁻[Δ] ]] \in [[Θ]]$, 
-            and since $[[us]]$ is equivalence only, $[[us]] = [[ (α̂⁻ :≈ iM') ]]$
-            for some $[[Δ ⊢ iM']]$.
-            $[[ [us]uN = iM ]]$ means $[[iM' = iM]]$.
+            $[[Γ ; Θ ⊢ α̂⁻]]$ means that $[[ α̂⁻[Δ] ]] \in [[Θ]]$ for some $[[Δ]]$.
+
+            Let us take an arbitrary $[[Θ ⊢ uσ]]$ such that $[[ [uσ]α̂⁻ = iM ]]$.
+            $[[Θ ⊢ uσ]]$ means that $[[Δ ⊢ iM]]$.
             This way, \ruleref{\ottdruleUNUVarLabel} is applicable to infer 
             $[[Γ ; Θ ⊨ â⁻ ≈u iM ⫤ (â⁻ :≈ iM)]]$.
+            $[[Θ ⊢ uσ : lift (â⁻ :≈ iM)]]$ holds by \ruleref{\ottdruleSATSCENEqLabel}. 
+            
         \item $[[uN]] = [[α⁻]]$\\
-            Then $[[us : Θ | {α⁻}]]$ means that $[[ us ]] = [[·]]$, 
-            and $[[ [us]α⁻ = iM ]]$ means $[[iM = α⁻]]$.
+            Let us take an arbitrary $[[Θ ⊢ uσ]]$ such that $[[ [uσ]α⁻ = iM ]]$.
+            The latter means $[[iM = α⁻]]$.
+
+            Then $[[ [us]α⁻ = iM ]]$ means $[[iM = α⁻]]$.
             This way, \ruleref{\ottdruleUNVarLabel} infers 
-            $[[Γ; Θ ⊨ a⁻ ≈u a⁻ ⫤ ·]]$, which is rewritten as $[[Γ; Θ ⊨ uN ≈u iM ⫤ us]]$.
+            $[[Γ; Θ ⊨ a⁻ ≈u a⁻ ⫤ ·]]$, which is rewritten as $[[Γ; Θ ⊨ uN ≈u iM ⫤ ·]]$, 
+            and $[[Θ ⊢ uσ : lift ·]]$ holds trivially.
 
         \item $[[uN]] = [[↑uP]]$\\
-            Notice that $[[ [us]uN = iM ]]$ means $[[ ↑[us]uP = iM ]]$, i.e.
-            $[[iM]] = [[↑iQ]]$ for some $[[iQ]]$ and $[[ [us]uP = iQ ]]$.
+            Let us take an arbitrary $[[Θ ⊢ uσ]]$ such that $[[ [uσ]↑uP = iM ]]$.
+            The latter means $[[ ↑[uσ]uP = iM ]]$, i.e.
+            $[[iM]] = [[↑iQ]]$ for some $[[iQ]]$ and $[[ [uσ]uP = iQ ]]$.
 
-            Let us show that the induction hypothesis is applicable to $[[ [us]uP = iQ ]]$.
+            Let us show that the induction hypothesis is applicable to $[[ [uσ]uP = iQ ]]$.
             Notice that $[[uP]]$ is normalized, since $[[uN]] = [[↑uP]]$ is normalized,
-            $[[Γ ; Θ ⊢ uP]]$ follows from inversion of $[[Γ ; Θ ⊢ ↑uP]]$, 
-            and $[[Γ ⊢ iQ]]$ follows from inversion of $[[Γ ⊢ ↑iQ]]$,
-            $[[us]]$ is equivalence-only by assumption, and
-            $[[us : Θ | uv uP]]$, since $[[uv uP]] = [[uv ↑uP]] = [[uv uN]]$.       
+            $[[Γ ; Θ ⊢ uP]]$ holds by inversion of $[[Γ ; Θ ⊢ ↑uP]]$, 
+            and $[[Γ ⊢ iQ]]$ holds by inversion of $[[Γ ⊢ ↑iQ]]$.
 
-            Then by the induction hypothesis, $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ us]]$.
-            Hence, \ruleref{\ottdruleUShiftULabel} is applicable to infer
-            $[[Γ ; Θ ⊨ ↑uP ≈u ↑iQ ⫤ us]]$, that is $[[Γ ; Θ ⊨ uN ≈u iM ⫤ us]]$.
-
+            This way, by the induction hypothesis there exists $[[UC]]$ such that
+            $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$, and moreover, $[[Θ ⊢ uσ : lift UC]]$.
+            
         \item $[[uN]] = [[uP → uN']]$\\
-            Notice that $[[ [us]uN = iM ]]$ means $[[ [us]uP → [us]uN' = iM ]]$, i.e.
+            Let us take an arbitrary $[[Θ ⊢ uσ]]$ such that $[[ [uσ](uP → uN') = iM ]]$.
+            The latter means $[[ [uσ]uP → [uσ]uN' = iM ]]$, i.e.
             $[[iM]] = [[iQ → iM']]$ for some $[[iQ]]$ and $[[iM']]$, 
-            such that $[[ [us]uP = iQ ]]$ and $[[ [us]uN' = iM' ]]$.
-            Then $[[ [us | uv uP]uP = iQ ]]$ and $[[ [us | uv uN']uN' = iM' ]]$.
+            such that $[[ [uσ]uP = iQ ]]$ and $[[ [uσ]uN' = iM' ]]$.
 
-            Let us show that the induction hypothesis is applicable to $[[ [us | uv uP]uP = iQ ]]$ 
-            and $[[ [us | uv uN']uN' = iM' ]]$.
-            Notice that $[[uP]]$ and $[[uN']]$ are normalized, since $[[uN]] = [[uP → uN']]$ is normalized,
-            $[[Γ ; Θ ⊢ uP]]$ and $[[Γ ; Θ ⊢ uN']]$ follow from inversion of $[[Γ ; Θ ⊢ uP → uN']]$,
-            $[[Γ ⊢ iQ]]$ and $[[Γ ⊢ iM']]$ follow from inversion of $[[Γ ⊢ iQ → iM']]$,
-            $[[us|uv uP]]$ and $[[us|uv uN']]$ are equivalence-only since $[[us]]$ is equivalence-only,
-            $[[us|uv uP : Θ | uv uP]]$ and $[[us|uv uN' : Θ | uv uN']]$, 
-            since $[[us : Θ | uv uP ∪ uv uN']]$ (\cref{todo}).
-
-            Then by the induction hypothesis, $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ us|uv uP]]$ and
-            $[[Γ ; Θ ⊨ uN' ≈u iM' ⫤ us|uv uN']]$.
-            To apply \ruleref{\ottdruleUArrowLabel} and infer the required
-            $[[Γ ; Θ ⊨ uN ≈u iM ⫤ us]]$, we need to show that
-            $[[us|uv uP & us|uv uN']]$ is defined and equal to $[[us]]$. 
-            It holds by the completeness  of the unification solution merge 
-            (\cref{lemma:unif-sol-merge-completeness}):
+            Let us show that the induction hypothesis is applicable to 
+            $[[ [uσ]uP = iQ ]]$ and to $[[ [uσ]uN' = iM' ]]$:
             \begin{itemize}
-                \item $[[us|uv uP : Θ | uv uP]]$,
-                \item $[[us|uv uN' : Θ | uv uN']]$,
-                \item $[[us|uv uP]]$ and  $[[us|uv uN']]$ are normalized unification solution since so is $[[us]]$,
-                \item $[[us : Θ | uv uP ∪ uv uN']]$ since $[[uv uP ∪ uv uN']] = [[uv uN]]$
+                \item $[[uP]]$ and $[[uN']]$ are normalized, since $[[uN]] = [[uP → uN']]$ is normalized
+                \item $[[Γ ; Θ ⊢ uP]]$ and $[[Γ ; Θ ⊢ uN']]$ follow from the inversion of $[[Γ ; Θ ⊢ uP → uN']]$,
+                \item $[[Γ ⊢ iQ]]$ and $[[Γ ⊢ iM']]$ follow from inversion of $[[Γ ⊢ iQ → iM']]$.
             \end{itemize}
 
-        \item $[[uN]] = [[∀pas.uN']]$\\
-            Notice that $[[ [us]uN = iM ]]$ means $[[ ∀pas.[us]uN' = iM ]]$, i.e.
-            $[[iM]] = [[∀pas.iM']]$ for some $[[iM']]$ such that $[[ [us]uN' = iM' ]]$.
+            Then by the induction hypothesis, $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC1]]$ and $[[Θ ⊢ uσ : lift UC1]]$,
+            $[[Γ ; Θ ⊨ uN' ≈u iM' ⫤ UC2]]$ and $[[Θ ⊢ uσ : lift UC2]]$.
+            To apply \ruleref{\ottdruleUArrowLabel} and infer the required
+            $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$, we need to show that
+            $[[Θ ⊢ UC1 & UC2 = UC]]$ is defined and $[[Θ ⊢ uσ : lift UC]]$.
+            It holds by the completeness of the unification constraint merge 
+            (\cref{lemma:merge-completeness}):
+            \begin{itemize}
+                \item $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$ holds by the soundness of unification (\cref{lemma:unification-soundness})
+                \item $[[Θ ⊢ uσ : lift UC1]]$ and $[[Θ ⊢ uσ : lift UC2]]$ holds as noted above 
+            \end{itemize}.
 
-            Let us show that the induction hypothesis is applicable to $[[ [us]uN' = iM' ]]$.
+        \item $[[uN]] = [[∀pas.uN']]$\\
+            Let us take an arbitrary $[[Θ ⊢ uσ]]$ such that $[[ [uσ]∀pas.uN' = iM ]]$.
+            The latter means $[[ ∀pas.[uσ]uN' = iM ]]$, i.e.
+            $[[iM]] = [[∀pas.iM']]$ for some $[[iM']]$ such that $[[ [uσ]uN' = iM' ]]$.
+
+            Let us show that the induction hypothesis is applicable to $[[ [uσ]uN' = iM' ]]$.
             Notice that $[[uN']]$ is normalized, since $[[uN]] = [[∀pas.uN']]$ is normalized,
             $[[Γ,pas ; Θ ⊢ uN']]$ follows from inversion of $[[Γ ; Θ ⊢ ∀pas.uN']]$,
-            $[[Γ,pas ⊢ iM']]$ follows from inversion of $[[Γ ⊢ ∀pas.iM']]$,
-            $[[us]]$ is equivalence-only by assumption, and
-            $[[us : Θ | uv uN']]$ since $[[uv uN']] = [[uv ∀pas.uN']] = [[uv uN]]$.       
+            $[[Γ,pas ⊢ iM']]$ follows from inversion of $[[Γ ⊢ ∀pas.iM']]$, and
+            $[[Θ ⊢ uσ]]$ by assumption. 
 
-            By the induction hypothesis, $[[Γ,pas ; Θ ⊨ uN' ≈u iM' ⫤ us]]$.
+            This way, by the induction hypothesis, $[[Γ,pas ; Θ ⊨ uN' ≈u iM' ⫤ UC]]$ exists and 
+            moreover, $[[Θ ⊢ uσ : lift UC]]$.
             Hence, \ruleref{\ottdruleUForallLabel} is applicable to infer
-            $[[Γ ; Θ ⊨ ∀pas.uN' ≈u ∀pas.iM' ⫤ us]]$, that is $[[Γ ; Θ ⊨ uN ≈u iM ⫤ us]]$.
+            $[[Γ ; Θ ⊨ ∀pas.uN' ≈u ∀pas.iM' ⫤ UC]]$, that is $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$.
 
         \item The positive cases are proved symmetrically.
     \end{caseof}
 \end{proof}
-

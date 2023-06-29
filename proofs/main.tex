@@ -48,7 +48,7 @@
 % \makeatother
 
 
-\newcommand{\depth}[1]{\mathsc{depth}(#1)}
+\newcommand{\depth}[1]{\mathsf{depth}(#1)}
 
 \newcommand{\ruleref}[1]{Rule \nameref{#1}}
 
@@ -138,28 +138,22 @@
 \renewcommand{\ottdruleAExistsName}[0]{($\exists^{\supA}$)}
 \renewcommand{\ottdruleAPUVarName}[0]{(UVar$^{\supA}$)}
 
-% Γ ⊢ usEntry1 & usEntry2 = usEntry3
-\renewcommand{\ottdruleSMESupSupName}[0]{$([[≥]]\&^{+}[[≥]])$}
-\renewcommand{\ottdruleSMEEqSupName}[0]{$([[≈]]\&^{+}[[≥]])$}
-\renewcommand{\ottdruleSMESupEqName}[0]{$([[≥]]\&^{+}[[≈]])$}
-\renewcommand{\ottdruleSMEPEqEqName}[0]{$([[≈]]\&^{+}[[≈]])$}
-\renewcommand{\ottdruleSMENEqEqName}[0]{$([[≈]]\&^{-}[[≈]])$}
 
+% Γ ⊢ scE1 & scE2 = scE3 :: :: E :: 'E'
+\renewcommand{\ottdruleSCMESupSupName}[0]{$([[≥]]\&^{+}[[≥]])$}
+\renewcommand{\ottdruleSCMEEqSupName}[0]{$([[≈]]\&^{+}[[≥]])$}
+\renewcommand{\ottdruleSCMESupEqName}[0]{$([[≥]]\&^{+}[[≈]])$}
+\renewcommand{\ottdruleSCMEPEqEqName}[0]{$([[≈]]\&^{+}[[≈]])$}
+\renewcommand{\ottdruleSCMENEqEqName}[0]{$([[≈]]\&^{-}[[≈]])$}
 
-% Γ ⊢ usEntry1 ⇒ usEntry2
-\renewcommand{\ottdruleSImpESupSupName}[0]{$([[≥]]\Rightarrow^{+}[[≥]])$}
-\renewcommand{\ottdruleSImpEEqSupName}[0]{$([[≈]]\Rightarrow^{+}[[≥]])$}
-\renewcommand{\ottdruleSImpEPEqEqName}[0]{$([[≈]]\Rightarrow^{+}[[≈]])$}
-\renewcommand{\ottdruleSImpENEqEqName}[0]{$([[≈]]\Rightarrow^{-}[[≈]])$}
-
-% Γ ; Θ ⊨ uN ≈u iM ⫤ us 
+% Γ ; Θ ⊨ uN ≈u iM ⫤ UC 
 \renewcommand{\ottdruleUNVarName}[0]{(Var$^{-[[≈u]]}$)}
 \renewcommand{\ottdruleUShiftUName}[0]{($\uparrow^{[[≈u]]}$)}
 \renewcommand{\ottdruleUArrowName}[0]{($\rightarrow^{[[≈u]]}$)}
 \renewcommand{\ottdruleUForallName}[0]{($\forall^{[[≈u]]}$)}
 \renewcommand{\ottdruleUNUVarName}[0]{(UVar$^{-[[≈u]]}$)}
 
-% Γ ; Θ ⊨ uP ≈u iQ ⫤ us 
+% Γ ; Θ ⊨ uP ≈u iQ ⫤ UC 
 \renewcommand{\ottdruleUPVarName}[0]{(Var$^{+[[≈u]]}$)}
 \renewcommand{\ottdruleUShiftDName}[0]{($\downarrow^{[[≈u]]}$)}
 \renewcommand{\ottdruleUExistsName}[0]{($\exists^{[[≈u]]}$)}
@@ -225,6 +219,9 @@ First, we present the top-level system, which is easy to understand.
 \subsubsection{Quantifier Normalization}
 \ottdefnsNrm
 
+\subsection{Singularity}
+\ottdefnsSING
+
 % \subsection{Algorithmic Equivalence}
 % \ottdefnsEOneA
 
@@ -234,9 +231,11 @@ First, we present the top-level system, which is easy to understand.
 \subsection{Algorithmic Subtyping}
 \ottdefnsA
 
-\subsection{Unification Solution Weakening}
 
-Unification solution is represented by a list of unification solution entries.
+
+\subsection{Constraint Merge}
+
+Unification and subtyping constraints is are by a list of constraint entries.
 Each entry restricts an unification variable in two possible ways: either
 stating that it must be equivalent to a certain type ($[[pua :≈ iP]]$ or $[[nua
 :≈ iN]]$) or that it must be a (positive) supertype of a certain type ($[[pua :≥ iP]]$).
@@ -245,35 +244,9 @@ stating that it must be equivalent to a certain type ($[[pua :≈ iP]]$ or $[[nu
   We call two entries matching if they are restricting the same unification variable.
 \end{definition}
 
-Unification solutions are preordered by the weakening relation.
-First, let us define the weakening on the unification solution entries.\\
-
-\begin{definition} \hfill \\
-\ottdefnSImpE{}\\
-\end{definition}
-Notice that  $[[Γ ⊢ usEntry1 ⇒ usEntry2]]$ means that $[[usEntry1]]$ and $[[usEntry2]]$ are matching. And 
-matching is a equivalence relation on the set of unification solutions. 
-
-Next, we lift the weakening relation to unification solutions.
-Informally, $[[Θ ⊢ us1 ⇒ us2]]$ means that for any entry of $[[us2]]$,
-there is a matching entry in $[[us1]]$ that is stronger than it. 
-
-\begin{definition}
-  Assuming $[[us2 : Θ]]$ and $[[us1 : Θ']] \supseteq [[Θ]]$,
-  we say $[[Θ ⊢ us1 ⇒ us2]]$ iff
-  $\forall [[usEntry2]] \in [[us2]]$, $\exists [[usEntry1]] \in [[us1]]$ s.t.
-  \begin{enumerate}
-    \item $[[usEntry1]]$ and $[[usEntry2]]$ are matching, i.e. restricting the same unification variable $[[α̂±]]$;
-    \item $[[Θ(α̂±) ⊢ usEntry1 ⇒ usEntry2]]$ (where $[[Θ(α̂±)]]$ is the context corresponding to $[[α̂±]]$ in $[[Θ]]$).
-  \end{enumerate}
-\end{definition}
-
-
-\subsection{Unification Solution Merge}
-
 Two matching entries can be merged in the following way:
 \begin{definition} \hfill \\
-\ottdefnSME\\
+\ottdefnSCME\\
 \end{definition}
 % Notice that in case of equivalence, the assigned types
 % must be equal (i.e. alpha-equivalent) to be merged. This is because
@@ -281,31 +254,21 @@ Two matching entries can be merged in the following way:
 % and hence, equivalence is alpha-equivalence 
 % (\cref{corollary:nf-complete-wrt-subt-equiv,corollary:nf-sound-wrt-subt-equiv}).
 
-
-To merge two unification solution, we merge each pair of
+To merge two constraints, we merge each pair of
 matching entries, and unite the results.
-
+\ilyam{add contexts}
 \begin{definition}
-  $\begin{aligned}[t]
-  [[us1 & us2]] &= \{ [[usEntry1 & usEntry2]] \mid [[usEntry1]] \in [[us1]],
-  [[usEntry2]]  \in [[us2]], \text{s.t. } [[usEntry1]] \text{ matches with }
-                                   [[usEntry2]] \}\\
-                &\cup
-                                     \{ [[usEntry1]] \mid [[usEntry1]] \in
-                                     [[us1]], \text{ s.t. }
-                                     \forall [[usEntry2]]  \in [[us2]],
-                                     [[usEntry1]] \text{ does not match with }
-                                                     [[usEntry2]] \}\\
-        &\cup
-          \{ [[usEntry2]] \mid [[usEntry2]] \in
-          [[us2]], \text{ s.t. }
-          \forall [[usEntry1]]  \in [[us1]],
-          [[usEntry1]] \text{ does not match with }
-          [[usEntry2]] \}\\
+  $\begin{aligned}[t] [[SC1 & SC2]] &= 
+    \{ [[scE1 & scE2]] \mid [[scE1]] \in [[SC1]], [[scE2]]  \in [[SC2]], \text{s.t. } [[scE1]] \text{ matches with } [[scE2]] \}\\
+    &\cup 
+    \{ [[scE1]] \mid [[scE1]] \in [[SC1]], \text{ s.t. } \forall [[scE2]]  \in [[SC2]], [[scE1]] \text{ does not match with } [[scE2]] \}\\
+    &\cup 
+    \{ [[scE2]] \mid [[scE2]] \in [[SC2]], \text{ s.t. } \forall [[scE1]]  \in [[SC1]], [[scE1]] \text{ does not match with } [[scE2]] \}\\
    \end{aligned}$
 \end{definition}
 
-
+\subsection{Constraint Satisfaction}
+\ottdefnsSATSCE
 
 \subsection{Least Upper Bound}
 \ottdefnsLUB
@@ -340,8 +303,8 @@ matching entries, and unite the results.
 \subsection{Equivalence}
 \input{../_build/_gen/tex/equiv-lemmas.tex}
 
-\subsection{Unification Solution Merge}
-\input{../_build/_gen/tex/unif-solution-merge-lemmas.tex}
+\subsection{Unification Constraint Merge}
+\input{../_build/_gen/tex/unif-constraint-merge-lemmas.tex}
 
 \subsection{Unification}
 \input{../_build/_gen/tex/unification-lemmas.tex}\
@@ -358,10 +321,19 @@ matching entries, and unite the results.
 \subsection{Positive Subtyping}
 \input{../_build/_gen/tex/alg-pos-subtyping-lemmas.tex}
 
-\subsection{Subtyping Solution Merge}
-\input{../_build/_gen/tex/solution-merge-lemmas.tex}
+\subsection{Subtyping Constraint Merge}
+\input{../_build/_gen/tex/constraint-merge-lemmas.tex}
+
+\subsection{Constraint Satisfaction}
+\input{../_build/_gen/tex/constraint-sat-lemmas.tex}
 
 \subsection{Negative Subtyping}
 \input{../_build/_gen/tex/alg-neg-subtyping-lemmas.tex}
+
+\subsection{Singularity}
+\input{../_build/_gen/tex/singularity-lemmas.tex}
+
+\subsection{Typing}
+\input{../_build/_gen/tex/alg-typing-lemmas.tex}
 
 \end{document}

@@ -124,36 +124,16 @@
   % $[[ Γ ⊨ iP1 ∨ iP2 = iQ]]$
   \stackunder{Unification}
   {(matching)}
-                      & \infer
-                                     { [[us]] \text{ is sound}
-                                      \begin{cases}
-                                         [[Γ ⊢ us : Θ]]\\
-                                         [[ [us]uP = iQ ]]\\
-                                      \end{cases}
-                                     }
-                                     {[[Γ; Θ ⊨ uP ≈u iQ ⫤ us]]}
-                                     {}
-                              & \infer{\exists [[us]] \text{ s.t. }
-                                [[Γ; Θ ⊨ uP ≈u iQ ⫤ us]]
-                                }{\exists \text{ sound } [[us']]}{}
-                             &  ---
+                      &  
+                      &
+                      &  ---
   \\
 
   \addlinespace[0.7em]
   % $[[ Γ ⊨ iP1 ∨ iP2 = iQ]]$
   Subtyping
-                      & \infer
-                        { [[us]] \text{ is sound}
-                        \begin{cases}
-                          [[Γ ⊢ us : Θ]]\\
-                          [[ Γ ⊢ [us]uN ≤ iM ]]
-                        \end{cases}
-                        }
-                        {[[Γ ; Θ ⊨ uN ≤ iM ⫤ us]]}
-                        {}
-                     & \infer{\exists [[us]] \text{ s.t. }
-                       [[Γ ; Θ ⊨ uN ≤ iM ⫤ us]]
-                                }{\exists \text{ sound } [[us']]}{}
+                     & 
+                     & 
                      &  ---
   \\
   

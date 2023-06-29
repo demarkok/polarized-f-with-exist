@@ -22,3 +22,66 @@
   \item[$-$] if $[[Γ1 ⊢ iN]]$,~ $[[Γ1 ⊢ iM]]$,~ and $[[Γ1 ⊢ iN ≈ iM]]$ ~ then $[[Γ ⊢ [σ]iN ≈ [σ]iM]]$
   \end{itemize}
 \end{corollary}
+
+\begin{lemma}[]
+  Suppose that $[[{Γ'} ⊆ {Γ}]]$,
+  $[[σ1]]$ and $[[σ2]]$ are substitutions of signature $[[Γ ⊢ σi : Γ']]$.
+  Then 
+  \begin{enumerate}
+    \item [$+$] for a type $[[Γ ⊢ iP]]$, if $[[Γ ⊢ [σ1]iP ≈ [σ2]iP]]$ then 
+    $[[Γ ⊢ σ1 ≈ σ2 : fv iP ∩ {Γ'}]]$;
+    \item [$-$] for a type $[[Γ ⊢ iN]]$, if $[[Γ ⊢ [σ1]iN ≈ [σ2]iN]]$ then
+    $[[Γ ⊢ σ1 ≈ σ2 : fv iN ∩ {Γ'}]]$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  Let us make an additional assumption that $[[σ1]]$, $[[σ2]]$, 
+  and the mentioned types are normalized. If they are not,
+  we normalize them first.
+  
+  Notice that the normalization preserves
+  the set of free variables (\cref{lemma:fv-nf}),
+  well-formedness (\cref{corollary:wf-nf}), 
+  and equivalence (\cref{lemma:subt-equiv-algorithmization}), 
+  and distributes over substitution (\cref{lemma:norm-subst-distr}). 
+  This way, the assumed and desired properties are equivalent to their 
+  normalized versions.
+
+  We prove it by induction on the structure of $[[iP]]$ and mutually, $[[iN]]$.
+  Let us consider the shape of this type.
+  \begin{caseof}
+    \item $[[iP]] = [[α⁺]] \in [[Γ']]$.
+      Then $[[Γ ⊢ σ1 ≈ σ2 : fv iP ∩ {Γ'}]]$ means $[[Γ ⊢ σ1 ≈ σ2 : {α⁺}]]$, 
+      i.e. $[[Γ ⊢ [σ1]α⁺ ≈ [σ2]α⁺ ]]$, which holds by assumption.
+    \item $[[iP]] = [[α⁺]] \in [[{Γ} \ {Γ'}]]$.
+      Then $[[fv iP ∩ {Γ'}]] = [[∅]]$, 
+      so $[[Γ ⊢ σ1 ≈ σ2 : fv iP ∩ {Γ'}]]$ holds vacuously.
+    \item $[[iP]] = [[↓iN]]$.
+      Then the induction hypothesis is applicable to type $[[iN]]$:
+      \begin{enumerate}
+        \item $[[iN]]$ is normalized,
+        \item $[[Γ ⊢ iN]]$ by inversion of $[[Γ ⊢ ↓iN]]$,
+        \item $[[Γ ⊢ [σ1]iN ≈ [σ2]iN]]$ holds by inversion of 
+          $[[Γ ⊢ [σ1]↓iN ≈ [σ2]↓iN]]$, i.e. $[[Γ ⊢ ↓[σ1]iN ≈ ↓[σ2]iN]]$.
+      \end{enumerate}
+      This way, we obtain $[[Γ ⊢ σ1 ≈ σ2 : fv iN ∩ {Γ'}]]$, 
+      which implies the required equivalence since 
+      $[[fv iP ∩ {Γ'}]] = [[fv ↓iN ∩ {Γ'}]] = [[fv iN ∩ {Γ'}]]$.
+    \item $[[iP]] = [[∃nas.iQ]]$
+      Then the induction hypothesis is applicable to type $[[iQ]]$ 
+      well-formed in context $[[Γ, nas]]$:
+      \begin{enumerate}
+        \item $[[{Γ'} ⊆ {Γ, nas}]]$ since $[[{Γ'} ⊆ {Γ}]]$,
+        \item $[[Γ, nas ⊢ σi : Γ']]$ by weakening,
+        \item $[[iQ]]$ is normalized,
+        \item $[[Γ, nas ⊢ iQ]]$ by inversion of $[[Γ ⊢ ∃nas.iQ]]$,
+        \item Notice that $[[ [σi]∃nas.iQ ]]$ is normalized, and thus, 
+          $[[ [σ1]∃nas.iQ ≈ [σ2]∃nas.iQ]]$ implies 
+          $[[ [σ1]∃nas.iQ = [σ2]∃nas.iQ ]]$
+          (by \cref{lemma:subt-equiv-algorithmization}).).
+          This equality means $[[ [σ1]iQ = [σ2]iQ ]]$, 
+          which implies $[[Γ ⊢ [σ1]iQ ≈ [σ2]iQ]]$.
+      \end{enumerate}
+    \item $[[iN]] = [[iP → iM]]$
+  \end{caseof}
+\end{proof}

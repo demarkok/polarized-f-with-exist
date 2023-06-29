@@ -1,0 +1,148 @@
+\begin{lemma}[Soundness of Entry Singularity]
+    \label{lemma:entry-singularity-soundness}
+    Suppose $[[scE singular]]$.
+    Then 
+    \begin{itemize}
+        \item [$+$] for any $[[iP1]]$ and $[[iP2]]$ well-formed in $[[Γ]]$,
+            if $[[Γ ⊢ iP1 : scE]]$ and $[[Γ ⊢ iP2 : scE]]$ then $[[Γ ⊢ iP1 ≈ iP2]]$;
+        \item [$-$] for any $[[iN1]]$ and $[[iN2]]$ well-formed in $[[Γ]]$,
+            if $[[Γ ⊢ iN1 : scE]]$ and $[[Γ ⊢ iN2 : scE]]$ then $[[Γ ⊢ iN1 ≈ iN2]]$.
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    Let us consider how $[[scE singular]]$ is formed.
+    \begin{caseof}
+        \item \ruleref{\ottdruleSINGNEqLabel}, that is $[[scE]] = [[α̂⁻ :≈ iM]]$.
+            Then $[[Γ ⊢ iNi : scE]]$ means $[[Γ ⊢ iNi ≈ iM]]$ 
+            (by inversion of \ruleref{\ottdruleSATSCENEqLabel}).
+            Then by symmetry and transitivity of equivalence (\cref{lemma:subtyping-reflexivity,corollary:equivalence-transitivity}), 
+            $[[Γ ⊢ iN1 ≈ iN2]]$.
+        \item \ruleref{\ottdruleSINGPEqLabel}. This case is symmetric to the previous one.
+
+        \item \ruleref{\ottdruleSINGSupVarLabel}, that is 
+            $[[scE]] = [[α̂⁺ :≥ ∃nas.β⁺]]$.
+            Then $[[Γ ⊢ iPi : scE]]$ means $[[Γ ⊢ iPi ≥ ∃nas.β⁺]]$.
+        
+            Let us show that it implies $[[Γ ⊢ iPi ≈ ∃nas.β⁺]]$.
+            By applying \cref{lemma:shape-of-supertypes} once, 
+            we have $[[Γ, nas ⊢ iPi ≥ β⁺]]$.
+            By applying it again, we notice that
+            $[[Γ, nas ⊢ iPi ≥ β⁺]]$ implies $[[iPi = ∃nas'.β⁺]]$.
+            Finally, it is easy to see that $[[Γ ⊢ ∃nas'.β⁺ ≈ ∃nas.β⁺]]$
+
+            This way, by symmetry and transitivity of equivalence (\cref{lemma:subtyping-reflexivity,corollary:equivalence-transitivity}),
+            $[[Γ ⊢ iP1 ≈ ∃nas.β⁺]]$ and $[[Γ ⊢ iP2 ≈ ∃nas.β⁺]]$ implies $[[Γ ⊢ iP1 ≈ iP2]]$.
+
+        \item \ruleref{\ottdruleSINGSupShiftLabel},
+            that is $[[scE]] = [[α̂⁺ :≥ ∃nbs.↓iN]]$, 
+            where $[[iN ≈ nbj]]$.
+            Then $[[Γ ⊢ iPi : scE]]$ means $[[Γ ⊢ iPi ≥ ∃nbs.↓iN]]$
+
+
+
+            Let us show that it implies $[[Γ ⊢ iPi ≈ ∃nbs.↓iN]]$.
+
+            $
+            \begin{aligned}[h]
+            [[Γ ⊢ iPi ≥ ∃nbs.↓iN]] &\Rightarrow [[Γ ⊢ nf(iPi) ≥ ∃nbs'.↓nf(iN)]] \text{ where } [[ord {nbs} in iN' = nbs']] 
+                                   && \text{by \cref{corollary:nf-pres-subt}} \\
+                                   &\Rightarrow [[Γ ⊢ nf(iPi) ≥ ∃nbs'.↓nf(nbj)]]  
+                                   && \text{by \cref{lemma:normalization-completeness}}\\
+                                   &\Rightarrow [[Γ ⊢ nf(iPi) ≥ ∃nbs'.↓nbn]]  
+                                   && \text{by definition of normalization}\\
+                                   &\Rightarrow [[Γ ⊢ nf(iPi) ≥ ∃nbj.↓nbj]]  
+                                   && \text{since $[[ord {nbs} in nf(iN')]] = [[nbj]]$}\\
+                                   &\Rightarrow [[Γ, nbj ⊢ nf(iP) ≥ ↓nbj]] \text { and } [[nbj ∉ fv(nf(iPi))]]
+                                   && \text{by \cref{lemma:shape-supertypes-norm}}\\
+            \end{aligned}
+            $
+
+            By \cref{lemma:shape-supertypes-norm}, 
+            the last subtyping means that $[[nf(iPi) = ∃nas.↓iN']]$,
+            such that
+            \begin{enumerate}
+                \item $[[Γ, nbj, nas ⊢ iN']]$
+                \item $[[ord {nas} in iN' = nas]]$
+                \item for some substitution $[[Γ, nbj ⊢ σ : nas]]$, 
+                    $[[ [σ]iN' = nbj ]]$.
+            \end{enumerate}
+            Since $[[nbj ∉ fv(nf(iPi))]]$,
+            the latter means that $[[iN' = na]]$, and then 
+            $[[nf(iPi) = ∃na.↓na]]$ for some $[[na]]$.
+            Finally, notice that all the types of shape
+            $[[∃na.↓na]]$ are equal, and hence,
+            $[[nf(iP1) = nf(iP2)]]$, which implies
+            $[[Γ ⊢ iP1 ≈ iP2]]$ by \cref{lemma:subt-equiv-algorithmization}.
+   \end{caseof}
+
+\end{proof}
+
+
+\begin{lemma}[Completeness of Entry Singularity]
+    \label{lemma:entry-singularity-completeness}
+    \begin{itemize}
+        \item [$-$] Suppose that for any $[[iN1]]$ and $[[iN2]]$ well-formed in $[[Γ]]$
+            such that $[[Γ ⊢ iN1 : scE]]$ and $[[Γ ⊢ iN2 : scE]]$,
+            $[[Γ ⊢ iN1 ≈ iN2]]$ holds. Then $[[scE singular]]$ holds.
+        \item [$+$] Suppose that for any $[[iP1]]$ and $[[iP2]]$ well-formed in $[[Γ]]$
+            such that $[[Γ ⊢ iP1 : scE]]$ and $[[Γ ⊢ iP2 : scE]]$,
+            $[[Γ ⊢ iP1 ≈ iP2]]$ holds. Then $[[scE singular]]$ holds.
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    \begin{itemize}
+        \item [$-$] Since $[[iNi]]$ are negative, by inversion of
+            $[[Γ ⊢ iN1 : scE]]$, $[[scE]]$ has shape $[[α̂⁻ :≈ iM]]$.
+            Then $[[scE singular]]$ by \ruleref{\ottdruleSINGNEqLabel}.
+        \item [$+$]
+            Let us consider the shape of $[[scE]]$:
+            \begin{caseof}
+                \item $[[scE]] = [[(α̂⁺ :≈ iP)]]$ then $[[scE]]$ is 
+                    singular by \ruleref{\ottdruleSINGPEqLabel};
+                \item $[[scE]] = [[(α̂⁺ :≥ iP)]]$. Let us consider the shape 
+                    of the positive type $[[iP]]$:
+                    \begin{caseof}
+                        \item $[[iP]] = [[∃nbs.β⁺]]$ (for potentially empty $[[nbs]]$) then
+                            $[[scE]]$ is singular by \ruleref{\ottdruleSINGSupVarLabel};
+                        \item $[[iP]] = [[∃nbs.↓iN]]$ (for potentially empty $[[nbs]]$).
+                            Notice since $[[Γ ⊢ iP ≥ iP]]$, $[[Γ ⊢ iP : scE]]$ holds. 
+
+                            Notice that $[[Γ ⊢ ∃γ⁻.↓γ⁻ ≥ ∃nbs.↓iN]]$ 
+                            (by \ruleref{\ottdruleDOneExistsLabel}, 
+                            with substitution $[[iN / γ⁻]]$), and thus, 
+                            $[[Γ ⊢ ∃γ⁻.↓γ⁻ : scE]]$ by \ruleref{\ottdruleSATSCESupLabel}.
+
+                            This way, by assumption, $[[Γ ⊢ ∃γ⁻.↓γ⁻ ≈ ∃nbs.↓iN]]$, which implies
+                            $[[nf(∃nbs.↓iN) = ∃γ⁻.↓γ⁻]]$ (by \cref{lemma:subt-equiv-algorithmization}), 
+                            which by definition of normalization means
+                            $[[∃nbs'.↓nf(iN) = ∃γ⁻.↓γ⁻]]$, where $[[ord {nbs} in iN' = nbs']]$.
+                            This way, $[[nbs']]$ is a variable $[[β⁻]]$, and $[[ nf(iN) = β⁻ ]]$.
+                            Notice that $[[β⁻]] \in [[nbs']] \subseteq [[nbs]]$ by \cref{lemma:ord-soundness}.
+
+                            This way, $[[Γ ⊢ iN ≈ β⁻]]$ for $[[β⁻]] \in [[nbs]]$ (by \cref{lemma:subt-equiv-algorithmization}),
+                            and hence, $[[scE]]$ is singular by \ruleref{\ottdruleSINGSupShiftLabel}.
+                    \end{caseof}
+            \end{caseof}
+    \end{itemize}
+\end{proof}
+
+\begin{lemma}[Soundness of Singularity]
+    \label{lemma:singularity-soundness}
+    Suppose $[[Θ ⊢ SC]]$, and $[[SC singular]]$. 
+    Then for any $[[uσ1]]$ and $[[uσ2]]$ such that $[[Θ ⊢ uσ1 : SC]]$ and $[[Θ ⊢ uσ2 : SC]]$,
+    $[[Θ ⊢ uσ1 ≈ uσ2 : dom(SC)]]$.
+\end{lemma}
+\begin{proof}
+    Suppose that $[[Θ ⊢ uσ : SC]]$.
+    It means that for any $[[scE]] \in [[SC]]$ restricting $[[α̂±]]$,
+    $[[Θ(α̂±) ⊢ [uσ]α̂± : scE]]$ holds.
+    $[[SC singular]]$ means $[[scE singular]]$,
+    and hence, by \cref{lemma:entry-singularity-completeness},
+    $[[ [uσ]α̂± ]]$ is unique up-to equivalence.
+
+    Since the uniqueness holds for every variable from $[[dom(SC)]]$,
+    $[[uσ]]$ is defined uniquely on this set.
+\end{proof}
+
+\begin{lemma}[Completeness of Singularity]
+\end{lemma}
