@@ -85,3 +85,20 @@
     \item $[[iN]] = [[iP → iM]]$
   \end{caseof}
 \end{proof}
+
+\begin{lemma}[Substitutions equivalent on the metavariables]
+  \label{lemma:subst-equiv-metavar}
+  Suppose that $[[Γ ⊢ Θ]]$, $[[uσ1]]$ and $[[uσ2]]$ are substitutions 
+  of signature $[[Θ ⊢ uσi]]$.
+  Then 
+  \begin{enumerate}
+    \item [$+$] for a type $[[Γ; Θ ⊢ uP]]$, if $[[Γ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ then
+      $[[Θ ⊢ uσ1 ≈ uσ2 : uv uP]]$;
+    \item [$-$] for a type $[[Γ; Θ ⊢ uN]]$, if $[[Γ ⊢ [uσ1]uN ≈ [uσ2]uN]]$ then
+      $[[Θ ⊢ uσ1 ≈ uσ2 : uv uN]]$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  The proof is a trivial structural induction on 
+  $[[Γ; Θ ⊢ uP]]$ and mutually, on $[[Γ; Θ ⊢ uN]]$.
+\end{proof}

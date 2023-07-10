@@ -23,12 +23,28 @@
     and \ruleref{\ottdruleSATSCESupLabel}.
 \end{proof}
 
-\begin{lemma}
-    Suppose $[[Θ ⊢ SC]]$,
-    and $[[SC singular]]$. 
-    Then there exist a unique (up-to equivalence)
-    $[[Θ ⊢ uσ : SC]]$.
+
+\begin{lemma}[Constraint Entry Satiisfaction is Stable under Equivalence]
+    \label{lemma:entry-sat-equiv}
+    \begin{itemize}
+        \item [$-$] If $[[Γ ⊢ iN1 : scE]]$ and $[[Γ ⊢ iN1 ≈ iN2]]$ then $[[Γ ⊢ iN2 : scE]]$.
+        \item [$+$] If $[[Γ ⊢ iP1 : scE]]$ and $[[Γ ⊢ iP1 ≈ iP2]]$ then $[[Γ ⊢ iP2 : scE]]$.
+    \end{itemize}
 \end{lemma}
 \begin{proof}
-
+    \begin{itemize}
+        \item [$-$] Then $[[scE]]$ has form $[[(α̂⁻ :≈ iM)]]$, 
+            and by inversion, $[[Γ ⊢ iN1 ≈ iM]]$.
+            Then by transitivity, $[[Γ ⊢ iN2 ≈ iM]]$, 
+            meaning $[[Γ ⊢ iN2 : scE]]$.
+        \item [$+$] Let us consider what form $[[scE]]$ has.
+            \begin{caseof}
+                \item $[[scE]] = [[(α̂⁺ :≈ iQ)]]$. Then $[[Γ ⊢ iP1 ≈ iQ]]$,
+                    and hence, $[[Γ ⊢ iP2 ≈ iQ]]$ by transitivity.
+                    Then $[[Γ ⊢ iP2 : scE]]$.
+                \item $[[scE]] = [[(α̂⁺ :≥ iQ)]]$. Then $[[Γ ⊢ iP1 ≥ iQ]]$,
+                    and hence, $[[Γ ⊢ iP2 ≥ iQ]]$ by transitivity.
+                    Then $[[Γ ⊢ iP2 : scE]]$.
+            \end{caseof}
+    \end{itemize}
 \end{proof}

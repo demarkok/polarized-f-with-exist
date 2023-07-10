@@ -35,3 +35,5 @@ defns
 
   defn Θ ⊢ UC :: :: UCWF :: '' {{ com Unification constraint well-formedness }} by
   defn Θ ⊢ SC :: :: SCWF :: '' {{ com Subtyping constraint well-formedness }} by
+
+  defn Γ ⊢ Φ :: :: CtxtWF :: '' {{ com Context well-formedness }} by

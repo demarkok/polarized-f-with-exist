@@ -5,9 +5,9 @@ defns
   {{ com Positive type inference }}
   {{ tex [[Γ]] ; [[Φ]] \vdash [[v]] \colon [[iP]] }} by 
 
-  v : iP ∊ Φ
+  x : iP ∊ Φ   
   --------------- :: Var
-  Γ ; Φ ⊢ v : iP
+  Γ ; Φ ⊢ x : iP
 
   Γ ; Φ ⊢ c : iN
   ------------------- :: Thunk
@@ -16,6 +16,10 @@ defns
   Γ ; Φ ⊢ v : iP    Γ ⊢ iQ ≥ iP
   ------------------------------ :: PAnnot
   Γ ; Φ ⊢ (v : iQ) : iQ
+
+  Γ ; Φ ⊢ v : iP      Γ ⊢ iP ≈ iP'
+  -------------------------------- :: PEquiv
+  Γ ; Φ ⊢ v : iP'
 
   defn Γ ; Φ ⊢ c : iN :: :: NInf :: ''
   {{ com Negative type inference }}
@@ -49,9 +53,13 @@ defns
   ----------------------------------------------------------- :: Unpack
   Γ ; Φ ⊢ let∃ (α⁻, x) = v; c : iN
 
-  Γ ; Φ ⊢ c : iN    Γ ⊢ iN ≤ iM
+  Γ ; Φ ⊢ c : iN    Γ ⊢ iN ≈ iM
   ------------------------------ :: NAnnot
   Γ ; Φ ⊢ (c : iM) : iM
+
+  Γ ; Φ ⊢ c : iN   Γ ⊢ iN ≈ iN'
+  ------------------------------ :: NEquiv
+  Γ ; Φ ⊢ c : iN'
 
 defn Γ ; Φ ⊢ iN ● args ⇒> iM :: :: SpinInf :: ''
 {{ com Application type inference }} by
@@ -68,5 +76,3 @@ defn Γ ; Φ ⊢ iN ● args ⇒> iM :: :: SpinInf :: ''
  args ≠ ·
 ------------------------------------------------ :: ForallApp
 Γ ; Φ ⊢ ∀pas.iN ● args ⇒> iM
-
-

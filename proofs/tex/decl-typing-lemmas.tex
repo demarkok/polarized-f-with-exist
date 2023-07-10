@@ -1,0 +1,317 @@
+\begin{lemma} \label{lemma:app-inf-equ-stable}
+    If $[[Γ; Φ ⊢ iN1 ● args ⇒> iM]]$ and $[[Γ ⊢ iN1 ≈ iN2]]$ 
+    then $[[Γ; Φ ⊢ iN2 ● args ⇒> iM]]$.
+\end{lemma}
+\begin{proof}
+    By \cref{lemma:equiv-completeness}, 
+    $[[Γ ⊢ iN1 ≈ iN2]]$ implies $[[iN1 ≈ iN2]]$.
+    Let us prove the required judgement by induction on $[[iN1 ≈ iN2]]$.
+    Let us consider the last rule used in the derivation.
+    \begin{caseof}
+        \item \ruleref{\ottdruleEOneNVarLabel}.
+            It means that $[[iN1]]$ is $[[α⁻]]$ and $[[iN2]]$ is $[[α⁻]]$.
+            Then the required property coincides with the assumption. 
+        \item \ruleref{\ottdruleEOneShiftULabel}. 
+            It means that $[[iN1]]$ is $[[↑iP1]]$ and $[[iN2]]$ is $[[↑iP2]]$.
+            where $[[iP1 ≈ iP2]]$.
+
+            Then the only rule applicable to infer $[[Γ; Φ ⊢ ↑iP1 ● args ⇒> iM]]$
+            is \ruleref{\ottdruleDTEmptyAppLabel},
+            meaning that $[[args = ·]]$ and $[[Γ ⊢ ↑iP1 ≈ iM]]$.
+            Then by transitivity of equivalence \cref{corollary:equivalence-transitivity},
+            $[[Γ ⊢ ↑iP2 ≈ iM]]$, and then \ruleref{\ottdruleDTEmptyAppLabel} is applicable to infer
+            $[[Γ; Φ ⊢ ↑iP2 ● · ⇒> iM]]$.
+        
+        \item \ruleref{\ottdruleEOneArrowLabel}.
+            Then we are proving that  
+            $[[Γ; Φ ⊢ (iQ1 → iN1) ● v, args ⇒> iM]]$ and $[[iQ1 → iN1 ≈ iQ2 → iN2]]$
+            imply $[[Γ; Φ ⊢ (iQ2 → iN2) ● v, args ⇒> iM]]$.
+            
+            By inversion, $[[(iQ1 → iN1) ≈ (iQ2 → iN2)]]$
+            means $[[iQ1 ≈ iQ2]]$ and $[[iN1 ≈ iN2]]$.
+
+            By inversion of $[[Γ; Φ ⊢ (iQ1 → iN1) ● v, args ⇒> iM]]$:
+            \begin{enumerate}
+                \item $[[Γ ; Φ ⊢ v : iP]]$
+                \item $[[Γ ⊢ iQ1 ≥ iP]]$,
+                    and then by transitivity \cref{corollary:subtyping-transitivity},
+                    $[[Γ ⊢ iQ2 ≥ iP]]$;
+                \item $[[Γ ; Φ ⊢ iN1 ● args ⇒> iM]]$, 
+                    and then by induction hypothesis, $[[Γ ; Φ ⊢ iN2 ● args ⇒> iM]]$.
+            \end{enumerate}
+
+            Since we have $[[Γ ; Φ ⊢ v : iP]]$, $[[Γ ⊢ iQ2 ≥ iP]]$ and 
+            $[[Γ ; Φ ⊢ iN2 ● args ⇒> iM]]$, we can apply \ruleref{\ottdruleDTArrowAppLabel}
+            to infer $[[Γ; Φ ⊢ (iQ2 → iN2) ● v, args ⇒> iM]]$.
+
+        \item \ruleref{\ottdruleEOneForallLabel}
+            Then we are proving that 
+            $[[Γ ; Φ ⊢ ∀pas1.iN1' ● args ⇒> iM]]$ and $[[∀pas1.iN1' ≈ ∀pas2.iN2']]$
+            imply $[[Γ ; Φ ⊢ ∀pas2.iN2' ● args ⇒> iM]]$.
+
+
+            By inversion of $[[∀pas1.iN1' ≈ ∀pas2.iN2']]$:
+            \begin{enumerate}
+                \item $[[{pas2} ∩ fv iN1 = ∅]]$,
+                \item there exists a bijection 
+                    $[[mu : ({pas2} ∩ fv iN2') ↔ ({pas1} ∩ fv iN1')]]$
+                    such that $[[iN1' ≈ [mu] iN2']]$.
+            \end{enumerate}
+
+            By inversion of $[[Γ ; Φ ⊢ ∀pas1.iN1' ● args ⇒> iM]]$:
+            \begin{enumerate}
+                \item $[[Γ ⊢ σ : pas1]]$        
+                \item $[[Γ ; Φ ⊢ [σ]iN1' ● args ⇒> iM]]$
+                \item $[[args ≠ ·]]$
+            \end{enumerate}
+
+            Let us construct $[[Γ ⊢ σ0 : pas2]]$ in the following way:
+            $$
+            \begin{cases}
+                [[ [σ0]α⁺ =  [σ][mu]α⁺ ]] & \text{if } [[α⁺]] \in [[ {pas2} ∩ fv iN2' ]] \\
+                [[ [σ0]α⁺ =  ∃β⁻.↓β⁻ ]] & \text{otherwise (the type does not matter here)} \\
+            \end{cases}
+            $$
+
+            Then to infer $[[Γ ; Φ ⊢ iN2 ● args ⇒> iM]]$, we 
+            apply \ruleref{\ottdruleDTArrowAppLabel} with $[[σ0]]$. 
+            Let us show the required premises:
+            \begin{enumerate}
+                \item $[[Γ ⊢ σ0 : pas2]]$ by construction;
+                \item $[[args ≠ ·]]$ as noted above;
+                \item To show $[[Γ ; Φ ⊢ [σ0]iN2' ● args ⇒> iM]]$,
+                Notice that $[[ [σ0]iN2' = [σ][mu]iN2' ]]$   
+                and since $[[ [mu]iN2' ≈ iN1' ]]$, $[[ [σ][mu]iN2' ≈ [σ]iN1' ]]$.
+                This way, by \cref{lemma:equiv-soundness}, $[[Γ ⊢ [σ]iN1' ≈ [σ0]iN2']]$.
+                Then the required judgement holds by the induction hypothesis
+                applied to $[[Γ ; Φ ⊢ [σ]iN1' ● args ⇒> iM]]$.
+            \end{enumerate}
+    \end{caseof}
+\end{proof}
+
+\newcommand{\pureSize}[1]{\ensuremath{\mathsf{pure\_size}(#1)}}
+\newcommand{\eqNodes}[1]{\ensuremath{\mathsf{eq\_nodes}(#1)}}
+\newcommand{\size}[1]{\ensuremath{\mathsf{size}(#1)}}
+
+\begin{definition}
+    For a tree $T$ inferring
+    a declarative typing judgement 
+    (i.e. the one of the shape
+    $[[Γ ; Φ ⊢ v : iP]]$, 
+    $[[Γ ; Φ ⊢ c : iN]]$, or 
+    $[[Γ ; Φ ⊢ iN ● args ⇒> iM]]$),
+    let us define a metrics $\size{T}$
+    as the number of nodes in $T$ that 
+    have one of these shapes
+    (i.e., $[[Γ ; Φ ⊢ v : iP]]$, 
+    $[[Γ ; Φ ⊢ c : iN]]$, or 
+    $[[Γ ; Φ ⊢ iN ● args ⇒> iM]]$).
+\end{definition}
+
+\begin{definition}
+    For a tree $T$ inferring
+    a declarative typing judgement,
+    let us a function $\eqNodes{T}$
+    as the number of nodes in $T$ labeled with \ruleref{\ottdruleDTPEquivLabel} or 
+    \ruleref{\ottdruleDTNEquivLabel}.
+\end{definition}
+
+\begin{definition}
+    For a tree $T$ inferring
+    a declarative typing judgement 
+    let us define a metrics $\pureSize{T}$
+    as the number of nodes in $T$ except 
+    the ones labeled with \ruleref{\ottdruleDTPEquivLabel} or 
+    \ruleref{\ottdruleDTNEquivLabel}.
+    In other words, $\pureSize{T} = \size{T} - \eqNodes{T}$. 
+\end{definition}
+
+
+\begin{lemma}[Declarative typing is preserved under context equivalence]
+    Assuming $[[Γ ⊢ Φ1]]$, $[[Γ ⊢ Φ2]]$, and $[[Γ ⊢ Φ1 ≈ Φ2]]$:
+    \begin{itemize}
+        \item [$+$] 
+            for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ v : iP]]$, 
+            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ v : iP]]$ such that 
+            $\pureSize{T_2} = \pureSize{T_1}$.
+        \item [$-$] 
+            for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ c : iN]]$, 
+            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ c : iN]]$ such that 
+            $\pureSize{T_2} = \pureSize{T_1}$.
+        \item [$\bullet$] 
+            for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ iN ● args ⇒> iM]]$, 
+            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ iN ● args ⇒> iM]]$ such that 
+            $\pureSize{T_2} = \pureSize{T_1}$.
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    Let us prove it by induction on a pair $(\pureSize{T_1}, \eqNodes{T_1})$.
+    Let us consider the last rule applied in $T_1$ (i.e., its root node).
+    \begin{caseof}
+        \item \ruleref{\ottdruleDTVarLabel}\\
+            Then we are proving 
+            that $[[Γ ; Φ1 ⊢ x : iP]]$ implies $[[Γ ; Φ2 ⊢ x : iP]]$.
+            By inversion, $[[x : iP ∊ Φ1]]$, and 
+            since $[[Γ ⊢ Φ1 ≈ Φ2]]$, $[[x : iP' ∊ Φ2]]$ for some $[[iP']]$ 
+            such that $[[Γ ⊢ iP ≈ iP']]$.
+            Then we infer $[[Γ ; Φ2 ⊢ x : iP']]$ by \ruleref{\ottdruleDTVarLabel},
+            and next, $[[Γ ; Φ2 ⊢ x : iP]]$ by \ruleref{\ottdruleDTPEquivLabel}.
+
+            Notice that 
+            to infer $T_1$, only \ruleref{\ottdruleDTVarLabel} was applied, 
+            to infer $T_2$, only \ruleref{\ottdruleDTVarLabel} and
+            \ruleref{\ottdruleDTPEquivLabel} were applied.
+            This way, $\pureSize{T_1} = \pureSize{T_2} = 1$.
+
+        \item For \ruleref{\ottdruleDTThunkLabel},
+              \ruleref{\ottdruleDTPAnnotLabel}, 
+              \ruleref{\ottdruleDTTLamLabel},
+              \ruleref{\ottdruleDTReturnLabel},
+              \ruleref{\ottdruleDTNAnnotLabel}, and
+              the proof is analogous. We
+              apply the induction hypothesis to the premise of the rule
+              to substitute $[[Φ1]]$ for $[[Φ2]]$ in it. 
+              The induction is applicable as the pure size of the 
+              premises is less than the pure size of the conclusion by one.
+              And after that, we apply the same rule to infer the required judgement.
+
+              By induction hypothesis, 
+              for each of the premises (i.e. the children $T_1'$ of $T_1$),
+              the tree $T_2'$ inferring the corresponding judgement
+              (with $[[Φ1]]$ substituted for $[[Φ2]]$) has the same pure size,
+              i.e., $\pureSize{T_1'} = \pureSize{T_2'}$.
+              For each of these rules, the pure size of $T_1$ 
+              and the pure size $T_2$ is a sum of the pure sizes of their children
+              plus one. This way, 
+              $ 
+                \pureSize{T_1} =
+                1 + \sum_{T'_1}{\pureSize{T'_1}} =
+                1 + \sum_{T'_2}{\pureSize{T'_2}} =
+                \pureSize{T_2} 
+              $.
+              
+        \item \ruleref{\ottdruleDTPEquivLabel} and \ruleref{\ottdruleDTNEquivLabel}
+            In these cases, the induction hypothesis is also applicable to the premise:
+            although the pure size of the premise is the same as the pure size of the conclusion,
+            but the number of equivalence nodes is less by one.
+            After this note, the proof is analogous to the previous case.
+
+        \item \ruleref{\ottdruleDTtLamLabel}
+            Then we are proving that 
+            $[[Γ ; Φ1 ⊢ λx:iP.c : iP → iN]]$ implies $[[Γ ; Φ2 ⊢ λx:iP.c : iP → iN]]$.
+            Analogously to the previous case, 
+            we apply the induction hypothesis to the
+            equivalent contexts $[[Γ ⊢ Φ1, x:iP ≈ Φ2, x:iP]]$
+            and the premise $[[Γ ; Φ1, x:iP ⊢ c : iN]]$
+            inferred by $T'_1$ to obtain
+            $T'_2$ inferring $[[Γ ; Φ2, x:iP ⊢ c : iN]]$.
+            Then we construct $T_2$ inferring $[[Γ ; Φ2 ⊢ λx:iP.c : iP → iN]]$ by \ruleref{\ottdruleDTtLamLabel}
+            and notice that $\pureSize{T_1} = 1 + \pureSize{T'_1} = 1 + \pureSize{T'_2} = \pureSize{T_2}$.
+
+        \item \ruleref{\ottdruleDTVarLetLabel}
+            Then we are proving that 
+            $[[Γ ; Φ1 ⊢ let x = v; c : iN]]$ implies $[[Γ ; Φ2 ⊢ let x = v; c : iN]]$.
+            First, we apply the induction hypothesis to 
+            $[[Γ; Φ1 ⊢ v : iP]]$ to obtain $[[Γ; Φ2 ⊢ v : iP]]$ 
+            of the same pure size.
+            
+            Then we apply the induction hypothesis to
+            the equivalent contexts $[[Γ ⊢ Φ1, x:iP ≈ Φ2, x:iP]]$
+            and the premise $[[Γ ; Φ1, x:iP ⊢ c : iN]]$ to obtain
+            $[[Γ ; Φ2, x:iP ⊢ c : iN]]$.
+            Then we infer $[[Γ ; Φ2 ⊢ let x = v; c : iN]]$ by \ruleref{\ottdruleDTVarLetLabel}.
+
+            The pure size of the resulting tree $T_2$ and of $T_1$ is
+            one plus the sum of sizes of the premise trees.
+            The premises of $T_1$ and of $T_2$ have the same pure size by 
+            the induction hypothesis. This way, $\pureSize{T_1} = \pureSize{T_2}$.
+
+        \item \ruleref{\ottdruleDTAppLetLabel}
+            Then we are proving that 
+            $[[Γ ; Φ1 ⊢ let x = v(args); c : iN]]$ implies 
+            $[[Γ ; Φ2 ⊢ let x = v(args); c : iN]]$.
+
+            We apply the induction hypothesis to each of the premises.
+            to rewrite:
+            \begin{itemize}
+                \item $[[Γ ; Φ1 ⊢ v : ↓iM]]$ into $[[Γ ; Φ2 ⊢ v : ↓iM]]$,
+                \item $[[Γ ; Φ1 ⊢ iM ● args ⇒> ↑iQ]]$ into $[[Γ ; Φ2 ⊢ iM ● args ⇒> ↑iQ]]$.
+                \item $[[Γ ; Φ1, x:iQ ⊢ c : iN]]$ into $[[Γ ; Φ2, x:iQ ⊢ c : iN]]$
+                (notice that $[[Γ ⊢ Φ1, x:iQ ≈ Φ2, x:iQ]]$).
+            \end{itemize}
+
+            It is left to show the uniqueness of $[[Γ ; Φ2 ⊢ iM ● args ⇒> ↑iQ]]$.
+
+            Then we infer $[[Γ ; Φ2 ⊢ let x = v(args); c : iN]]$ by \ruleref{\ottdruleDTAppLetLabel}.
+
+
+        \item \ruleref{\ottdruleDTAppLetAnnLabel}
+            Then we are proving that
+            $[[Γ ; Φ1 ⊢ let x:iP = v(args); c : iN]]$ implies
+            $[[Γ ; Φ2 ⊢ let x:iP = v(args); c : iN]]$.
+        
+            As in the previous case, we apply the induction hypothesis to each of the premises
+            and rewrite:
+            \begin{itemize}
+                \item $[[Γ ; Φ1 ⊢ v : ↓iM]]$ into $[[Γ ; Φ2 ⊢ v : ↓iM]]$,
+                \item $[[Γ ; Φ1 ⊢ iM ● args ⇒> ↑iQ]]$ into $[[Γ ; Φ2 ⊢ iM ● args ⇒> ↑iQ]]$, 
+                    and
+                \item $[[Γ ; Φ1, x:iP ⊢ c : iN]]$ into $[[Γ ; Φ2, x:iP ⊢ c : iN]]$
+                (notice that $[[Γ ⊢ Φ1, x:iP ≈ Φ2, x:iP]]$).
+            \end{itemize}
+            
+            Notice that $[[Γ ⊢ iP]]$ and $[[Γ ⊢ ↑iQ ≤ ↑iP]]$ 
+            do not depend on the variable context, and hold by assumption.
+            Then we infer $[[Γ ; Φ2 ⊢ let x:iP = v(args); c : iN]]$ by \ruleref{\ottdruleDTAppLetAnnLabel}.
+
+        \item \ruleref{\ottdruleDTUnpackLabel}, \ruleref{\ottdruleDTNAnnotLabel}, and \ruleref{\ottdruleDTNEquivLabel}
+            are proved in the same way.
+
+        \item \ruleref{\ottdruleDTEmptyAppLabel}
+            Then we are proving that 
+            $[[Γ ; Φ1 ⊢ iN ● · ⇒> iN']]$ (inferred by \ruleref{\ottdruleDTEmptyAppLabel})
+            implies $[[Γ ; Φ2 ⊢ iN ● · ⇒> iN']]$,
+            and if there is only one $[[iN']]$ (up-to-equivalence in $[[Γ]]$) 
+            that satisfies $[[Γ ; Φ1 ⊢ iN ● · ⇒> iN']]$,
+            then there is only one $[[iN']]$ satisfying $[[Γ ; Φ2 ⊢ iN ● · ⇒> iN']]$.
+
+            To infer $[[Γ ; Φ2 ⊢ iN ● · ⇒> iN']]$, 
+            we apply \ruleref{\ottdruleDTEmptyAppLabel}, noting that 
+            $[[Γ ⊢ iN ≈ iN']]$ holds by assumption.
+
+            To show the uniqueness $[[Γ ; Φ2 ⊢ iN ● · ⇒> iN' uniq]]$, 
+            let us assume $[[Γ ; Φ2 ⊢ iN ● · ⇒> iN'']]$.
+            Then the only rule applicable to infer it is \ruleref{\ottdruleDTEmptyAppLabel},
+            which, by inversion, means $[[Γ ⊢ iN ≈ iN'']]$, and by transitivity, 
+            $[[Γ ⊢ iN' ≈ iN'']]$.
+
+        \item \ruleref{\ottdruleDTArrowAppLabel}
+            Then we are proving that 
+            $[[Γ ; Φ1 ⊢ iQ → iN ● v, args ⇒> iM]]$ (inferred by \ruleref{\ottdruleDTArrowAppLabel})
+            implies $[[Γ ; Φ2 ⊢ iQ → iN ● v, args ⇒> iM]]$.
+            And uniqueness of the $[[iM]]$ in the first case implies uniqueness in the second case.
+
+            By induction, we rewrite $[[Γ ; Φ1 ⊢ v : iP]]$ into $[[Γ ; Φ2 ⊢ v : iP]]$, 
+            and $[[Γ ; Φ1 ⊢ iN ● args ⇒> iM]]$ into $[[Γ ; Φ2 ⊢ iN ● args ⇒> iM]]$.
+            Then we infer $[[Γ ; Φ2 ⊢ iQ → iN ● v, args ⇒> iM]]$ by \ruleref{\ottdruleDTArrowAppLabel}.
+
+            Now, let us show the uniqueness.
+            The only rule that can infer $[[Γ ; Φ1 ⊢ iQ → iN ● v, args ⇒> iM]]$
+            is \ruleref{\ottdruleDTArrowAppLabel}.
+            Then by inversion, 
+            uniqueness of $[[Γ ; Φ1 ⊢ iQ → iN ● v, args ⇒> iM]]$ implies
+            uniqueness of $[[Γ ; Φ1 ⊢ iN ● args ⇒> iM]]$. By 
+            the induction hypothesis, it implies the uniqueness of 
+            $[[Γ ; Φ2 ⊢ iN ● args ⇒> iM]]$.
+
+
+            Suppose that 
+            $[[Γ ; Φ2 ⊢ iQ → iN ● v, args ⇒> iM']]$.
+            By inversion, $[[Γ ; Φ2 ⊢ iN ● args ⇒> iM']]$, 
+            which by uniqueness of $[[Γ ; Φ2 ⊢ iN ● args ⇒> iM]]$ implies
+            $[[Γ ⊢ iM ≈ iM']]$.
+
+        \item \ruleref{\ottdruleDTForallAppLabel}
+    \end{caseof}
+    
+\end{proof}

@@ -1,12 +1,12 @@
 grammar
   formula :: 'formula_' ::=
     | judgement                              ::   :: judgement
-    | judgement uniq                         ::   :: judgement_uniq {{ tex $[[judgement]]$ uniquely }}
+    | judgement uniq                         ::   :: judgement_uniq {{ tex [[judgement]] \text{ unique} }}
     | formula1 .. formulan                   ::   :: dots
     | mu : varset1 ↔ varset2                 ::   :: moving_decl
     | mu is bijective                        ::   :: moving_bij
     % | us1 ∊ us2                              ::   :: us_in
-    | v : iP ∊ Φ                             ::   :: v_in_Y
+    | x : iP ∊ Φ                             ::   :: v_in_Y
     | UC1 ⊆ UC2                              ::   :: UC_subset
     | UC1 = UC2                              ::   :: UC_eq
     | SC1 ⊆ SC2                              ::   :: SC_subset

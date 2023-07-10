@@ -5,9 +5,9 @@ defns
   {{ com Positive type inference }}
   {{ tex [[Γ]] ; [[Φ]] \vDash [[v]] \colon [[iP]] }} by 
 
-  v : iP ∊ Φ
-  --------------- :: Var
-  Γ; Φ ⊨ v : iP
+  x : iP ∊ Φ
+  ------------------ :: Var
+  Γ; Φ ⊨ x : nf(iP)
 
   Γ; Φ ⊨ c : iN
   ------------------- :: Thunk
@@ -15,7 +15,7 @@ defns
 
   Γ; Φ ⊨ v : iP    Γ ; · ⊨ uQ ≥ iP ⫤ · 
   --------------------------------------- :: PAnnot
-  Γ; Φ ⊨ (v : iQ) : iQ
+  Γ; Φ ⊨ (v : iQ) : nf(iQ)
 
   defn Γ ; Φ ⊨ c : iN :: :: NInf :: ''
   {{ com Negative type inference }}
@@ -23,15 +23,15 @@ defns
 
   Γ ; Φ ⊨ c : iN    Γ ; · ⊨ uN ≤ iM ⫤ ·
   -------------------------------------- :: NAnnot
-  Γ ; Φ ⊨ (c : iM) : iM
+  Γ ; Φ ⊨ (c : iM) : nf(iM)
 
   Γ; Φ, x:iP ⊨ c : iN 
   ---------------------------- :: tLam
-  Γ; Φ ⊨ λx:iP . c : iP → iN
+  Γ; Φ ⊨ λx:iP . c : nf(iP → iN)
 
   Γ, α⁺ ; Φ ⊨ c : iN
-  ------------------------- :: TLam
-  Γ; Φ ⊨ Λα⁺ . c : ∀α⁺.iN
+  --------------------------- :: TLam
+  Γ; Φ ⊨ Λα⁺ . c : nf(∀α⁺.iN)
 
   Γ; Φ ⊨ v : iP
   ----------------------- :: Return
@@ -49,8 +49,8 @@ defns
   Γ; Φ ⊨ let x:iP = v(args); c : iN
 
   Γ; Φ ⊨ v : ↓iM   Γ; Φ ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC   
-  uv uQ ⊆ dom(SC)    SC | uv uQ singular    Θ ⊢ uσ̂ : SC 
-  Γ; Φ, x:[uσ̂]uQ ⊨ c : iN
+  uv uQ ⊆ dom(SC)    SC | uv uQ singular with uσ 
+  Γ; Φ, x:[uσ]uQ ⊨ c : iN
   --------------------------------------------------------------- :: AppLet
   Γ; Φ ⊨ let x = v(args); c : iN
 
@@ -63,8 +63,8 @@ defns
 defn Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC :: :: SpinInf :: ''
 {{ com Application type inference }} by
 
--------------------------- :: EmptyApp
-Γ; Φ; Θ ⊨ uN ● · ⇒> uN ⫤ Θ; ·
+---------------------------------- :: EmptyApp
+Γ; Φ; Θ ⊨ uN ● · ⇒> nf(uN) ⫤ Θ; ·
 
 Γ; Φ ⊨ v : iP   Γ; Θ ⊨ uQ ≥ iP ⫤ SC1   Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC2
 Θ ⊢ SC1 & SC2 = SC

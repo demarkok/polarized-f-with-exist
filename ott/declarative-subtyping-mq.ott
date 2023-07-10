@@ -74,6 +74,6 @@ defns
   {{ com Equivalence of unification substitutions }}
   {{ tex [[Θ]] [[⊢]] [[uσ1]] \eqDOne [[uσ2]] : [[varset]] }} by
 
-  % Γ ⊢ [σ1] α± ≈ [σ2] α±
-  % ----------------------
-  % Γ ⊢ σ1 ≈ σ2 : varset
+  defn Γ ⊢ Φ1 ≈ Φ2 :: :: CtxEq :: 'CtxEq'
+  {{ com Equivalence of contexts }}
+  {{ tex [[Γ]] [[⊢]] [[Φ1]] \eqDOne [[Φ2]] }} by
