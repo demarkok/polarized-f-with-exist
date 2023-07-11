@@ -73,6 +73,6 @@ defn Γ ; Φ ⊢ iN ● args ⇒> iM :: :: SpinInf :: ''
 Γ ; Φ ⊢ iQ → iN ● v , args ⇒> iM
 
  Γ ⊢ σ : pas        Γ ; Φ ⊢ [σ]iN ● args ⇒> iM
- args ≠ ·
+ args ≠ ·           pas ≠ ·
 ------------------------------------------------ :: ForallApp
 Γ ; Φ ⊢ ∀pas.iN ● args ⇒> iM

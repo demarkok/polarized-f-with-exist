@@ -72,6 +72,6 @@ defn Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC :: :: SpinInf :: ''
 Γ; Φ; Θ ⊨ uQ → uN ● v , args ⇒> uM ⫤ Θ'; SC
 
 Γ; Φ; Θ, â⁺*[Γ] ⊨ [â⁺*/pas]uN ● args ⇒> uM ⫤ Θ'; SC
-args ≠ ·
+args ≠ ·      pas ≠ ·
 --------------------------------------------------- :: ForallApp
 Γ; Φ; Θ ⊨ ∀pas.uN ● args ⇒> uM ⫤ Θ'; SC

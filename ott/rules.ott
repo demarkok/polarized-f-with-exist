@@ -46,6 +46,7 @@ grammar
     | uP ≠ uQ                                  ::   :: uPneq
     | uN ≠ uM                                  ::   :: uNneq
     | args1 ≠ args2                            ::   :: args_neq
+    | pas1 ≠ pas2                              ::   :: pas_neq
     % | xs = vars                              ::   :: xs_assignment
     % | arity f = [ arn1 ,.., arnn ]           ::   :: arity
     % | judgement etc                          ::   :: etc  {{ tex [[ judgement ]]... }}

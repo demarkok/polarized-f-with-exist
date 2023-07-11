@@ -90,25 +90,37 @@
 \end{proof}
 
 \newcommand{\pureSize}[1]{\ensuremath{\mathsf{pure\_size}(#1)}}
+\newcommand{\metric}[1]{\ensuremath{\mathsf{metric}(#1)}}
 \newcommand{\eqNodes}[1]{\ensuremath{\mathsf{eq\_nodes}(#1)}}
 \newcommand{\size}[1]{\ensuremath{\mathsf{size}(#1)}}
+\newcommand{\npq}[1]{\ensuremath{\mathsf{npq}(#1)}}
 
-\begin{definition}
-    For a tree $T$ inferring
-    a declarative typing judgement 
-    (i.e. the one of the shape
-    $[[Γ ; Φ ⊢ v : iP]]$, 
-    $[[Γ ; Φ ⊢ c : iN]]$, or 
-    $[[Γ ; Φ ⊢ iN ● args ⇒> iM]]$),
-    let us define a metrics $\size{T}$
-    as the number of nodes in $T$ that 
-    have one of these shapes
-    (i.e., $[[Γ ; Φ ⊢ v : iP]]$, 
-    $[[Γ ; Φ ⊢ c : iN]]$, or 
-    $[[Γ ; Φ ⊢ iN ● args ⇒> iM]]$).
+\begin{definition}[Number of prenex quantifiers]
+    Let us define $\npq{[[iN]]}$ and $\npq{[[iP]]}$ as the number of prenex quantifiers in these types, i.e.
+    \begin{itemize}
+        \item [$+$] $\npq{[[∃nas.iP]]} = |nas|$, if $[[iP ≠ ∃nbs.iP']]$,
+        \item [$-$] $\npq{[[∀pas.iN]]} = |pas|$, if $[[iN ≠ ∀pbs.iN']]$.
+    \end{itemize}
 \end{definition}
 
-\begin{definition}
+\begin{definition}[Size of a Judgement]
+    \label{def:decl-typing-size}
+    For a declarative typing judgement $J$
+    let us define a metrics $\size{J}$ as a pair of numbers 
+    in the following way:
+    \begin{itemize}
+        \item [$+$] $\size{[[Γ ; Φ ⊢ v : iP]]} = (\size{[[v]]}, 0)$;
+        \item [$-$] $\size{[[Γ ; Φ ⊢ c : iN]]} = (\size{[[c]]}, 0)$;
+        \item [$\bullet$] $\size{[[Γ ; Φ ⊢ iN ● args ⇒> iM]]} = 
+            (\size{[[args]]}, \npq{[[iN]]})$)
+    \end{itemize}
+    where $\size{[[v]]}$ or $\size{[[c]]}$ is the size of the 
+    syntax tree of the term $[[v]]$ or $[[c]]$
+    and $\size{[[args]]}$ is the sum of sizes of the terms in $[[args]]$.
+\end{definition}
+
+
+\begin{definition}[Number of Equivalence Nodes]
     For a tree $T$ inferring
     a declarative typing judgement,
     let us a function $\eqNodes{T}$
@@ -116,36 +128,29 @@
     \ruleref{\ottdruleDTNEquivLabel}.
 \end{definition}
 
-\begin{definition}
+\begin{definition}[Metric]
     For a tree $T$ inferring
-    a declarative typing judgement 
-    let us define a metrics $\pureSize{T}$
-    as the number of nodes in $T$ except 
-    the ones labeled with \ruleref{\ottdruleDTPEquivLabel} or 
-    \ruleref{\ottdruleDTNEquivLabel}.
-    In other words, $\pureSize{T} = \size{T} - \eqNodes{T}$. 
+    a declarative typing judgement $J$,
+    let us define a metric $\metric{T}$
+    as a pair $(\size{J}, \eqNodes{T})$.
 \end{definition}
-
 
 \begin{lemma}[Declarative typing is preserved under context equivalence]
     Assuming $[[Γ ⊢ Φ1]]$, $[[Γ ⊢ Φ2]]$, and $[[Γ ⊢ Φ1 ≈ Φ2]]$:
     \begin{itemize}
         \item [$+$] 
             for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ v : iP]]$, 
-            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ v : iP]]$ such that 
-            $\pureSize{T_2} = \pureSize{T_1}$.
+            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ v : iP]]$.
         \item [$-$] 
             for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ c : iN]]$, 
-            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ c : iN]]$ such that 
-            $\pureSize{T_2} = \pureSize{T_1}$.
+            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ c : iN]]$.
         \item [$\bullet$] 
             for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ iN ● args ⇒> iM]]$, 
-            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ iN ● args ⇒> iM]]$ such that 
-            $\pureSize{T_2} = \pureSize{T_1}$.
+            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ iN ● args ⇒> iM]]$.
     \end{itemize}
 \end{lemma}
 \begin{proof}
-    Let us prove it by induction on a pair $(\pureSize{T_1}, \eqNodes{T_1})$.
+    Let us prove it by induction on the $\metric{T_1}$.
     Let us consider the last rule applied in $T_1$ (i.e., its root node).
     \begin{caseof}
         \item \ruleref{\ottdruleDTVarLabel}\\
@@ -157,56 +162,44 @@
             Then we infer $[[Γ ; Φ2 ⊢ x : iP']]$ by \ruleref{\ottdruleDTVarLabel},
             and next, $[[Γ ; Φ2 ⊢ x : iP]]$ by \ruleref{\ottdruleDTPEquivLabel}.
 
-            Notice that 
-            to infer $T_1$, only \ruleref{\ottdruleDTVarLabel} was applied, 
-            to infer $T_2$, only \ruleref{\ottdruleDTVarLabel} and
-            \ruleref{\ottdruleDTPEquivLabel} were applied.
-            This way, $\pureSize{T_1} = \pureSize{T_2} = 1$.
-
         \item For \ruleref{\ottdruleDTThunkLabel},
               \ruleref{\ottdruleDTPAnnotLabel}, 
               \ruleref{\ottdruleDTTLamLabel},
-              \ruleref{\ottdruleDTReturnLabel},
-              \ruleref{\ottdruleDTNAnnotLabel}, and
+              \ruleref{\ottdruleDTReturnLabel}, and
+              \ruleref{\ottdruleDTNAnnotLabel}
               the proof is analogous. We
               apply the induction hypothesis to the premise of the rule
               to substitute $[[Φ1]]$ for $[[Φ2]]$ in it. 
-              The induction is applicable as the pure size of the 
-              premises is less than the pure size of the conclusion by one.
-              And after that, we apply the same rule to infer the required judgement.
+              The induction is applicable because 
+              the metric of the 
+              premises is less than the metric of the conclusion:
+              the term in the premise is a syntactic subterm of the
+              term in the conclusion.
 
-              By induction hypothesis, 
-              for each of the premises (i.e. the children $T_1'$ of $T_1$),
-              the tree $T_2'$ inferring the corresponding judgement
-              (with $[[Φ1]]$ substituted for $[[Φ2]]$) has the same pure size,
-              i.e., $\pureSize{T_1'} = \pureSize{T_2'}$.
-              For each of these rules, the pure size of $T_1$ 
-              and the pure size $T_2$ is a sum of the pure sizes of their children
-              plus one. This way, 
-              $ 
-                \pureSize{T_1} =
-                1 + \sum_{T'_1}{\pureSize{T'_1}} =
-                1 + \sum_{T'_2}{\pureSize{T'_2}} =
-                \pureSize{T_2} 
-              $.
+              And after that, we apply the same rule to infer the required judgement.
               
         \item \ruleref{\ottdruleDTPEquivLabel} and \ruleref{\ottdruleDTNEquivLabel}
             In these cases, the induction hypothesis is also applicable to the premise:
-            although the pure size of the premise is the same as the pure size of the conclusion,
-            but the number of equivalence nodes is less by one.
-            After this note, the proof is analogous to the previous case.
+            although the first component of the metric 
+            is the same for the premise and the conclusion:
+            $\size{[[Γ ; Φ ⊢ c : iN']]} = \size{[[Γ ; Φ ⊢ c : iN]]} = \size{[[c]]}$,
+            the second component of the metric is less for the premise by one,
+            since the equivalence rule was applied to turn the premise tree into
+            $T1$.
+            Having made this note, we continue the proof in the same way as in the previous case.
 
         \item \ruleref{\ottdruleDTtLamLabel}
             Then we are proving that 
             $[[Γ ; Φ1 ⊢ λx:iP.c : iP → iN]]$ implies $[[Γ ; Φ2 ⊢ λx:iP.c : iP → iN]]$.
-            Analogously to the previous case, 
+            Analogously to the previous cases, 
             we apply the induction hypothesis to the
             equivalent contexts $[[Γ ⊢ Φ1, x:iP ≈ Φ2, x:iP]]$
             and the premise $[[Γ ; Φ1, x:iP ⊢ c : iN]]$
-            inferred by $T'_1$ to obtain
-            $T'_2$ inferring $[[Γ ; Φ2, x:iP ⊢ c : iN]]$.
-            Then we construct $T_2$ inferring $[[Γ ; Φ2 ⊢ λx:iP.c : iP → iN]]$ by \ruleref{\ottdruleDTtLamLabel}
-            and notice that $\pureSize{T_1} = 1 + \pureSize{T'_1} = 1 + \pureSize{T'_2} = \pureSize{T_2}$.
+            to obtain $[[Γ ; Φ2, x:iP ⊢ c : iN]]$.
+            Notice that $[[c]]$ is a subterm of $[[λx:iP.c]]$,
+            i.e., the metric of the premise tree is less than the metric of the conclusion, 
+            and the induction hypothesis is applicable.
+            Then we infer $[[Γ ; Φ2 ⊢ λx:iP.c : iP → iN]]$ by \ruleref{\ottdruleDTtLamLabel}.
 
         \item \ruleref{\ottdruleDTVarLetLabel}
             Then we are proving that 
@@ -220,11 +213,6 @@
             and the premise $[[Γ ; Φ1, x:iP ⊢ c : iN]]$ to obtain
             $[[Γ ; Φ2, x:iP ⊢ c : iN]]$.
             Then we infer $[[Γ ; Φ2 ⊢ let x = v; c : iN]]$ by \ruleref{\ottdruleDTVarLetLabel}.
-
-            The pure size of the resulting tree $T_2$ and of $T_1$ is
-            one plus the sum of sizes of the premise trees.
-            The premises of $T_1$ and of $T_2$ have the same pure size by 
-            the induction hypothesis. This way, $\pureSize{T_1} = \pureSize{T_2}$.
 
         \item \ruleref{\ottdruleDTAppLetLabel}
             Then we are proving that 
@@ -241,9 +229,18 @@
             \end{itemize}
 
             It is left to show the uniqueness of $[[Γ ; Φ2 ⊢ iM ● args ⇒> ↑iQ]]$.
+            Let us assume that this judgement holds for other $[[iQ']]$, 
+            i.e.  there exists a tree $T_0$ inferring 
+            $[[Γ ; Φ2 ⊢ iM ● args ⇒> ↑iQ']]$.
+            Then notice that the induction hypothesis is applicable to
+            $T_0$: the first component of the first component of $\metric{T_0}$
+            is $S = \sum_{[[v]] \in [[args]]} \size{[[v]]}$, and it is less than
+            the corresponding component of $\metric{T_1}$, which is
+            $\size{[[let x = v(args); c]]} = 1 + \size{[[v]]} + \size{[[c]]} + S$.
+            This way, $[[Γ ; Φ1 ⊢ iM ● args ⇒> ↑iQ']]$ holds by the induction hypothesis,
+            but since $[[Γ ; Φ1 ⊢ iM ● args ⇒> ↑iQ uniq]]$, we have $[[Γ ⊢ iQ' ≈ iQ]]$.
 
             Then we infer $[[Γ ; Φ2 ⊢ let x = v(args); c : iN]]$ by \ruleref{\ottdruleDTAppLetLabel}.
-
 
         \item \ruleref{\ottdruleDTAppLetAnnLabel}
             Then we are proving that
@@ -264,26 +261,17 @@
             do not depend on the variable context, and hold by assumption.
             Then we infer $[[Γ ; Φ2 ⊢ let x:iP = v(args); c : iN]]$ by \ruleref{\ottdruleDTAppLetAnnLabel}.
 
-        \item \ruleref{\ottdruleDTUnpackLabel}, \ruleref{\ottdruleDTNAnnotLabel}, and \ruleref{\ottdruleDTNEquivLabel}
+        \item \ruleref{\ottdruleDTUnpackLabel}, and \ruleref{\ottdruleDTNAnnotLabel}
             are proved in the same way.
 
         \item \ruleref{\ottdruleDTEmptyAppLabel}
             Then we are proving that 
             $[[Γ ; Φ1 ⊢ iN ● · ⇒> iN']]$ (inferred by \ruleref{\ottdruleDTEmptyAppLabel})
-            implies $[[Γ ; Φ2 ⊢ iN ● · ⇒> iN']]$,
-            and if there is only one $[[iN']]$ (up-to-equivalence in $[[Γ]]$) 
-            that satisfies $[[Γ ; Φ1 ⊢ iN ● · ⇒> iN']]$,
-            then there is only one $[[iN']]$ satisfying $[[Γ ; Φ2 ⊢ iN ● · ⇒> iN']]$.
+            implies $[[Γ ; Φ2 ⊢ iN ● · ⇒> iN']]$.
 
             To infer $[[Γ ; Φ2 ⊢ iN ● · ⇒> iN']]$, 
             we apply \ruleref{\ottdruleDTEmptyAppLabel}, noting that 
             $[[Γ ⊢ iN ≈ iN']]$ holds by assumption.
-
-            To show the uniqueness $[[Γ ; Φ2 ⊢ iN ● · ⇒> iN' uniq]]$, 
-            let us assume $[[Γ ; Φ2 ⊢ iN ● · ⇒> iN'']]$.
-            Then the only rule applicable to infer it is \ruleref{\ottdruleDTEmptyAppLabel},
-            which, by inversion, means $[[Γ ⊢ iN ≈ iN'']]$, and by transitivity, 
-            $[[Γ ⊢ iN' ≈ iN'']]$.
 
         \item \ruleref{\ottdruleDTArrowAppLabel}
             Then we are proving that 
@@ -312,6 +300,25 @@
             $[[Γ ⊢ iM ≈ iM']]$.
 
         \item \ruleref{\ottdruleDTForallAppLabel}
+            Then we are proving that
+            $[[Γ ; Φ1 ⊢ ∀pas.iN ● args ⇒> iM]]$ (inferred by \ruleref{\ottdruleDTForallAppLabel})
+            implies $[[Γ ; Φ2 ⊢ ∀pas.iN ● args ⇒> iM]]$.
+
+            By inversion, we have $[[σ]]$ such that $[[Γ ⊢ σ : pas]]$ and
+            $[[Γ ; Φ1 ⊢ [σ]iN ● args ⇒> iM]]$ is inferred.
+            Let us denote the inference tree as $T_1'$.
+            Notice that the induction hypothesis is applicable to $T_1'$:
+            $\metric{T_1'} = ((\size{[[args]]}, 0), x)$ (for some $x$) is less than 
+            $\metric{T_1} = ((\size{[[args]]}, |[[pas]]|), y)$ (for some $y$),
+            since $|[[pas]]| > 0$ by inversion.
+
+            This way, by the induction hypothesis, 
+            there exists a tree $T_2'$ inferring
+            $[[Γ ; Φ2 ⊢ [σ]iN ● args ⇒> iM]]$.
+            Notice that the premises $[[args ≠ ·]]$, $[[Γ ⊢ σ : pas]]$,
+            and $[[pas ≠ ·]]$ do not depend on the variable context,
+            and hold by inversion.
+            Then we infer $[[Γ ; Φ2 ⊢ ∀pas.iN ● args ⇒> iM]]$ by \ruleref{\ottdruleDTForallAppLabel}.
     \end{caseof}
     
 \end{proof}
