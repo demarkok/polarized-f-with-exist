@@ -103,7 +103,7 @@
     \end{itemize}
 \end{definition}
 
-\begin{definition}[Size of a Judgement]
+\begin{definition}[Size of a Declarative Judgement]
     \label{def:decl-typing-size}
     For a declarative typing judgement $J$
     let us define a metrics $\size{J}$ as a pair of numbers 
@@ -129,6 +129,7 @@
 \end{definition}
 
 \begin{definition}[Metric]
+    \label{def:decl-typing-metric}
     For a tree $T$ inferring
     a declarative typing judgement $J$,
     let us define a metric $\metric{T}$
@@ -136,6 +137,7 @@
 \end{definition}
 
 \begin{lemma}[Declarative typing is preserved under context equivalence]
+    \label{lemma:decl-typing-context-equiv}
     Assuming $[[Γ ⊢ Φ1]]$, $[[Γ ⊢ Φ2]]$, and $[[Γ ⊢ Φ1 ≈ Φ2]]$:
     \begin{itemize}
         \item [$+$] 
@@ -308,8 +310,8 @@
             $[[Γ ; Φ1 ⊢ [σ]iN ● args ⇒> iM]]$ is inferred.
             Let us denote the inference tree as $T_1'$.
             Notice that the induction hypothesis is applicable to $T_1'$:
-            $\metric{T_1'} = ((\size{[[args]]}, 0), x)$ (for some $x$) is less than 
-            $\metric{T_1} = ((\size{[[args]]}, |[[pas]]|), y)$ (for some $y$),
+            $\metric{T_1'} = ((\size{[[args]]}, 0), x)$ is less than 
+            $\metric{T_1} = ((\size{[[args]]}, |[[pas]]|), y)$ for any $x$ and $y$,
             since $|[[pas]]| > 0$ by inversion.
 
             This way, by the induction hypothesis, 
@@ -320,5 +322,4 @@
             and hold by inversion.
             Then we infer $[[Γ ; Φ2 ⊢ ∀pas.iN ● args ⇒> iM]]$ by \ruleref{\ottdruleDTForallAppLabel}.
     \end{caseof}
-    
 \end{proof}

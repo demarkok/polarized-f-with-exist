@@ -1,10 +1,37 @@
+Let us extend the declarative typing metric (\cref{def:decl-typing-metric}) 
+to the algorithmic typing.
+
+\begin{definition}[Size of an Algorithmic Judgement]
+    \label{def:algorithmic-typing-size}
+    For an algorithmic typing judgement $J$
+    let us define a metrics $\size{J}$ as a pair of numbers 
+    in the following way:
+    \begin{itemize}
+        \item [$+$] $\size{[[Γ ; Φ ⊨ v : iP]]} = (\size{[[v]]}, 0)$;
+        \item [$-$] $\size{[[Γ ; Φ ⊨ c : iN]]} = (\size{[[c]]}, 0)$;
+        \item [$\bullet$] $\size{[[Γ ; Φ ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]} = 
+            (\size{[[args]]}, \npq{[[uN]]})$)
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Metric]
+    We extend the metric from \cref{def:decl-typing-metric} to the algorithmic typing
+    in the following way.
+    For a tree $T$ inferring an algorithmic typing judgement $J$, we define 
+    $\size{T}$ as $(\size{J}, 0)$.
+\end{definition}
+
+Soundness and the completeness are proved by mutual induction on
+the metric of the inference tree.
+
 \begin{lemma}[Soundness of typing] \label{lemma:typing-soundness}
+    For an inference tree $T_1$,
     \hfill
     \begin{itemize}
-        \item [$+$] If $[[Γ; Φ ⊨ v : iP]]$ then $[[Γ ⊢ iP]]$ and $[[Γ; Φ ⊢ v : iP]]$
-        \item [$-$] If $[[Γ; Φ ⊨ c : iN]]$ then $[[Γ ⊢ iN]]$ and $[[Γ; Φ ⊢ c : iN]]$
+        \item [$+$] If $T_1$ infers $[[Γ; Φ ⊨ v : iP]]$ then $[[Γ ⊢ iP]]$ and $[[Γ; Φ ⊢ v : iP]]$
+        \item [$-$] If $T_1$ infers $[[Γ; Φ ⊨ c : iN]]$ then $[[Γ ⊢ iN]]$ and $[[Γ; Φ ⊢ c : iN]]$
         \item  For $[[Γ ⊢ Θ]]$ and $[[Γ; Θ ⊢ uN]]$ free from negative metavariables,
-        if $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$ then
+        if $T_1$ infers $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$ then
         \begin{enumerate}
             \item $[[Γ ⊢ Θ']]$
             \item $[[Θ]] \subseteq [[Θ']]$
@@ -16,7 +43,8 @@
     \end{itemize}
 \end{lemma}
 \begin{proof}
-    We prove it by induction on the typing derivation.
+    We prove it by induction on $\metric{T_1}$, mutually with 
+    the completeness of typing (\cref{lemma:typing-soundness}).
     Let us consider the last rule used to infer the derivation.
     \begin{caseof}
         \item \ruleref{\ottdruleATVarLabel}
@@ -300,15 +328,17 @@
 
 \begin{lemma}[Completeness of Typing]
     \label{lemma:typing-completeness}
+    For an inference tree $T_1$,
     \begin{itemize}
-        \item [$+$] If $[[Γ; Φ ⊢ v : iP]]$ then  $[[Γ; Φ ⊨ v : nf(iP)]]$        
-        \item [$-$] If $[[Γ; Φ ⊢ c : iN]]$ then  $[[Γ; Φ ⊨ c : nf(iN)]]$
+        \item [$+$] If $T_1$ infers $[[Γ; Φ ⊢ v : iP]]$ then $[[Γ; Φ ⊨ v : nf(iP)]]$        
+        \item [$-$] If $T_1$ infers $[[Γ; Φ ⊢ c : iN]]$ then  $[[Γ; Φ ⊨ c : nf(iN)]]$
         \item [$\bullet$] Suppose that 
-            $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$ holds for some
+            $T1$ infers $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$ for some
             $[[Γ ⊢ Θ]]$,
             $[[Γ; Θ ⊢ uN]]$ (free from negative metavariables, that is $[[α̂⁻]] \notin [[uv uN]]$), 
             $[[Θ ⊢ uσ]]$, and $[[Γ ⊢ iM]]$. Then
-            there exist normalized $[[uM']]$, $[[Θ']]$, and $[[SC]]$ such that
+            there exist $[[uM']]$ (normalized and free from negative metavariables),
+            $[[Θ']]$, and $[[SC]]$ such that
             \begin{enumerate}
                 \item $[[ Γ; Φ; Θ ⊨ uN ● args ⇒> uM' ⫤ Θ'; SC ]]$ and
                 \item for any $[[Θ ⊢ uσ]]$ and $[[Γ ⊢ iM]]$
@@ -323,13 +353,237 @@
     \end{itemize}
 \end{lemma}
 \begin{proof}
-    By induction on the typing derivation.
+    We prove it by induction on $\metric{T_1}$, mutually with 
+    the soundness of typing (\cref{lemma:typing-soundness}).
     Let us consider the last rule applied to infer the derivation.
     % First, let us consider the case of $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$, 
     % when the substitution $[[uσ]]$ can change the outer shape of $[[uN]]$.
     % after that, we consider the last rule applied to infer the derivation
     % (assuming that $[[ uσ ]]$ preserves the outer shape of the type it applied to).
     \begin{caseof}
+
+        \item \ruleref{\ottdruleDTThunkLabel}\\
+            \label{case:typing-completeness-thunk}
+            Then we are proving that if 
+            $[[Γ; Φ ⊢ {c} : ↓iN]]$ (inferred by \ruleref{\ottdruleDTThunkLabel})
+            then $[[Γ; Φ ⊨ {c} : nf(↓iN)]]$.
+            By inversion of $[[Γ; Φ ⊢ {c} : ↓iN]]$, we have
+            $[[Γ; Φ ⊢ c : iN]]$, which we apply the induction hypothesis to
+            to obtain $[[Γ; Φ ⊨ c : nf(iN)]]$.
+            Then by \ruleref{\ottdruleATThunkLabel}, we have $[[Γ; Φ ⊨ {c} : ↓nf(iN)]]$.
+            It is left to notice that $[[↓nf(iN) = nf(↓iN)]]$.
+
+        \item \ruleref{\ottdruleDTReturnLabel}\\
+            The proof is symmetric to the previous case 
+            (\cref{case:typing-completeness-thunk}).
+
+        \item \ruleref{\ottdruleDTPAnnotLabel}\\
+            \label{case:typing-completeness-pannot}
+            Then we are proving that if
+            $[[Γ; Φ ⊢ (v : iQ) : iQ]]$ is inferred by \ruleref{\ottdruleDTPAnnotLabel}
+            then $[[Γ; Φ ⊨ (v : iQ) : nf(iQ)]]$.
+            By inversion, we have
+            \begin{enumerate}
+                \item $[[Γ; Φ ⊢ v : iP]]$, which
+                    by the induction hypothesis implies $[[Γ; Φ ⊨ v : nf(iP)]]$;
+                \item $[[Γ ⊢ iQ ≥ iP]]$, and by transitivity, $[[Γ ⊢ iQ ≥ nf(iP)]]$.
+                    Since $[[iQ]]$ is ground, 
+                    we have $[[Γ ; · ⊢ uQ]]$ and $[[Γ ⊢ [·]uQ ≥ nf(iP)]]$.
+                    Then by the completeness of subtyping
+                    (\cref{lemma:subtyping-completeness}), we have 
+                    $[[Γ ; · ⊨ uQ ≥ nf(iP) ⫤ SC]]$, where $[[· ⊢ SC]]$ 
+                    (implying $[[SC]] = [[·]]$).
+                    This way, $[[Γ ; · ⊨ uQ ≥ nf(iP) ⫤ ·]]$.
+            \end{enumerate}
+            Then we can apply \ruleref{\ottdruleATPAnnotLabel} to
+            $[[Γ; Φ ⊨ v : nf(iP)]]$ and  $[[Γ ; · ⊨ uQ ≥ nf(iP) ⫤ ·]]$
+            to infer $[[Γ; Φ ⊨ (v : iQ) : nf(iQ)]]$.
+
+        \item \ruleref{\ottdruleDTNAnnotLabel}\\
+            The proof is symmetric to the previous case 
+            (\cref{case:typing-completeness-pannot}).
+
+        \item \ruleref{\ottdruleDTtLamLabel}\\
+            Then we are proving that if
+            $[[Γ ; Φ ⊢ λx:iP . c : iP → iN]]$ is inferred by \ruleref{\ottdruleDTtLamLabel},
+            then $[[Γ ; Φ ⊨ λx:iP . c : nf(iP → iN)]]$.
+
+            By inversion of $[[Γ ; Φ ⊢ λx:iP . c : iP → iN]]$, we have
+            $[[Γ; Φ, x:iP ⊢ c : iN]]$.
+            Then by the induction hypothesis, $[[Γ; Φ, x:iP ⊨ c : nf(iN)]]$.
+            and by \ruleref{\ottdruleATtLamLabel}, we infer
+            $[[Γ; Φ ⊨ λx:iP . c : nf(iP → nf(iN))]]$. 
+            By idempotence of normalization, $[[nf(iP → nf(iN)) = nf(iP → iN)]]$,
+            which concludes the proof for this case.
+
+        \item \ruleref{\ottdruleDTTLamLabel}\\
+            Then we are proving that if
+            $[[Γ ; Φ ⊢ Λα⁺ . c : ∀α⁺.iN]]$ is inferred by \ruleref{\ottdruleDTTLamLabel},
+            then $[[Γ ; Φ ⊨ Λα⁺ . c : nf(∀α⁺.iN)]]$.
+            By inversion of $[[Γ ; Φ ⊢ Λα⁺ . c : ∀α⁺.iN]]$, we have
+            $[[Γ, α⁺ ; Φ ⊢ c : iN]]$, and then by the induction hypothesis,
+            $[[Γ, α⁺ ; Φ ⊨ c : nf(iN)]]$.
+            Then by \ruleref{\ottdruleATTLamLabel}, we infer
+            $[[Γ ; Φ ⊨ Λα⁺ . c : nf(∀α⁺.nf(iN))]]$.
+
+            It is left to show that $[[nf(∀α⁺.nf(iN)) = nf(∀α⁺.iN)]]$.
+            Assume $[[iN = ∀pbs.iM]]$ (where $[[iM]]$ does not start with $\forall$).
+            \begin{itemize}
+                \item Then by definition, $[[nf(∀α⁺.iN) = nf(∀α⁺,pbs.iM)]] = 
+                    [[∀pcs.nf(iM)]]$, where $[[ord {α⁺,pbs} in nf(iM) = pcs]]$.
+                \item On the other hand, $[[nf(iN) = ∀pcs'.nf(iM)]]$, 
+                    where $[[ord {pbs} in nf(iM) = pcs']]$, and thus, 
+                    $[[nf(∀α⁺.nf(iN)) = nf(∀α⁺,pcs'.nf(iM))]] = [[∀pcs''.nf(nf(iM))]]
+                    = [[∀pcs''.nf(iM)]]$,
+                    where $[[ord {α⁺,pcs'} in nf(nf(iM)) = pcs'']]$. 
+            \end{itemize}
+            It is left to show that $[[pcs'' = pcs]]$.
+            $$ 
+            \begin{aligned}[t] 
+                [[ pcs'' ]] &= [[ord {α⁺,pcs'} in nf(nf(iM))]] \\
+                            &= [[ord {α⁺,pcs'} in nf(iM)]]
+                            && \text{by idempotence}\\
+                            &= [[ord {α⁺} ∪ {pbs} ∩ fv nf(iM) in nf(iM)]]
+                            && \text{by definition of $[[pcs']]$ and \cref{lemma:ord-soundness}}\\
+                            &= [[ord ({α⁺} ∪ {pbs} ∩ fv nf(iM)) ∩ fv nf(iM) in nf(iM)]]
+                            && \text{by \cref{corollary:ord-weakening}}\\
+                            &= [[ord ({α⁺} ∪ {pbs}) ∩ fv nf(iM) in nf(iM)]]
+                            && \text{by set properties}\\
+                            &= [[ord {α⁺,pbs} in nf(iM)]]\\
+                            &= [[pcs]]
+                \end{aligned} 
+            $$
+
+        \item \ruleref{\ottdruleDTUnpackLabel}\\
+            Then we are proving that if
+            $[[Γ ; Φ ⊢ let∃ (α⁻, x) = v; c : iN]]$ is 
+            inferred by \ruleref{\ottdruleDTUnpackLabel},
+            then $[[Γ ; Φ ⊨ let∃ (α⁻, x) = v; c : nf(iN)]]$.
+
+            By inversion of $[[Γ ; Φ ⊢ let∃ (α⁻, x) = v; c : iN]]$, we have
+            \begin{enumerate}
+                \item $[[Γ ; Φ ⊢ v : ∃α⁻.iP]]$, 
+                    which by the induction hypothesis implies 
+                    $[[Γ ; Φ ⊨ v : nf(∃α⁻.iP)]]$,
+                \item Γ, α⁻ ; Φ, x:iP ⊢ c : iN   
+                \item Γ ⊢ iN
+            \end{enumerate}
+                
+
+        \item \ruleref{\ottdruleDTPEquivLabel}\\
+            Then we are proving that
+            if $[[Γ; Φ ⊢ v : iP']]$ is inferred by \ruleref{\ottdruleDTPEquivLabel},
+            then $[[Γ; Φ ⊨ v : nf(iP')]]$.
+            By inversion, $[[Γ ; Φ ⊢ v : iP]]$ and $[[Γ ⊢ iP ≈ iP']]$,
+            and the tree inferring $[[Γ ; Φ ⊢ v : iP]]$ is less than the one 
+            inferring $[[Γ; Φ ⊢ v : iP']]$ by the inductive metric.
+            Then by the induction hypothesis, $[[Γ; Φ ⊨ v : nf(iP)]]$.
+
+            By \cref{lemma:subt-equiv-algorithmization}
+            $[[Γ ⊢ iP ≈ iP']]$ implies $[[nf(iP) = nf(iP')]]$, and thus, 
+            $[[Γ; Φ ⊨ v : nf(iP)]]$ can be rewritten to $[[Γ; Φ ⊨ v : nf(iP')]]$.
+
+        \item \ruleref{\ottdruleDTVarLabel}\\
+            Then we are proving that
+            $[[Γ; Φ ⊢ x : iP]]$
+            implies
+            $[[Γ; Φ ⊨ x : nf(iP)]]$.
+            By inversion of $[[Γ; Φ ⊢ x : iP]]$,
+            we have $[[x : iP ∊ Φ ]]$.
+            Then \ruleref{\ottdruleATVarLabel} applies to infer
+            $[[Γ; Φ ⊨ x : nf(iP)]]$.
+
+        \item \ruleref{\ottdruleDTVarLetLabel}\\
+            Then we are proving that
+            $[[Γ; Φ ⊢ let x = v(args); c : iN]]$
+            implies
+            $[[Γ; Φ ⊨ let x = v(args); c : nf(iN)]]$.
+
+            By inversion of
+            $[[Γ; Φ ⊢ let x = v(args); c : iN]]$,
+            we have
+            \begin{enumerate}
+                \item $[[Γ; Φ ⊢ v : iP]]$, 
+                    and by the induction hypothesis,
+                    $[[Γ; Φ ⊨ v : nf(iP)]]$.
+                \item $[[Γ; Φ, x:iP ⊢ c : iN]]$,
+                    and by \cref{lemma:decl-typing-context-equiv},
+                    since $[[Γ ⊢ iP ≈ nf(iP)]]$, we have
+                    $[[Γ; Φ, x:nf(iP) ⊢ c : iN]]$.
+                    Then by the induction hypothesis, 
+                    $[[Γ; Φ, x:nf(iP) ⊨ c : nf(iN)]]$.
+            \end{enumerate}
+
+            Together, $[[Γ; Φ ⊨ v : nf(iP)]]$ and $[[Γ; Φ, x:nf(iP) ⊨ c : nf(iN)]]$
+            imply $[[Γ; Φ ⊨ let x = v(args); c : nf(iN)]]$ by \ruleref{\ottdruleATVarLetLabel}.
+
+        \item \ruleref{\ottdruleDTAppLetAnnLabel}\\
+            Then we are proving that 
+            $[[Γ ; Φ ⊢ let x:iP = v(args); c : iN]]$
+            implies 
+            $[[Γ; Φ ⊨ let x:iP = v(args); c : nf(iN)]]$.
+
+            By inversion of 
+            $[[Γ ; Φ ⊢ let x:iP = v(args); c : iN]]$,
+            we have
+            \begin{enumerate}
+                \item $[[Γ ⊢ iP]]$
+                \item $[[Γ ; Φ ⊢ v : ↓iM]]$ for some ground $[[iM]]$,
+                    which by the induction hypothesis means
+                    $[[Γ ; Φ ⊨ v : ↓nf(iM)]]$
+                \item $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ]]$. 
+                    By \cref{lemma:app-inf-equ-stable}, since
+                    $[[Γ ⊢ iM ≈ nf(iM)]]$, we have
+                    $[[Γ ; Φ ⊢ [·]nf(uM) ● args ⇒> ↑iQ]]$, 
+                    which by the induction hypothesis means 
+                    that there exist normalized 
+                    $[[uM']]$, $[[Θ]]$, and $[[SC1]]$ such that
+                    (noting that $[[iM]]$ is ground):
+                    \begin{enumerate}
+                        \item $[[ Γ; Φ; · ⊨ nf(uM) ● args ⇒> uM' ⫤ Θ; SC1 ]]$,
+                            where by the soundness, $[[Γ; Θ ⊢ uM']]$ and $[[Θ ⊢ SC1]]$.
+                        \item for any $[[Γ ⊢ iM'']]$ 
+                            such that $[[Γ; Φ ⊢ nf(iM) ● args ⇒> iM'']]$
+                            there exists $[[uσ]]$ such that 
+                            \begin{enumerate}
+                                \item $[[Θ ⊢ uσ : SC1]]$, and 
+                                \item $[[Γ ⊢ [uσ]uM' ≈ iM'']]$,
+                            \end{enumerate}
+                            In particular, there exists
+                            $[[Θ ⊢ uσ0 : SC1]]$ such that $[[Γ ⊢ [uσ0]uM' ≈ ↑iQ]]$.
+                           Moreover, since $uM'$ is normalized and free of negative metavariables,
+                            $[[uM' = ↑uQ0]]$, and $[[Γ ⊢ [uσ0]uQ0 ≈ iQ]]$.
+                    \end{enumerate}
+                \item $[[Γ ⊢ ↑iQ ≤ ↑iP]]$,
+                    and by transitivity, since $[[Γ ⊢ [uσ0]↑uQ0 ≈ ↑iQ]]$,
+                    we have $[[Γ ⊢ [uσ0]↑uQ0 ≤ ↑iP]]$.
+                    
+                    Let us apply \cref{lemma:neg-subt-completeness} to 
+                    $[[Γ ⊢ [uσ0]↑uQ0  ≤ ↑iP]]$ and obtain
+                    $[[Θ ⊢ SC2]]$ such that 
+                    \begin{enumerate}
+                        \item $[[Γ ; Θ ⊨ ↑uQ0 ≤ ↑iP ⫤ SC2]]$ and
+                        \item $[[Θ ⊢ uσ0 : SC2]]$.
+                    \end{enumerate}
+                \item $[[Γ; Φ, x:iP ⊢ c : iN]]$, 
+                    and by the induction hypothesis,
+                    $[[Γ; Φ, x:iP ⊨ c : nf(iN)]]$.
+            \end{enumerate}
+
+            To infer $[[Γ; Φ ⊨ let x:iP = v(args); c : nf(iN)]]$,
+            we apply the corresponding algorithmic rule 
+            \ruleref{\ottdruleATAppLetAnnLabel}.
+            Let us show that the premises hold:
+            \begin{enumerate}
+                \item $[[Γ ⊢ iP]]$,
+                \item $[[Γ; Φ ⊨ v : ↓nf(iM)]]$,
+                \item $[[Γ; Φ; · ⊨ nf(uM) ● args ⇒> ↑uQ0 ⫤ Θ; SC1]]$, 
+                \item $[[Γ; Θ ⊨ ↑uQ0 ≤ ↑iP ⫤ SC2]]$, and
+                \item $[[Γ; Φ, x:iP ⊨ c : nf(iN)]]$ hold as noted above;
+                \item $[[Θ ⊢ SC1 & SC2 = SC]]$ 
+                    is defined by \cref{lemma:merge-completeness},
+                    since $[[Θ ⊢ uσ0 : SC1]]$ and $[[Θ ⊢ uσ0 : SC2]]$.
+            \end{enumerate}
 
         \item \ruleref{\ottdruleDTAppLetLabel}\\
             By assumption, $[[c]]$ is $[[let x = v(args); c']]$. 
@@ -342,10 +596,11 @@
                 \item $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ uniq]]$. 
                     Then by \cref{lemma:app-inf-equ-stable}, since 
                     $[[Γ ⊢ iM ≈ nf(iM)]]$, we have
-                    $[[Γ ; Φ ⊢ nf(iM) ● args ⇒> ↑iQ]]$.
+                    $[[Γ ; Φ ⊢ nf(iM) ● args ⇒> ↑iQ]]$
+                    and moreover, $[[Γ ; Φ ⊢ nf(iM) ● args ⇒> ↑iQ uniq]]$.
                     Then the induction hypothesis applied to 
                     $[[Γ ; Φ ⊢ [·]nf(uM) ● args ⇒> ↑iQ]]$
-                    means that there exist $[[uM']]$, $[[Θ]]$, and $[[SC]]$ such that
+                    implies that there exist $[[uM']]$, $[[Θ]]$, and $[[SC]]$ such that
                     (considering $[[iM]]$ is ground):
                     \begin{enumerate}
                         \item $[[ Γ; Φ; · ⊨ nf(uM) ● args ⇒> uM' ⫤ Θ; SC ]]$, 
@@ -369,9 +624,9 @@
                                 \item $[[Θ ⊢ uσ1 : SC]]$, and 
                                 \item $[[Γ ⊢ [uσ1]uM' ≈ iM'']]$, and 
                                 in particular, $[[Γ ⊢ [uσ1]uM' ≈ ↑iQ]]$.
-                                since $[[uM']]$ is
+                                Since $[[uM']]$ is
                                 normalized and free of 
-                                negative metavariables means that 
+                                negative metavariables, it means that 
                                 $[[uM' = ↑uP]]$ for some $[[uP]]$, 
                                 that is $[[Γ ⊢ [uσ1]uP ≈ iQ]]$.
                             \end{enumerate}
@@ -380,7 +635,7 @@
             \end{itemize}
 
 
-            To infer $[[Γ ; Φ ⊢ let x = v(args); c' : nf(iN)]]$, 
+            To infer $[[Γ ; Φ ⊨ let x = v(args); c' : nf(iN)]]$, 
             let us apply the corresponding algorithmic rule 
             (\ruleref{\ottdruleATAppLetLabel}):
             \begin{enumerate}
@@ -402,28 +657,21 @@
                     It implies $[[Θ ⊢ uσ ≈ uσ' : uv uP]]$
                     by \cref{lemma:subst-equiv-metavar}.
 
-                \item Let us show $[[Γ; Φ, x:[uσ0]uP ; Θ ⊨ c' : nf(iN)]]$.
+                \item Let us show $[[Γ; Φ, x:[uσ0]uP ⊨ c' : nf(iN)]]$.
                     By the soundness of singularity 
                     (\cref{lemma:singularity-soundness}),
                     $[[Θ ⊢ uσ0 : SC]]$,
                     which by \ref{point:typing-completeness:AppLet:ih-sound}
                     means $[[Γ ⊢ [uσ0]uM' ≈ ↑iQ]]$,
-                    that is $[[Γ ⊢ [uσ0]uP ≈ iQ]]$.
+                    that is $[[Γ ⊢ [uσ0]uP ≈ iQ]]$, 
+                    and thus, $[[Γ ⊢ Φ, x:iQ ≈ Φ, x:[uσ0]uP]]$.
 
-                \item 
-                    \label{point:typing-completeness:AppLet:body},
-                    which by the induction hypothesis means
-                    $[[Γ; Φ, x:iQ ⊨ c' : nf(iN)]]$.
-
+                    Then by \cref{lemma:decl-typing-context-equiv},
+                    $[[Γ; Φ, x:iQ ⊢ c' : iN]]$ can be rewritten as
+                    $[[Γ; Φ, x:[uσ0]uP ⊢ c' : iN]]$.
+                    Then by the induction hypothesis applied to it, 
+                    $[[Γ; Φ, x:[uσ0]uP ⊨ c' : nf(iN)]]$ holds.
             \end{enumerate}
-
-
-
-
-
-
-
-
 
         \item \ruleref{\ottdruleDTForallAppLabel}\\
             Since $[[uN]]$ cannot be a metavariable,  
@@ -656,15 +904,5 @@
                     \ruleref{\ottdruleDTEmptyAppLabel}, meaning 
                         $[[ [uσ1]uN =  iM ]]$.
             \end{enumerate}
-        \item \ruleref{\ottdruleDTVarLabel}\\
-        \item \ruleref{\ottdruleDTThunkLabel}\\
-        \item \ruleref{\ottdruleDTPAnnotLabel}\\
-        \item \ruleref{\ottdruleDTtLamLabel}\\
-        \item \ruleref{\ottdruleDTTLamLabel}\\
-        \item \ruleref{\ottdruleDTReturnLabel}\\
-        \item \ruleref{\ottdruleDTVarLetLabel}\\
-        \item \ruleref{\ottdruleDTAppLetAnnLabel}\\
-        \item \ruleref{\ottdruleDTUnpackLabel}\\
-        \item \ruleref{\ottdruleDTNAnnotLabel}\\
     \end{caseof}
 \end{proof}

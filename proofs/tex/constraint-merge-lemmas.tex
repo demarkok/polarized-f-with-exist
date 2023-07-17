@@ -151,11 +151,7 @@ If $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined then
     \label{lemma:merge-completeness}
     Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.
     Then for any substitution $[[Θ ⊢ uσ]]$ such that $[[Θ ⊢ uσ : SC1]]$ and $[[Θ ⊢ uσ : SC2]]$, 
-    \begin{enumerate}
-        \item $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined,
-        \item $[[Θ ⊢ SC]]$, and
-        \item $[[Θ ⊢ uσ : SC]]$.
-    \end{enumerate}
+    $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined.
 \end{lemma}
 \begin{proof}
     By  definition, $[[SC1 & SC2]]$ is a union of
@@ -166,13 +162,10 @@ If $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined then
     \end{enumerate}
 
     This way, to show that $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined, we need to demonstrate that each of these components is defined.
-    To prove $[[Θ ⊢ uσ : SC]]$ we need to show that for every entry $[[scE]]$ of $[[SC]]$ restricting a variable $[[α̂±]]$,
-    $[[Θ(α̂±) ⊢ [uσ]α̂± : scE]]$ holds.
 
-    It is clear that the first two components of this union exist, and that if $[[scE]]$ is an entry 
-    restricting $[[α̂±]]$ $[[dom(SC1) \ dom(SC2)]]$ then then $[[Θ(α̂±) ⊢ [uσ]α̂± : scE]]$ because  
-    $[[Θ ⊢ uσ : SC1]]$ and $[[scE]] \in [[SC1]]$. Analogously, if $[[scE]]$ is an entry
-    from the second component of the union, the property holds for it.  Let us show that the third component exists, and each of its entries satisfies the property.  Let us take two entries $[[scE1]] \in [[SC1]]$ and $[[scE2]] \in [[SC2]]$ restricting the same variable $[[α̂±]]$.  $[[Θ ⊢ uσ : SC1]]$ means that $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$ and $[[Θ ⊢ uσ : SC2]]$ means $[[Θ(α̂±) ⊢ [uσ]α̂± : scE2]]$.
+    It is clear that the first two components of this union exist. 
+    Let us show that the third component exists.  
+    Let us take two entries $[[scE1]] \in [[SC1]]$ and $[[scE2]] \in [[SC2]]$ restricting the same variable $[[α̂±]]$.  $[[Θ ⊢ uσ : SC1]]$ means that $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$ and $[[Θ ⊢ uσ : SC2]]$ means $[[Θ(α̂±) ⊢ [uσ]α̂± : scE2]]$.
     Then by \cref{lemma:entry-merge-completeness}, $[[Θ(α̂±) ⊢ scE1 & scE2 = scE]]$ is defined and $[[Θ(α̂±) ⊢ [uσ]α̂± : scE]]$.
 \end{proof}
 
