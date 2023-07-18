@@ -172,22 +172,24 @@ the metric of the inference tree.
         \item \ruleref{\ottdruleATUnpackLabel}
         By the inversion, we have:
         \begin{enumerate}
-            \item $[[c]]$ is $[[let∃ (α⁻, x) = v; c']]$
-            \item $[[Γ; Φ ⊨ v : ∃α⁻.iP]]$
-            \item $[[Γ, α⁻ ; Φ, x:iP ⊨ c' : iN]]$
+            \item $[[c]]$ is $[[let∃ (nas, x) = v; c']]$
+            \item $[[Γ; Φ ⊨ v : ∃nas.iP]]$
+            \item $[[Γ, nas ; Φ, x:iP ⊨ c' : iN]]$
             \item $[[Γ ⊢ iN]]$
         \end{enumerate}
 
         By the induction hypothesis applied to 
-        $[[Γ; Φ ⊨ v : ∃α⁻.iP]]$, we have $[[Γ; Φ ⊢ v : ∃α⁻.iP]]$.
+        $[[Γ; Φ ⊨ v : ∃nas.iP]]$, we have $[[Γ; Φ ⊢ v : ∃nas.iP]]$
+        and $[[∃nas.iP]]$ is normalized.
         By the induction hypothesis applied to
-        $[[Γ, α⁻ ; Φ, x:iP ⊨ c' : iN]]$, we have $[[Γ, α⁻ ; Φ, x:iP ⊢ c' : iN]]$.
+        $[[Γ, nas ; Φ, x:iP ⊨ c' : iN]]$, we have $[[Γ, nas ; Φ, x:iP ⊢ c' : iN]]$.
 
-        To show $[[Γ; Φ ⊢ let∃ (α⁻, x) = v; c' : iN]]$, we apply the corresponding
+        To show $[[Γ; Φ ⊢ let∃ (nas, x) = v; c' : iN]]$, we apply the corresponding
         declarative rule \ruleref{\ottdruleDTUnpackLabel}. Let us show that the premises hold:
         \begin{enumerate}
-            \item $[[Γ ; Φ ⊢ v : ∃α⁻.iP]]$ holds by the induction hypothesis, as noted above,
-            \item $[[Γ, α⁻ ; Φ, x:iP ⊢ c' : iN]]$ also holds by the induction hypothesis,
+            \item $[[Γ ; Φ ⊢ v : ∃nas.iP]]$ holds by the induction hypothesis, as noted above,
+            \item $[[nf(∃nas.iP) = ∃nas.iP]]$ holds since $[[∃nas.iP]]$ is normalized,
+            \item $[[Γ, nas ; Φ, x:iP ⊢ c' : iN]]$ also holds by the induction hypothesis,
             \item $[[Γ ⊢ iN]]$ holds by the inversion, as noted above.
         \end{enumerate}
 
@@ -456,18 +458,26 @@ the metric of the inference tree.
 
         \item \ruleref{\ottdruleDTUnpackLabel}\\
             Then we are proving that if
-            $[[Γ ; Φ ⊢ let∃ (α⁻, x) = v; c : iN]]$ is 
+            $[[Γ ; Φ ⊢ let∃ (nas, x) = v; c : iN]]$ is 
             inferred by \ruleref{\ottdruleDTUnpackLabel},
-            then $[[Γ ; Φ ⊨ let∃ (α⁻, x) = v; c : nf(iN)]]$.
+            then $[[Γ ; Φ ⊨ let∃ (nas, x) = v; c : nf(iN)]]$.
 
-            By inversion of $[[Γ ; Φ ⊢ let∃ (α⁻, x) = v; c : iN]]$, we have
+            By inversion of $[[Γ ; Φ ⊢ let∃ (nas, x) = v; c : iN]]$, we have
             \begin{enumerate}
-                \item $[[Γ ; Φ ⊢ v : ∃α⁻.iP]]$, 
+                \item $[[nf(∃nas.iP) = ∃nas.iP]]$,
+                \item $[[Γ ; Φ ⊢ v : ∃nas.iP]]$, 
                     which by the induction hypothesis implies 
-                    $[[Γ ; Φ ⊨ v : nf(∃α⁻.iP)]]$,
-                \item Γ, α⁻ ; Φ, x:iP ⊢ c : iN   
-                \item Γ ⊢ iN
+                    $[[Γ ; Φ ⊨ v : nf(∃nas.iP)]]$, 
+                    and hence, $[[Γ ; Φ ⊨ v : ∃nas.iP]]$.
+                \item $[[Γ, nas ; Φ, x:iP ⊢ c : iN]]$,
+                    and by the induction hypothesis, 
+                    $[[Γ, nas ; Φ, x:iP ⊨ c : nf(iN)]]$.
+                \item $[[Γ ⊢ iN]]$
             \end{enumerate}
+            
+            This way, we can apply \ruleref{\ottdruleATUnpackLabel} to
+            infer $[[Γ ; Φ ⊨ let∃ (nas, x) = v; c : nf(iN)]]$.
+
                 
 
         \item \ruleref{\ottdruleDTPEquivLabel}\\

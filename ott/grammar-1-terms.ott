@@ -22,7 +22,7 @@ c, d :: 'c_' ::= {{ com computation terms }}
   | let x = v ; c                 ::   :: VarLet 
   | let x : iP = v ( args ) ; c   ::   :: AppLetAnn 
   | let x     = v ( args ) ; c    ::   :: AppLet   
-  | let∃ ( na , x ) = v    ; c    ::   :: Unpack 
+  | let∃ ( nas , x ) = v    ; c    ::   :: Unpack 
 
 vctx, Φ {{ tex \Phi }} :: 'vctxt_' ::= {{ com variable context }}
   | ·                     ::   :: Empty

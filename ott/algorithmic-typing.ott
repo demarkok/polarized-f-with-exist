@@ -55,9 +55,9 @@ defns
   Γ; Φ ⊨ let x = v(args); c : iN
 
 
-  Γ; Φ ⊨ v : ∃α⁻.iP   Γ, α⁻ ; Φ, x:iP ⊨ c : iN   Γ ⊢ iN
+  Γ; Φ ⊨ v : ∃nas.iP   Γ, nas ; Φ, x:iP ⊨ c : iN   Γ ⊢ iN
   -------------------------------------------------------- :: Unpack
-  Γ; Φ ⊨ let∃ (α⁻, x) = v; c : iN
+  Γ; Φ ⊨ let∃ (nas, x) = v; c : iN
 
 
 defn Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC :: :: SpinInf :: ''
