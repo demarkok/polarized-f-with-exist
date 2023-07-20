@@ -36,4 +36,16 @@ defns
   defn Θ ⊢ UC :: :: UCWF :: '' {{ com Unification constraint well-formedness }} by
   defn Θ ⊢ SC :: :: SCWF :: '' {{ com Subtyping constraint well-formedness }} by
 
+  defn Γ ⊢ args :: :: ArgsWF :: '' {{ com Argument List well-formedness }} by
+
   defn Γ ⊢ Φ :: :: CtxtWF :: '' {{ com Context well-formedness }} by
+  defn Γ ⊢ v :: :: ValWF :: '' {{ com Value well-formedness }} by
+
+    ----- :: Var
+    Γ ⊢ x
+
+  defn Γ ⊢ c :: :: ComWF :: '' {{ com Computation well-formedness }} by
+
+    Γ ⊢ v    Γ ⊢ c     Γ ⊢ args
+    ------------------------------ :: AppLet
+    Γ ⊢ let x = v(args); c
