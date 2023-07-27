@@ -553,3 +553,27 @@
   \end{itemize}
 \end{proof}
 
+
+
+\begin{lemma}[Substitution preserves declarative equivalence]
+  \label{corollary:subst-pres-equiv}
+  Suppose that $[[σ]]$ is a substitution. Then
+    \begin{itemize}
+      \item[$+$] $[[iP ≈ iQ]]$ implies $[[ [σ]iP ≈ [σ]iQ ]]$
+      \item[$-$] $[[iN ≈ iM]]$ implies $[[ [σ]iN ≈ [σ]iM ]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+
+  $
+  \begin{aligned}[t] 
+    [[ iP ≈ iQ ]] &\Rightarrow        [[ nf(iP) = nf(iQ) ]]
+                  && \text{by \cref{lemma:subt-equiv-algorithmization}}\\
+                  &\Rightarrow [[ [nf(σ)]nf(iP) = [nf(σ)]nf(iQ)]]\\
+                  &\Rightarrow [[ nf([σ]iP) = nf([σ]iQ)]]
+                  && \text{by \cref{lemma:norm-subst-distr}}\\ 
+                  &\Rightarrow        [[ [σ]iP ≈ [σ]iQ ]]
+                  && \text{by \cref{lemma:subt-equiv-algorithmization}}\\
+  \end{aligned} 
+  $
+\end{proof}

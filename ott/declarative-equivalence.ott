@@ -44,5 +44,11 @@ defns
   ------------------------------------------------------------------------- :: Exists 
   ∃nas.iP ≈ ∃nbs.iQ
 
-  defn uP ≈ uQ :: :: Pueq :: '' by
+  defn uP ≈ uQ :: :: Pueq :: ''
+  {{ com Positive unification type equivalence }}
+  {{ tex [[uP]] \eqEOne [[uQ]] }} by
+
+  defn uN ≈ uM :: :: Nueq :: ''
+  {{ com Positive unification type equivalence }}
+  {{ tex [[uN]] \eqEOne [[uM]] }} by
 

@@ -71,6 +71,7 @@ s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
    | Sub μ                ::   :: FromMoving {{ tex [[μ]] }}
    % | Sub us               ::   :: FromUs {{ tex [[us]] }}
    | σ1 ○ σ2              ::   :: Compose
+   | σ1 <=< σ2            ::   :: ComposeM
    | ordVars1 / ordVars2  ::   :: VarSubs
    | ( σ )                :: S :: paren
    | </ si // , // i />   ::   :: concat  {{ com concatenate }}
@@ -208,6 +209,7 @@ iQs {{ tex \vv{ Q } }}
    | iP                   ::   :: Var     {{ com a singel type }}
    | [ s ] iPs            :: M :: AppSub
    | </ iPsi // , // i /> ::   :: concat  {{ com concatenate lists }}
+   | ( iPs )              :: S :: paren
 
 iNs {{ tex \vv{ N } }},
 iMs {{ tex \vv{ M } }}
@@ -216,6 +218,7 @@ iMs {{ tex \vv{ M } }}
    | iN                   ::   :: Var     {{ com a singel type }}
    | [ s ] iNs            :: M :: AppSub
    | </ iNsi // , // i /> ::   :: concat  {{ com concatenate lists }}
+   | ( iNs )              :: S :: paren
 
 
 grammar
@@ -471,6 +474,7 @@ terminals :: 'terminals_' ::=
   | let∃ :: :: letExists {{ tex \ottkw{let}^{\exists} }}
   | ●    :: :: bullet    {{ tex \bullet }}
   | ⇒>   :: :: spinInf   {{ tex \Rightarrow \hspace{-3pt} > }}
+  | <=<  :: :: compM     {{ tex \mathord{< \hspace{-5.3pt} = \hspace{-4.2pt} <} }}
 
 
 
@@ -526,6 +530,10 @@ by
 fun 
    UC1 ∪ UC2 :: UC :: UCUnion {{ tex [[UC1]] \cup [[UC2]] }}
 by 
+
+fun
+   Γ1 ∪ Γ2 :: Γ :: CtxtUnion {{ tex [[Γ1]] \cup [[Γ2]] }}
+by
 
 fun
    SC1 & SC2 :: SC :: SCM {{ tex [[SC1]] ~ \& ~[[SC2]] }}

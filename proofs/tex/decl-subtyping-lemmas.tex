@@ -14,7 +14,7 @@
   \item $[[G ⊢ ↑iP ≤ ↑iQ]]$
     From the inversion (and unfolding $[[G ⊢ iP ≈ iQ]]$ ), we have
     $[[G ⊢ iP ≥ iQ]]$. Then by the induction hypothesis,
-    $[[fv(iP)]] \subseteq [[fv(iQ)]]$. The desired inclusion
+    $[[fv(iP)]] \subseteq [[fv(iQ)]]$. The desired 
     inclusion holds, since $[[fv(↑iP)]] = [[fv(iP)]]$ and
     $[[fv(↑iQ)]] = [[fv(iQ)]]$.
   \item $[[G ⊢ iP → iN ≤ iQ → iM]]$
@@ -46,53 +46,173 @@
   \end{itemize}
 \end{corollary}
 
+\begin{lemma}[Decomposition of quantifier rules]
+  \label{lemma:quant-rule-decomposition}
+  Assuming that $[[pas]]$, $[[pbs]]$, $[[nas]]$, and $[[nas]]$ are disjoint from $[[Γ]]$,
+  \begin{itemize}
+    \item [$-_{R}$] $[[Γ ⊢ iN ≤ ∀pbs.iM]]$ holds if and only if $[[Γ, pbs ⊢ iN ≤ iM]]$;
+    \item [$+_{R}$] $[[Γ ⊢ iP ≥ ∃nbs.iQ]]$ holds if and only if $[[Γ, nbs ⊢ iP ≥ iQ]]$;
+    \item [$-_{L}$] suppose $[[iM]] \neq [[∀]]\dots$
+      then $[[Γ ⊢ ∀pas.iN ≤ iM]]$ holds if and only if $[[Γ ⊢ [iPs/pas]iN ≤ iM]]$
+      for some $[[Γ ⊢ iPs]]$;
+    \item [$+_{L}$] suppose $[[iQ]] \neq [[∃]]\dots$
+      then $[[Γ ⊢ ∃nas.iP ≥ iQ]]$ holds if and only if $[[Γ ⊢ [iNs/nas]iP ≥ iQ]]$
+      for some $[[Γ ⊢ iNs]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  \hfill
+  \begin{itemize}
+    \item [$-_{R}$] Let us prove both directions. 
+      \begin{itemize}
+        \item [\Rightarrow] Let us assume $[[Γ ⊢ iN ≤ ∀pbs.iM]]$.
+          $[[Γ ⊢ iN ≤ ∀pbs.iM]]$.
+          Let us decompose $[[iM]]$ as $[[∀pbs'.iM']]$ where $[[iM']]$ does not start with $[[∀]]$, 
+          and decompose $[[iN]]$ as $[[∀pas.iN']]$ where $[[iN']]$ does not start with $[[∀]]$.
+          If $[[pbs]]$ is empty, then $[[Γ, pbs ⊢ iN ≤ iM]]$ holds by assumption.
+          Otherwise, $[[Γ ⊢ ∀pas.iN' ≤ ∀pbs.∀pbs'.iM]]$ is inferred by
+          \ruleref{\ottdruleDOneForallLabel}, and by inversion:
+          $[[Γ,pbs,pbs' ⊢ [iPs/pas]iN' ≤ iM']]$ for some $[[Γ,pbs,pbs' ⊢ iPs]]$.
+          Then again by \ruleref{\ottdruleDOneForallLabel} with the same $[[iPs]]$,
+          $[[Γ,pbs ⊢ ∀pas.iN' ≤ ∀pbs'.iM']]$, that is $[[Γ,pbs ⊢ iN ≤ iM]]$.
+        \item [\Leftarrow] let us assume $[[Γ, pbs ⊢ iN ≤ iM]]$, and let us decompose 
+          $[[iN]]$ as $[[∀pas.iN']]$ where $[[iN']]$ does not start with $[[∀]]$, 
+          and $[[iM]]$ as $[[∀pbs'.iM']]$ where $[[iM']]$ does not start with $[[∀]]$.
+          if $[[pas]]$ and $[[pbs']]$ are empty then $[[Γ, pbs ⊢ iN ≤ iM]]$
+          is turned into $[[Γ ⊢ iN ≤ ∀pbs.iM]]$ by \ruleref{\ottdruleDOneForallLabel}.
+          Otherwise, $[[Γ, pbs ⊢ ∀pas.iN' ≤ ∀pbs'.iM']]$ is inferred by
+          \ruleref{\ottdruleDOneForallLabel}, that is $[[Γ, pbs, pbs' ⊢ [iPs/pas]iN' ≤ iM']]$
+          for some $[[Γ, pbs, pbs' ⊢ iPs]]$.
+          Then by \ruleref{\ottdruleDOneForallLabel} again,
+          $[[Γ ⊢ ∀pas.iN' ≤ ∀pbs,pbs'.iM']]$, in other words, $[[Γ ⊢ ∀pas.iN' ≤ ∀pbs.∀pbs'.iM']]$, 
+          that is $[[Γ ⊢ iN ≤ ∀pbs.iM]]$.
+          
+      \end{itemize}
+    \item [$-_{L}$] Suppose $[[iM]] \neq [[∀]]\dots$. Let us prove both directions.
+      \begin{itemize}
+        \item [\Rightarrow] Let us assume $[[Γ ⊢ ∀pas.iN ≤ iM]]$.
+          then if $[[pas = ·]]$, $[[Γ ⊢ iN ≤ iM]]$ holds immediately.
+          Otherwise, let us decompose  $iN$ as $[[∀pas'.iN']]$ where 
+          $[[iN']]$ does not start with $[[∀]]$.
+          Then $[[Γ ⊢ ∀pas.∀pas'.iN' ≤ iM']]$ is inferred by
+          \ruleref{\ottdruleDOneForallLabel},
+          and by inversion, 
+          there exist $[[Γ ⊢ iPs,iPs']]$ 
+          such that $[[Γ ⊢ [iPs/pas][iPs'/pas']iN' ≤ iM']]$ 
+          (the decomposition of substitutions is possible since $[[{pas} ∩ {Γ} = ∅]]$).
+          Then by \ruleref{\ottdruleDOneForallLabel} again,
+          $[[Γ ⊢ ∀pas'.[iPs'/pas']iN' ≤ iM']]$ (notice that $[[ [iPs'/pas']iN' ]]$ cannot
+          start with $[[∀]]$).
+        \item [\Leftarrow] Let us assume 
+          $[[Γ ⊢ [iPs/pas]iN ≤ iM]]$ for some $[[Γ ⊢ iPs]]$.
+          let us decompose $iN$ as $[[∀pas'.iN']]$ where $[[iN']]$ does not start with $[[∀]]$.
+          Then $[[Γ ⊢ [iPs/pas]∀pas'.iN' ≤ iM']]$ or, equivalently,
+          $[[Γ ⊢ ∀pas'.[iPs/pas]iN' ≤ iM']]$ is inferred by \ruleref{\ottdruleDOneForallLabel}
+          (notice that $[[ [iPs/pas]iN' ]]$ cannot start with $[[∀]]$).
+          By inversion, there exist $[[Γ ⊢ iPs']]$ such that 
+          $[[Γ ⊢ [iPs'/pas'][iPs/pas]iN' ≤ iM']]$. Since $[[pas']]$ is disjoint
+          from the free variables of $[[iPs]]$ and from $[[pas]]$, the composition of 
+          $[[iPs'/pas']]$ and $[[iPs/pas]]$ can be joined into a single substitution
+          well-formed in $[[Γ]]$. Then by \ruleref{\ottdruleDOneForallLabel} again,
+          $[[Γ ⊢ ∀pas.iN ≤ iM]]$.
+      \end{itemize}
+      \item [$+$] The positive cases are proved symmetrically.
+  \end{itemize}
+\end{proof}
+
+\begin{corollary}[Redundant quantifier elimination]
+  \label{corollary:red-quant-elim}
+  \hfill
+  \begin{itemize}
+    \item [$-_{L}$] Suppose that $[[ {pas} ∩ fv(iN) = ∅]]$ then 
+      $[[Γ ⊢ ∀pas.iN ≤ iM]]$ holds if and only if $[[Γ ⊢ iN ≤ iM]]$;
+    \item [$-_{R}$] Suppose that $[[ {pas} ∩ fv(iM) = ∅]]$ then 
+      $[[Γ ⊢ iN ≤ ∀pas.iM]]$ holds if and only if $[[Γ ⊢ iN ≤ iM]]$;
+    \item [$+_{L}$] Suppose that $[[ {nas} ∩ fv(iP) = ∅]]$ then
+      $[[Γ ⊢ ∃nas.iP ≥ iQ]]$ holds if and only if $[[Γ ⊢ iP ≥ iQ]]$.
+    \item [$+_{R}$] Suppose that $[[ {nas} ∩ fv(iQ) = ∅]]$ then 
+      $[[Γ ⊢ iP ≥ ∃nas.iQ]]$ holds if and only if $[[Γ ⊢ iP ≥ iQ]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  \begin{itemize}
+    \item [$-_{R}$] Suppose that $[[ {pas} ∩ fv(iM) = ∅]]$ then 
+      by \cref{lemma:quant-rule-decomposition},
+      $[[Γ ⊢ iN ≤ ∀pas.iM]]$ 
+      is equivalent to $[[Γ, pas ⊢ iN ≤ iM]]$,
+      By \label{lemma:wf-ctxt-equiv},
+      since $[[{pas} ∩ fv(iN) = ∅]]$ and $[[{pas} ∩ fv(iM) = ∅]]$,
+      $[[Γ, pas ⊢ iN ≤ iM]]$ is equivalent to $[[Γ ⊢ iN ≤ iM]]$.
+
+    \item [$-_{L}$] Suppose that $[[ {pas} ∩ fv(iN) = ∅]]$.
+      Let us decompose $[[iM]]$ as $[[∀pbs.iM']]$ 
+      where $[[iM']]$ does not start with $[[∀]]$.
+      By \cref{lemma:quant-rule-decomposition},
+      $[[Γ ⊢ ∀pas.iN ≤ ∀pbs.iM']]$ is equivalent to
+      $[[Γ,pbs ⊢ ∀pas.iN ≤ iM']]$, 
+      which is equivalent to 
+      existence of $[[Γ,pbs ⊢ iPs]]$ such that 
+      $[[Γ,pbs ⊢ [iPs/pas]iN ≤ iM']]$.
+      Since $[[ [iPs/pas]iN  = iN]]$, the latter is equivalent to 
+      $[[Γ,pbs ⊢ iN ≤ iM']]$,
+      which is equivalent to $[[Γ ⊢ iN ≤ ∀pbs.iM']]$.
+      $[[Γ,pbs ⊢ iPs]]$ can be chosen arbitrary, for example, $[[iPsi]] = [[∃α⁻.↓α⁻]]$.
+    \item [$+$] The positive cases are proved symmetrically.
+  \end{itemize}
+\end{proof}
+
 \begin{lemma}[Subtypes and supertypes of a variable]
   \label{lemma:var-subt}
   Assuming $[[Γ ⊢  α⁻]]$, $[[Γ ⊢ α⁺]]$, $[[Γ ⊢ iN]]$, and $[[Γ ⊢ iP]]$,
   \begin{itemize}
-  \item[$+$] if $[[Γ ⊢ iP ≥ α⁺]]$ or $[[Γ ⊢ α⁺ ≥ iP ]]$ then $[[iP]] = [[∃nas.α⁺]]$ (for some potentially empty $[[nas]]$)
-  \item[$-$] if $[[Γ ⊢ iN ≤ α⁻]]$ or $[[Γ ⊢ α⁻ ≤ iN ]]$ then $[[iN]] = [[∀pas.α⁻]]$ (for some potentially empty $[[pas]]$)
+  \item[$+$] if $[[Γ ⊢ iP ≥ ∃nas.α⁺]]$ or $[[Γ ⊢ ∃nas.α⁺ ≥ iP ]]$ then $[[iP]] = [[∃nbs.α⁺]]$ (for some potentially empty $[[nbs]]$)
+  \item[$-$] if $[[Γ ⊢ iN ≤ ∀pas.α⁻]]$ or $[[Γ ⊢ ∀pas.α⁻ ≤ iN ]]$ then $[[iN]] = [[∀pbs.α⁻]]$ (for some potentially empty $[[pbs]]$)
   \end{itemize}
 \end{lemma}
 \begin{proof}
   We prove by induction on the tree
-  inferring $[[Γ ⊢ iP ≥ α⁺]]$ or $[[Γ ⊢ α⁺ ≥ iP ]]$ or
-  or $[[Γ ⊢ iN ≤ α⁻]]$ or $[[Γ ⊢ α⁻ ≤ iN ]]$.
+  inferring $[[Γ ⊢ iP ≥ ∃nas.α⁺]]$ or $[[Γ ⊢ ∃nas.α⁺ ≥ iP ]]$ or
+  or $[[Γ ⊢ iN ≤ ∀pas.α⁻]]$ or $[[Γ ⊢ ∀pas.α⁻ ≤ iN ]]$.
 
-  Let us consider which of these judgments the tree is inferring.
+  Let us consider which one of these judgments is inferred.
   \begin{caseof}
-  \item $[[Γ ⊢ iP ≥ α⁺]]$\\
+  \item $[[Γ ⊢ iP ≥ ∃nas.α⁺]]$\\
     If the size of the inference tree is $1$ then the only rule that can infer
     it is \ruleref{\ottdruleDOnePVarLabel}, which
-    implies that $[[iP = α⁺]]$.
+    implies that $[[nas]]$ is empty and $[[iP = α⁺]]$.
 
     If the size of the inference tree is $>1$ then the last rule inferring
     it must be \ruleref{\ottdruleDOneExistsLabel}. By inverting this rule,
-    $[[iP = ∃nas.iP']]$ where $[[iP']]$ does not start with $\exists$ and
-    $[[G ⊢ [iNs/nas] iP' ≥ α⁺]]$ for some $[[G, nbs ⊢ iNi]]$.
+    $[[iP = ∃nbs.iP']]$ where $[[iP']]$ does not start with $\exists$ and
+    $[[Γ, nas ⊢ [iNs/nbs] iP' ≥ α⁺]]$ for some $[[G, nas ⊢ iNi]]$.
 
-    By the induction hypothesis, $[[ [iNs/nas] iP' = ∃nbs.α⁺]]$.
-    Notice that $[[iP']]$ must be a variable, because
-    $[[iP']]$ does not start with $\exists$, nor does it start with
+    By the induction hypothesis, $[[ [iNs/nbs] iP' = ∃ncs.α⁺]]$.
+    What shape can $[[iP']]$ have?
+    As mentioned, it does not start with $\exists$, and it cannot start with
     $\uparrow$ (otherwise, $[[ [iNs/nas] iP' ]]$ would also
-    started with $\uparrow$ and would not be equal to $[[∃nbs.α⁺]]$).
-    Since $[[iP']]$ is a \emph{positive} variable, $[[ [iNs/nas] iP' = iP']]$,
-    and then $[[iP' = ∃nbs.α⁺]]$ means that $[[iP' = α⁺]]$.
-    This way, $[[iP]] = [[∃nas.iP']] = [[∃nas.α⁺]]$, as required.
+    start with $\uparrow$ and would not be equal to $[[∃nbs.α⁺]]$).
+    This way, $[[iP']]$ is a \emph{positive} variable. 
+    As such, $[[ [iNs/nas] iP' = iP']]$,
+    and then $[[iP' = ∃ncs.α⁺]]$ meaning that $[[ncs]]$ is empty and $[[iP' = α⁺]]$.
+    This way, $[[iP]] = [[∃nbs.iP']] = [[∃nbs.α⁺]]$, as required.
 
-  \item $[[Γ ⊢ α⁺ ≥ iP]]$\\
+  \item $[[Γ ⊢ ∃nas.α⁺ ≥ iP]]$\\
     If the size of the inference tree is $1$ then the only rule that can infer
     it is \ruleref{\ottdruleDOnePVarLabel}, which
-    implies that $[[iP = α⁺]]$.
+    implies that $[[nas]]$ is empty and $[[iP = α⁺]]$.
 
     If the size of the inference tree is $>1$ then the last rule inferring
     it must be \ruleref{\ottdruleDOneExistsLabel}. By inverting this rule,
-    $[[iP = ∃nbs.iQ]]$ where and $[[G, nbs ⊢ α⁺ ≥ iQ]]$.
+    $[[iP = ∃nbs.iQ]]$ where $[[G, nbs ⊢ [iNs/nas]α⁺ ≥ iQ]]$ and $[[iQ]]$ 
+    does not start with $\exists$.
+    Notice that since $[[α⁺]]$ is positive, $[[ [iNs/nas]α⁺ = α⁺]]$, 
+    i.e. $[[G, nbs ⊢ α⁺ ≥ iQ]]$.
 
-    By the induction hypothesis, $[[iQ = ∃nbs'.α⁺]]$.
-    This way, $[[iP]] = [[∃nbs.iQ]] = [[∃nbs.∃nbs'.α⁺]]$, as required.
+    By the induction hypothesis, $[[iQ = ∃nbs'.α⁺]]$,
+    and since $[[iQ]]$ does not start with $\exists$, $[[nbs']]$ is empty
+    This way, $[[iP]] = [[∃nbs.iQ]] = [[∃nbs.α⁺]]$, as required.
 
-  \item The negative cases ($[[Γ ⊢ iN ≤ α⁻]]$ and $[[Γ ⊢ α⁻ ≤ iN ]]$)
+  \item The negative cases ($[[Γ ⊢ iN ≤ ∀pas.α⁻]]$ and $[[Γ ⊢ ∀pas.α⁻ ≤ iN ]]$)
     are proved analogously.
   \end{caseof}
 \end{proof}
@@ -108,9 +228,8 @@
   \end{align*}
 \end{corollary}
 \begin{proof}
-  Notice that $[[Γ ⊢ ∃nas.α⁺ ≈ α⁺]]$ and $[[∃nas.α⁺ ≈ α⁺]]$ and apply
+  Notice that $[[Γ ⊢ ∃nbs.α⁺ ≈ α⁺]]$ and $[[∃nbs.α⁺ ≈ α⁺]]$ and apply
   \cref{lemma:var-subt}.
-  \ilyam{fix}
 \end{proof}
 
 \begin{lemma}[Reflexivity of subtyping] \label{lemma:subtyping-reflexivity}
@@ -149,11 +268,11 @@
 
 \begin{lemma}[Substitution preserves subtyipng]
   \label{lemma:subst-pres-subt}
-  Assuming that all mentioned types are well-formed in $[[Γ]]$,
-  and $[[Γ' ⊢ σ : Γ]]$, where $[[Γ']]$ is disjoint from $[[Γ]]$,
+  Suppose that all mentioned types are well-formed in $[[Γ1 , Γ]]$,
+  and $[[σ]]$ is a substitution $[[Γ2 ⊢ σ : Γ1]]$.
   \begin{itemize}
-    \item $-$ If $[[Γ ⊢ iN ≤ iM]]$ then $[[Γ' ⊢ [σ]iN ≤ [σ]iM]]$
-    \item $+$ If $[[Γ ⊢ iP ≥ iQ]]$ then $[[Γ' ⊢ [σ]iP ≥ [σ]iQ]]$
+    \item $-$ If $[[Γ1 , Γ ⊢ iN ≤ iM]]$ then $[[Γ2 , Γ ⊢ [σ]iN ≤ [σ]iM]]$
+    \item $+$ If $[[Γ1 , Γ ⊢ iP ≥ iQ]]$ then $[[Γ2 , Γ ⊢ [σ]iP ≥ [σ]iQ]]$
   \end{itemize}
 \end{lemma}
 \begin{proof}
@@ -164,34 +283,37 @@
     \item \ruleref{\ottdruleDOneNVarLabel}. Then by inversion, 
       $[[iN = α⁻]]$ and $[[iM = α⁻]]$. By reflexivity of subtyping
       (\cref{lemma:subtyping-reflexivity}),
-      we have $[[Γ' ⊢ [σ]α⁻ ≤ [σ]α⁻]]$, i.e. $[[Γ' ⊢ [σ]iN ≤ [σ]iM]]$,
+      we have $[[Γ2, Γ ⊢ [σ]α⁻ ≤ [σ]α⁻]]$, i.e. $[[Γ2, Γ ⊢ [σ]iN ≤ [σ]iM]]$,
       as required.
     \item  \ruleref{\ottdruleDOneForallLabel}. Then by inversion,
       $[[iN = ∀pas.iN']]$, $[[iM = ∀pbs.iM']]$, where $[[pas]]$ or $[[pbs]]$ is not empty.
-      Moreover, $[[Γ,pbs ⊢ [iPs/pas]iN' ≤ iM']]$ for some $[[Γ, pbs ⊢ iPs]]$, and 
+      Moreover, $[[Γ1 , Γ, pbs ⊢ [iPs/pas]iN' ≤ iM']]$ for some $[[Γ1 , Γ, pbs ⊢ iPs]]$, and 
       $[[fv iN ∩ {pbs} = ∅ ]]$.
 
-      Notice that since the derivation of $[[Γ,pbs ⊢ [iPs/pas]iN' ≤ iM']]$ is
+      Notice that since the derivation of $[[Γ1, Γ, pbs ⊢ [iPs/pas]iN' ≤ iM']]$ is
       a subderivation of the derivation of $[[Γ ⊢ iN ≤ iM]]$, its size is smaller, 
       and hence, the induction hypothesis applies:
-      $[[Γ', pbs ⊢ [σ][iPs/pas]iN' ≤ [σ]iM']]$.
+      $[[Γ2 , Γ, pbs ⊢ [σ][iPs/pas]iN' ≤ [σ]iM']]$.
 
-      First, let us assume that $[[{pas} ∩ {Γ'} = ∅]]$ and $[[{pbs} ∩ {Γ'} = ∅]]$
-      (otherwise, we rename $[[pas]]$ and $[[pbs]]$ to fresh $[[pas']]$ and $[[pbs']]$).
-      Then $[[ [σ]∀pas.iN' ]] = [[ ∀pas.[σ]iN' ]]$ and $[[ [σ]∀pbs.iM' ]] = [[ ∀pbs.[σ]iM' ]]$, 
-      which means that the required $[[Γ' ⊢ [σ]∀pas.iN' ≤ [σ]∀pbs.iM']]$ is rewritten as
-      $[[Γ' ⊢ ∀pas.[σ]iN' ≤ ∀pbs.[σ]iM']]$.
+      Notice that by convention, $[[pas]]$ and $[[pbs]]$ are fresh, and thus,  
+      $[[ [σ]∀pas.iN' ]] = [[ ∀pas.[σ]iN' ]]$ and $[[ [σ]∀pbs.iM' ]] = [[ ∀pbs.[σ]iM' ]]$, 
+      which means that the required $[[Γ2, Γ ⊢ [σ]∀pas.iN' ≤ [σ]∀pbs.iM']]$ is rewritten as
+      $[[Γ2 , Γ ⊢ ∀pas.[σ]iN' ≤ ∀pbs.[σ]iM']]$.
 
       To infer it, we apply \ruleref{\ottdruleDOneForallLabel}, 
       instantiating $[[pai]]$ with $[[ [σ]iPi ]]$:
       \begin{itemize}
-        \item $[[fv iN ∩ {pbs} = ∅ ]]$ as noted before, from the inversion;
-        \item $[[Γ', pbs ⊢ [σ]iPi]]$, by \cref{lemma:wf-subst} since from the inversion,
-        $[[Γ, pbs ⊢ iPi]]$;
-        \item $[[Γ, pbs ⊢ [ [σ]iPs/pas ][σ]iN' ≤ [σ]iM']]$ holds because 
-        $[[ [ [σ]iPs/pas ][σ]iN' ]] = [[ [σ][iPs/pas]iN ]]$ (since $[[{pas} ∩ {Γ} = ∅]]$), 
-        and $[[Γ', pbs ⊢ [σ][iPs/pas]iN' ≤ [σ]iM']]$ holds by the induction hypothesis.
+        \item $[[fv [σ]iN ∩ {pbs} = ∅ ]]$;
+        \item $[[Γ2, Γ,pbs⊢ [σ]iPi]]$, by \cref{lemma:wf-subst} since from the inversion,
+          $[[Γ1, Γ, pbs ⊢ iPi]]$;
+        \item $[[Γ, pbs ⊢ [ [σ]iPs/pas ][σ]iN' ≤ [σ]iM']]$ holds
+          by \cref{lemma:subst-composition}:
+          Since $[[pas]]$ is fresh, it is disjoint with the domain and the codomain of $[[σ]]$
+          ($[[Γ1]]$ and $[[Γ2]]$), and thus, 
+          $[[ [σ][iPs/pas]iN' ]] = [[ [ σ <=< iPs/pas ][σ]iN' ]] = [[ [ [σ]iPs/pas ][σ]iN' ]]$.
+          Then $[[Γ2, Γ, pbs ⊢ [σ][iPs/pas]iN' ≤ [σ]iM']]$ holds by the induction hypothesis.
       \end{itemize}
+
     \item \ruleref{\ottdruleDOneArrowLabel}. Then by inversion,
       $[[iN = iP → iN1]]$, $[[iM = iQ → iM1]]$, $[[Γ ⊢ iP ≥ iQ]]$, and $[[Γ ⊢ iN1 ≤ iM1]]$.
       And by the induction hypothesis, $[[Γ' ⊢ [σ]iP ≥ [σ]iQ]]$ and $[[Γ' ⊢ [σ]iN1 ≤ [σ]iM1]]$.
@@ -210,32 +332,177 @@
   \end{caseof}
 \end{proof}
 
-
+\begin{corollary}[Substitution preserves subtyping induced equivalence]
+  \label{corollary:subst-pres-equiv}
+  Suppose that $[[Γ ⊢ σ : Γ1]]$. Then
+    \begin{itemize}
+      \item[$+$] if $[[Γ1 ⊢ iP]]$,~ $[[Γ1 ⊢ iQ]]$,~ and $[[Γ1 ⊢ iP ≈ iQ]]$ ~ 
+        then $[[Γ ⊢ [σ]iP ≈ [σ]iQ]]$
+      \item[$-$] if $[[Γ1 ⊢ iN]]$,~ $[[Γ1 ⊢ iM]]$,~ and $[[Γ1 ⊢ iN ≈ iM]]$ ~ 
+        then $[[Γ ⊢ [σ]iN ≈ [σ]iM]]$
+    \end{itemize}
+\end{corollary}
 
 \begin{lemma}[Strong transitivity of subtyping] \label{lemma:subtyping-transitivity}
   Assuming all the types are well-formed in $[[Γ]]$,
   \begin{itemize}
     \item $-$ if $[[Γ ⊢ iN ≤ iM1]]$, $[[Γ ⊢ iM2 ≤ iK]]$, and for 
-    $[[Γ' ⊢ σ : Γ]]$, $[[ [σ]iM1 = [σ]iM2 ]]$ then $[[Γ' ⊢ [σ]iN ≤ [σ]iK]]$
+      $[[Γ' ⊢ σ : Γ]]$, $[[ [σ]iM1 = [σ]iM2 ]]$ then $[[Γ' ⊢ [σ]iN ≤ [σ]iK]]$
     \item $+$ if $[[Γ ⊢ iP ≥ iQ1]]$, $[[Γ ⊢ iQ2 ≥ iR]]$, and for
-    $[[Γ' ⊢ σ : Γ]]$, $[[ [σ]iQ1 = [σ]iQ2 ]]$ then $[[Γ' ⊢ [σ]iP ≥ [σ]iR]]$
+      $[[Γ' ⊢ σ : Γ]]$, $[[ [σ]iQ1 = [σ]iQ2 ]]$ then $[[Γ' ⊢ [σ]iP ≥ [σ]iR]]$
   \end{itemize}
 \end{lemma}
 \begin{proof}
   We prove it by induction on $\depth{[[Γ ⊢ iN ≤ iM1]]} + \depth{[[Γ ⊢ iM2 ≤ iK]]}$ and mutually, 
   on $\depth{[[Γ ⊢ iP ≥ iQ1]]} + \depth{[[Γ ⊢ iQ2 ≥ iR]]}$.
 
-  \begin{caseof}
-    \item Firs, let us consider the case when the last rule applied to infer 
-    $[[Γ ⊢ iN ≤ iM1]]$ is \ruleref{\ottdruleDOneNVarLabel}.
-    Notice that this case covers the base of the induction: 
-    the sum of the depths is minimal when both derivations are inferred by
-    the non-recursive rules (i.e. \ruleref{\ottdruleDOneNVarLabel}).
 
-    By inverting the rule, $[[iN = α⁻]]$ and $[[iM1 = α⁻]]$
-    Then $[[ [σ]iN ]] = [[ [σ]α⁻ ]] = [[ [σ]iM1 ]] = [[ [σ]iM2 ]]$. 
-    And $[[Γ' ⊢ [σ]iM2 ≤ [σ]iK]]$ by hello
+  First, let us consider the 3 important cases.
+  \begin{caseof}
+    \item Let us consider the case when $[[iM1 = ∀pbs1.α⁻]]$. 
+      Then by \cref{lemma:var-subt},
+       $[[Γ ⊢ iN ≤ iM1]]$ means that $[[iN = ∀pas.α⁻]]$. 
+      $[[ [σ]iM1 = [σ]iM2 ]]$ means that $[[ ∀pbs1.[σ]α⁻ = [σ]iM2 ]]$.
+      Applying $[[σ]]$ to both sides of $[[Γ ⊢ iM2 ≤ iK]]$ (by \cref{lemma:subst-pres-subt}),
+      we obtain $[[Γ' ⊢ [σ]iM2 ≤ [σ]iK]]$, that is $[[Γ' ⊢  ∀pbs1.[σ]α⁻ ≤ [σ]iK]]$.
+      Since $[[ fv([σ]α⁻) ⊆ {Γ,α⁻} ]]$, it is disjoint from $[[pas]]$ and $[[pbs1]]$,
+      This way, by \cref{corollary:red-quant-elim}, 
+      $[[Γ' ⊢  ∀pbs1.[σ]α⁻ ≤ [σ]iK]]$ is equivalent to 
+      $[[Γ' ⊢  [σ]α⁻ ≤ [σ]iK]]$, which is equivalent to $[[Γ' ⊢  ∀pas.[σ]α⁻ ≤ [σ]iK]]$,
+      that is $[[Γ' ⊢  [σ]iN ≤ [σ]iK]]$.
+    \item Let us consider the case when $[[iM2 = ∀pbs2.α⁻]]$.
+      This case is symmetric to the previous one. Notice that 
+      \cref{lemma:var-subt,corollary:red-quant-elim} are agnostic to the 
+      side on which the the quantifiers occur, and thus, 
+      the proof stays the same. 
+    \item Let us decompose the types, by extracting the outer quantifiers:
+      \begin{itemize}
+        \item $[[iN = ∀pas.iN']]$, where $[[iN']] \neq [[∀]]\dots$,
+        \item $[[iM1 = ∀pbs1.iM1']]$, where $[[iM1']] \neq [[∀]]\dots$,
+        \item $[[iM2 = ∀pbs2.iM2']]$, where $[[iM2']] \neq [[∀]]\dots$,
+        \item $[[iK = ∀pcs.iK']]$, where $[[iK']] \neq [[∀]]\dots$.
+      \end{itemize}
+      and assume that at least one of $[[pas]]$, $[[pbs1]]$, $[[pbs2]]$, and $[[pcs]]$ is not empty.
+      Since $[[ [σ]iM1 = [σ]iM2 ]]$, we have $[[ ∀pbs1.[σ]iM1' = ∀pbs2.[σ]iM2' ]]$,
+      and since $[[iMi']]$ are not variables 
+      (which was covered by the previous cases) and do not start with $\forall$,
+      $[[ [σ]iMi' ]]$ do not start with $\forall$ either,
+      which means $[[pbs1]] = [[pbs2]]$ and $[[ [σ]iM1' = [σ]iM2' ]]$.
+      Let us rename $[[pbs1]]$ and $[[pbs2]]$ to $[[pbs]]$.
+      Then $[[iM1 = ∀pbs.iM1']]$ and $[[iM2 = ∀pbs.iM2']]$.
+
+      By \cref{lemma:quant-rule-decomposition} applied twice
+      to $[[Γ ⊢ ∀pas.iN' ≤ ∀pbs.iM1']]$ and to $[[Γ ⊢ ∀pbs.iM2' ≤ ∀pcs.iK']]$,
+      we have the following:
+      \begin{enumerate}
+        \item $[[Γ, pbs ⊢ [iPs/pas]iN' ≤ iM1']]$ for some $[[Γ, pbs ⊢ iPs]]$;
+        \item $[[Γ, pcs ⊢ [iQs/pbs]iM2' ≤ iK']]$ for some $[[Γ, pcs ⊢ iQs]]$.
+      \end{enumerate}
+      And since at least one of 
+      $[[pas]]$, $[[pbs]]$, and $[[pcs]]$ is not empty,
+      either $[[Γ ⊢ iN ≤ iM1]]$ or $[[Γ ⊢ iM2 ≤ iK]]$ is inferred 
+      by \ruleref{\ottdruleDOneForallLabel}, meaning that either 
+      $[[Γ, pbs ⊢ [iPs/pas]iN' ≤ iM1']]$ is a proper subderivation of $[[Γ ⊢ iN ≤ iM1]]$ or
+      $[[Γ, pcs ⊢ [iQs/pbs]iM2' ≤ iK']]$ is a proper subderivation of $[[Γ ⊢ iM2 ≤ iK]]$.
+
+      Notice that we can weaken and rearrange the contexts without changing the depths of the 
+      derivations: $[[Γ, pbs, pcs ⊢ [iPs/pas]iN' ≤ iM1']]$
+      and $[[Γ, pbs, pcs ⊢ [iQs/pbs]iM2' ≤ iK']]$. This way, 
+      the sum of the depths of these derivations is smaller than the sum of the depths of
+      $[[Γ ⊢ iN ≤ iM1]]$ and $[[Γ ⊢ iM2 ≤ iK]]$.
+      Let us apply the induction hypothesis to these derivations, 
+      with the substitution $[[ Γ', pcs ⊢ σ ○ (iQs/pbs) : Γ, pbs, pcs  ]]$
+      (\cref{lemma:subst-domain-weakening}).
+      To apply the induction hypothesis, it is left to show that 
+      $[[ σ ○ (iQs/pbs) ]]$ unifies $[[iM1']]$ and $[[ [iQs/pbs]iM2']]$:
+      $$
+      \begin{aligned}[t]
+        [[ [σ ○ iQs/pbs]iM1' ]] &= [[ [σ][iQs/pbs]iM1' ]]\\
+                                &= [[ [ [σ]iQs/pbs ][σ]iM2' ]]
+                                && \text{by \cref{lemma:subst-composition}}\\
+                                &= [[ [ [σ]iQs/pbs ][σ]iM2' ]]
+                                && \text{Since $[[ [σ]iM1' = [σ]iM2' ]]$}\\
+                                &= [[  [σ][iQs/pbs]iM2' ]]
+                                && \text{by \cref{lemma:subst-composition}}\\
+                                &= [[  [σ][iQs/pbs][iQs/pbs]iM2' ]]
+                                && \text{Since $[[Γ, pcs ⊢ iQs]]$, and $[[{(Γ, pcs)} ∩ {pbs} = ∅]]$ }\\
+                                &= [[  [σ ○ iQs/pbs][iQs/pbs]iM2' ]]
+      \end{aligned}
+      $$
+      This way the induction hypothesis gives us
+      $[[ Γ', pcs ⊢ [σ][iQs/pbs][iPs/pas]iN' ≤  [σ][iQs/pbs]iK' ]]$,
+      and since $[[Γ, pcs ⊢ iK']]$, $[[ [iQs/pbs]iK' = iK' ]]$, that is 
+      $[[ Γ', pcs ⊢ [σ][iQs/pbs][iPs/pas]iN' ≤  [σ]iK' ]]$.
+      Let us rewrite the substitution that we apply to $[[iN']]$:
+      $$
+      \begin{aligned}[t]
+        [[ [σ ○ iQs/pbs ○ iPs/pas]iN' ]] &= [[ [ (σ <=< iQs/pbs) ○ σ ○ iPs/pas]iN' ]]
+                                       && \text{by \cref{lemma:subst-composition}}\\
+                                       &= [[ [(σ <=< iQs/pbs) ○ (σ <=< iPs/pas) ○ σ] iN' ]]
+                                       && \text{by \cref{lemma:subst-composition}}\\
+                                       &= [[ [(((σ <=< iQs/pbs) ○ σ) <=< iPs/pas) ○ σ] iN' ]]
+                                       && \text{Since $[[fv([σ]iN') ∩ {pbs} = ∅]]$}\\
+                                       &= [[ [((σ ○ iQs/pbs) <=< iPs/pas) ○ σ] iN' ]]
+                                       && \text{by \cref{lemma:subst-composition}}\\
+                                       &= [[ [(σ ○ iQs/pbs) <=< iPs/pas][σ] iN' ]]
+      \end{aligned}
+      $$
+      Notice that $[[(σ ○ iQs/pbs) <=< iPs/pas]]$
+      is a substitution that turns $[[pai]]$ into [[ [σ ○ iQs/pbs]iPi ]], 
+      where $[[ Γ',pcs ⊢ [σ ○ iQs/pbs]iPi]]$.
+      This way, 
+      $[[ Γ', pcs ⊢ [(σ ○ iQs/pbs) <=< iPs/pas][σ]iN' ≤  [σ]iK' ]]$
+      means $[[Γ ⊢ ∀pas.[σ]iN' ≤ ∀pcs.[σ]iK']]$
+      by \cref{lemma:quant-rule-decomposition}, that is
+      $[[Γ ⊢ [σ]iN ≤ [σ]iK]]$, as required.
   \end{caseof}
+
+  Now, we can assume that neither $[[Γ ⊢ iN ≤ iM1]]$ nor $[[Γ ⊢ iM2 ≤ iK]]$ 
+  is inferred by \ruleref{\ottdruleDOneForallLabel}, and that neither $[[iM1]]$ nor $[[iM2]]$
+  is equivalent to a variable.  Because of that, $[[ [σ]iM1 = [σ]iM2 ]]$ means that 
+  $[[iM1]]$ and $[[iM2]]$ have the same outer constructor. Let us consider the shape of $[[iM1]]$.
+
+  \begin{caseof}
+    \item $[[iM1 = α⁻]]$ this case has been considered;
+    \item $[[iM1 = ∀pbs.iM1']]$ this case has been considered;
+    \item $[[iM1 = ↑iQ1]]$. Then as noted above, 
+      $[[ [σ]iM1 = [σ]iM2 ]]$ means that $[[iM2 = ↑iQ2]]$ and $[[ [σ]iQ1 = [σ]iQ2 ]]$.
+      Moreover, $[[Γ ⊢ iN ≤ ↑iQ1]]$ can only be inferred by \ruleref{\ottdruleDOneShiftULabel},
+      and thus, $[[iN = ↑iP]]$, and by inversion, $[[Γ ⊢ iP ≥ iQ1]]$ and $[[Γ ⊢ iQ1 ≥ iP]]$.
+      Analogously, $[[Γ ⊢ ↑iQ2 ≤ iK]]$ means that $[[iK = ↑iR]]$, $[[Γ ⊢ iQ2 ≥ iR]]$, and $[[Γ ⊢ iR ≥ iQ2]]$.
+
+      Notice that the derivations of $[[Γ ⊢ iP ≥ iQ1]]$ and $[[Γ ⊢ iQ1 ≥ iP]]$ are proper sub-derivations of 
+      $[[Γ ⊢ iN ≤ iM1]]$, and the derivations of $[[Γ ⊢ iQ2 ≥ iR]]$ and $[[Γ ⊢ iR ≥ iQ2]]$ are proper sub-derivations of
+      $[[Γ ⊢ iM2 ≤ iK]]$. This way, the induction hypothesis is applicable:
+      \begin{itemize}
+        \item applying the induction hypothesis to $[[Γ ⊢ iP ≥ iQ1]]$ and $[[Γ ⊢ iQ2 ≥ iR]]$ 
+          with $[[Γ' ⊢ σ : Γ]]$ unifying $[[iQ1]]$ and $[[iQ2]]$, we obtain $[[Γ' ⊢ [σ]iP ≥ [σ]iR]]$;
+        \item applying the induction hypothesis to $[[Γ ⊢ iR ≥ iQ2]]$ and $[[Γ ⊢ iQ1 ≥ iP]]$ 
+          with $[[Γ' ⊢ σ : Γ]]$ unifying $[[iQ2]]$ and $[[iQ1]]$, we obtain $[[Γ' ⊢ [σ]iR ≥ [σ]iP]]$.
+      \end{itemize}
+      This way, by \ruleref{\ottdruleDOneShiftULabel}, $[[Γ' ⊢ [σ]iN ≤ [σ]iK]]$, as required. 
+
+    \item $[[iM1 = iQ1 → iM1']]$. Then as noted above, 
+      $[[ [σ]iM1 = [σ]iM2 ]]$ means that $[[iM2 = iQ2 → iM2']]$, $[[ [σ]iQ1 = [σ]iQ2 ]]$, and $[[ [σ]iM1' = [σ]iM2' ]]$.
+      Moreover, $[[Γ ⊢ iN ≤ iQ1 → iM1']]$ can only be inferred by \ruleref{\ottdruleDOneArrowLabel},
+      and thus, $[[iN = iP → iN']]$, and by inversion, $[[Γ ⊢ iP ≥ iQ1]]$ and $[[Γ ⊢ iN' ≤ iM1']]$.
+      Analogously, $[[Γ ⊢ iQ2 → iM2' ≤ iK]]$ means that $[[iK = iR → iK']]$, $[[Γ ⊢ iQ2 ≥ iR]]$, and $[[Γ ⊢ iM2' ≤ iK']]$.
+
+      Notice that the derivations of $[[Γ ⊢ iP ≥ iQ1]]$ and $[[Γ ⊢ iN' ≤ iM1']]$ are proper sub-derivations of
+      $[[Γ ⊢ iP → iN' ≤ iQ1 → iM1']]$, and the derivations of $[[Γ ⊢ iQ2 ≥ iR]]$ and $[[Γ ⊢ iM2' ≤ iK']]$ are proper sub-derivations of
+      $[[Γ ⊢ iQ2 → iM2' ≤ iR → iK']]$. This way, the induction hypothesis is applicable:
+      \begin{itemize}
+        \item applying the induction hypothesis to $[[Γ ⊢ iP ≥ iQ1]]$ and $[[Γ ⊢ iQ2 ≥ iR]]$ 
+          with $[[Γ' ⊢ σ : Γ]]$ unifying $[[iQ1]]$ and $[[iQ2]]$, we obtain $[[Γ' ⊢ [σ]iP ≥ [σ]iR]]$;
+        \item applying the induction hypothesis to $[[Γ ⊢ iN' ≤ iM1']]$ and $[[Γ ⊢ iM2' ≤ iK']]$ 
+          with $[[Γ' ⊢ σ : Γ]]$ unifying $[[iM1']]$ and $[[iM2']]$, we obtain $[[Γ' ⊢ [σ]iN' ≤ [σ]iK']]$.
+      \end{itemize}
+      This way, by \ruleref{\ottdruleDOneArrowLabel}, $[[Γ' ⊢ [σ]iP → [σ]iN' ≤ [σ]iR → [σ]iK']]$,
+      that is $[[Γ' ⊢ [σ]iN ≤ [σ]iK]]$, as required.
+  \end{caseof}
+
+  After that we consider all the 
+  analogous positive cases, and prove them symmetrically.
 \end{proof}
 
 \begin{corollary}[Transitivity of subtyping] \label{corollary:subtyping-transitivity}

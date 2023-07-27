@@ -366,10 +366,14 @@ the metric of the inference tree.
                 \item for any $[[Θ ⊢ uσ : ·]]$, we have $[[ Γ ; Φ ⊢ [uσ]uN ● · ⇒> [uσ]uN ]]$.
                     To show $[[ Γ ; Φ ⊢ [uσ]uN ● · ⇒> [uσ]nf(uN) ]]$, we apply the corresponding 
                     declarative rule \ruleref{\ottdruleDTEmptyAppLabel}.
-                    $[[ Γ ⊢ [uσ]uN ≈ [uσ]nf(uN) ]]$ holds 
+                    To show $[[ Γ ⊢ [uσ]uN ≈ [uσ]nf(uN) ]]$,
+                    we apply the following sequence:
+                    $[[uN ≈ nf(uN)]]$ by 
+                    \cref{lemma:normalization-soundness},
+                    then $[[ [uσ]uN ≈ [uσ]nf(uN) ]]$
                     by \cref{corollary:subst-pres-equiv},
-                    since $[[ Γ ⊢ uN ≈ nf(uN) ]]$ by 
-                    \cref{corollary:nf-sound-wrt-subt-equiv}.
+                    then $[[ Γ ⊢ [uσ]uN ≈ [uσ]nf(uN) ]]$
+                    by \cref{lemma:equiv-soundness}. 
             \end{enumerate}
 
         \item \ruleref{\ottdruleATArrowAppLabel} 

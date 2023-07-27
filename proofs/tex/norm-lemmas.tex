@@ -26,7 +26,6 @@
 \begin{lemma}[Soundness of quantifier normalization]
   \label{lemma:normalization-soundness}
   \hfill
-
   \begin{itemize}
     \item[$-$] $[[iN ≈ nf(iN)]]$
     \item[$+$] $[[iP ≈ nf(iP)]]$
@@ -70,14 +69,12 @@
 
 \begin{lemma}[Distributivity of normalization over substitution]
   \label{lemma:norm-subst-distr} Normalization of a term distributes over substitution.
-  Suppose that $[[Γ2 ⊢ σ : Γ1]]$, i.e. $[[σ]]$ maps variables from $[[Γ1]]$ into types
-  taking free variables from $[[Γ2]]$.
-  \begin{itemize}
-  \item[$-$] $[[nf([σ]iN)]] = [[ [nf(σ)] nf(iN) ]]$
-  \item[$+$] $[[nf([σ]iP)]] = [[ [nf(σ)] nf(iP) ]]$
+  Suppose that $[[σ]]$ is a substitution, $[[iN]]$ and $[[iP]]$ are types. Then
+    \begin{itemize}
+      \item[$-$] $[[nf([σ]iN)]] = [[ [nf(σ)] nf(iN) ]]$
+      \item[$+$] $[[nf([σ]iP)]] = [[ [nf(σ)] nf(iP) ]]$
   \end{itemize}
-  where $[[nf(σ)]]$ means pointwise normalization: $[[ [nf(σ)] α⁻]] = [[nf([σ]
-  α⁻)]]$. %, and .
+  where $[[nf(σ)]]$ means pointwise normalization: $[[ [nf(σ)] α⁻]] = [[nf([σ]α⁻)]]$.
 \end{lemma}
 \begin{proof}
   Mutual induction on $[[iN]]$ and $[[iP]]$.
