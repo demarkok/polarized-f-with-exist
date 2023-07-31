@@ -39,8 +39,8 @@ $(GEN)/included.tex: $(CACHE) | $(GEN)
 	@ott -readsys $(CACHE) \
 	    -o $@ \
 	    -tex_wrap false \
-	    -tex_show_categories true \
-	    -tex_suppress_category X \
+	    -tex_show_categories false \
+	    -tex_suppress_category S \
      	-tex_show_meta false \
 		-merge true
   # For rubber

@@ -117,48 +117,60 @@
 \begin{lemma}[Completeness of the Positive Subtyping] \label{lemma:pos-subt-completeness}
     Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iQ]]$ and $[[Γ ; Θ ⊢ uP]]$.
     Then for any $[[Θ ⊢ uσ]]$ such that $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$,
-    there exists $[[Γ; Θ ⊨ uP ≥ iQ ⫤ SC]]$ such that $[[Θ ⊢ SC]]$ and moreover, $[[Θ ⊢ uσ : SC]]$.
+    there exists $[[Γ; Θ ⊨ uP ≥ iQ ⫤ SC]]$ and moreover, $[[Θ ⊢ uσ : SC]]$.
 \end{lemma}
 \begin{proof}
     Let us prove this lemma by induction on $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$.
     Let us consider the last rule used in the derivation,
     but first, consider the base case for the substitution $[[ [uσ]uP ]]$:
     \begin{caseof}
-        \item \label{case:pos-subt-complete-base} $[[uP]] = [[ ∃nbs.α̂⁺ ]]$ (for potentially empty $[[nbs]]$)\\
-        Then by assumption, $[[ Γ ⊢ ∃nbs.[uσ]α̂⁺ ≥ iQ ]]$ (where $[[ {nbs} ∩ fv [uσ]α̂⁺ = ∅]]$).
-        By \cref{todo}, $[[ Γ ⊢ ∃nbs.[uσ]α̂⁺ ≥ iQ ]]$ means 
-        $[[ Γ ⊢ [iNs/nbs][uσ]α̂⁺ ≥ iQ ]]$, and hence $[[ Γ ⊢ [uσ]α̂⁺ ≥ iQ ]]$.
-        By inversion, $[[Γ ; Θ ⊢ ∃nbs.α̂⁺]]$ implies $[[â⁺[Δ] ∊ Θ]]$ for some $[[Δ]]$.
+        \item \label{case:pos-subt-complete-base} $[[uP]] = [[ ∃nbs.α̂⁺ ]]$ 
+            (for potentially empty $[[nbs]]$)\\
+            Then by assumption, $[[ Γ ⊢ ∃nbs.[uσ]α̂⁺ ≥ iQ ]]$ (where $[[ {nbs} ∩ fv [uσ]α̂⁺ = ∅]]$).
+            Let us decompose $[[iQ]]$ as $[[iQ]] = [[∃ncs.iQ0]]$, where $[[iQ0]]$ does
+            not start with $[[∃]]$. 
 
-        In the algorithm trying to infer the subtyping 
-        $[[Γ; Θ ⊨ ∃nbs.α̂⁺ ≥ iQ ⫤ SC]]$,
-        after multiple applications of \ruleref{\ottdruleAExistsLabel}
-        the type $[[∃nbs.α̂⁺]]$ is reduced to $[[α̂⁺]]$.
-        Next, the algorithm tries to apply
-        \ruleref{\ottdruleAPUVarLabel}
-        and the resulting restriction is $[[SC']] = [[(α̂⁺ :≥ iQ')]]$ where
-        $[[upgrade Γ ⊢ iQ to Δ = iQ']]$.
+            By inversion, $[[Γ ; Θ ⊢ ∃nbs.α̂⁺]]$ implies $[[â⁺[Δ] ∊ Θ]]$ for some 
+            $[[{Δ} ⊆ {Γ}]]$.
 
-        Why does the upgrade procedure terminates?
-        Because $[[ [uσ]α̂⁺ ]]$ satisfies the pre-conditions of the completeness of the upgrade
-        (\cref{lemma:upgrade-completeness}):
-        \begin{itemize}
-            \item $[[Δ ⊢ iP']]$ because $[[iP' = [uσ]α̂⁺]]$ and $[[Θ ⊢ uσ]]$ and 
-            $[[α̂⁺[Δ] ∊ Θ]]$,
-            \item $[[Γ ⊢ iP' ≥ iQ]]$ as noted above
-        \end{itemize}
-        Moreover, the completeness of the upgrade also gives us $[[Γ ⊢ iP' ≥ iQ']]$
-        and further, we strengthen it to $[[Δ ⊢ iP' ≥ iQ']]$
-        (since by the soundness of the upgrade (\cref{lemma:upgrade-soundness}),
-        $[[Δ ⊢ iQ']]$).  It means that $[[Δ ⊢ iP' : (α̂⁺ :≥ iQ') ]]$, that is 
-        $[[Θ ⊢ uσ : (α̂⁺ :≥ iQ') ]]$, as required.
+            By \cref{lemma:quant-rule-decomposition} applied twice, 
+            $[[ Γ ⊢ ∃nbs.[uσ]α̂⁺ ≥ ∃ncs.iQ0 ]]$ implies
+            $[[ Γ,ncs  ⊢ [iNs/nbs][uσ]α̂⁺ ≥ iQ0 ]]$ for some $[[iN]]$, 
+            and since $[[ {nbs} ∩ fv([uσ]α̂⁺) ⊆ {nbs} ∩ {Θ(α̂⁺)} ⊆ {nbs} ∩ {Γ} = ∅ ]]$,
+            $[[ [iNs/nbs][uσ]α̂⁺ = [uσ]α̂⁺ ]]$, that is $[[ Γ,ncs ⊢ [uσ]α̂⁺ ≥ iQ0]]$.
+
+            When algorithm tires to infer the subtyping 
+            $[[Γ; Θ ⊨ ∃nbs.α̂⁺ ≥ ∃ncs.iQ0 ⫤ SC]]$,
+            it applies \ruleref{\ottdruleAExistsLabel},
+            which reduces the problem to
+            $[[Γ, ncs; Θ, β̂⁻*[Γ, ncs] ⊨ [β̂⁻*/nbs] α̂⁺ ≥ iQ0 ⫤ SC]]$, 
+            which is equivalent to 
+            $[[Γ, ncs; Θ, β̂⁻*[Γ, ncs] ⊨ α̂⁺ ≥ iQ0 ⫤ SC]]$.
+
+            Next, the algorithm tries to apply
+            \ruleref{\ottdruleAPUVarLabel}
+            and the resulting restriction is $[[SC]] = [[(α̂⁺ :≥ iQ0')]]$ where
+            $[[upgrade Γ, ncs ⊢ iQ0 to Δ = iQ0']]$.
+
+            Why does the upgrade procedure terminate?
+            Because $[[ [uσ]α̂⁺ ]]$ satisfies the pre-conditions of the completeness of the upgrade
+            (\cref{lemma:upgrade-completeness}):
+            \begin{enumerate}
+                \item $[[Δ ⊢ [uσ]α̂⁺ ]]$ because $[[Θ ⊢ uσ]]$ and $[[α̂⁺[Δ] ∊ Θ]]$,
+                \item $[[ Γ,ncs ⊢ [uσ]α̂⁺ ≥ iQ0]]$ as noted above
+            \end{enumerate}
+
+            Moreover, the completeness of upgrade also says that $[[iQ0']]$ is 
+            \emph{the least} supertype of $[[iQ0]]$ among types well-formed in $[[Δ]]$, 
+            that is $[[Δ ⊢ [uσ]α̂⁺ ≥ iQ0']]$, which means 
+            $[[Θ ⊢ uσ : (α̂⁺ :≥ iQ0')]]$, that is $[[Θ ⊢ uσ : SC]]$.
 
         \item \label{case:pos-subt-complete-pvar}
-        $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ is derived by \ruleref{\ottdruleDOnePVarLabel}, 
-        i.e. $[[iP]] = [[ [uσ]uP ]] = [[ α⁺ ]] = [[iQ]]$.
-        Here the first equality holds because $[[uP]]$ is not a unification variable:
-        it has been covered by \cref{case:pos-subt-complete-base}.
-        The second equality hold because \ruleref{\ottdruleDOnePVarLabel} was applied.
+        $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ is derived by \ruleref{\ottdruleDOnePVarLabel}\\
+        Then $[[iP]] = [[ [uσ]uP ]] = [[ α⁺ ]] = [[iQ]]$, where
+        the first equality holds because $[[uP]]$ is not a unification variable:
+        it has been covered by \cref{case:pos-subt-complete-base}; and
+        the second equality hold because \ruleref{\ottdruleDOnePVarLabel} was applied.
 
         The algorithm applies \ruleref{\ottdruleAPVarLabel} and 
         infers $[[SC]] = [[·]]$, i.e. $[[Γ;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·]]$.

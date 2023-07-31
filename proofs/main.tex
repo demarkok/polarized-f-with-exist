@@ -172,22 +172,19 @@
 \renewcommand{\ottdruleAUAUName}[0]{(AU$^{-}$)}
 
 
-
 \begin{document}
 
 \tableofcontents
 
+\newpage
 
-\section{The Vanilla System}
-
-
-
+\section{Declarative System}
 First, we present the top-level system, which is easy to understand.
 
 \subsection{Grammar}
 \ottgrammartabular{
-  \ottP\ottinterrule
-  \ottN\ottinterrule
+  \ottiP\ottinterrule
+  \ottiN\ottinterrule
   \ottv\ottinterrule
   \ottc\ottinterrule
 }
@@ -196,20 +193,10 @@ First, we present the top-level system, which is easy to understand.
 \ottdefnsDT
 
 \subsection{Declarative Subtyping}
-\ottdefnsDZero
-
-\section{Multi-Quantified System}
-\subsection{Grammar}
-\ottgrammartabular{
-  \ottiP\ottinterrule
-  \ottiN\ottinterrule
-}
-\subsection{Declarative Multiquantified Subtyping}
 \ottdefnsDOne
 
 \subsection{Declarative Equivalence}
 \ottdefnsEOne
-
 
 
 \section{Algorithm}
@@ -236,19 +223,51 @@ First, we present the top-level system, which is easy to understand.
 
 
 
-\subsection{Constraint Merge}
+\subsection{Constraints}
 
-Unification and subtyping constraints is are by a list of constraint entries.
-Each entry restricts an unification variable in two possible ways: either
-stating that it must be equivalent to a certain type ($[[pua :≈ iP]]$ or $[[nua
-:≈ iN]]$) or that it must be a (positive) supertype of a certain type ($[[pua :≥ iP]]$).
+Unification and subtyping algorithms are based on the constraint generation.
+The constraints are represented by set of constraint entries.
 
-\begin{definition} [Matching Entries]
-  We call two entries matching if they are restricting the same unification variable.
+\begin{definition}[Unification Constraint]
+  \hfill
+  \begin{itemize}
+    \item Unification entry (denoted as $[[ucE]]$) is an expression of shape 
+      $[[pua :≈ iP]]$ or $[[nua :≈ iN]]$;
+    \item unification constraint (denoted as $[[UC]]$) is a set of 
+      unification constraint entries.
+  \end{itemize}
+
 \end{definition}
 
-Two matching entries can be merged in the following way:
-\begin{definition} \hfill \\
+\begin{definition}[Subtyping Constraint]
+  \hfill
+  \begin{itemize}
+    \item Subtyping entry (denoted as $[[scE]]$) is an expression of shape 
+      $[[pua :≥ iP]]$, $[[nua :≈ iN]]$, or $[[pua :≈ iP]]$;
+    \item subtyping constraint (denoted as $[[SC]]$) is a set of subtyping constraint entries.
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Well-formed Constraint Entry]
+  We say that a constraint entry is well-formed in a context $[[Γ]]$ if
+  the type it restricts the unification variable to is well-formed in $[[Γ]]$.
+  \begin{itemize}
+    \item $[[Γ ⊢ pua :≥ iP]]$ iff $[[Γ ⊢ iP]]$;
+    \item $[[Γ ⊢ pua :≈ iP]]$ iff $[[Γ ⊢ iP]]$;
+    \item $[[Γ ⊢ nua :≈ iN]]$ iff $[[Γ ⊢ iN]]$.
+  \end{itemize}
+\end{definition}
+
+\begin{definition} [Matching Entries]
+  We call two unification constraint entries 
+  or two subtyping constraint entries matching 
+  if they are restricting the same unification variable.
+\end{definition}
+
+Two matching entries formed in the same context $[[Γ]]$ 
+can be merged in the following way:
+\begin{definition}[Merge of Matching Constraint Entries]
+   \hfill \\
 \ottdefnSCME\\
 \end{definition}
 % Notice that in case of equivalence, the assigned types
@@ -257,17 +276,37 @@ Two matching entries can be merged in the following way:
 % and hence, equivalence is alpha-equivalence 
 % (\cref{corollary:nf-complete-wrt-subt-equiv,corollary:nf-sound-wrt-subt-equiv}).
 
-To merge two constraints, we merge each pair of
-matching entries, and unite the results.
-\ilyam{add contexts}
-\begin{definition}
-  $\begin{aligned}[t] [[SC1 & SC2]] &= 
-    \{ [[scE1 & scE2]] \mid [[scE1]] \in [[SC1]], [[scE2]]  \in [[SC2]], \text{s.t. } [[scE1]] \text{ matches with } [[scE2]] \}\\
-    &\cup 
-    \{ [[scE1]] \mid [[scE1]] \in [[SC1]], \text{ s.t. } \forall [[scE2]]  \in [[SC2]], [[scE1]] \text{ does not match with } [[scE2]] \}\\
-    &\cup 
-    \{ [[scE2]] \mid [[scE2]] \in [[SC2]], \text{ s.t. } \forall [[scE1]]  \in [[SC1]], [[scE1]] \text{ does not match with } [[scE2]] \}\\
-   \end{aligned}$
+\begin{definition}[Constraint Context]
+  Constraint context (denoted as $[[Θ]]$) is a set of entries of shape $[[ pua[Γ] ]]$ 
+  and $[[ nua[Γ] ]]$, specifying that the unification variable ($[[pua]]$ or $[[nua]]$)
+  must be instantiated in a type well-formed in context $[[Γ]]$.
+  We assume that for each $[[α̂±]]$, at most one entry of shape $[[ α̂±[Γ] ]]$ is in $[[Θ]]$.
+  If $[[ α̂±[Γ] ]] \in [[Θ]]$, we denote $[[Γ]]$ as $[[Θ(α̂±)]]$.
+\end{definition}
+
+\begin{definition}[Well-formed Constraint]
+  We say that a constraint is well-formed in a
+  constraint context $[[Θ]]$ if all its entries are well-formed in
+  the corresponding elements of $[[Θ]]$.
+  More formally, 
+  $[[Θ ⊢ UC]]$ iff for every $[[ucE]] \in $ $[[UC]]$,
+  such that $[[ucE]]$ restricts $[[α̂±]]$,
+  there exists $[[ α̂±[Γ] ]] \in [[Θ]]$
+  and $[[Γ ⊢ ucE]]$.
+\end{definition}
+
+
+\begin{definition}[Merge of Subtyping Constraints]
+  Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.
+  Then $[[Θ ⊢ SC1 & SC2 = SC]]$
+  defines a set such that $[[ucE]] \in [[SC]]$ iff either
+  \begin{itemize}
+    \item $[[ucE]] \in [[SC1]]$ and there is no matching $[[ucE']] \in [[SC2]]$; or
+    \item $[[ucE]] \in [[SC2]]$ and there is no matching $[[ucE']] \in [[SC1]]$; or
+    \item $[[Θ(α̂±) ⊢ ucE1 & ucE2 = ucE]]$ for some $[[ucE1]] \in [[SC1]]$ and $[[ucE2]] \in [[SC2]]$
+      such that $[[ucE1]]$ matches with $[[ucE2]]$ restricting variable
+      $[[α̂±]]$. 
+  \end{itemize}
 \end{definition}
 
 \subsection{Constraint Satisfaction}

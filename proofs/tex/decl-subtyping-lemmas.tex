@@ -65,7 +65,7 @@
   \begin{itemize}
     \item [$-_{R}$] Let us prove both directions. 
       \begin{itemize}
-        \item [\Rightarrow] Let us assume $[[Γ ⊢ iN ≤ ∀pbs.iM]]$.
+        \item [$\Rightarrow$] Let us assume $[[Γ ⊢ iN ≤ ∀pbs.iM]]$.
           $[[Γ ⊢ iN ≤ ∀pbs.iM]]$.
           Let us decompose $[[iM]]$ as $[[∀pbs'.iM']]$ where $[[iM']]$ does not start with $[[∀]]$, 
           and decompose $[[iN]]$ as $[[∀pas.iN']]$ where $[[iN']]$ does not start with $[[∀]]$.
@@ -75,7 +75,7 @@
           $[[Γ,pbs,pbs' ⊢ [iPs/pas]iN' ≤ iM']]$ for some $[[Γ,pbs,pbs' ⊢ iPs]]$.
           Then again by \ruleref{\ottdruleDOneForallLabel} with the same $[[iPs]]$,
           $[[Γ,pbs ⊢ ∀pas.iN' ≤ ∀pbs'.iM']]$, that is $[[Γ,pbs ⊢ iN ≤ iM]]$.
-        \item [\Leftarrow] let us assume $[[Γ, pbs ⊢ iN ≤ iM]]$, and let us decompose 
+        \item [$\Leftarrow$] let us assume $[[Γ, pbs ⊢ iN ≤ iM]]$, and let us decompose 
           $[[iN]]$ as $[[∀pas.iN']]$ where $[[iN']]$ does not start with $[[∀]]$, 
           and $[[iM]]$ as $[[∀pbs'.iM']]$ where $[[iM']]$ does not start with $[[∀]]$.
           if $[[pas]]$ and $[[pbs']]$ are empty then $[[Γ, pbs ⊢ iN ≤ iM]]$
@@ -90,7 +90,7 @@
       \end{itemize}
     \item [$-_{L}$] Suppose $[[iM]] \neq [[∀]]\dots$. Let us prove both directions.
       \begin{itemize}
-        \item [\Rightarrow] Let us assume $[[Γ ⊢ ∀pas.iN ≤ iM]]$.
+        \item [$\Rightarrow$] Let us assume $[[Γ ⊢ ∀pas.iN ≤ iM]]$.
           then if $[[pas = ·]]$, $[[Γ ⊢ iN ≤ iM]]$ holds immediately.
           Otherwise, let us decompose  $iN$ as $[[∀pas'.iN']]$ where 
           $[[iN']]$ does not start with $[[∀]]$.
@@ -103,7 +103,7 @@
           Then by \ruleref{\ottdruleDOneForallLabel} again,
           $[[Γ ⊢ ∀pas'.[iPs'/pas']iN' ≤ iM']]$ (notice that $[[ [iPs'/pas']iN' ]]$ cannot
           start with $[[∀]]$).
-        \item [\Leftarrow] Let us assume 
+        \item [$\Leftarrow$] Let us assume 
           $[[Γ ⊢ [iPs/pas]iN ≤ iM]]$ for some $[[Γ ⊢ iPs]]$.
           let us decompose $iN$ as $[[∀pas'.iN']]$ where $[[iN']]$ does not start with $[[∀]]$.
           Then $[[Γ ⊢ [iPs/pas]∀pas'.iN' ≤ iM']]$ or, equivalently,
@@ -133,7 +133,7 @@
     \item [$+_{R}$] Suppose that $[[ {nas} ∩ fv(iQ) = ∅]]$ then 
       $[[Γ ⊢ iP ≥ ∃nas.iQ]]$ holds if and only if $[[Γ ⊢ iP ≥ iQ]]$.
   \end{itemize}
-\end{lemma}
+\end{corollary}
 \begin{proof}
   \begin{itemize}
     \item [$-_{R}$] Suppose that $[[ {pas} ∩ fv(iM) = ∅]]$ then 
@@ -268,32 +268,34 @@
 
 \begin{lemma}[Substitution preserves subtyipng]
   \label{lemma:subst-pres-subt}
-  Suppose that all mentioned types are well-formed in $[[Γ1 , Γ]]$,
+  Suppose that all mentioned types are well-formed in $[[Γ1]]$,
   and $[[σ]]$ is a substitution $[[Γ2 ⊢ σ : Γ1]]$.
   \begin{itemize}
-    \item $-$ If $[[Γ1 , Γ ⊢ iN ≤ iM]]$ then $[[Γ2 , Γ ⊢ [σ]iN ≤ [σ]iM]]$
-    \item $+$ If $[[Γ1 , Γ ⊢ iP ≥ iQ]]$ then $[[Γ2 , Γ ⊢ [σ]iP ≥ [σ]iQ]]$
+    \item $-$ If $[[Γ1 ⊢ iN ≤ iM]]$ then $[[Γ2 ⊢ [σ]iN ≤ [σ]iM]]$
+    \item $+$ If $[[Γ1 ⊢ iP ≥ iQ]]$ then $[[Γ2 ⊢ [σ]iP ≥ [σ]iQ]]$
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  We prove it by induction on the size of the derivation of $[[Γ ⊢ iN ≤ iM]]$
-  and mutually, $[[Γ ⊢ iP ≥ iQ]]$. Let us consider the last rule 
+  We prove it by induction on the size of the derivation of $[[Γ1 ⊢ iN ≤ iM]]$
+  and mutually, $[[Γ1 ⊢ iP ≥ iQ]]$. Let us consider the last rule 
   used in the derivation:
   \begin{caseof}
     \item \ruleref{\ottdruleDOneNVarLabel}. Then by inversion, 
       $[[iN = α⁻]]$ and $[[iM = α⁻]]$. By reflexivity of subtyping
       (\cref{lemma:subtyping-reflexivity}),
-      we have $[[Γ2, Γ ⊢ [σ]α⁻ ≤ [σ]α⁻]]$, i.e. $[[Γ2, Γ ⊢ [σ]iN ≤ [σ]iM]]$,
+      we have $[[Γ2 ⊢ [σ]α⁻ ≤ [σ]α⁻]]$, i.e. $[[Γ2 ⊢ [σ]iN ≤ [σ]iM]]$,
       as required.
     \item  \ruleref{\ottdruleDOneForallLabel}. Then by inversion,
       $[[iN = ∀pas.iN']]$, $[[iM = ∀pbs.iM']]$, where $[[pas]]$ or $[[pbs]]$ is not empty.
-      Moreover, $[[Γ1 , Γ, pbs ⊢ [iPs/pas]iN' ≤ iM']]$ for some $[[Γ1 , Γ, pbs ⊢ iPs]]$, and 
+      Moreover, $[[Γ1, pbs ⊢ [iPs/pas]iN' ≤ iM']]$ for some $[[Γ1, pbs ⊢ iPs]]$, and 
       $[[fv iN ∩ {pbs} = ∅ ]]$.
 
-      Notice that since the derivation of $[[Γ1, Γ, pbs ⊢ [iPs/pas]iN' ≤ iM']]$ is
+      Notice that since the derivation of $[[Γ1, pbs ⊢ [iPs/pas]iN' ≤ iM']]$ is
       a subderivation of the derivation of $[[Γ ⊢ iN ≤ iM]]$, its size is smaller, 
-      and hence, the induction hypothesis applies:
-      $[[Γ2 , Γ, pbs ⊢ [σ][iPs/pas]iN' ≤ [σ]iM']]$.
+      and hence, the induction hypothesis applies
+      ($[[Γ1, pbs ⊢ σ : Γ1, pbs]]$ by  \label{lemma:subst-domain-weakening})
+      :
+      $[[Γ2, pbs ⊢ [σ][iPs/pas]iN' ≤ [σ]iM']]$.
 
       Notice that by convention, $[[pas]]$ and $[[pbs]]$ are fresh, and thus,  
       $[[ [σ]∀pas.iN' ]] = [[ ∀pas.[σ]iN' ]]$ and $[[ [σ]∀pbs.iM' ]] = [[ ∀pbs.[σ]iM' ]]$, 
@@ -448,7 +450,7 @@
       \end{aligned}
       $$
       Notice that $[[(σ ○ iQs/pbs) <=< iPs/pas]]$
-      is a substitution that turns $[[pai]]$ into [[ [σ ○ iQs/pbs]iPi ]], 
+      is a substitution that turns $[[pai]]$ into $[[ [σ ○ iQs/pbs]iPi ]]$, 
       where $[[ Γ',pcs ⊢ [σ ○ iQs/pbs]iPi]]$.
       This way, 
       $[[ Γ', pcs ⊢ [(σ ○ iQs/pbs) <=< iPs/pas][σ]iN' ≤  [σ]iK' ]]$
