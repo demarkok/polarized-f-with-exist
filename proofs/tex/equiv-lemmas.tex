@@ -1,13 +1,169 @@
+\begin{lemma} [Declarative Equivalence is invariant under bijections]
+  \label{lemma:decl-equiv-bijection}
+  Suppose $[[μ]]$ is a bijection $[[μ : varset1 ↔ varset2]]$, then
+  \begin{itemize}
+    \item[$+$] $[[iP1 ≈ iP2]]$ implies $[[ [μ]iP1 ≈ [μ]iP2 ]]$,
+      and there exists an inference tree of $[[ [μ]iP1 ≈ [μ]iP2 ]]$
+      with the same shape as the one inferring $[[iP1 ≈ iP2]]$;
+    \item[$-$] $[[iN1 ≈ iN2]]$ implies $[[ [μ]iN1 ≈ [μ]iN2 ]]$, 
+      and there exists an inference tree of $[[ [μ]iN1 ≈ [μ]iN2 ]]$
+      with the same shape as the one inferring $[[iN1 ≈ iN2]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  We prove it by induction on $[[iP1 ≈ iP2]]$ and mutually, on $[[iN1 ≈ iN2]]$.
+  Let us consider the last rule used in the derivation.
+  \begin{caseof}
+    \item \ruleref{\ottdruleEOneForallLabel}\\
+      Then we decompose $[[iN1]]$ as $[[∀pas1.iM1]]$ and $[[iN2]]$ as $[[∀pas2.iM2]]$,
+      where $[[iM1]]$ and $[[iM2]]$ do not start with $[[∀]]$-quantifiers.
+      where $[[|pas1| + |pas2| > 0]]$.
+      By convention, let us assume that
+      $[[pas1]]$ and $[[pas2]]$ are disjoint form 
+      $[[varset2]]$ and $[[varset1]]$.
+
+      By inversion, $[[{pas1} ∩ fv iM2 = ∅]]$ and 
+      $[[iM1 ≈ [μ'] iM2]]$ for some bijection
+      $[[μ' : ({pas2} ∩ fv iM2) ↔ ({pas1} ∩ fv iM1)]]$.
+      Then let us apply the induction hypothesis to
+       $[[iM1 ≈ [μ'] iM2]]$ to obtain $[[ [μ]iM1 ≈ [μ] [μ'] iM2 ]]$ 
+      inferred by the tree of the same shape as 
+      $[[ iM1 ≈ [μ'] iM2 ]]$.
+
+      Notice that $[[ [μ]iM1 ]]$ and $[[ [μ]iM2 ]]$ 
+      do not start with $[[∀]]$, 
+      That is $[[ [μ]∀pas1.iM1 ≈ [μ]∀pas2.iM2]]$, 
+      rewritten as $[[ ∀pas1.[μ]iM1 ≈ ∀pas2.[μ]iM2]]$,
+      can be inferred by \ruleref{\ottdruleEOneForallLabel}:
+      \begin{enumerate}
+        \item $[[{pas1}]]$ is disjoint from 
+        $[[varset2 ∪ fv iM2 ⊆ fv [μ]iM2 ]]$;
+        \item $[[ [μ]iM1 ≈ [μ'] [μ] iM2 ]]$
+          because $[[ [μ'] [μ] iM2 = [μ] [μ'] iM2 ]]$
+          (by \cref{corollary:subst-composition-commutativity}:
+          $[[μ' : ({pas2} ∩ fv iM2) ↔ ({pas1} ∩ fv iM1)]]$, 
+          $[[μ : varset1 ↔ varset2]]$,
+          $[[varset1]]$ is disjoint from 
+          $[[pas2]]$ and $[[pas1]]$; 
+          $[[pas2]]$ is disjoint from $[[varset1]]$ and $[[varset2]]$)
+      \end{enumerate}
+      Notice that it is the same rule as the one inferring 
+      $[[iN1 ≈ iN2]]$, and thus, the shapes of the trees are the same.
+
+    \item \ruleref{\ottdruleEOneNVarLabel}\\
+      Then $[[iN1]] = [[iN2]] = [[α⁻]]$, and the required
+      $[[ [μ]α⁻ = [μ]α⁻ ]]$ is also inferred by
+      \ruleref{\ottdruleEOneNVarLabel}, since 
+      $[[ [μ]α⁻ ]]$ is a variable.
+    \item \ruleref{\ottdruleEOneArrowLabel}\\
+      Then we are proving 
+      that $[[iP1 → iM1 ≈ iP2 → iM2]]$ implies
+      $[[ [μ](iP1 → iM1) ≈ [μ](iP2 → iM2) ]]$ 
+      (preserving the tree structure).
+
+      By inversion, we have $[[iP1 ≈ iP2]]$ and $[[iM1 ≈ iM2]]$,
+      and thus, by the induction hypothesis,
+      $[[ [μ]iP1 ≈ [μ]iP2 ]]$ and $[[ [μ]iM1 ≈ [μ]iM2 ]]$.
+      Then $[[ [μ](iP1 → iM1) ≈ [μ](iP2 → iM2) ]]$, 
+      or in other words, $[[ [μ]iP1 → [μ]iM1 ≈ [μ]iP2 → [μ]iM2 ]]$,
+      is inferred by the same rule---\ruleref{\ottdruleEOneArrowLabel}.
+    \item \ruleref{\ottdruleEOneShiftULabel}
+      This case is done by similar congruent arguments as
+      the previous one.
+    \item The positive cases are proved symmetrically.
+    \end{caseof}
+\end{proof}
+
 \begin{lemma}[Declarative equivalence is transitive]
   \hfill
   \label{lemma:decl-equiv-transitivity}
   \begin{itemize}
-  \item[$+$] if $[[iP1 ≈ iP2]]$ and $[[iP2 ≈ iP3]]$ then $[[iP1 ≈ iP3]]$,
-  \item[$-$] if $[[iN1 ≈ iN2]]$ and $[[iN2 ≈ iN3]]$ then $[[iN1 ≈ iN3]]$.
+    \item[$+$] if $[[iP1 ≈ iP2]]$ and $[[iP2 ≈ iP3]]$ then $[[iP1 ≈ iP3]]$,
+    \item[$-$] if $[[iN1 ≈ iN2]]$ and $[[iN2 ≈ iN3]]$ then $[[iN1 ≈ iN3]]$.
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  \ilyam{should be easy to do by induction since the types are getting smaller}
+  We prove it by
+  $\size{[[iP1 ≈ iP2]]} + \size{[[iP2 ≈ iP3]]}$
+  and mutually, $\size{[[iN1 ≈ iN2]]} + \size{[[iN2 ≈ iN3]]}$, where
+  by size we mean the size of the nodes in the corresponding inference tree.
+
+  \begin{caseof}
+    \item First, let us consider the case when either 
+      $[[iN1 ≈ iN2]]$ or $[[iN2 ≈ iN3]]$ is inferred by 
+      \ruleref{\ottdruleEOneForallLabel}.
+      Let us decompose $[[iN1]]$, $[[iN2]]$, and $[[iN3]]$ as follows:
+      $[[iN1 = ∀pas1.iM1]]$,
+      $[[iN2 = ∀pas2.iM2]]$, and
+      $[[iN3 = ∀pas3.iM3]]$.
+
+      Then by inversion of $[[∀pas1.iM1 ≈ ∀pas2.iM2]]$
+      (or if $[[pas1]]$ and $[[pas2]]$ are both empty, 
+      by assumption) : 
+      \begin{enumerate}
+        \item $[[{pas1} ∩ fv iM2 = ∅]]$ and
+        \item there exists a bijection on variables 
+          $[[mu1 : ({pas2} ∩ fv iM2) ↔ ({pas1} ∩ fv iM1)]]$
+          such that $[[iM1 ≈ [mu1] iM2]]$.
+      \end{enumerate}
+
+      Analogously, $[[∀pas1.iM1 ≈ ∀pas2.iM2]]$
+      implies:
+      \begin{enumerate}
+        \item $[[{pas2} ∩ fv iM3 = ∅]]$ and
+        \item $[[iM2 ≈ [mu2] iM3]]$ for some bijection 
+          $[[mu2 : ({pas3} ∩ fv iM3) ↔ ({pas2} ∩ fv iM2)]]$.
+      \end{enumerate}
+
+      Notice that either $[[iM1 ≈ [mu1] iM2]]$
+      is inferred by a proper sub-tree of $[[∀pas1.iM1 ≈ ∀pas2.iM2]]$
+      or $[[iM2 ≈ [mu2] iM3]]$ is inferred by a proper sub-tree of 
+      $[[∀pas2.iM2 ≈ ∀pas3.iM3]]$.
+
+      Then by \cref{lemma:decl-equiv-bijection}, 
+      $[[ [mu1]iM2 ≈ [mu1 ○ mu2] iM3]]$ and moreover, 
+      $\size{[[ [mu1]iM2 ≈ [mu1 ○ mu2] iM3]]} = \size{[[iM2 ≈ [mu2] iM3]]}$.
+
+      Since at least one of the trees inferring 
+      $[[iM1 ≈ [mu1] iM2]]$ and $[[iM2 ≈ [mu2] iM3]]$
+      is a proper sub-tree of the corresponding original tree,
+      $\size{[[iM1 ≈ [mu1] iM2]]} + \size{[[iM2 ≈ [mu2] iM3]]} <
+      \size{[[∀pas1.iM1 ≈ ∀pas2.iM2]]} + \size{[[∀pas2.iM2 ≈ ∀pas3.iM3]]}$,
+      i.e., the induction hypothesis is applicable.
+
+      By the induction hypothesis, $[[iM1 ≈ [mu1 ○ mu2] iM3]]$.
+      Where $[[mu1 ○ mu2]]$ is a bijection on variables
+      $[[mu1 ○ mu2 : ({pas3} ∩ fv iM3) ↔ ({pas1} ∩ fv iM1)]]$.
+      Then $[[∀pas1.iM1 ≈ ∀pas3.iM3]]$ by \ruleref{\ottdruleEOneForallLabel}.
+
+      Once this case has been considered, 
+      we can assume that neither $[[iN1 ≈ iN2]]$ nor $[[iN2 ≈ iN3]]$
+      is inferred by \ruleref{\ottdruleEOneForallLabel}.
+
+    \item $[[iN1 ≈ iN2]]$ is inferred by 
+      \ruleref{\ottdruleEOneNVarLabel}\\
+      Then $[[iN1]] = [[iN2]] = [[α⁻]]$, and thus,  
+      $[[iN1 ≈ iN3]]$ holds since $[[iN2 ≈ iN3]]$.
+
+    \item $[[iN1 ≈ iN2]]$ is inferred by 
+      \ruleref{\ottdruleEOneArrowLabel}\\
+      Then $[[iN1]] = [[iP1 → iM1]]$ and $[[iN2]] = [[iP2 → iM2]]$,
+      and by inversion, $[[iP1 ≈ iP2]]$ and $[[iM1 ≈ iM2]]$.
+
+      Moreover, since $[[iN3]]$ does not start with $[[∀]]$,
+      $[[iN2 ≈ iN3]]$ is also inferred by 
+      \ruleref{\ottdruleEOneArrowLabel},
+      which means that $[[iN3]] = [[iP3 → iM3]]$,
+      $[[iP2 ≈ iP3]]$, and $[[iM2 ≈ iM3]]$.
+
+      Then by the induction hypothesis, 
+      $[[iP1 ≈ iP3]]$ and $[[iM1 ≈ iM3]]$, and thus, 
+      $[[iP1 → iM1 ≈ iP3 → iM3]]$ by \ruleref{\ottdruleEOneArrowLabel}.
+    \item $[[iN1 ≈ iN2]]$ is inferred by
+      \ruleref{\ottdruleEOneArrowLabel}\\
+      For this case, the reasoning is the same as for the previous one.
+    \item The positive cases are proved symmetrically.
+  \end{caseof}
 \end{proof}
 
 \begin{lemma}[Algorithmization of declarative equivalence]
@@ -42,8 +198,78 @@
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  \ilyam{todo}
+  We prove it by induction on $[[iP ≈ iQ]]$ and mutually, on $[[iN ≈ iM]]$.
+  Let us consider the last rule used in the derivation.
+  \begin{caseof}
+    \item \ruleref{\ottdruleEOneNVarLabel}, 
+      that is $[[iN ≈ iM]]$ has shape $[[α⁻ ≈ α⁻]]$.\\
+      Than $[[Γ ⊢ iP]] \iff [[Γ ⊢ iQ]]$ is rewritten as $[[Γ ⊢ α⁻]] \iff [[Γ ⊢ α⁻]]$,
+      which holds trivially.
+    \item \ruleref{\ottdruleEOneShiftULabel},
+      that is $[[iN ≈ iM]]$ has shape $[[↑iP ≈ ↑iQ]]$.\\
+      By inversion, $[[iP ≈ iQ]]$, and by the induction hypothesis,
+      $[[Γ ⊢ iP]] \iff [[Γ ⊢ iQ]]$. 
+      Also notice that $[[Γ ⊢ ↑iP]] \iff [[Γ ⊢ iP]]$ 
+      and $[[Γ ⊢ ↑iQ]] \iff [[Γ ⊢ iQ]]$ by inversion and \ruleref{\ottdruleWFTShiftULabel}.
+      This way, $[[Γ ⊢ ↑iP]] \iff [[Γ ⊢ iP]] \iff [[Γ ⊢ iQ]] \iff [[Γ ⊢ ↑iQ]]$.
+    \item \ruleref{\ottdruleEOneArrowLabel},
+      that is $[[iN ≈ iM]]$ has shape $[[iP → iN' ≈ iQ → iM']]$.\\
+      Then by inversion, $[[iP ≈ iQ]]$ and $[[iN' ≈ iM']]$, 
+      and by the induction hypothesis, $[[Γ ⊢ iP]] \iff [[Γ ⊢ iQ]]$ and $[[Γ ⊢ iN']] \iff [[Γ ⊢ iM']]$.
+      $
+      \begin{aligned}[t]
+        [[Γ ⊢ iP → iN']]  &\iff [[Γ ⊢ iP]] \text{ and } [[Γ ⊢ iN']] 
+                          && \text{by inversion and \ruleref{\ottdruleWFTArrowLabel}}\\
+                          &\iff [[Γ ⊢ iQ]] \text{ and } [[Γ ⊢ iM']]
+                          && \text{as noted above}\\
+                          &\iff [[Γ ⊢ iQ → iM']]
+                          && \text{by \ruleref{\ottdruleWFTArrowLabel} and inversion}\\
+      \end{aligned}
+      $\\
+    \item \ruleref{\ottdruleEOneForallLabel},
+      that is $[[iN ≈ iM]]$ has shape $[[∀pas.iN' ≈ ∀pbs.iM']]$.\\
+      By inversion, $[[∀pas.iN' ≈ ∀pbs.iM']]$ means that
+      $[[{pas} ∩ fv iM = ∅]]$ and 
+      that there exists a bijection on variables 
+      $[[mu : ({pbs} ∩ fv iM') ↔ ({pas} ∩ fv iN')]]$
+      such that $[[iN' ≈ [mu] iM']]$.
+
+      By inversion and \ruleref{\ottdruleWFTForallLabel},
+      $[[Γ ⊢ ∀pas.iN']]$ is equivalent to $[[Γ, pas ⊢ iN']]$,
+      and by \cref{lemma:wf-ctxt-equiv}, it is equivalent to 
+      $[[Γ, Ord ({pas} ∩ fv iN') ⊢ iN']]$,
+      which, by the induction hypothesis, is equivalent to
+      $[[Γ, Ord ({pas} ∩ fv iN') ⊢ [mu]iM']]$.
+
+      Analogously, $[[Γ ⊢ ∀pbs.iM']]$ is equivalent to
+      $[[Γ, (Ord {pbs} ∩ fv iM') ⊢ iM']]$.
+      By \cref{lemma:wf-subst}, it implies 
+      $[[Γ, Ord ({pas} ∩ fv iM') ⊢ [mu]iM']]$. And vice versa, 
+      $[[Γ, Ord ({pas} ∩ fv iM') ⊢ [mu]iM']]$ implies  
+      $[[Γ, Ord ({pbs} ∩ fv iM') ⊢ [mu-1][mu]iM']]$.
+ 
+      This way, both $[[Γ ⊢ ∀pas.iN']]$ and $[[Γ ⊢ ∀pbs.iM']]$ are equivalent to
+      $[[Γ, Ord ({pas} ∩ fv iN') ⊢ [mu]iM']]$. 
+    \item For the cases of the positive types, the proofs are symmetric.
+  \end{caseof}
 \end{proof}
+
+\begin{lemma}[Algorithmic type well-formedness is invariant under equivalence]
+  \label{lemma:wf-equiv-algo}
+  Mutual subtyping implies declarative equivalence.
+  \begin{itemize}
+  \item[$+$] if $[[uP ≈ uQ]]$ then $[[Γ; Θ ⊢ uP]] \iff [[Γ; Θ ⊢ uQ]]$,
+  \item[$-$] if $[[uN ≈ uM]]$ then $[[Γ; Θ ⊢ uN]] \iff [[Γ; Θ ⊢ uM]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  The proof coincides with the proof of \cref{lemma:wf-equiv},
+  and adds two cases for equating two positive or two negative metavariables,
+  which must be equal by inversion, and thus, 
+  $[[Γ; Θ ⊢ α̂±]] \iff [[Γ;  ⊢ α̂±]]$ holds trivially.
+\end{proof}
+
+
 
 \begin{corollary}[Normalization preserves well-formedness]
   \label{corollary:wf-nf}
@@ -56,6 +282,8 @@
 \begin{proof}
   Immediately from \cref{lemma:wf-equiv,lemma:normalization-soundness}.
 \end{proof}
+
+
 
 \begin{corollary}[Normalization preserves well-formedness of substitution]
   \label{corollary:wf-s-nf}
@@ -323,9 +551,10 @@
   \begin{itemize}
   \item[$+$]
     Applying $[[σ2]]$ to both sides of
-    $[[Γ ⊢ [σ1] iP ≥ iQ]]$ (by \cref{todo}),
+    $[[Γ ⊢ [σ1] iP ≥ iQ]]$ (by \cref{lemma:subst-pres-subt}),
     we have: $[[Γ ⊢ [σ2 ○ σ1] iP ≥ [σ2]iQ]]$.
-    Composing it with $[[Γ ⊢ [σ2] iQ ≥ iP]]$ (by transitivity \cref{todo}),
+    Composing it with $[[Γ ⊢ [σ2] iQ ≥ iP]]$ by transitivity 
+    (\cref{lemma:subtyping-transitivity}),
     we have $[[Γ ⊢ [σ2 ○ σ1] iP ≥ iP]]$.
     Then by \cref{corollary:subst-proper-subt},
     $[[Γ ⊢ σ2 ○ σ1 ≈ id : Ord fv iP]]$.
@@ -354,7 +583,7 @@
         such that $[[ Γ ⊢ [σ2] β± ≈ α± ]]$ and
         $[[ Γ ⊢ [σ1] α± ≈ β± ]]$.
     \end{enumerate}
-    Then the these correspondences between $[[fv iP]]$ and
+    Then these correspondences between $[[fv iP]]$ and
     $[[fv iQ]]$ are mutually inverse functions,
     since for any $[[β±]]$ there can be at most one $[[α±]]$
     such that $[[ Γ ⊢ [σ2] β± ≈ α± ]]$ (and vice versa).
@@ -402,13 +631,83 @@
   \end{itemize}
 \end{proof}
 
+\begin{lemma}[Equivalent substitution act equivalently]
+  \label{lemma:equiv-subst-on-same-term}
+  Suppose that $[[Γ' ⊢ σ1 : Γ]]$ and $[[Γ' ⊢ σ2 : Γ]]$
+  are substitutions equivalent on their domain, that is $[[Γ' ⊢ σ1 ≈ σ2 : Γ]]$.
+  Then
+  \begin{itemize}
+    \item[$+$] for any $[[Γ ⊢ iP]]$, $[[Γ' ⊢ [σ1]iP ≈ [σ2]iP]]$;
+    \item[$-$] for any $[[Γ ⊢ iN]]$, $[[Γ' ⊢ [σ1]iN ≈ [σ2]iN]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  We prove it by induction on $[[iP]]$ (and mutually on $[[N]]$).
+  \begin{caseof}
+    \item $[[iN = α⁻]]$\\
+      Then since by inversion, $[[α⁻ ∊ {Γ}]]$, 
+      $[[Γ' ⊢ [σ1]α⁻ ≈ [σ2]α⁻]]$ holds by definition of $[[Γ' ⊢ σ1 ≈ σ2 : Γ]]$.
+    \item $[[iN = ↑iP]]$\\
+      Then by inversion, $[[Γ ⊢ iP]]$.
+      By the induction hypothesis, $[[Γ' ⊢ [σ1]iP ≈ [σ2]iP]]$, 
+      Then by \ruleref{\ottdruleDOneShiftULabel}, 
+      $[[Γ' ⊢ ↑[σ1]iP ≤ ↑[σ2]iP]]$, and symmetrically, $[[Γ' ⊢ ↑[σ2]iP ≤ ↑[σ1]iP]]$,
+      together meaning that $[[Γ' ⊢ ↑[σ1]iP ≈ ↑[σ2]iP]]$,
+      or equivalently, $[[Γ' ⊢ [σ1]↑iP ≈ [σ2]↑iP]]$.
+    \item $[[iN = iP → iM]]$\\
+      Then by inversion, $[[Γ ⊢ iP]]$ and $[[Γ ⊢ iM]]$.
+      By the induction hypothesis, $[[Γ' ⊢ [σ1]iP ≈ [σ2]iP]]$ and
+      $[[Γ' ⊢ [σ1]iM ≈ [σ2]iM]]$,
+      that is $[[Γ' ⊢ [σ1]iP ≥ [σ2]iP]]$, $[[Γ' ⊢ [σ2]iP ≥ [σ1]iP]]$,
+      $[[Γ' ⊢ [σ1]iM ≤ [σ2]iM]]$, and $[[Γ' ⊢ [σ2]iM ≤ [σ1]iM]]$.
+      Then by \ruleref{\ottdruleDOneArrowLabel}, $[[Γ' ⊢ [σ1]iP → [σ1]iM ≤ [σ2]iP → [σ2]iM]]$, 
+      and again by \ruleref{\ottdruleDOneArrowLabel}, $[[Γ' ⊢ [σ2]iP → [σ2]iM ≤ [σ1]iP → [σ1]iM]]$.
+      This way, $[[Γ' ⊢ [σ1]iP → [σ1]iM ≈ [σ2]iP → [σ2]iM]]$,
+      or equivalently, $[[Γ' ⊢ [σ1](iP → iM) ≈ [σ2](iP → iM)]]$.
+    \item $[[iN = ∀pas.iM]]$
+      We can assume that $[[pas]]$ is disjoint from $[[Γ]]$ and $[[Γ']]$.
+      By inversion, $[[Γ ⊢ ∀pas.iM]]$ implies $[[Γ, pas ⊢ iM]]$.
+      Notice that $[[Γ' ⊢ σi : Γ]]$ and 
+      $[[Γ' ⊢ σ1 ≈ σ2 : Γ]]$
+      can be extended to 
+      $[[Γ', pas ⊢ σi : Γ, pas]]$
+      and 
+      $[[Γ', pas ⊢ σ1 ≈ σ2 : Γ, pas]]$
+      by \cref{lemma:subst-domain-weakening}.
+      Then by the induction hypothesis,
+      $[[Γ', pas ⊢ [σ1]iM ≈ [σ2]iM]]$,
+      meaning by inversion that
+      $[[Γ', pas ⊢ [σ1]iM ≤ [σ2]iM]]$ and 
+      $[[Γ', pas ⊢ [σ2]iM ≤ [σ1]iM]]$.
+
+      To infer
+      $[[Γ' ⊢ ∀pas.[σ1]iM ≤ ∀pas.[σ2]iM]]$,
+      we apply \ruleref{\ottdruleDOneForallLabel}
+      with the substitution $[[Γ', pas ⊢ id : pas]]$, 
+      noting that $[[Γ', pas ⊢ [id][σ1]iM ≤ [σ2]iM ]]$
+      holds since $[[Γ', pas ⊢ [σ1]iM ≤ [σ2]iM ]]$, 
+      as noted above. 
+
+      Symmetrically, we infer
+      $[[Γ' ⊢ ∀pas.[σ2]iM ≤ ∀pas.[σ1]iM]]$,
+      which together with
+      $[[Γ' ⊢ ∀pas.[σ1]iM ≤ ∀pas.[σ2]iM]]$
+      means
+      $[[Γ' ⊢ ∀pas.[σ1]iM ≈ ∀pas.[σ2]iM]]$,
+      or equivalently, 
+      $[[Γ' ⊢ [σ1]∀pas.iM ≈ [σ2]∀pas.iM]]$.
+
+    \item The positive cases are proved symmetrically.
+  \end{caseof}
+\end{proof}
+
 \begin{lemma}[Equivalence of polymorphic types]
   \label{lemma:poly-types-equivalence}
   \hfill
   \begin{itemize}
     \item[$-$] For $[[Γ ⊢ ∀pas.iN]]$ and $[[Γ ⊢ ∀pbs.iM]]$,\\ if $[[Γ ⊢ ∀pas.iN ≈ ∀pbs.iM ]]$
     then there exists a bijection $[[μ : {pbs} ∩ fv iM ↔ {pas} ∩ fv iN]]$
-    such that $[[ Γ, pas ⊢ iN ≈ [Sub μ] iN ]]$,
+    such that $[[ Γ, pas ⊢ iN ≈ [Sub μ] iM ]]$,
     \item[$+$] For $[[Γ ⊢ ∃nas.iP]]$ and $[[Γ ⊢ ∃nbs.iQ]]$,\\  if $[[Γ ⊢ ∃nas.iP ≈ ∃nbs.iQ ]]$
     then there exists a bijection $[[μ : {nbs} ∩ fv iQ ↔ {nas} ∩ fv iP]]$
     such that $[[ Γ, nbs ⊢ iP ≈ [Sub μ] iQ ]]$.
@@ -418,57 +717,77 @@
     \hfill
   \begin{itemize}
     \item[$-$]
-    First, by $\alpha$-conversion, we ensure $[[{pas} ∩ fv iM = ∅]]$ and $[[{pbs} ∩ fv iN = ∅]]$.
-    By inversion, $[[Γ ⊢ ∀pas.iN ≈ ∀pbs.iM ]]$ implies 
-    \begin{enumerate} 
-      \item $[[Γ,pbs ⊢ [σ1]iN ≤ iM]]$ for $[[ Γ,pbs ⊢ σ1 : pas ]]$ and 
-      \item $[[Γ,pas ⊢ [σ2]iM ≤ iN]]$ for $[[ Γ,pas ⊢ σ2 : pbs ]]$.
-    \end{enumerate}
-    To apply \cref{lemma:mutual-subst-subtyping}, we weaken 
-    and rearrange the contexts, and extend the substitutions to act as identity
-    outside of their initial domain:
-    \begin{enumerate} 
-      \item $[[Γ,pas,pbs ⊢ [σ1]iN ≤ iM]]$ for $[[ Γ,pas,pbs ⊢ σ1 : Γ,pas,pbs ]]$ and 
-      \item $[[Γ,pas,pbs ⊢ [σ2]iM ≤ iN]]$ for $[[ Γ,pas,pbs ⊢ σ2 : Γ,pas,pbs ]]$.
-    \end{enumerate}
-    Then from \cref{lemma:mutual-subst-subtyping}, 
-    there exists a bijection $[[μ : fv iM ↔ fv iN]]$ such that 
-    $[[Γ,pas,pbs ⊢ σ2 ≈ Sub μ : Ord fv iM]]$ and 
-    $[[Γ,pas,pbs ⊢ σ1 ≈ Sub μ-1 : Ord fv iN]]$. 
+      First, by $\alpha$-conversion, we ensure $[[{pas} ∩ fv iM = ∅]]$ and $[[{pbs} ∩ fv iN = ∅]]$.
+      By inversion, $[[Γ ⊢ ∀pas.iN ≈ ∀pbs.iM ]]$ implies 
+      \begin{enumerate} 
+        \item $[[Γ,pbs ⊢ [σ1]iN ≤ iM]]$ for $[[ Γ,pbs ⊢ σ1 : pas ]]$ and 
+        \item $[[Γ,pas ⊢ [σ2]iM ≤ iN]]$ for $[[ Γ,pas ⊢ σ2 : pbs ]]$.
+      \end{enumerate}
+      To apply \cref{lemma:mutual-subst-subtyping}, we weaken 
+      and rearrange the contexts, and extend the substitutions to act as identity
+      outside of their initial domain:
+      \begin{enumerate} 
+        \item $[[Γ,pas,pbs ⊢ [σ1]iN ≤ iM]]$ for $[[ Γ,pas,pbs ⊢ σ1 : Γ,pas,pbs ]]$ and 
+        \item $[[Γ,pas,pbs ⊢ [σ2]iM ≤ iN]]$ for $[[ Γ,pas,pbs ⊢ σ2 : Γ,pas,pbs ]]$.
+      \end{enumerate}
+      Then from \cref{lemma:mutual-subst-subtyping}, 
+      there exists a bijection $[[μ : fv iM ↔ fv iN]]$ such that 
+      $[[Γ,pas,pbs ⊢ σ2 ≈ Sub μ : Ord fv iM]]$ and 
+      $[[Γ,pas,pbs ⊢ σ1 ≈ Sub μ-1 : Ord fv iN]]$. 
 
-    Let us show that if we restrict the domain of $[[μ]]$ to 
-    $[[pbs]]$, its range will be contained in $[[pas]]$.
-    Let us take $[[γ⁺ ∊ {pbs} ∩ fv iM]]$ and 
-    assume $[[ [μ]γ⁺]] \notin [[pas]]$.
-    Then since $[[ Γ,pbs ⊢ σ1 : pas ]]$, 
-    $[[σ1]]$ acts as identity outside of $[[pas]]$, i.e.
-    $[[ [σ1][Sub μ]γ⁺ = [Sub μ]γ⁺ ]]$.
-    Since
-    $[[Γ,pas,pbs ⊢ σ1 ≈ Sub μ-1 : Ord fv iN]]$, 
-    application of $[[σ1]]$ is equivalent to application of $[[Sub μ-1]]$,
-    then 
-    $[[ Γ,pas,pbs ⊢ [Sub μ-1][Sub μ]γ⁺ ≈ [Sub μ]γ⁺ ]]$, i.e.
-    $[[Γ,pas,pbs ⊢ γ⁺ ≈ [Sub μ]γ⁺]]$, 
-    which means $[[γ⁺ ∊ fv [Sub μ]γ⁺]] \subseteq [[fv iN]]$.
-    By assumption, $[[γ⁺ ∊ {pbs} ∩ fv iM]]$, i.e. $[[{pbs} ∩ fv iN]] \neq \emptyset$, hence contradiction.
+      Let us show that $[[Sub μ|{pbs}]]$ is the appropriate candidate.
 
-    By \cref{todo}, 
-    $[[Γ,pas,pbs ⊢ σ2 ≈ Sub μ|{pbs} : Ord fv iM]]$ implies
-    $[[Γ,pas,pbs ⊢ [σ2]iM ≈ [Sub μ|{pbs}]iM]]$.
-    By similar reasoning, $[[Γ,pas,pbs ⊢ [σ1]iN ≈ [Sub μ-1|{pas}]iN]]$.
+      First, we show that if we restrict the domain of $[[μ]]$ to 
+      $[[pbs]]$, its range will be contained in $[[pas]]$.
 
-    This way,
-    \begin{align} 
-      [[Γ,pas,pbs ⊢ [Sub μ-1|{pas}]iN ≤ iM]] \label{fact:mu-inv-n-sub-m}\\
-      [[Γ,pas,pbs ⊢ [Sub μ|{pbs}]iM ≤ iN]] \label{fact:mu-m-subt-n}
-    \end{align}
+      Let us take $[[γ⁺ ∊ {pbs} ∩ fv iM]]$ and 
+      assume $[[ [μ]γ⁺]] \notin [[pas]]$.
+      Then since $[[ Γ,pbs ⊢ σ1 : pas ]]$, 
+      $[[σ1]]$ acts as identity outside of $[[pas]]$, i.e.
+      $[[ [σ1][Sub μ]γ⁺ = [Sub μ]γ⁺ ]]$ (notice that $[[γ⁺]]$ is in the domain of $[[μ]]$).
+      Since
+      $[[Γ,pas,pbs ⊢ σ1 ≈ Sub μ-1 : Ord fv iN]]$, 
+      application of $[[σ1]]$ to $[[ [μ]γ⁺ ]] \in [[fv iN]]$
+      is equivalent to application of $[[Sub μ-1]]$, then 
+      $[[ Γ,pas,pbs ⊢ [Sub μ-1][Sub μ]γ⁺ ≈ [Sub μ]γ⁺ ]]$, i.e.
+      $[[Γ,pas,pbs ⊢ γ⁺ ≈ [Sub μ]γ⁺]]$, 
+      which means $[[γ⁺ ∊ fv [Sub μ]γ⁺]] \subseteq [[fv iN]]$.
+      By assumption, $[[γ⁺ ∊ {pbs} ∩ fv iM]]$, i.e. $[[{pbs} ∩ fv iN]] \neq \emptyset$, hence contradiction.
 
-    By applying $[[μ|_{pbs}]]$ to both sides of \ref{fact:mu-inv-n-sub-m} (\cref{todo})
-    and contracting $[[μ-1|_{pas} ○ μ|_{pbs}]] = [[μ|_{pbs}-1 ○ μ|_{pbs}]] = [[id]]$,
-    we have: $[[Γ,pas,pbs ⊢ iN ≤ [Sub μ|{pbs}]iM]]$, which together with \ref{fact:mu-m-subt-n}
-    means $[[Γ,pas,pbs ⊢ iN ≈ [Sub μ|{pbs}]iM]]$, and by strengthening, $[[Γ,pas⊢ iN ≈ [Sub μ|{pbs}]iM]]$.
-    Symmetrically, $[[Γ,pbs ⊢ iM ≈ [Sub μ|_{pbs}-1]iN]]$.
-    \item{$+$} The proof is symmetric to the proof of the negative case.
+      Second, 
+      we will show $[[ Γ, pas ⊢ iN ≈ [Sub μ|{pbs}] iM ]]$.
+
+      Since $[[ Γ,pas ⊢ σ2 : pbs ]]$ and 
+      $[[Γ,pas,pbs ⊢ σ2 ≈ Sub μ : Ord fv iM]]$, 
+      we have
+      $[[Γ,pas,pbs ⊢ σ2 ≈ Sub μ|{pbs} : Ord fv iM]]$:
+      for any $[[α± ∊ fv iM \ {pbs}]]$, $[[ [σ2]α± = α± ]]$
+      since $[[ Γ,pas ⊢ σ2 : pbs ]]$, and
+      $[[ [Sub μ|{pbs}]α± = α± ]]$ by definition of substitution restriction;
+      for $[[β⁺ ∊ {pbs}]]$, $[[ [Sub μ|{pbs}]β⁺ = [μ]β⁺ ]]$,
+      and thus, $[[Γ,pas,pbs ⊢ [σ2]β⁺ ≈ [Sub μ]β⁺ ]]$
+      can be rewritten to $[[Γ,pas,pbs ⊢ [σ2]β⁺ ≈ [Sub μ|{pbs}]β⁺ ]]$.
+
+      By \cref{lemma:equiv-subst-on-same-term},
+      $[[Γ,pas,pbs ⊢ σ2 ≈ Sub μ|{pbs} : Ord fv iM]]$ implies
+      $[[Γ,pas,pbs ⊢ [σ2]iM ≈ [Sub μ|{pbs}]iM]]$.
+      By similar reasoning, $[[Γ,pas,pbs ⊢ [σ1]iN ≈ [Sub μ-1|{pas}]iN]]$.
+
+      This way, by transitivity of subtyping (\cref{lemma:subtyping-transitivity}),
+      \begin{align} 
+        [[Γ,pas,pbs ⊢ [Sub μ-1|{pas}]iN ≤ iM]] \label{fact:mu-inv-n-sub-m}\\
+        [[Γ,pas,pbs ⊢ [Sub μ|{pbs}]iM ≤ iN]] \label{fact:mu-m-subt-n}
+      \end{align}
+
+      By applying $[[Sub μ|{pbs}]]$ to both sides of \ref{fact:mu-inv-n-sub-m} 
+      (\cref{lemma:subst-pres-subt}), we have
+      $[[Γ,pas,pbs ⊢ [Sub μ|{pbs}][Sub μ-1|{pas}]iN ≤ [Sub μ|{pbs}]iM]]$. 
+      By contracting $[[μ-1|_{pas} ○ μ|_{pbs}]] = [[μ|_{pbs}-1 ○ μ|_{pbs}]]$
+      (notice that $[[fv iN ∩ {pbs} = ∅]]$), 
+      we have $[[Γ,pas,pbs ⊢ iN ≤ [Sub μ|{pbs}]iM]]$, which together with \ref{fact:mu-m-subt-n}
+      means $[[Γ,pas,pbs ⊢ iN ≈ [Sub μ|{pbs}]iM]]$, and by strengthening, $[[Γ,pas⊢ iN ≈ [Sub μ|{pbs}]iM]]$.
+      % Symmetrically, $[[Γ,pbs ⊢ iM ≈ [Sub μ|_{pbs}-1]iN]]$.
+    \item[$+$] The proof is symmetric to the proof of the negative case.
   \end{itemize}
 
 \end{proof}
@@ -509,10 +828,11 @@
       Then $[[iN ≈ iM]]$ (i.e. $[[iP → iN' ≈ iQ → iM']]$) holds by \ruleref{\ottdruleEOneArrowLabel}.
 
       \item \ruleref{\ottdruleDOneForallLabel} i.e. $[[Γ ⊢ iN ≤ iM]]$ is of the form $[[Γ ⊢ ∀pas.iN' ≤ ∀pbs.iM']]$\\
-      Then by \cref{lemma:poly-type-equivalence}, $[[Γ ⊢ ∀pas.iN' ≈ ∀pbs.iM']]$ means that 
+      Then by \cref{lemma:poly-types-equivalence}, $[[Γ ⊢ ∀pas.iN' ≈ ∀pbs.iM']]$ means that 
       there exists a bijection $[[μ : {pbs} ∩ fv iM' ↔ {pas} ∩ fv iN']]$ such that  
       $[[Γ,pas ⊢ [Sub μ]iM' ≈ iN']]$. 
       
+  \label{lemma:poly-types-equivalence}
       Notice that the application of bijection $[[μ]]$ to $[[iM']]$ does
       not change its size (which is less than the size of $[[iM]]$), hence the induction hypothesis applies.
       This way, $[[ [Sub μ]iM' ≈ iN']]$ (and by symmetry, $[[iN' ≈ [Sub μ]iM']]$) holds by induction. 

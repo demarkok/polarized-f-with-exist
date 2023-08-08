@@ -345,18 +345,29 @@
     \end{itemize}
 \end{corollary}
 
-\begin{lemma}[Strong transitivity of subtyping] \label{lemma:subtyping-transitivity}
-  Assuming all the types are well-formed in $[[Γ]]$,
+
+\begin{lemma}[Transitivity of subtyping] 
+  \label{lemma:subtyping-transitivity}
+  Assuming the types are well-formed in $[[Γ]]$,
   \begin{itemize}
-    \item $-$ if $[[Γ ⊢ iN ≤ iM1]]$, $[[Γ ⊢ iM2 ≤ iK]]$, and for 
-      $[[Γ' ⊢ σ : Γ]]$, $[[ [σ]iM1 = [σ]iM2 ]]$ then $[[Γ' ⊢ [σ]iN ≤ [σ]iK]]$
-    \item $+$ if $[[Γ ⊢ iP ≥ iQ1]]$, $[[Γ ⊢ iQ2 ≥ iR]]$, and for
-      $[[Γ' ⊢ σ : Γ]]$, $[[ [σ]iQ1 = [σ]iQ2 ]]$ then $[[Γ' ⊢ [σ]iP ≥ [σ]iR]]$
+    \item[$-$] if $[[Γ ⊢ iN1 ≤ iN2]]$ and $[[Γ ⊢ iN2 ≤ iN3]]$ then $[[Γ ⊢ iN1 ≤ iN3]]$,
+    \item[$+$] if $[[Γ ⊢ iP1 ≥ iP2]]$ and $[[Γ ⊢ iP2 ≥ iP3]]$ then $[[Γ ⊢ iP1 ≥ iP3]]$.
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  We prove it by induction on $\depth{[[Γ ⊢ iN ≤ iM1]]} + \depth{[[Γ ⊢ iM2 ≤ iK]]}$ and mutually, 
-  on $\depth{[[Γ ⊢ iP ≥ iQ1]]} + \depth{[[Γ ⊢ iQ2 ≥ iR]]}$.
+  To prove it, we formulate a stronger property, 
+  which will imply the required one, taking $[[σ]] = [[Γ ⊢ id : Γ]]$.
+
+    Assuming all the types are well-formed in $[[Γ]]$,
+    \begin{itemize}
+      \item[$-$] if $[[Γ ⊢ iN ≤ iM1]]$, $[[Γ ⊢ iM2 ≤ iK]]$, and for 
+        $[[Γ' ⊢ σ : Γ]]$, $[[ [σ]iM1 = [σ]iM2 ]]$ then $[[Γ' ⊢ [σ]iN ≤ [σ]iK]]$
+      \item[$+$] if $[[Γ ⊢ iP ≥ iQ1]]$, $[[Γ ⊢ iQ2 ≥ iR]]$, and for
+        $[[Γ' ⊢ σ : Γ]]$, $[[ [σ]iQ1 = [σ]iQ2 ]]$ then $[[Γ' ⊢ [σ]iP ≥ [σ]iR]]$
+    \end{itemize}
+
+  We prove it by induction on $\size{[[Γ ⊢ iN ≤ iM1]]} + \size{[[Γ ⊢ iM2 ≤ iK]]}$ and mutually, 
+  on $\size{[[Γ ⊢ iP ≥ iQ1]]} + \size{[[Γ ⊢ iQ2 ≥ iR]]}$.
 
 
   First, let us consider the 3 important cases.
@@ -407,10 +418,10 @@
       $[[Γ, pbs ⊢ [iPs/pas]iN' ≤ iM1']]$ is a proper subderivation of $[[Γ ⊢ iN ≤ iM1]]$ or
       $[[Γ, pcs ⊢ [iQs/pbs]iM2' ≤ iK']]$ is a proper subderivation of $[[Γ ⊢ iM2 ≤ iK]]$.
 
-      Notice that we can weaken and rearrange the contexts without changing the depths of the 
+      Notice that we can weaken and rearrange the contexts without changing the sizes of the 
       derivations: $[[Γ, pbs, pcs ⊢ [iPs/pas]iN' ≤ iM1']]$
       and $[[Γ, pbs, pcs ⊢ [iQs/pbs]iM2' ≤ iK']]$. This way, 
-      the sum of the depths of these derivations is smaller than the sum of the depths of
+      the sum of the sizes of these derivations is smaller than the sum of the sizes of
       $[[Γ ⊢ iN ≤ iM1]]$ and $[[Γ ⊢ iM2 ≤ iK]]$.
       Let us apply the induction hypothesis to these derivations, 
       with the substitution $[[ Γ', pcs ⊢ σ ○ (iQs/pbs) : Γ, pbs, pcs  ]]$
@@ -502,18 +513,12 @@
       This way, by \ruleref{\ottdruleDOneArrowLabel}, $[[Γ' ⊢ [σ]iP → [σ]iN' ≤ [σ]iR → [σ]iK']]$,
       that is $[[Γ' ⊢ [σ]iN ≤ [σ]iK]]$, as required.
   \end{caseof}
-
   After that we consider all the 
   analogous positive cases, and prove them symmetrically.
 \end{proof}
 
-\begin{corollary}[Transitivity of subtyping] \label{corollary:subtyping-transitivity}
-  Assuming the types are well-formed in $[[Γ]]$,
-  \begin{itemize}
-    \item[$-$] if $[[Γ ⊢ iN1 ≤ iN2]]$ and $[[Γ ⊢ iN2 ≤ iN3]]$ then $[[Γ ⊢ iN1 ≤ iN3]]$,
-    \item[$+$] if $[[Γ ⊢ iP1 ≥ iP2]]$ and $[[Γ ⊢ iP2 ≥ iP3]]$ then $[[Γ ⊢ iP1 ≥ iP3]]$.
-  \end{itemize}
-\end{corollary}
+
+
 
 \begin{corollary}[Transitivity of equivalence] \label{corollary:equivalence-transitivity}
   Assuming the types are well-formed in $[[Γ]]$,

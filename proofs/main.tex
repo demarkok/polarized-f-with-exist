@@ -49,6 +49,7 @@
 
 
 \newcommand{\depth}[1]{\mathsf{depth}(#1)}
+\newcommand{\size}[1]{\mathsf{size}(#1)}
 
 \newcommand{\ruleref}[1]{Rule \nameref{#1}}
 
@@ -182,6 +183,21 @@
 First, we present the top-level system, which is easy to understand.
 
 \subsection{Grammar}
+We assume that there is an infinite set of positive and 
+negative \emph{type} variables. Positive type variables are denoted as 
+$[[α⁺]]$, $[[β⁺]]$, $[[γ⁺]]$, etc.
+Negative type variables are denoted as $[[α⁻]]$, $[[β⁻]]$, $[[γ⁻]]$, etc.
+We assume there is an infinite set of \emph{term} variables,
+which are denoted as $[[x]]$, $[[y]]$, $[[z]]$, etc.
+A list of objects (variables, types or terms) is denoted by
+an overline arrow. For instance, $[[pas]]$ is a list of positive type variables, 
+$[[nbs]]$ is a list of negative type variables, 
+$[[args]]$ is a list of values, which are arguments of a function.
+$[[fv(iP)]]$ and $[[fv(iN)]]$ denote the set of free variables 
+in a type $[[iP]]$ and $[[iN]]$, respectively.
+
+\bigskip
+
 \ottgrammartabular{
   \ottiP\ottinterrule
   \ottiN\ottinterrule
@@ -198,8 +214,97 @@ First, we present the top-level system, which is easy to understand.
 \subsection{Declarative Equivalence}
 \ottdefnsEOne
 
+\subsection{Well-Formedness}
+\ottdefnsWFT
+\ottdefnsWFAT
 
 \section{Algorithm}
+
+\subsection{Grammar}
+
+\subsubsection{Variables and Types}
+In the algorithmic system, we extend the grammar of types
+by adding positive and negative \emph{algorithmic variables}
+($[[α̂⁺]]$, $[[β̂⁺]]$, $[[γ̂⁺]]$, etc. and $[[α̂⁻]]$, $[[β̂⁻]]$, $[[γ̂⁻]]$, etc.).
+They represent the unknown types, which will be inferred by the algorithm.
+This way, we add two base cases to the grammar of 
+positive and negative types, and use highlight to denote that the type
+can potentially contain algorithmic variables.
+ 
+\begin{definition}[Algorithmic Types]
+  \hfill \\
+\ottgrammartabular{
+  \ottuP\ottinterrule
+  \ottuN\ottinterrule
+}
+\end{definition}
+
+\subsubsection{Contexts}
+
+Unannotated set of algorithmic variables is denoted as $[[Ξ]]$,
+and it is used in the anti-unification algorithm.
+$[[Γ ; Ξ ⊢ uP]]$ and $[[Γ ; Ξ ⊢ uN]]$ are used to denote
+that the algorithmic type is well-formed in the contexts
+$[[Γ]]$ and $[[Ξ]]$, which means that each algorithmic variable
+of the type is contained in $[[Ξ]]$, and each free non-algorithmic type variable
+of the type is contained in $[[Γ]]$.
+
+Typically each algorithmic variable is associated with a
+context it must be instantiated in 
+(i.e. the context in which the type replacing the variable must be well-formed).
+This association is represented by an \emph{algorithmic variable context} $[[Θ]]$.
+\begin{definition}[Algorithmic Context]
+  \hfill \\
+  Algorithmic Context $[[Θ]]$ is represented by a set of 
+  entries of form $[[ α̂⁺[Γ] ]]$ and $[[ α̂⁻[Γ] ]]$,
+  where $[[α̂⁺]]$ and $[[α̂⁻]]$ are algorithmic variables,
+  and $[[Γ]]$ is a context in which they must be instantiated.
+  We assume that no two entries associating the same variable
+  appear in $[[Θ]]$.
+
+  $[[dom(Θ)]]$ denotes the set of variables appearing in $[[Θ]]$:
+  $[[dom(Θ)]] = \{ [[α̂±]] \mid [[α̂±[Γ] ]] \in [[Θ]] \}$.
+\end{definition}
+
+\subsubsection{Subsitutions}
+
+Substitution that operates on algorithmic type variables is denoted as
+$[[uσ]]$. It is defined as a total function from algorithmic 
+type variables to non-algorithmic types, preserving the polarity.
+
+The signature $[[Θ ⊢ uσ]]$ means that $[[uσ]]$ maps each algorithmic 
+variable appearing in $[[Θ]]$ to a type well-formed in the corresponding
+context; and for each variable not appearing in $[[dom(Θ)]]$, acts as identity.
+
+\begin{definition}[Signature of Algorithmic Substitution]
+  $[[Θ ⊢ uσ]]$ means that
+  \begin{enumerate}
+    \item for any $[[ α̂±[Γ] ∊ Θ]]$, $[[ Γ ⊢ [uσ]α̂± ]]$ and
+    \item for any $[[ α̂± ∉ dom(Θ)]]$, $[[ [uσ]α̂± ]] =  [[ α̂± ]]$.
+  \end{enumerate}
+\end{definition}
+
+Anti-unification substitution is denoted as $[[aus]]$ and $[[ausr]]$.
+In contrast to algorithmic substitution $[[uσ]]$,
+it only defined on the negative algorithmic variables, 
+and it allows mapping algorithmic variables to
+\emph{algorithmic} terms.
+
+The pair of contexts $[[Γ]]$ and $[[Ξ]]$,
+in which the results of the anti-unification substitutions 
+are formed, is fixed for the whole substitution.
+This way, $[[Γ; Ξ2 ⊢ aus : Ξ1]]$ means that $[[aus]]$ maps each negative algorithmic
+variable appearing in $[[Ξ1]]$ to a term well-formed in $[[Γ]]$ and $[[Ξ2]]$.
+
+\begin{definition}[Signature of Anti-unification substitution]
+  $[[Γ; Ξ2 ⊢ aus : Ξ1]]$ means that
+  \begin{enumerate}
+    \item for any $[[ α̂⁻ ∊ Ξ1]]$, $[[ Γ; Ξ2 ⊢ [aus]α̂⁻ ]]$ and
+    \item for any $[[ α̂⁻ ∉ Ξ1]]$, $[[ [aus]α̂⁻ = α̂⁻ ]]$.
+  \end{enumerate}
+\end{definition}
+
+
 
 \subsection{Normalization}
 
@@ -220,7 +325,6 @@ First, we present the top-level system, which is easy to understand.
 
 \subsection{Algorithmic Subtyping}
 \ottdefnsA
-
 
 
 \subsection{Constraints}
@@ -295,7 +399,6 @@ can be merged in the following way:
   and $[[Γ ⊢ ucE]]$.
 \end{definition}
 
-
 \begin{definition}[Merge of Subtyping Constraints]
   Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.
   Then $[[Θ ⊢ SC1 & SC2 = SC]]$
@@ -324,6 +427,69 @@ can be merged in the following way:
 \section{Proofs}
 
 \subsection{Substitution}
+
+\begin{definition}[Substitution]
+  Substitutions (denoted as $[[σ]]$) 
+  are represented by total functions form variables to types, preserving the polarity. 
+\end{definition}
+
+\begin{definition}[Substitution Application]
+  Substitution application (denoted as $[[ [σ]iP ]]$ or $[[ [σ]iN ]]$) 
+  is defined congruently as follows:
+  \begin{itemize}
+    \item $[[ [σ]α⁺ ]] = [[σ]] ([[α⁺]])$;
+    \item $[[ [σ]α⁻ ]] = [[σ]] ([[α⁻]])$;
+    \item $[[ [σ]↓iN ]] = [[↓[σ]iN]]$;
+    \item $[[ [σ]↑iP ]] = [[↑[σ]iP]]$;
+    \item $[[ [σ]∃nas.iQ ]] = [[∃nas.[σ]iQ]]$, 
+    \item $[[ [σ]∀pas.iN ]] = [[∀pas.[σ]iN]]$(here we assume that $[[nas]]$ and $[[pas]]$ are lists of fresh variables, 
+      that is the variable capture never happens);
+    \item $[[ [σ](iP → iN) ]] = [[ [σ]iP → [σ]iN ]]$.
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Substitution Signature]
+  The signature $[[Γ' ⊢ σ : Γ]]$ means that
+  \begin{enumerate}
+    \item for any $[[α± ∊ {Γ}]], [[ Γ' ⊢ [σ]α± ]]$; and
+    \item for any $[[α± ∉ {Γ'}]], [[ [σ]α± = α± ]]$.
+  \end{enumerate}
+\end{definition}
+
+A substitution can be restricted to a set of variables. 
+The restricted substitution is define as expected. 
+\begin{definition}[Subsitution Restriction]
+  The specification $[[σ  | varset]]$ is defined as
+  a function such that 
+  \begin{enumerate}
+    \item $[[σ|varset]]([[α± ]]) = [[σ]]([[α± ]])$, if $[[α± ]] \in [[varset]]$; and
+    \item $[[σ|varset]]([[α± ]]) = [[α± ]]$, if $[[α± ]] \notin [[varset]]$.
+  \end{enumerate}
+\end{definition}
+
+Two substitutions can be composed in two ways:
+$[[σ2 ○ σ1]]$ corresponds to a consecutive application of $[[σ1]]$ and $[[σ2]]$,
+while $[[σ2 <=< σ1]]$
+depends on a signature of $[[σ1]]$ and modifies $[[σ1]]$ by applying
+$[[σ2]]$ to its results on the domain.
+\begin{definition}[Substitution Composition]
+  $[[σ2 ○ σ1]]$ is defined as a function such that
+  $[[σ2 ○ σ1]]([[α± ]]) = [[σ2]]([[σ1]]([[α± ]]))$.
+\end{definition}
+
+\begin{definition}[Monadic Substitution Composition]
+  Suppose that $[[Γ' ⊢ σ1 : Γ]]$.
+  Then we define $[[σ2 <=< σ1]]$ as $[[(σ2 ○ σ1)|{Γ}]]$.
+\end{definition}
+
+\begin{definition}[Equivalent Substitutions]
+  The substitution equivalence judgement $[[Γ' ⊢ σ1 ≈ σ2 : Γ]]$ 
+  indicates that on the domain $[[Γ]]$, 
+  the result of $[[σ1]]$ and $[[σ2]]$ are equivalent in context $[[Γ']]$.
+  Formally, for any $[[α± ∊ {Γ}]], [[ Γ' ⊢ [σ1]α± ≈ [σ2]α± ]]$.
+\end{definition}
+
+
 \input{../_build/_gen/tex/subst-lemmas.tex}
 
 \subsection{Declarative Subtyping}

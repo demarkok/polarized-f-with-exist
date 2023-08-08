@@ -1,16 +1,92 @@
 defns
-  WF :: 'WF' ::=
+  WFT :: 'WFT' ::=
 
   defn G ⊢ iN  :: :: NiWF :: '' {{ com Negative type well-formedness }} by
+
+    α⁻ ∊ {Γ}
+    --------- :: NVar
+    Γ ⊢ α⁻ 
+
+    Γ ⊢ iP
+    -------- :: ShiftU
+    Γ ⊢ ↑iP
+
+    Γ ⊢ iP    Γ ⊢ iN
+    ----------------- :: Arrow
+    Γ ⊢ iP → iN
+
+    Γ, pas ⊢ iN
+    ------------ :: Forall
+    Γ ⊢ ∀pas.iN
+
   defn G ⊢ iP  :: :: PiWF :: '' {{ com Positive type well-formedness }} by
+
+    α⁺ ∊ {Γ}
+    -------- :: PVar
+    Γ ⊢ α⁺
+
+    Γ ⊢ iN
+    -------- :: ShiftD
+    Γ ⊢ ↓iN
+
+    Γ, nas ⊢ iP
+    ----------- :: Exists
+    Γ ⊢ ∃nas.iP
+
   defn G ⊢ N   :: :: NWF :: ''   {{ com Negative type well-formedness }} by
   defn G ⊢ P   :: :: PWF :: ''   {{ com Positive type well-formedness }} by
+
   defn G ⊢ iNs  :: :: NisWF :: '' {{ com Negative type list well-formedness }} by
   defn G ⊢ iPs  :: :: PisWF :: '' {{ com Positive type list well-formedness }} by
 
+defns
+  WFAT :: 'WFAT' ::=
 
-  defn G ; Θ ⊢ uN  :: :: NuWF :: '' {{ com Negative unification type well-formedness }} by
-  defn G ; Θ ⊢ uP  :: :: PuWF :: '' {{ com Positive unifiication type well-formedness }} by
+
+  defn Γ ; Θ ⊢ uN  :: :: NuWF :: '' {{ com Negative unification type well-formedness }} by
+
+    α⁻ ∊ {Γ}
+    --------- :: NVar
+    Γ; Θ ⊢ α⁻ 
+
+
+    α̂⁻ ∊ Θ
+    ----------- :: NUVar
+    Γ; Θ ⊢ α̂⁻
+
+
+    Γ; Θ ⊢ uP
+    --------- :: ShiftU
+    Γ; Θ ⊢ ↑uP
+
+    Γ; Θ ⊢ uP    Γ; Θ ⊢ uN
+    ----------------------- :: Arrow
+    Γ; Θ ⊢ uP → uN
+
+    Γ, pas; Θ ⊢ uN
+    ------------ :: Forall
+    Γ; Θ ⊢ ∀pas.uN
+
+  defn Γ ; Θ ⊢ uP  :: :: PuWF :: '' {{ com Positive unifiication type well-formedness }} by
+
+    α⁺ ∊ {Γ}
+    --------- :: PVar
+    Γ; Θ ⊢ α⁺
+
+    α̂⁺ ∊ Θ
+    ---------- :: PUVar
+    Γ; Θ ⊢ α̂⁺
+
+    Γ; Θ ⊢ uN
+    ----------- :: ShiftD
+    Γ; Θ ⊢ ↓uN
+
+    Γ, nas; Θ ⊢ uP
+    --------------- :: Exists
+    Γ; Θ ⊢ ∃nas.uP
+
+  
+
   defn G ; Ξ ⊢ uN  :: :: NauWF :: '' {{ com Negative anti-unification type well-formedness }} by
   defn G ; Ξ ⊢ uP  :: :: PauWF :: '' {{ com Positive anti-unification type well-formedness }} by
 

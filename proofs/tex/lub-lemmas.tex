@@ -1,18 +1,3 @@
-\begin{lemma}[Decomposition of the quantifier rule]
-  \ilyam{move somewhere}
-  \label{lemma:qant-rule-decomposition}
-  Whenever the quantifier rule (\ruleref{\ottdruleDOneExistsLabel} or
-  \ruleref{\ottdruleDOneForallLabel}) is applied, one can assume that the rule
-  adding quantifiers on the right-hand side was applied the last.
-
-  \begin{itemize}
-  \item[$-$]
-    If $[[G ⊢ iN ≤ ∀pbs.iM]]$ then $[[G, pbs ⊢ iN ≤ iM]]$.
-    \item[$+$]
-      If $[[G ⊢ iP ≥ ∃nbs.iQ]]$ then $[[G, nbs ⊢ iP ≥ iQ]]$.
-  \end{itemize}
-\end{lemma}
-
 \begin{lemma}[Characterization of the Supertypes]
   \label{lemma:shape-of-supertypes}
   Let us define the
@@ -37,7 +22,6 @@
 
   Then $\UB([[G ⊢ iP]]) \equiv \{[[iQ]]\ \mid \ [[G ⊢ iQ ≥ iP]] \}$.
 \end{lemma}
-
 \begin{proof}
   By induction on $[[G ⊢ iP]]$.
   \begin{caseof}
@@ -206,8 +190,6 @@ Another observation we will use is the following.
   $\exists~ [[σ']]$ s.t. $[[G ⊢ σ' : Ord varset2]]$ and $[[σ|varset1]] =
   [[σ'|varset1]]$.
 \end{observation}
-
-
     $\begin{aligned}[t]
       &\mathrel{\phantom{=}} \{ [[nf(iQ)]] \mid [[Γ ⊢ iQ ≥ ↓iM]] \}=\\
       %
@@ -357,23 +339,25 @@ Another observation we will use is the following.
       %
       %
     \end{aligned}$
-    hello
   \end{caseof}
 \end{proof}
 
 \begin{observation}
   \label{observation:ub-context-irrelevant}
   Upper bounds of a type do not depend on the context
-  as soon as the type are well-formed in it.
+  as soon as the type is well-formed in it.
 
   If $[[Γ1 ⊢ iM]]$ and $[[Γ2 ⊢ iM]]$ then
   $\UB([[Γ1 ⊢ iM]]) = \UB([[Γ ⊢ iM]])$ and
   $\NFUB([[Γ1 ⊢ iM]]) = \NFUB([[Γ ⊢ iM]])$
 \end{observation}
 \begin{proof}
-  We prove both inclusions by induction on $[[Γ1 ⊢ iM]]$. Notice that if $[[
-  [σ]iM' ≈ iM ]]$ and $[[Γ2 ⊢ M]]$ then the types from the range of $[[σ|fv iM']]$ are
-  well-formed in $Γ2$ \ilyam{lemma}.
+  We prove both inclusions by induction on $[[Γ1 ⊢ iM]]$.
+  $[[ [σ]iM' ≈ iM ]]$ and $[[Γ2 ⊢ iM]]$ then
+  $[[ Γ2 ⊢ [σ]iM' ]]$ by \cref{lemma:wf-equiv}.
+  So if $[[Γ1 ⊢ σ : pas]]$ 
+  then $[[Γ2 ⊢ σ|(fv iM') : Ord {pas} ∩ fv iM']]$.
+  \ilyam{todo}
 \end{proof}
 
 \begin{lemma}[Soundness of the Least Upper Bound]
@@ -642,13 +626,13 @@ Another observation we will use is the following.
     \end{itemize}
 
     Then by the completeness of the anti-unification
-    (\cref{lemma:au-completeness}), the anti-unification algorithm
+    (\cref{lemma:anti-unification-completeness}), the anti-unification algorithm
     terminates, so is the Least Upper Bound algorithm invoking it, 
     i.e. $[[iQ']] = [[∃nbs.[nbs / ToList Ξ]uP]]$, where
     $[[(Ξ, uP, aus1, aus2)]]$ is the result of the anti-unification
     of $[[nf(↓iM1)]]$ and $[[nf(↓iM2)]]$ in context $[[Γ]]$.
 
-    Moreover, \cref{lemma:au-completeness} also says that the found anti-unification 
+    Moreover, \cref{lemma:anti-unification-completeness} also says that the found anti-unification 
     solution is initial, i.e. there exists $[[aus]]$ such that
      $[[Γ;Ξ ⊢ aus : nuas]]$ and $[[ [aus][nuas/nas]↓uM' = uP ]]$.
 
@@ -667,6 +651,7 @@ Another observation we will use is the following.
      It allows us to show $[[Γ ⊢ nf(iQ) ≥ iQ']]$, i.e. $[[Γ ⊢ ∃nas.↓iM' ≥
      ∃nbs.[nbs / ToList Ξ]uP]]$, by applying \ruleref{\ottdruleDOneExistsLabel},
      instantiating $[[nas]]$ with respect to $[[σ]]$. Finally, $[[Γ ⊢ iQ ≥ iQ']]$
-     since $[[Γ ⊢ nf(iQ) ≈ iQ]]$, and equivalence implies subtyping by \ilyam{lemma}.
+     by transitively combining $[[Γ ⊢ nf(iQ) ≥ iQ']]$ and $[[Γ ⊢ iQ ≥ nf(iQ)]]$ 
+     (holds by \cref{corollary:nf-sound-wrt-subt-equiv} and inversion).
   \end{caseof}
 \end{proof}

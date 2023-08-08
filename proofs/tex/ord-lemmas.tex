@@ -2,8 +2,8 @@
   We say that a bijection $\mu : A \leftrightarrow B$ between sets of
   variables is \textbf{collision free on sets} $P$ and $Q$ if and only if
   \begin{enumerate}
-  \item $\mu(P \cap A) \cap Q = \emptyset$
-  \item $\mu(Q \cap A) \cap P = \emptyset$
+    \item $\mu(P \cap A) \cap Q = \emptyset$
+    \item $\mu(Q \cap A) \cap P = \emptyset$
   \end{enumerate}
 \end{definition}
 
@@ -183,14 +183,64 @@
   \label{lemma:ord-sigma}
   Suppose that $[[Γ2 ⊢ σ : Γ1]]$, i.e. $[[σ]]$ maps variables from $[[Γ1]]$ into types
   taking free variables from $[[Γ2]]$, and $[[varset]]$ is a set of variables
-  disjoint with both $[[Γ1]]$ and $[[Γ2]]$. Then
-  \begin{itemize}
+  disjoint with both $[[Γ1]]$ and $[[Γ2]]$, 
+  $[[iN]]$ and $[[iP]]$ are types. Then
+    \begin{itemize}
   \item[$-$] $[[ ord varset in [σ]iN ]] = [[ord varset in iN ]]$
   \item[$+$] $[[ ord varset in [σ]iP ]] = [[ord varset in iP ]]$
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  \ilyam{Should be easy}
+  Mutual induction on $[[iN]]$ and $[[iP]]$.
+  \begin{caseof}
+    \item $[[iN = na]]$ \\
+      If $[[na ∉ {Γ1}]]$ then $[[ [σ]na = na ]]$ and $[[ ord varset in [σ]na ]] = [[ ord varset in na ]]$, 
+      as requried.
+      If $[[na ∊ {Γ1}]]$ then $[[na ∉ varset]]$, so $[[ ord varset in na ]] = [[·]]$.
+      Moreover, $[[Γ2 ⊢ σ : Γ1]]$ means $[[ fv([σ]na) ⊆ {Γ2} ]]$, and thus, 
+      as a set, $[[ ord varset in [σ]na ]] = [[varset ∩ fv([σ]na)]] \subseteq [[varset ∩ {Γ2}]] = [[·]]$.
+    \item $[[iN = ∀pas.iM]]$\\
+      We can assume $[[{pas} ∩ {Γ1} = ∅]]$
+      and $[[{pas} ∩ varset = ∅]]$. Then 
+
+      $\begin{aligned}[t]
+         [[ ord varset in [σ]iN ]] &= [[ ord varset in [σ]∀pas.iM ]] \\
+                                   &= [[ ord varset in ∀pas.[σ]iM ]]\\
+                                   &= [[ ord varset in [σ]iM ]]
+                                   && \text{by the induction hypothesis}\\
+                                   &= [[ ord varset in iM ]]\\
+                                   &= [[ ord varset in ∀pas.iM ]]\\
+                                   &= [[ ord varset in iN ]]
+       \end{aligned}$
+    \item $[[iN = ↑iP]]$\\
+       $\begin{aligned}[t]
+        [[ ord varset in [σ]iN ]] &= [[ ord varset in [σ]↑iP ]] \\
+                                   &= [[ ord varset in ↑[σ]iP ]]
+                                   && \text{by the definition of substitution}\\
+                                   &= [[ ord varset in [σ]iP ]]
+                                   && \text{by the induction hypothesis}\\
+                                   &= [[ ord varset in iP ]]
+                                   && \text{by the definition of substitution}\\
+                                   &= [[ ord varset in ↑iP ]]
+                                   && \text{by the definition of ordering}\\
+                                   &= [[ ord varset in iN ]]
+       \end{aligned} $
+
+    \item $[[iN = iP → iM]]$\\
+       $ \begin{aligned}
+        [[ ord varset in [σ]iN ]] &= [[ ord varset in [σ](iP → iM) ]] \\
+                                   &= [[ ord varset in ([σ]iP → [σ]iM) ]]
+                                   && \text{by the definition of substitution}\\
+                                   &= [[ ord varset in [σ]iP, (ord varset in [σ]iM \ {ord varset in [σ]iP}) ]]
+                                   && \text{by the definition of ordering}\\
+                                   &= [[ ord varset in iP, (ord varset in iM \ {ord varset in iP}) ]]
+                                   && \text{by the induction hypothesis}\\
+                                   &= [[ ord varset in iP → iM ]]
+                                   && \text{by the definition of ordering}\\
+                                   &= [[ ord varset in iN ]]
+       \end{aligned} $
+    \item The proofs of the positive cases are symmetric.
+  \end{caseof}
 \end{proof}
 
 \begin{lemma}[Completeness of variable ordering]

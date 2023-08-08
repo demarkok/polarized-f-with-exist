@@ -1,33 +1,24 @@
-\begin{lemma}[Well-formedness agrees with substitution]
-  \label{lemma:wf-subst}
-  Suppose that $[[Γ2 ⊢ σ : Γ1]]$. Then
-  \begin{itemize}
-  \item[$+$] $[[Γ, Γ1 ⊢ iP]] ~\Leftrightarrow~ [[Γ, Γ2 ⊢ [σ]iP]]$
-  \item[$-$] $[[Γ, Γ1 ⊢ iN]] ~\Leftrightarrow~ [[Γ, Γ2 ⊢ [σ]iN]]$
-  \end{itemize}
-\end{lemma}
-\begin{proof}
-  \ilyam{todo}
-\end{proof}
-
-
-\begin{corollary}
-  \label{lemma:wf-subst}
-  Suppose that $[[Γ2 ⊢ σ : Γ1]]$. Then
-  \begin{itemize}
-  \item[$+$] $[[Γ1, Γ2 ⊢ iP]] ~\Leftrightarrow~ [[Γ2 ⊢ [σ]iP]]$
-  \item[$-$] $[[Γ1, Γ2 ⊢ iN]] ~\Leftrightarrow~ [[Γ2 ⊢ [σ]iN]]$
-  \end{itemize}
-\end{corollary}
-
 \begin{lemma}[Equivalent Contexts]
   \label{lemma:wf-ctxt-equiv}
+
   In the well-formedness judgment, only used variables matter:
   \begin{itemize}
   \item[$+$] if $[[{Γ1} ∩ fv iP]] = [[{Γ2} ∩ fv iP]]$ then
     $[[Γ1 ⊢ iP]] \iff [[Γ2 ⊢ iP]]$,
   \item[$-$] if $[[{Γ1} ∩ fv iN]] = [[{Γ2} ∩ fv iN]]$ then
     $[[Γ1 ⊢ iN]] \iff [[Γ2 ⊢ iN]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  By simple mutual induction on $[[iP]]$ and $[[iQ]]$. 
+\end{proof}
+
+\begin{lemma}[Well-formedness Context Weakening]
+  \label{lemma:wf-weakening}
+  Suppose that $[[{Γ1} ⊆ {Γ2}]]$, then
+  \begin{itemize}
+    \item[$+$] if $[[Γ1 ⊢ iP]]$ then $[[Γ2 ⊢ iP]]$,
+    \item[$-$] if $[[Γ1 ⊢ iN]]$ then $[[Γ2 ⊢ iN]]$.
   \end{itemize}
 \end{lemma}
 \begin{proof}
@@ -45,4 +36,50 @@
 \end{corollary}
 \begin{proof}
   From \cref{lemma:wf-ctxt-equiv,corollary:fv-mut-sub}.
+\end{proof}
+
+
+\begin{lemma}[Well-formedness agrees with substitution]
+  \label{lemma:wf-subst}
+  Suppose that $[[Γ2 ⊢ σ : Γ1]]$. Then
+  \begin{itemize}
+  \item[$+$] $[[Γ, Γ1 ⊢ iP]]$ implies $[[Γ, Γ2 ⊢ [σ]iP]]$, and
+  \item[$-$] $[[Γ, Γ1 ⊢ iN]]$ implies $[[Γ, Γ2 ⊢ [σ]iN]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  We prove it by induction on $[[Γ, Γ1 ⊢ iP]]$ and mutually, on $[[Γ, Γ1 ⊢ iN]]$.
+  Let us consider the last rule used in the derivation.
+  \begin{caseof}
+    \item \ruleref{\ottdruleWFTPVarLabel}, 
+      i.e. $[[iP]]$ is $[[α⁺]]$.\\
+      By inversion, $[[α⁺ ∊ {Γ, Γ1}]]$, then
+      \begin{itemize}
+        \item if $[[α⁺ ∊ {Γ1}]]$ then $[[ Γ2 ⊢ [σ]α⁺ ]]$, 
+          and by weakening (\cref{lemma:wf-weakening}),
+          $[[ Γ, Γ2 ⊢ [σ]α⁺ ]]$;
+        \item if $[[α⁺ ∊ {Γ} \ {Γ1}]]$ then $[[ [σ]α⁺ = α⁺ ]]$,
+          and by \ruleref{\ottdruleWFTPVarLabel}, $[[ Γ, Γ2 ⊢ α⁺ ]]$.
+      \end{itemize}
+
+    \item \ruleref{\ottdruleWFTShiftULabel},
+      i.e. $[[iP]]$ is $[[↓iN]]$.\\
+      Then $[[Γ, Γ1 ⊢ ↓iN]]$ means $[[Γ, Γ1 ⊢ iN]]$ by inversion,
+      and by the induction hypothesis, $[[Γ, Γ2 ⊢ [σ]iN]]$.
+      Then by  \ruleref{\ottdruleWFTShiftULabel}, $[[Γ, Γ2 ⊢ ↓[σ]iN]]$, 
+      which by definition of substitution is rewritten as $[[Γ, Γ2 ⊢ [σ]↓iN]]$.
+
+    \item \ruleref{\ottdruleWFTExistsLabel},
+      i.e. $[[iP]]$ is $[[∃nas.iQ]]$.\\
+      Then $[[Γ, Γ1 ⊢ ∃nas.iQ]]$ means $[[Γ, nas, Γ1 ⊢ iQ]]$ 
+      by inversion, and by the induction hypothesis, 
+      $[[Γ, nas, Γ2 ⊢ [σ]iQ]]$.
+      Then by  \ruleref{\ottdruleWFTExistsLabel}, 
+      $[[Γ, nas, Γ2 ⊢ ∃nas.[σ]iQ]]$, 
+      which by definition of substitution is rewritten as 
+      $[[Γ, Γ2 ⊢ [σ]∃nas.iQ]]$.
+
+    \item The negative cases are proved symmetrically.
+  \end{caseof}
+
 \end{proof}

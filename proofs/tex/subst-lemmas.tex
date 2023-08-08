@@ -2,14 +2,54 @@
   \label{lemma:subst-restr-fv}
   Restricting the substitution to the free variables of the
   substitution subject does not affect the result.
-  Suppose that $[[Γ2 ⊢ σ : Γ1]]$. Then
-    \begin{itemize}
-  \item[$+$] if $[[Γ1 ⊢ iP]]$ then $[[ [σ]iP ]] = [[ [σ|fv iP]iP ]]$,
-  \item[$-$] if $[[Γ1 ⊢ iN]]$ then $[[ [σ]iN ]] = [[ [σ|fv iN]iN ]]$
+  Suppose that $[[σ]]$ is a substitution,
+  $[[iP]]$ and $[[iN]]$ are types. Then
+ \begin{itemize}
+    \item[$+$] $[[ [σ]iP ]] = [[ [σ|fv iP]iP ]]$,
+    \item[$-$] $[[ [σ]iN ]] = [[ [σ|fv iN]iN ]]$
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  \ilyam{todo}
+  First, we strengthen the statement by saying that
+  one can restrict the substitution to an arbitrary
+  superset of the free variables of the substitution subject:
+ \begin{itemize}
+    \item[$+$] $[[ [σ]iP ]] = [[ [σ|varset]iP ]]$, for any $[[varset]] \supseteq [[fv iP]]$, and
+    \item[$-$] $[[ [σ]iN ]] = [[ [σ|varset]iN ]]$, for any $[[varset]] \supseteq [[fv iN]]$.
+  \end{itemize}
+  Then the proof is a straightforward induction on $[[iP]]$ and mutually, on $[[iN]]$.
+  For the base cases: 
+  \begin{caseof}
+    \item $[[iN = α⁻]]$\\
+      Then $[[ [σ]α⁻ ]] = [[σ|varset]] ([[α⁻]])$ by definition, 
+      since $[[α⁻]] \in [[fv α⁻ ⊆ varset]]$.
+    \item $[[iN = iP → iM]]$\\
+      Then $[[ [σ](iP → iM) ]] = [[ [σ]iP → [σ]iM ]]$ by definition.
+      Since $[[fv iP]] \subseteq [[fv(iP → iM)]] \subseteq [[varset]]$, 
+      the induction hypothesis is applicable to $[[ [σ]iP ]]$: 
+      $[[ [σ]iP ]] = [[ [σ|varset]iP ]]$. 
+      Analogously, and $[[ [σ]iM ]] = [[ [σ|varset]iM ]]$.
+      Then 
+      $[[ [σ](iP → iM) ]] = [[ [σ|varset]iP → [σ|varset]iM ]]
+       = [[ [σ|varset](iP → iM) ]]$.
+    \item $[[iN = ↑iP]]$ is proved analogously to the previous case.
+    \item $[[iN = ∀pas.iM ]]$ (where $[[pas]]$ is not empty)\\
+      Then $[[ [σ]∀pas.iM ]] = [[ ∀pas.[σ]iM ]]$ by definition.
+      Let us assume $[[pas]]$ are fresh variables, 
+      it means that $[[σ]]([[α± ]]) = [[α± ]]$ for any 
+      $[[α± ]] \in [[pas]]$, and thus, 
+      $[[ [σ|varset] ]] = [[ [σ|(varset ∪ {pas})] ]]$
+      immediately from the definition. 
+
+      Since $[[varset ⊆ fv(∀pas.iM)]] = [[fv iM \ {pas}]]$,
+      $[[varset ∪ {pas} ⊆ fv(iM)]]$.
+      Then by the induction hypothesis, 
+      $[[ [σ]iM =  [σ|(varset ∪ {pas})]iM ]]$.
+      Finally, 
+      $[[ [σ]∀pas.iM ]] = [[ ∀pas.[σ|(varset ∪ {pas})]iM ]] = 
+      [[ ∀pas.[σ|varset]iM ]] = [[ [σ|varset]∀pas.iM ]]$.
+    \item The positive cases are proves symmetrically. 
+  \end{caseof}
 \end{proof}
 
 \begin{lemma}[]

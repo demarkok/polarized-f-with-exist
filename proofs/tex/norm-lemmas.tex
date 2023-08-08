@@ -23,7 +23,7 @@
   By straightforward induction on $[[nf(iN) = iM]]$.
 \end{proof}
 
-\begin{lemma}[Soundness of quantifier normalization]
+\begin{lemma}[Soundness of normalization]
   \label{lemma:normalization-soundness}
   \hfill
   \begin{itemize}
@@ -54,6 +54,19 @@
     \item{\nameref{\ottdruleNrmExistsLabel}} Same as for \cref{case:norm-soundness:forall}.
   \end{caseof}
 \end{proof}
+
+\begin{lemma}[Soundness of normalization of algorithmic types]
+  \label{lemma:normalization-soundness-alg}
+  \hfill
+  \begin{itemize}
+    \item[$-$] $[[uN ≈ nf(uN)]]$
+    \item[$+$] $[[uP ≈ nf(uP)]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  The proof coincides with the proof of \cref{lemma:normalization-soundness}.
+\end{proof}
+
 
 \begin{corollary}[Normalization preserves ordering]
   \label{corollary:normalization-ord}
