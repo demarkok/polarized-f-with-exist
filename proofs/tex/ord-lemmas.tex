@@ -41,11 +41,26 @@
   Extending the first argument of the ordering with unused variables does not
   change the result.
   \begin{itemize}
-  \item[$-$] $[[ ord (varset ∩ fv iN) in iN ]] = [[ ord varset in iN ]]$
-  \item[$+$] $[[ ord (varset ∩ fv iP) in iP ]] = [[ ord varset in iP ]]$
+    \item[$-$] $[[ ord (varset ∩ fv iN) in iN ]] = [[ ord varset in iN ]]$
+    \item[$+$] $[[ ord (varset ∩ fv iP) in iP ]] = [[ ord varset in iP ]]$
   \end{itemize}
 \end{corollary}
 
+\begin{corollary}[Idempotency of ordering]
+  \label{corollary:ord-idemp}
+  \hfill
+  \begin{itemize}
+    \item[$-$] If $[[ ord varset in iN = ordVars ]]$ then 
+      $[[ ord {ordVars} in iN = ordVars ]]$,
+    \item[$+$] If $[[ ord varset in iP = ordVars ]]$ then 
+      $[[ ord {ordVars} in iP = ordVars ]]$;
+  \end{itemize}
+\end{corollary}
+\begin{proof}
+  By \cref{lemma:ord-soundness,corollary:ord-weakening}.
+\end{proof}
+  
+\end{proof}
 
 \begin{lemma}[Distributivity of renaming over variable ordering]
   \label{lemma:distr-mu-ord}

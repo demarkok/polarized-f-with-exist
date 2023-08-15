@@ -203,9 +203,9 @@
 
         \begin{itemize}
             \item $[[nf(uN)]]$ and $[[nf(iM)]]$ are normalized 
-            \item $[[Γ ; Θ ⊢ nf(uN)]]$ because $[[Γ ; Θ ⊢ uN]]$ (\cref{todo})
+            \item $[[Γ ; Θ ⊢ nf(uN)]]$ because $[[Γ ; Θ ⊢ uN]]$ (\cref{corollary:wf-nf-algo})
             \item $[[Γ ⊢ nf(iM)]]$ because $[[Γ ⊢ iM]]$ (\cref{corollary:wf-nf})
-            \item $[[ Θ ⊢ nf(uσ) ]]$ because $[[Θ ⊢ uσ ]]$ (\cref{todo})
+            \item $[[ Θ ⊢ nf(uσ) ]]$ because $[[Θ ⊢ uσ ]]$ (\cref{corollary:wf-s-nf-algo})
             \item $ \begin{aligned}[t]
                     [[ Γ ⊢ [uσ]uN ≈ iM ]] &\Rightarrow [[ [uσ]uN ≈ iM ]]
                                           && \text {by \cref{lemma:equiv-completeness}}\\
@@ -218,7 +218,7 @@
         \end{itemize}
         Then by the completeness of the unification,
         $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$ exists, and
-        $[[Θ ⊢ nf(uσ) : lift UC]]$.  Then by \cref{todo}, $[[Θ ⊢ uσ : lift UC]]$.
+        $[[Θ ⊢ nf(uσ) : lift UC]]$.  Then by \cref{corollary:sat-equiv}, $[[Θ ⊢ uσ : lift UC]]$.
 
       \item $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ is derived by \ruleref{\ottdruleDOneExistsLabel}.\\
       We should only consider the case

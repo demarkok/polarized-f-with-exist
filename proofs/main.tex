@@ -305,7 +305,6 @@ variable appearing in $[[Ξ1]]$ to a term well-formed in $[[Γ]]$ and $[[Ξ2]]$.
 \end{definition}
 
 
-
 \subsection{Normalization}
 
 \subsubsection{Ordering}
@@ -313,6 +312,12 @@ variable appearing in $[[Ξ1]]$ to a term well-formed in $[[Γ]]$ and $[[Ξ2]]$.
 
 \subsubsection{Quantifier Normalization}
 \ottdefnsNrm
+
+We also define normalization of a substitution pointwise:
+\begin{definition}[Substitution Normalization]
+  For a substitution $[[σ]]$, we define $[[nf(σ)]]$
+  as a substitution that maps $[[α±]]$ into $[[nf([σ]α±)]]$.
+\end{definition}
 
 \subsection{Singularity}
 \ottdefnsSING
@@ -426,6 +431,9 @@ can be merged in the following way:
 
 \section{Proofs}
 
+\subsection{Type well-formedness}
+\input{../_build/_gen/tex/wf-lemmas.tex}
+
 \subsection{Substitution}
 
 \begin{definition}[Substitution]
@@ -492,11 +500,9 @@ $[[σ2]]$ to its results on the domain.
 
 \input{../_build/_gen/tex/subst-lemmas.tex}
 
+
 \subsection{Declarative Subtyping}
 \input{../_build/_gen/tex/decl-subtyping-lemmas.tex}
-
-\subsection{Type well-formedness}
-\input{../_build/_gen/tex/wf-lemmas.tex}
 
 \subsection{Overview}
 \input{../_build/_gen/tex/lemmas-overview.tex}
@@ -525,14 +531,14 @@ $[[σ2]]$ to its results on the domain.
 \subsection{Upgrade}
 \input{../_build/_gen/tex/upgrade-lemmas.tex}
 
+\subsection{Constraint Satisfaction}
+\input{../_build/_gen/tex/constraint-sat-lemmas.tex}
+
 \subsection{Positive Subtyping}
 \input{../_build/_gen/tex/alg-pos-subtyping-lemmas.tex}
 
 \subsection{Subtyping Constraint Merge}
 \input{../_build/_gen/tex/constraint-merge-lemmas.tex}
-
-\subsection{Constraint Satisfaction}
-\input{../_build/_gen/tex/constraint-sat-lemmas.tex}
 
 \subsection{Negative Subtyping}
 \input{../_build/_gen/tex/alg-neg-subtyping-lemmas.tex}

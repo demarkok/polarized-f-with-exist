@@ -171,6 +171,7 @@
 
 
 
+
 \begin{lemma}[Completeness of quantified normalization]
   \label{lemma:normalization-completeness}
   Normalization returns the same representative for equivalent types.
@@ -250,7 +251,6 @@
 \end{proof}
 
 
-
 \begin{lemma}
   \label{lemma:normal-after-subst}
   The result of a substitution is normalized if and only if the initial type and
@@ -293,8 +293,7 @@
                                              \begin{cases}
                                              [[ [σ]iP ]] &\text{is normal} \\
                                              [[ [σ]iM ]] &\text{is normal} \\
-                                             \end{cases}
-                                           && \text{by congruence of normality \ilyam{lemma?}}\\
+                                             \end{cases}\\
                                            &\iff
                                              \begin{cases}
                                                [[ iP ]]       &\text{is normal} \\
@@ -307,8 +306,8 @@
                                              \begin{cases}
                                                [[ iP → iM ]]  &\text{is normal} \\
                                                [[ σ|fv(iP) ∪ fv(iM)]] &\text{is normal} \\
-                                             \end{cases}
-                                          \iff&&%
+                                             \end{cases}\\
+                                           &\iff
                                              \begin{cases}
                                                [[ iP → iM ]]  &\text{is normal} \\
                                                [[ σ|fv(iP→iM)]] &\text{is normal} \\

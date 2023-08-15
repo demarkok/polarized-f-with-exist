@@ -146,218 +146,169 @@
     \end{aligned}
     $
   
-  \item $[[iP = ↓iM]]$\\
+  \item $[[iP = ↓iM]]$ Let us prove the set equality by two inclusions.
+  \begin{itemize}
+    \item [$\subseteq$]
+      Suppose that $[[Γ ⊢ iQ ≥ ↓iM]]$ and $[[iM]]$ is normalized.
+
+      By \cref{lemma:shape-of-supertypes},
+      $[[iQ]] \in \UB([[Γ ⊢ ↓iM]])$.
+      Then by definition of $\UB{}$,
+      $[[iQ = ∃nas.↓iM']]$ 
+      for some $[[nas]]$, $[[iM']]$, and $[[Γ ⊢ σ : nas]]$ s.t.  
+      $[[ [σ] ↓iM' ≈ ↓iM ]]$.
+
+      We need to show that $[[nf(iQ)]] \in \NFUB([[Γ ⊢ ↓iM]])$.
+      Notice that $[[nf(iQ)]] = [[nf(∃nas.↓iM')]] = [[∃nas0.↓iM0]]$, 
+      where $[[nf(iM') = iM0]]$ and $[[ord {nas} in iM0 = nas0]]$.
+
+      The belonging of $[[∃nas0.↓iM0]]$ to $\NFUB([[Γ ⊢ ↓iM]])$ means that
+      \begin{enumerate}
+        \item $[[ord {nas0} in iM0 = nas0]]$ and
+        \item that there exists $[[Γ ⊢ σ0 : nas0]]$ such that 
+          $[[ [σ0] ↓iM0 = ↓iM ]]$.
+      \end{enumerate}
+      The first requirement holds by \cref{corollary:ord-idemp}.
+      To show the second requirement, we construct
+      $[[σ0]]$ as $[[nf(σ|fv iM')]]$.
+      Let us show the required properties of $[[σ0]]$:
+      \begin{enumerate}
+        \item $[[Γ ⊢ σ0 : nas0]]$. 
+          Notice that by \cref{lemma:subst-restr-sig},
+          $[[Γ ⊢ σ|fv(iM') : Ord {nas} ∩ fv(iM')]]$, 
+          which we rewrite as 
+          $[[Γ ⊢ σ|fv(iM') : nas0]]$ 
+          (since by \cref{lemma:ord-soundness}
+          $[[{nas0} = {nas} ∩ fv iM0]]$ as sets, 
+          and $[[fv(iM0) = fv(iM')]]$ by \cref{lemma:fv-nf}).
+          Then by \cref{lemma:norm-subst-sig}, 
+          $[[Γ ⊢ nf(σ|fv(iM')) : nas0]]$,
+          that is $[[Γ ⊢ σ0 : nas0]]$.
+        \item $[[ [σ0] ↓iM0 = ↓iM ]]$.
+          $[[ [σ] ↓iM' ≈ ↓iM ]]$ means 
+          $[[ [σ|fv(iM')]↓iM' ≈ ↓iM ]]$ by 
+          \cref{lemma:subst-restr-fv}.
+          Then by \cref{lemma:decl-equiv-algorithmization}, 
+          $[[ nf([σ|fv(iM')]↓iM') = nf(↓iM) ]]$, 
+          implying $[[ [σ0] ↓iM0 = nf(↓iM) ]]$
+          by \cref{lemma:norm-subst-distr},
+          and further $[[ [σ0] ↓iM0 = ↓iM ]]$
+          by \cref{lemma:norm-idemp} (since $[[↓iM]]$ is normal by assumption).
+      \end{enumerate}
     
-In the following reasoning, we will use the following principle of variable
-replacement.
-\begin{observation}
-  \label{observation:idemp-replacement}
-  Suppose that $\nu : A \rightarrow A$ is an idempotent
-  function, $P$ is a predicate on $A$, $F : A \rightarrow B$ is a
-  function. Then
- \[ 
-  \begin{aligned}[t]
-    &\{ F(\nu x ) \mid x \in A \text{ s.t. } P(\nu x) \} =\\
-    = &\{ F(x) \mid x \in A \text{ s.t. } \nu x = x \text{ and } P(x) \}.
-  \end{aligned}
- \]
-\end{observation}
-In our case, the idempotent $\nu$ will be normalization, variable ordering, or
-domain restriction.
+    \item [$\supseteq$]
+      Suppose that a type belongs to $\NFUB([[Γ ⊢ ↓iM]])$ for a normalized 
+      $[[↓iM]]$.
+      Then it must have shape $[[∃nas0.↓iM0]]$ for some $[[nas0]]$, $[[iM0]]$,
+      and $[[Γ ⊢ σ0 : nas0]]$ such that 
+      $[[ ord {nas0} in iM0 = nas0 ]]$ and $[[ [σ0] ↓iM0 = ↓iM ]]$.
+      It is suffices to show that 
+      \begin{enumerate*}
+        \item $[[∃nas0.↓iM0]]$ is normalized itself, and 
+        \item $[[Γ ⊢ ∃nas0.↓iM0 ≥ ↓iM]]$.
+      \end{enumerate*}
 
-Another observation we will use is the following.
-\begin{observation}
-  \label{observation:image-replacement}
-  For functions $F$ and $\nu$, and
-  predicates $P$ and $Q$,
- \[ 
-  \begin{aligned}[t]
-    &\{F(\nu x) \mid x \in A \text{ s.t. } Q(\nu x) \text{ and } P(x) \} =\\
-    = &\{F(\nu x) \mid x \in A \text{ s.t. } Q(\nu x) \text{ and } (\exists x'
-        \in A \text{ s.t. } P(x') \text{ and } \nu x' = \nu x) \}.
-  \end{aligned}
- \]
-\end{observation}
+      \begin{enumerate}
+        \item By definition, 
+          $[[nf(∃nas0.↓iM0) = ∃nas1.↓iM1]]$, 
+          where $[[iM1 = nf(iM0)]]$ and $[[ord {nas0} in iM1 = nas1]]$.
+          First, notice that by 
+          \cref{lemma:ord-completeness,lemma:normalization-soundness}, 
+          $[[ord {nas0} in iM1]] = [[ord {nas0} in iM0]] = [[nas0]]$. 
+          This way, $[[nf(∃nas0.↓iM0) = ∃nas0.↓nf(iM0)]]$.
+          Second, $[[iM0]]$ is normalized by \cref{lemma:normal-after-subst}, 
+          since $[[ [σ0] ↓iM0 = ↓iM ]]$ is normal. 
+          As such, $[[nf(∃nas0.↓iM0) = ∃nas0.↓iM0]]$, 
+          in other words, $[[∃nas0.↓iM0]]$ is normalized.
+        \item $[[Γ ⊢ ∃nas0.↓iM0 ≥ ↓iM]]$ holds immediately by 
+          \ruleref{\ottdruleDOneExistsLabel} with the substitution 
+          $[[σ0]]$. Notice that $[[Γ ⊢ [σ0]↓iM0 ≥ ↓iM]]$
+          follows from $[[ [σ0] ↓iM0 = ↓iM ]]$
+          by reflexivity of subtyping (\cref{lemma:subtyping-reflexivity}).
+      \end{enumerate}
 
-\begin{observation}
-  \label{observation:dumb-subs-extension}
-  There exist positive and negative types well-formed in empty context,
-  hence, a type substitution can be extended to an arbitrary domain
-  (if its values on the domain extension are irrelevant). Specifically,
-  Suppose that $[[varset1 ⊆ varset2]]$.
-  Then $[[G ⊢ σ|varset1 : Ord varset1]]$
-  implies
-  $\exists~ [[σ']]$ s.t. $[[G ⊢ σ' : Ord varset2]]$ and $[[σ|varset1]] =
-  [[σ'|varset1]]$.
-\end{observation}
-    $\begin{aligned}[t]
-      &\mathrel{\phantom{=}} \{ [[nf(iQ)]] \mid [[Γ ⊢ iQ ≥ ↓iM]] \}=\\
-      %
-      %
-      &=\{ [[nf(iQ)]] \mid [[iQ]] \in \UB([[ Γ ⊢ ↓iM]])\}
-      && \text{by \cref{lemma:shape-of-supertypes}}\\
-      %
-      %
-      &= \Set{[[ nf(∃nas.↓iM') ]] \ |
-      \begin{array}{l}
-        \text{for $[[nas]]$, $[[iM']]$, and $[[iNs]]$ s.t.  $[[G,nas ⊢ iM']]$,}\\
-        \text{$[[G ⊢ iNi]]$, and $[[ [iNs/nas] ↓iM' ≈ ↓iM ]]$}\\
-      \end{array}}
-      && \text{by the definition of $\UB$}\\
-      %
-      %
-      &= \Set{[[ nf(∃nas.↓iM') ]] \ |
-        \begin{array}{l}
-          \text{for $[[nas]]$, $[[iM']]$, and $[[σ]]$ s.t.  $[[G,nas ⊢ iM']]$,}\\
-          \text{$[[G ⊢ σ : nas]]$, and $[[ [σ] ↓iM' ≈ ↓iM ]]$}
-        \end{array}}
-      && \text{we reassigned the substitution $[[ iNs/nas ]]$ as $[[ σ ]]$}\\
-      %
-      %
-      &= \Set{[[ nf(∃nas.↓iM') ]] \ |
-        \begin{array}{l}
-          \text{for $[[nas]]$, $[[iM']]$, and $[[σ]]$ s.t. $[[G,nas ⊢ iM']]$,}\\
-          \text{$[[G ⊢ σ : nas]]$, and $[[ [σ|fv iM' ] ↓iM' ≈ ↓iM ]]$}
-        \end{array}}
-      && \text{by \cref{lemma:subst-restr-fv}}\\
-      % 
-      % 
-      &= \Set{[[ ∃nas'.nf(↓iM') ]] \ |
-      \begin{array}{l}
-        \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t. $[[G,nas ⊢ iM']]$,}\\
-        \text{$[[G ⊢ σ : nas]]$,\, $[[ord {nas} in iM' = nas']]$}\\
-        \text{and $[[ [σ|fv iM'] ↓iM' ≈ ↓iM ]]$}
-      \end{array}}
-      && \text{by the definition of normalization}\\
-      %
-      %
-      &= \Set{[[ ∃nas'.nf(↓iM') ]] \ |
-      \begin{array}{l}
-        \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t. $[[G,nas ⊢ iM']]$, }\\
-        \text{$[[G ⊢ σ : nas]]$,\, $[[ord {nas} in iM' = nas']]$}\\
-        \text{and $[[ nf([σ|fv iM'] ↓iM') = nf(↓iM) ]]$}
-      \end{array}}
-      &&\begin{array}{l}
-         \text{from
-          \cref{lemma:normalization-soundness,lemma:normalization-completeness},
-          equivalence of types can be}\\
-          \text{replaced with the equality of their normal forms}
-        \end{array} \\
-      %
-      %
-      &= \Set{[[ ∃nas'.nf(↓iM') ]] \ |
-        \begin{array}{l}
-          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t. $[[G,nas ⊢ iM']]$,}\\
-          \text{$[[G ⊢ σ : nas]]$,\, $[[ord {nas} in iM' = nas']]$}\\
-          \text{and $[[ [nf(σ|fv iM')] ↓nf(iM') = ↓nf(iM) ]]$}
-        \end{array}}
-      && \text{by congruence of normalization and \cref{lemma:norm-subst-distr}}\\
-      %
-      %
-      &= \Set{[[ ∃nas'.↓iM' ]] \ |
-        \begin{array}{l}
-          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t. $[[G,nas ⊢ iM']]$,}\\
-          \text{$[[G ⊢ σ : nas]]$,\, $[[ord {nas} in iM' = nas']]$}\\
-          \text{and $[[ [σ|fv iM'] ↓iM' = ↓iM ]]$}
-        \end{array}}
-      &&\begin{array}{l}
-         \text{by \cref{lemma:normal-after-subst}, $[[↓iM']]$ and $[[σ|fv
-          iM']]$ are already normal,}\\
-          \text{since the result of the substitution is normal;}\\
-          \text{$[[iM]]$ is normal by assumption}
-         \end{array}\\
-      % 
-      % 
-      &= \Set{[[ ∃nas'.↓iM' ]] \ |
-        \begin{array}{l}
-          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas ⊢ iM']]$,}\\
-          \text{($\exists [[σ']]$ s.t. $[[G ⊢ σ' : nas]]$ and $[[σ|fv(↓iM')]] =
-          [[σ'|fv(↓iM')]]$)}\\
-          \text{$[[ord {nas} in iM' = nas']]$ and $[[ [σ|fv iM'] ↓iM' = ↓iM ]]$}\\
-        \end{array}}
-      &&\begin{array}{l}
-      \text{We apply \cref{observation:image-replacement} (with $\nu [[σ]]$
-      =  $[[σ|fv iM']]$, and}\\
-      \text{$P([[σ]]) = [[G ⊢ σ : nas]]$)}
-      \end{array}\\
-      %
-      %
-      &= \Set{[[ ∃nas'.↓iM' ]] \ |
-        \begin{array}{l}
-          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas ⊢ iM']]$,}\\
-          \text{$[[G ⊢ σ|fv iM' : nas']]$,\, $[[ord {nas} in iM' = nas']]$}\\
-          \text{and $[[ [σ|fv iM'] ↓iM' = ↓iM ]]$}
-        \end{array}}
-      &&\begin{array}{l}
-           \text{Notice that}\\
-           \text{<<$\exists [[σ']]$ s.t. ($[[G ⊢ σ' : nas]]$ and $[[σ|fv(↓iM')]] = [[σ'|fv(↓iM')]]$)>>}\\
-           \text{is equivalent to $[[G ⊢ σ|fv(↓iM') : nas']]$ (\cref{observation:dumb-subs-extension})}\\
-        \end{array} \\
-         % 
-         % 
-      &= \Set{[[ ∃nas'.↓iM' ]] \ |
-        \begin{array}{l}
-          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas ⊢ iM']]$,}\\
-          \text{$[[G ⊢ σ : nas']]$,\, $[[ord {nas} in iM' = nas']]$}\\
-          \text{and $[[ [σ] ↓iM' = ↓iM ]]$}
-        \end{array}}
-      && \begin{array}{l}
-         \text{We apply \cref{observation:idemp-replacement} to the
-           restriction of $[[σ]]$, and}\\
-         \text{remove $[[σ|fv iM']] = [[σ]]$  as it follows from $[[G ⊢ σ : nas']]$}\\
-         \end{array}\\
-         % 
-         % 
-      &= \Set{[[ ∃nas'.↓iM' ]] \ |
-        \begin{array}{l}
-          \text{for $[[nas']]$, $[[nas]]$, $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas' ⊢ iM']]$,}\\
-          \text{$[[G ⊢ σ : nas']]$,\, $[[ord {nas} in iM' = nas']]$}\\
-          \text{and $[[ [σ] ↓iM' = ↓iM ]]$}
-        \end{array}}
-      &&
-         \begin{array}{l}
-           \text{by \cref{lemma:wf-ctxt-equiv}, since
-           $[[ {Γ, nas} ∩ fv iM' ]] = [[ {Γ, nas'} ∩ fv iM' ]]$}\\
-         \end{array}\\
-      % 
-      % 
-      &= \Set{[[ ∃nas'.↓iM' ]] \ |
-        \begin{array}{l}
-          \text{for $[[nas']]$,  $[[iM']]$, $[[σ]]$ s.t.  $[[G,nas' ⊢ iM']]$,}\\
-          \text{$[[G ⊢ σ : nas']]$,\, $[[ord {nas'} in iM' = nas']]$}\\
-          \text{and $[[ [σ] ↓iM' = ↓iM ]]$}
-        \end{array}}
-      && \text{We apply \cref{observation:idemp-replacement} to the ordering of $[[nas]]$}\\
-      &= \Set{ [[ ∃nas'.↓iM' ]] \ |
-        \begin{array}{l}
-          \text{for $[[nas']]$, $[[iM']]$, and $[[iNs]]$ s.t. $[[ord {nas'} in iM' = nas']]$,}\\
-          \text{$[[G ⊢ iNi]]$, $[[G,nas' ⊢ iM']]$,  and $[[ [iNs/nas'] ↓iM' = ↓iM ]]$}
-        \end{array}} 
-      && \text{By reassigning $[[σ]]$ explicitly as $[[iNs/nas']]$}\\
-      &= \NFUB([[↓iM]])
-      && \text{by definition}\\
-      %
-      %
-    \end{aligned}$
+
+
+    \end{itemize}
   \end{caseof}
 \end{proof}
 
-\begin{observation}
+\begin{lemma}
   \label{observation:ub-context-irrelevant}
   Upper bounds of a type do not depend on the context
   as soon as the type is well-formed in it.
 
-  If $[[Γ1 ⊢ iM]]$ and $[[Γ2 ⊢ iM]]$ then
-  $\UB([[Γ1 ⊢ iM]]) = \UB([[Γ ⊢ iM]])$ and
-  $\NFUB([[Γ1 ⊢ iM]]) = \NFUB([[Γ ⊢ iM]])$
-\end{observation}
+  If $[[Γ1 ⊢ iP]]$ and $[[Γ2 ⊢ iP]]$ then
+  $\UB([[Γ1 ⊢ iP]]) = \UB([[Γ2 ⊢ iP]])$ and
+  $\NFUB([[Γ1 ⊢ iP]]) = \NFUB([[Γ2 ⊢ iP]])$
+\end{lemma}
 \begin{proof}
-  We prove both inclusions by induction on $[[Γ1 ⊢ iM]]$.
-  $[[ [σ]iM' ≈ iM ]]$ and $[[Γ2 ⊢ iM]]$ then
-  $[[ Γ2 ⊢ [σ]iM' ]]$ by \cref{lemma:wf-equiv}.
-  So if $[[Γ1 ⊢ σ : pas]]$ 
-  then $[[Γ2 ⊢ σ|(fv iM') : Ord {pas} ∩ fv iM']]$.
-  \ilyam{todo}
+  We prove both inclusions by structural induction on  
+  $[[iP]]$.
+  \begin{caseof}
+    \item $[[iP]] = [[pb]]$
+      Then $\UB([[Γ1 ⊢ pb]]) = \UB([[Γ2 ⊢ pb]]) = 
+      \{[[∃nas.pb]] \mid \text{for some }[[nas]]\}$.
+      $\NFUB([[Γ1 ⊢ pb]]) = \NFUB([[Γ2 ⊢ pb]]) = \{[[pb]]\}$.
+    \item $[[iP]] = [[∃nbs.iP']]$.
+      Then $\UB([[Γ1 ⊢ ∃nbs.iP']]) = \UB([[Γ1, nbs ⊢ iP']])$ not using $[[nbs]]$.
+      $\UB([[Γ2 ⊢ ∃nbs.iP']]) = \UB([[Γ2, nbs ⊢ iP']])$ not using $[[nbs]]$.
+      By the induction hypothesis, $\UB([[Γ1, nbs ⊢ iP']]) = \UB([[Γ2, nbs ⊢ iP']])$,
+      and if we restrict these sets to the same domain, they stay equal.
+      Analogously, $\NFUB([[Γ1 ⊢ ∃nbs.iP']]) = \NFUB([[Γ2 ⊢ ∃nbs.iP']])$.
+    \item $[[iP]] = [[↓iM]]$.
+      Suppose that $[[∃nas.↓iM']] \in \UB([[Γ1 ⊢ ↓iM]])$. It means that 
+      $[[Γ1, nas ⊢ iM']]$ and there exist $[[Γ1 ⊢ iNs]]$ s.t. 
+      $[[ [iNs/nas] ↓iM' ≈ ↓iM ]]$, or in other terms, 
+      there exists $[[Γ1 ⊢ σ : nas]]$ such that $[[ [σ] ↓iM' ≈ ↓iM ]]$.
+
+      We need to show that $[[∃nas.↓iM']] \in UB([[Γ2 ⊢ ↓iM]])$,  
+      in other words, $[[Γ2, nas ⊢ iM']]$ and there exists
+      $[[Γ2 ⊢ σ0 : nas]]$ such that $[[ [σ0] ↓iM' ≈ ↓iM ]]$.
+
+      First, let us show $[[Γ2, nas ⊢ iM']]$. 
+      Notice that $[[ [σ] ↓iM' ≈ ↓iM ]]$ implies $[[ fv([σ]iM') = fv(↓iM) ]]$ 
+      by \cref{lemma:equiv-fv}. By \cref{lemma:subst-fv},
+      $[[ fv(iM') \ {nas} ⊆ fv([σ]iM') ]]$. This way, 
+      $[[ fv(iM') \ {nas} ⊆ fv(iM) ]]$,
+      implying $[[ fv(iM') ⊆ fv(iM) ∪ {nas} ]]$.
+      By \cref{lemma:wf-soundness}, $[[Γ2 ⊢ ↓iM]]$ implies $[[fv iM ⊆ {Γ2}]]$,
+      hence, $[[fv iM' ⊆ {Γ2, nas}]]$, which by \cref{corollary:wf-ctxt-strengthening}
+      means $[[Γ2, nas ⊢ iM']]$.
+      
+      Second, let us construct the required $[[σ0]]$ in the following way:
+      $$
+      \begin{cases}
+          [[ [σ0]αi⁻ = [σ]αi⁻  ]] & \text{for $[[αi⁻ ∊ {nas} ∩ fv(iM')]]$ }\\
+          [[ [σ0]αi⁻ = ∀γ⁺.↑γ⁺ ]] & \text{for $[[αi⁻ ∊ {nas} \ fv(iM')]]$ }\\
+          [[ [σ0]γ±  = γ± ]]      & \text{for any other $[[γ±]]$ }\\
+      \end{cases}
+      $$
+      This construction of a substitution coincides with 
+      the one from the proof of \cref{lemma:subt-ctxt-irrelevance}.
+      This way, for $[[σ0]]$, hold the same properties:
+      \begin{enumerate}
+        \item $[[ [σ0]iM' = [σ]iM' ]]$,
+          which in particular, implies $[[ [σ0]↓iM = [σ]↓iM ]]$,
+          and thus, $[[ [σ]↓iM' ≈ ↓iM ]]$ can be rewritten to
+          $[[ [σ0]↓iM' ≈ ↓iM ]]$; and
+        \item $[[ Ord fv([σ]iM') ⊢ σ0 : nas]]$,
+          which, as noted above, can be rewritten to 
+          $[[ Ord fv(iM) ⊢ σ0 : nas]]$,
+          and since $[[fv iM ⊆ {Γ2}]]$, 
+          weakened to $[[ Γ2 ⊢ σ0 : nas]]$.
+      \end{enumerate}
+
+      The proof of $\NFUB([[Γ1 ⊢ ↓iM]]) \subseteq \NFUB([[Γ2 ⊢ ↓iM]])$
+      is analogous.
+      The differences are:
+      \begin{enumerate}
+        \item $[[ord {nas} in iM' = nas]]$ holds by assumption, 
+        \item $[[ [σ] ↓iM' = ↓iM ]]$ implies $[[ fv([σ]iM') = fv(↓iM) ]]$ by rewriting,
+        \item $[[ [σ] ↓iM' = ↓iM ]]$ and $[[ [σ0]↓iM = [σ]↓iM ]]$
+          imply $[[ [σ0] ↓iM' = ↓iM ]]$ by rewriting.
+      \end{enumerate}
+  \end{caseof}
 \end{proof}
 
 \begin{lemma}[Soundness of the Least Upper Bound]
@@ -518,10 +469,10 @@ Another observation we will use is the following.
     This way, the result of the algorithm is $[[iQ']]$, i.e.
     $[[Γ ⊨ iP1 ∨ iP2 = iQ']]$.
 
-    Since both $[[iQ]]$ and $[[iQ']]$ are sound,
+    Since both $[[iQ]]$ and $[[iQ']]$ are sound upper bounds,
     $[[Γ ⊢ iQ]]$ and $[[Γ ⊢ iQ']]$, and therefore,
     $[[ Γ, nbs1, nbs2 ⊢ iQ ≥ iQ' ]]$ can be strengthened to
-    $[[ Γ ⊢ iQ ≥ iQ' ]]$ by \cref{todo}.
+    $[[ Γ ⊢ iQ ≥ iQ' ]]$ by \cref{lemma:subt-ctxt-irrelevance}.
 
   \item $[[iP1]] = [[pa]]$ and $[[iP2]] = [[↓iN]]$\\
     \label{case:ub-completeness-unmatching}

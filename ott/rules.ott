@@ -12,6 +12,7 @@ grammar
     | SC1 ⊆ SC2                              ::   :: SC_subset
     % | us1 ⊆ us2                              ::   :: unif_subset
     | varset1 ⊆ varset2                      ::   :: varset_subset
+    | varset1 ⊆ varset2 ⊆ varset3            ::   :: varset_subset_bounds
     | varset1 = varset2                      ::   :: varset_eq
     | varset is fresh                        ::   :: fresh
     % | x ∊ T                                  ::   :: x_in_T {{ com lookup $[[ x ]]$ in context $[[ T ]]$ }}

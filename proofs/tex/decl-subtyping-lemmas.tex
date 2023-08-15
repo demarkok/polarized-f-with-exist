@@ -232,6 +232,127 @@
   \cref{lemma:var-subt}.
 \end{proof}
 
+
+
+\begin{lemma}[Subtyping context irrelevance]
+  \label{lemma:subt-ctxt-irrelevance}
+  Suppose that all the mentioned types are well-formed in $[[Γ1]]$ and $[[Γ2]]$. 
+  Then 
+  \begin{enumerate}
+    \item[$+$] $[[Γ1 ⊢ iP ≥ iQ]]$ is equivalent to $[[Γ2 ⊢ iP ≥ iQ]]$;
+    \item[$-$] $[[Γ1 ⊢ iN ≤ iM]]$ is equivalent to $[[Γ2 ⊢ iN ≤ iM]]$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  We prove it by induction on 
+  the size of $[[Γ1 ⊢ iP ≥ iQ]]$ and mutually,
+  the size of $[[Γ1 ⊢ iN ≤ iM]]$.
+
+  All the cases except \ruleref{\ottdruleDOneExistsLabel} and \ruleref{\ottdruleDOneForallLabel}
+  are proven congruently:
+  first, we apply the inversion to $[[Γ1 ⊢ iP ≥ iQ]]$ to obtain the premises of the
+  corresponding rule $X$, then we apply the induction hypothesis to each premise,
+  and build the inference tree (with $[[Γ2]]$) by the same rule $X$. 
+
+  Suppose that the judgement is inferred by \ruleref{\ottdruleDOneExistsLabel}.
+  Then we are proving that $[[Γ1 ⊢ ∃nas.iP ≥ ∃nbs.iQ]]$ implies 
+  $[[Γ2 ⊢ ∃nas.iP ≥ ∃nbs.iQ]]$ (the other implication is proven symmetrically).
+
+  By inversion  of $[[Γ1 ⊢ ∃nas.iP ≥ ∃nbs.iQ]]$, 
+  we obtain $[[σ]]$ such that $[[ Γ1, nbs ⊢ σ : nas]]$
+  and $[[Γ1, nbs ⊢ [σ]iP ≥ iQ]]$.
+  By \cref{lemma:fv-propagation}, $[[fv([σ]iP) ⊆ fv(iQ)]]$.
+
+  From the well-formedness statements 
+  $[[Γi ⊢ ∃nas.iP]]$ and $[[Γi ⊢ ∃nbs.iQ]]$ we have:
+  \begin{itemize}
+    \item $[[Γ1, nas ⊢ iP]]$, which also means $[[Γ1, nbs ⊢ [σ]iP]]$
+      by \cref{lemma:wf-subst};
+    \item $[[Γ2, nas ⊢ iP]]$;
+    \item $[[Γ1, nbs ⊢ iQ]]$; and 
+    \item $[[Γ2, nbs ⊢ iQ]]$, which means $[[ fv(iQ) ⊆ {Γ2, nbs} ]]$
+      by \cref{lemma:wf-soundness},
+      and  combining it with $[[fv([σ]iP) ⊆ fv(iQ)]]$, 
+      we have $[[fv([σ]iP) ⊆ {Γ2, nbs}]]$.
+  \end{itemize}
+
+  Let us construct a substitution $[[σ0]]$ in the following way:
+  $$
+  \begin{cases}
+      [[ [σ0]αi⁻ = [σ]αi⁻  ]] & \text{for $[[αi⁻ ∊ {nas} ∩ fv(iP)]]$ }\\
+      [[ [σ0]αi⁻ = ∀γ⁺.↑γ⁺ ]] & \text{for $[[αi⁻ ∊ {nas} \ fv(iP)]]$ }\\
+      [[ [σ0]γ±  = γ± ]]      & \text{for any other $[[γ±]]$ }\\
+  \end{cases}
+  $$
+  Notice that 
+  \begin{enumerate}
+    \item $[[ [σ0]iP = [σ]iP ]]$.
+      Since $[[σ0|fv(iP)]] = [[σ|fv(iP)]]$ as functions
+      (which follows from the construction of 
+      $[[σ0]]$ and the signature of $[[σ]]$), 
+      $[[ [σ0]iP = [σ0|fv(iP)]iP = [σ|fv(iP)]iP = [σ]iP]]$
+      (where the first and the last equalities are by
+       \cref{lemma:subst-restr-fv}).
+
+    \item $[[ Ord fv([σ]iP) ⊢ σ0 : nas]]$.
+      To show that, let us consider $[[αi⁻]]$ 
+      \begin{itemize}
+        \item if $[[αi⁻ ∊ {nas} \ fv(iP)]]$ then
+          $[[· ⊢ [σ0]αi⁻]]$, which can be weakened to 
+          $[[Ord fv([σ]iP) ⊢ [σ0]αi⁻]]$;
+        \item if $[[αi⁻ ∊ {nas} ∩ fv(iP)]]$, 
+          we have $[[ [σ0]αi⁻ = [σ]αi⁻ ]]$, and thus, by
+          specification of $[[σ]]$, $[[Γ1, pbs ⊢ [σ0]αi⁻ ]]$. 
+          By \cref{corollary:wf-ctxt-strengthening}, 
+          it means $[[Ord fv([σ0]αi⁻) ⊢ [σ0]αi⁻]]$,
+          which we weaken (\cref{lemma:wf-weakening}) 
+          to $[[Ord fv([σ]iP) ⊢ [σ0]αi⁻]]$ 
+          (since $[[fv([σ0]αi⁻) ⊆ fv([σ0]iP)]]$ by \cref{lemma:subst-fv-image},
+          and $[[ [σ0]iP = [σ]iP]]$, as noted above).
+      \end{itemize} 
+  \end{enumerate}
+
+  By \cref{corollary:wf-ctxt-strengthening}, 
+  $[[Γ1, nbs ⊢ [σ]iP]]$ implies 
+  $[[ Ord fv([σ]iP) ⊢ [σ]iP ]]$, which,
+  since $[[fv([σ]iP) ⊆ {Γ2, nbs}]]$,
+  is weakened to $[[Γ2, nbs ⊢ [σ]iP]]$.
+  and rewritten as $[[Γ2, nbs ⊢ [σ0]iP]]$.
+  
+  Notice that the premises of the induction hold:
+  \begin{enumerate}
+    \item $[[Γi, nbs ⊢ [σ0]iP]]$, 
+    \item $[[Γi, nbs ⊢ iQ]]$, and
+    \item $[[Γ1, nbs ⊢ [σ0]iP ≥ iQ ]]$, 
+      notice that the tree inferring this judgement 
+      is the same tree inferring $[[Γ1, nbs ⊢ [σ]iP ≥ iQ ]]$ 
+      (since $[[ [σ0]iP = [σ]iP]]$), i.e., 
+      it is a subtree of $[[Γ1 ⊢ ∃nas.iP ≥ ∃nbs.iQ]]$.
+  \end{enumerate}
+  This way, by the induction hypothesis,
+  $[[Γ2, nbs ⊢ [σ0]iP ≥ iQ ]]$.
+  Combining it with $[[ Γ2, nbs ⊢ σ0 : nas]]$
+  by \ruleref{\ottdruleDOneExistsLabel},
+  we obtain $[[Γ2 ⊢ ∃nas.iP ≥ ∃nbs.iQ]]$.
+
+  The case of $[[Γ1 ⊢ ∀pas.iN ≤ ∀pbs.iM]]$ is symmetric.
+\end{proof}
+
+
+\begin{lemma}[Weakening of subtyping context]
+  \label{lemma:subt-weakening}
+  Suppose $[[Γ1]]$ and $[[Γ2]]$ are contexts 
+  and $[[ {Γ1} ⊆ {Γ2} ]]$.
+  Then 
+  \begin{enumerate}
+    \item [$+$] $[[Γ1 ⊢ iP ≥ iQ]]$ implies $[[Γ2 ⊢ iP ≥ iQ]]$;
+    \item [$-$] $[[Γ1 ⊢ iN ≤ iM]]$ implies $[[Γ2 ⊢ iN ≤ iM]]$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+\end{proof}
+
+
 \begin{lemma}[Reflexivity of subtyping] \label{lemma:subtyping-reflexivity}
   Assuming all the types are well-formed in $[[Γ]]$,
   \begin{itemize}
@@ -271,8 +392,8 @@
   Suppose that all mentioned types are well-formed in $[[Γ1]]$,
   and $[[σ]]$ is a substitution $[[Γ2 ⊢ σ : Γ1]]$.
   \begin{itemize}
-    \item $-$ If $[[Γ1 ⊢ iN ≤ iM]]$ then $[[Γ2 ⊢ [σ]iN ≤ [σ]iM]]$
-    \item $+$ If $[[Γ1 ⊢ iP ≥ iQ]]$ then $[[Γ2 ⊢ [σ]iP ≥ [σ]iQ]]$
+    \item [$-$] If $[[Γ1 ⊢ iN ≤ iM]]$ then $[[Γ2 ⊢ [σ]iN ≤ [σ]iM]]$.
+    \item [$+$] If $[[Γ1 ⊢ iP ≥ iQ]]$ then $[[Γ2 ⊢ [σ]iP ≥ [σ]iQ]]$.
   \end{itemize}
 \end{lemma}
 \begin{proof}
@@ -517,9 +638,6 @@
   analogous positive cases, and prove them symmetrically.
 \end{proof}
 
-
-
-
 \begin{corollary}[Transitivity of equivalence] \label{corollary:equivalence-transitivity}
   Assuming the types are well-formed in $[[Γ]]$,
   \begin{itemize}
@@ -527,12 +645,3 @@
     \item[$+$] if $[[Γ ⊢ iP1 ≈ iP2]]$ and $[[Γ ⊢ iP2 ≈ iP3]]$ then $[[Γ ⊢ iP1 ≈ iP3]]$.
   \end{itemize}
 \end{corollary}
-
-
-
-
-
-
-
-
-

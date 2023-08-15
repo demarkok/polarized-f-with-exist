@@ -1,4 +1,31 @@
-\begin{lemma}[Equivalent Contexts]
+\begin{lemma}[Soundness of well-formedness]
+    \label{lemma:wf-soundness}
+    \hfill
+
+  \begin{itemize}
+    \item[$+$] if $[[Γ ⊢ iP]]$ then $[[fv(iP) ⊆ {Γ}]]$;
+    \item[$-$] if $[[Γ ⊢ iN]]$ then $[[fv(iN) ⊆ {Γ}]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  The proof is done by a simple structural induction on 
+  $[[Γ⊢ iP]]$ and mutually, $[[Γ ⊢ iN]]$.
+  \begin{caseof}
+    \item $[[Γ ⊢ α±]]$ means by inversion that $[[α±]] \in [[Γ]]$,
+      that is, $[[α±]] = [[fv(α±) ⊆ {Γ}]]$.
+    \item $[[Γ ⊢ iQ → iM]]$ means by inversion that
+      $[[Γ ⊢ iQ]]$ and $[[Γ ⊢ iM]]$.
+      Then by the induction hypothesis, $[[fv(iQ) ⊆ {Γ}]]$ and $[[fv(iM) ⊆ {Γ}]]$,
+      and hence, $[[fv(iQ → iM) = fv(iQ) ∪ fv(iM)]] \subseteq [[{Γ}]]$.
+    \item the cases when $[[iP = ↓iN']]$ or $[[iN = ↑iP']]$ are proven analogously.
+    \item $[[Γ ⊢ ∀pas.iM]]$ means by inversion that $[[Γ, pas ⊢ iM]]$.
+      Then by the induction hypothesis, $[[fv(iM) ⊆ {Γ, pas}]]$, and hence,
+      $[[fv(∀pas.iM) = fv(iM) \ {pas}]] \subseteq [[{Γ, pas} \ {pas} = {Γ}]]$.
+    \item The case $[[iP = ∃nas.iQ]]$ is proven analogously.
+  \end{caseof}
+\end{proof}
+
+\begin{lemma}[Completeness of well-formedness]
   \label{lemma:wf-ctxt-equiv}
 
   In the well-formedness judgment, only used variables matter:
@@ -10,20 +37,45 @@
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  By simple mutual induction on $[[iP]]$ and $[[iQ]]$. 
+  By simple mutual induction on $[[iP]]$ and $[[iN]]$.
 \end{proof}
 
-\begin{lemma}[Well-formedness Context Weakening]
+\begin{corollary}[Context Strengthening]
+  \label{corollary:wf-ctxt-strengthening}
+  \hfill
+  
+  \begin{itemize}
+    \item [$+$] If $[[Γ ⊢ iP]]$ then $[[Ord fv(iP) ⊢ iP]]$;
+    \item [$-$] If $[[Γ ⊢ iN]]$ then $[[Ord fv(iN) ⊢ iN]]$.
+  \end{itemize}
+\end{corollary}
+\begin{proof}
+  It follows from \cref{lemma:wf-ctxt-equiv} and \cref{lemma:wf-soundness}.
+  \begin{itemize}
+    \item [$+$] 
+      By \cref{lemma:wf-soundness}, $[[fv(iP) ⊆ {Γ}]]$, and hence,
+      $[[{Γ} ∩ fv iP = fv iP ]]$, which makes \cref{lemma:wf-ctxt-equiv}
+      applicable fore contexts $[[Γ]]$ and $[[Ord fv(iP)]]$.
+    \item[$-$] The negative case is proven analogously.
+  \end{itemize}
+
+\begin{corollary}[Well-formedness Context Weakening]
   \label{lemma:wf-weakening}
   Suppose that $[[{Γ1} ⊆ {Γ2}]]$, then
   \begin{itemize}
     \item[$+$] if $[[Γ1 ⊢ iP]]$ then $[[Γ2 ⊢ iP]]$,
     \item[$-$] if $[[Γ1 ⊢ iN]]$ then $[[Γ2 ⊢ iN]]$.
   \end{itemize}
-\end{lemma}
+\end{corollary}
 \begin{proof}
-  By simple mutual induction on $[[iP]]$ and $[[iQ]]$. 
+  By \cref{lemma:wf-soundness},
+  $[[Γ1 ⊢ iP]]$ implies $[[fv(iP) ⊆ {Γ1}]]$,
+  which means that $[[fv(iP) ⊆ {Γ2}]]$,
+  and thus, $[[fv(iP)]] = [[fv(iP) ∩ {Γ1}]] = [[fv(iP) ∩ {Γ2}]]$.
+  Then by \cref{lemma:wf-ctxt-equiv}, $[[Γ2 ⊢ iP]]$. 
+  The negative case is symmetric.
 \end{proof}
+
 
 \begin{corollary}
   \label{lemma:mut-sub-types-wf-equiv}
@@ -37,6 +89,7 @@
 \begin{proof}
   From \cref{lemma:wf-ctxt-equiv,corollary:fv-mut-sub}.
 \end{proof}
+
 
 
 \begin{lemma}[Well-formedness agrees with substitution]

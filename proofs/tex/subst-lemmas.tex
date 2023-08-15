@@ -52,6 +52,57 @@
   \end{caseof}
 \end{proof}
 
+\begin{lemma}[Signature of a restricted substitution]
+  \label{lemma:subst-restr-sig}
+  If $[[Γ2 ⊢ σ : Γ1]]$ then $[[Γ2 ⊢ σ|varset : Ord {Γ1} ∩ varset]]$.
+\end{lemma}
+\begin{proof}
+  Let us take an arbitrary $[[α± ∊ {Γ1} ∩ varset]]$.
+  Since $[[α± ∊ {Γ1}]]$, $[[Γ2 ⊢ [σ]α± ]]$ by the signature of $[[σ]]$.
+
+  Let us take an arbitrary $[[α± ∉ {Γ1} ∩ varset]]$.
+  If $[[α± ∉ varset]]$ then $[[ [σ|varset]α± ]] = [[α±]]$ by definition
+  of restriction. 
+  If $[[α± ∊ varset \ {Γ1}]]$ then $[[ [σ|varset]α± ]] = [[ [σ]α± ]]$ by definition
+  and $[[ [σ]α± ]] = [[α±]]$ by the signature of $[[σ]]$.
+\end{proof}
+
+\begin{lemma}
+  Suppose that $[[σ]]$ is a substitution with signature $[[Γ2 ⊢ σ : Γ1]]$. 
+  Then if $[[varset]]$ is disjoint from $[[Γ1]]$, 
+  then $[[ σ|varset]] = [[ id ]]$. 
+\end{lemma}
+\begin{proof}
+  Let us take an arbitrary $[[α±]]$.
+  If $[[α± ∉ varset]]$ then $[[ [σ|varset]α±]] = [[α±]]$ by definition.
+
+  If $[[α± ∊ varset]]$ then $[[α± ∉ {Γ1}]]$ by assumption.
+  Then $[[ [σ|varset]α± = [σ]α±]]$ by definition of restricted substitution, and
+  since $[[Γ2 ⊢ σ : Γ1]]$, we have $[[ [σ]α± = α± ]]$.
+\end{proof}
+
+\begin{corollary}[Application of a disjoint substitution]
+  \label{corollary:subst-disj}
+  Suppose that $[[σ]]$ is a substitution with signature $[[Γ2 ⊢ σ : Γ1]]$. Then
+  \begin{itemize}
+    \item [$+$] if $[[{Γ1} ∩ fv(iQ) = ∅]]$ then $[[ [σ] iQ = iQ]]$;
+    \item [$-$] if $[[{Γ1} ∩ fv(iN) = ∅]]$ then $[[ [σ] iN = iN]]$.
+  \end{itemize}
+\end{corollary}
+
+\begin{lemma}[Substitution range weakening]
+  \label{lemma:subst-range-weakening}
+  Suppose that $[[{Γ2} ⊆ {Γ'2}]]$ are contexts and 
+  $[[σ]]$ is a substitution.
+  Then $[[Γ2 ⊢ σ : Γ1]]$ implies $[[Γ'2 ⊢ σ : Γ1]]$.
+\end{lemma}
+\begin{proof}
+  For any $[[α± ∊ {Γ1}]]$, 
+  $[[Γ2 ⊢ σ : Γ1]]$ gives us  $[[ Γ2 ⊢ [σ]α± ]]$, which can be
+  weakened to $[[ Γ'2 ⊢ [σ]α± ]]$ by \cref{lemma:wf-weakening}. 
+  This way, $[[Γ'2 ⊢ σ : Γ1]]$.
+\end{proof}
+
 \begin{lemma}[]
   Suppose that $[[{Γ'} ⊆ {Γ}]]$,
   $[[σ1]]$ and $[[σ2]]$ are substitutions of signature $[[Γ ⊢ σi : Γ']]$.
@@ -176,4 +227,80 @@
   and then $[[Γ2, Γ' ⊢ [σ]α± ]]$ by weakening.
   If the variable $[[α±]]$ is in $[[{Γ'} \ {Γ1}]]$ then $[[ [σ]α± = α± ]] \in [[Γ']] ⊆ [[Γ2, Γ']]$, 
   and thus, $[[Γ2, Γ' ⊢ α± ]]$.
+\end{proof}
+
+\begin{lemma}[Free variables after substitution]
+  \label{lemma:subst-fv}
+  Suppose that $[[Γ2 ⊢ σ : Γ1]]$, then
+  \begin{enumerate}
+    \item [$+$] for a type $[[iP]]$,
+      the free variables of $[[ [σ]iP ]]$ are bounded in the following way:
+     $[[fv(iP) \ {Γ1} ⊆ fv([σ]iP) ⊆ (fv(iP) \ {Γ1}) ∪ {Γ2}]]$;
+    \item [$-$] for a type $[[iN]]$, 
+      the free variables of $[[ [σ]iP ]]$ are bounded in the following way:
+      $[[fv(iN) \ {Γ1} ⊆ fv([σ]iN) ⊆ (fv(iN) \ {Γ1}) ∪ {Γ2}]]$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  We prove it by structural induction on 
+  $[[iP]]$ and mutually, on $[[iN]]$.
+  \begin{caseof}
+    \item $[[iP = α⁺]]$\\
+      If $[[α⁺ ∊ {Γ1}]]$ then $[[Γ2 ⊢ [σ]α⁺]]$, and by 
+      \cref{lemma:wf-soundness}, $[[fv([σ]α⁺) ⊆ {Γ2}]]$.
+      $[[fv(α⁺) \ {Γ1}]] = [[∅]]$, so $[[fv([σ]iP) \ {Γ1}  ⊆ fv([σ]α⁺)]]$
+      vacuously.
+
+      If $[[α⁺ ∉ {Γ1}]]$ then $[[ [σ]α⁺ = α⁺ ]]$, and 
+      $[[fv([σ]α⁺) = {α⁺}]] = [[{α⁺} \ {Γ1}]]$.
+      
+    \item $[[iP = ∃nas.iQ]]$\\
+      Then we need to show that $[[fv([σ]iP) = fv([σ]iQ) \ {nas}]]$
+      is a subset of $[[(fv(iP) \ {Γ1}) ∪ {Γ2}]]$ and a superset of
+      $[[fv(iP) \ {Γ1}]]$.
+      Notice that $[[fv(iP) = fv(iQ) \ {nas}]]$ by definition.
+      This way, we need to show that 
+      $[[fv(iQ) \ {nas} \ {Γ1} ⊆ fv([σ]iQ) \ {nas} ⊆ (fv(iQ) \ {nas} \ {Γ1}) ∪ {Γ2}]]$,
+      
+      By the induction hypothesis, 
+      $[[fv([σ]iQ) ⊆ (fv(iQ) \ {Γ1}) ∪ {Γ2}]]$.
+      So for the second inclusion, it suffices to show that
+      $[[((fv(iQ) \ {Γ1}) ∪ {Γ2}) \ {nas} ⊆ (fv(iQ) \ {nas} \ {Γ1}) ∪ {Γ2}]]$,
+      which holds by set theoretical reasoning. 
+
+      Also by the induction hypothesis,
+      $[[fv(iQ) \ {Γ1} ⊆ fv([σ]iQ)]]$,
+      and thus, by subtracting $[[{nas}]]$ from both sides,
+      $[[fv(iQ) \ {nas} \ {Γ1} ⊆ fv([σ]iQ) \ {nas}]]$.
+
+    \item The case $[[iN = ∀pas.iM]]$ is proved analogously.
+    \item $[[iN = iP → iM]]$\\
+      Then $[[fv([σ]iN) = fv([σ]iP) ∪ fv([σ]iM)]]$.
+      By the induction hypothesis, 
+      \begin{enumerate}
+        \item $[[ fv(iP) \ {Γ1} ⊆ fv([σ]iP) ⊆ (fv(iP) \ {Γ1}) ∪ {Γ2}]]$ and
+        \item $[[ fv(iM) \ {Γ1} ⊆ fv([σ]iM) ⊆ (fv(iM) \ {Γ1}) ∪ {Γ2}]]$.
+      \end{enumerate}
+      We unite these inclusions vertically and obtain
+      $[[ fv(iP) \ {Γ1} ∪ fv(iM) \ {Γ1} ⊆ fv([σ]iN) ⊆ ((fv(iP) \ {Γ1}) ∪ {Γ2}) ∪ ((fv(iM) \ {Γ1}) ∪ {Γ2})]]$,
+      which is equivalent to 
+      $[[ (fv(iP) ∪ fv(iM)) \ {Γ1} ⊆ fv([σ]iN) ⊆ (fv(iP) ∪ fv(iM)) \ {Γ1} ∪ {Γ2}]]$.
+      Since $[[fv(iP) ∪ fv(iM) = fv(iN)]]$, 
+      $[[fv(iN) \ {Γ1} ⊆ fv([σ]iN) ⊆ (fv(iN) \ {Γ1}) ∪ {Γ2}]]$.
+    \item The cases when $[[iP = ↓iM]]$ and $[[iN = ↑iQ]]$ are proved
+      analogously
+  \end{caseof}
+\end{proof}
+
+\begin{lemma}[Free variables of a variable image]
+  \label{lemma:subst-fv-image}
+  Suppose that $[[σ]]$ is an arbitrary substitution, 
+  Then 
+  \begin{itemize}
+    \item [$+$] if $[[α± ∊ fv(iP)]]$ then $[[ fv([σ]α±) ⊆ fv([σ]iP) ]]$,
+    \item [$-$] if $[[α± ∊ fv(iN)]]$ then $[[ fv([σ]α±) ⊆ fv([σ]iN) ]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  By straightforward mutual induction on $[[iP]]$ and $[[iN]]$.
 \end{proof}

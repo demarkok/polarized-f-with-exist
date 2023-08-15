@@ -1,4 +1,4 @@
-\begin{lemma}
+\begin{lemma}[Any constraint is satisfiable]
     \label{lemma:constraint-sat}
     Suppose that $[[Θ ⊢ SC]]$ then there exist
     s $[[uσ]]$ such that $[[Θ ⊢ uσ : SC]]$.
@@ -48,3 +48,20 @@
             \end{caseof}
     \end{itemize}
 \end{proof}
+
+\begin{corollary}[Constraint Satisfaction is stable under Equivalence]
+    \label{corollary:sat-equiv}
+    \hfill\\
+    If $[[Θ ⊢ uσ : SC]]$ and $[[Θ ⊢ uσ1 ≈ uσ2 : dom(SC)]]$ then $[[Θ ⊢ uσ2 : SC]]$;\\
+    if $[[Θ ⊢ uσ : UC]]$ and $[[Θ ⊢ uσ1 ≈ uσ2 : dom(UC)]]$ then $[[Θ ⊢ uσ2 : UC]]$.
+\end{corollary}
+
+\begin{corollary}[Normalization preserves Constraint Satisfaction]
+    \label{corollary:nf-sat}
+    \hfill\\
+    If $[[Θ ⊢ uσ : SC]]$ then $[[Θ ⊢ nf(uσ) : SC]]$;\\
+    if $[[Θ ⊢ uσ : UC]]$ then $[[Θ ⊢ nf(uσ) : UC]]$.
+\end{corollary}
+
+
+

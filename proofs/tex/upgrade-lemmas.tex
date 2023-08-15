@@ -46,7 +46,8 @@ The upgrade is the operation that returns the least of such supertypes.
     $[[Δ,pnbs,pncs ⊢ pnbs/pnas : Δ, pnas, pncs]]$ by \label{lemma:subst-domain-weakening})
     obtain $[[Δ, pnas, pncs ⊢ [pnas/pnbs]iQ ≥ iP]]$.
     Notice that $[[Δ ⊢ iQ]]$ implies that $[[fv iQ ∩ {pnbs} = ∅]]$, 
-    then by \cref{todo}, $[[ [pnas/pnbs]iQ = iQ]]$, and thus $[[Δ, pnas, pncs ⊢ iQ ≥ iP]]$.
+    then by \cref{corollary:subst-disj}, $[[ [pnas/pnbs]iQ = iQ]]$,
+     and thus $[[Δ, pnas, pncs ⊢ iQ ≥ iP]]$.
     By context strengthening, $[[Δ, pnas ⊢ iQ ≥ iP]]$.
 \end{proof}
 
@@ -68,8 +69,8 @@ The upgrade is the operation that returns the least of such supertypes.
 
     If we apply substitution $[[pnbs/pnas]]$ to both sides of $[[Δ, pnas ⊢ iQ' ≥ iP]]$,
     we have $[[Δ, pnbs ⊢ [pnbs/pnas]iQ' ≥ [pnbs/pnas]iP]]$, which by  
-    \cref{todo}, since $[[iQ']]$ is well-formed in $[[Δ]]$, simplifies to 
-     $[[Δ, pnbs ⊢ iQ' ≥ [pnbs/pnas]iP]]$.
+    \cref{corollary:subst-disj}, since $[[pnas]]$ is disjoint from $[[fv(iQ')]]$
+    (because $[[Δ ⊢ iQ']]$), simplifies to $[[Δ, pnbs ⊢ iQ' ≥ [pnbs/pnas]iP]]$.
 
     Analogously, if we apply substitution $[[pncs/pnas]]$ to both sides of $[[Δ, pnas ⊢ iQ' ≥ iP]]$,
     we have $[[Δ, pncs ⊢ iQ' ≥ [pncs/pnas]iP]]$.
