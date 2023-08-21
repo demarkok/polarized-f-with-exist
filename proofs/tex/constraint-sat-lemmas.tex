@@ -1,7 +1,7 @@
 \begin{lemma}[Any constraint is satisfiable]
     \label{lemma:constraint-sat}
-    Suppose that $[[Θ ⊢ SC]]$ then there exist
-    s $[[uσ]]$ such that $[[Θ ⊢ uσ : SC]]$.
+    Suppose that $[[Θ ⊢ SC]]$ then there exists 
+    $[[uσ]]$ such that $[[(Θ  ⊢  SC) ⊢ uσ]]$.
 \end{lemma}
 \begin{proof}
     Let us define $[[uσ]]$
@@ -14,7 +14,7 @@
         [[iN]] & \text{if $[[(α̂± :≈ iN)]] \in [[SC]]$} \\
     \end{cases}
     $$
-    Then $[[Θ ⊢ uσ : SC]]$ follows immediately
+    Then $[[(Θ  ⊢  SC) ⊢ uσ]]$ follows immediately
     from the reflexivity of equivalence and subtyping
     (\cref{lemma:subtyping-reflexivity}) and the corresponding
     rules 
@@ -52,15 +52,15 @@
 \begin{corollary}[Constraint Satisfaction is stable under Equivalence]
     \label{corollary:sat-equiv}
     \hfill\\
-    If $[[Θ ⊢ uσ : SC]]$ and $[[Θ ⊢ uσ1 ≈ uσ2 : dom(SC)]]$ then $[[Θ ⊢ uσ2 : SC]]$;\\
-    if $[[Θ ⊢ uσ : UC]]$ and $[[Θ ⊢ uσ1 ≈ uσ2 : dom(UC)]]$ then $[[Θ ⊢ uσ2 : UC]]$.
+    If $[[(Θ  ⊢  SC) ⊢ uσ1]]$ and $[[Θ|dom(SC) ⊢ uσ1 ≈ uσ2]]$ then $[[(Θ  ⊢  SC) ⊢ uσ2]]$;\\
+    if $[[(Θ  ⊢  UC) ⊢ uσ1]]$ and $[[Θ|dom(SC) ⊢ uσ1 ≈ uσ2]]$ then $[[(Θ  ⊢  UC) ⊢ uσ2]]$.
 \end{corollary}
 
 \begin{corollary}[Normalization preserves Constraint Satisfaction]
     \label{corollary:nf-sat}
     \hfill\\
-    If $[[Θ ⊢ uσ : SC]]$ then $[[Θ ⊢ nf(uσ) : SC]]$;\\
-    if $[[Θ ⊢ uσ : UC]]$ then $[[Θ ⊢ nf(uσ) : UC]]$.
+    If $[[(Θ  ⊢  SC) ⊢ uσ]]$ then $(Θ  ⊢ SC) ⊢ nf(uσ)$;\\
+    if $[[(Θ  ⊢  UC) ⊢ uσ]]$ then $(Θ  ⊢ UC) ⊢ nf(uσ)$.
 \end{corollary}
 
 

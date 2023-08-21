@@ -1,14 +1,14 @@
 \begin{lemma}[Soundness of Negative Subtyping] \label{lemma:neg-subt-soundness}
-        If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; Θ ⊢ uN]]$ and 
+        If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; dom(Θ) ⊢ uN]]$ and 
         $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$, then 
         $[[Θ ⊢ SC]]$ and 
-        for any normalized $[[uσ]]$ such that $[[Θ ⊢ uσ : SC]]$,
+        for any normalized $[[uσ]]$ such that $[[(Θ ⊢ SC) ⊢ uσ]]$,
         $[[ Γ ⊢ [uσ]uN ≤ iM ]]$.
 \end{lemma}
 \begin{proof}
     We prove it by induction on $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$.
 
-    Suppose that $[[uσ]]$ is normalized and $[[Θ ⊢ uσ : SC]]$,
+    Suppose that $[[uσ]]$ is normalized and $[[(Θ ⊢ SC) ⊢ uσ]]$,
     Let us consider the last rule to infer this judgment. 
     \begin{caseof}
         \item \ruleref{\ottdruleAArrowLabel}. Then $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$ has shape
@@ -18,7 +18,7 @@
         and returns $[[Θ ⊢ SC1 & SC2 = SC]]$ as the result.
 
         By the soundness of constraint merge (\cref{lemma:merge-soundness}),
-        $[[Θ ⊢ uσ : SC1]]$ and $[[Θ ⊢ uσ : SC2]]$.
+        $[[(Θ ⊢ SC1) ⊢ uσ]]$ and $[[(Θ ⊢ SC2) ⊢ uσ]]$.
         Then by the soundness of positive subtyping (\cref{lemma:pos-subt-soundness}), $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$; 
         and by the induction hypothesis, $[[ Γ ⊢ [uσ]uN' ≤ iM' ]]$.
         This way, by \ruleref{\ottdruleDOneArrowLabel}, $[[Γ ⊢ [uσ](uP → uN') ≤ iQ → iM']]$.
@@ -38,10 +38,10 @@
 
 \begin{lemma}[Completeness of the Negative Subtyping]
     \label{lemma:neg-subt-completeness}
-    Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; Θ ⊢ uN]]$,
+    Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; dom(Θ) ⊢ uN]]$,
     and $[[uN]]$ does not contain negative unification variables ($[[α̂⁻]] \notin [[uv uN]]$).
     Then for any $[[Θ ⊢ uσ]]$ such that $[[Γ ⊢ [uσ]uN ≤ iM]]$,
-    there exists $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$, such that $[[Θ ⊢ SC]]$ and moreover, $[[Θ ⊢ uσ : SC]]$.
+    there exists $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$, such that $[[Θ ⊢ SC]]$ and moreover, $[[(Θ  ⊢  SC) ⊢ uσ]]$.
 \end{lemma}
 \begin{proof}
     We prove it by induction on $[[ Γ ⊢ [uσ]uN ≤ iM ]]$.
@@ -67,19 +67,19 @@
         are fulfilled by $[[uσ]]$.
 
         Notice that from the inversion of $[[Γ ⊢ iM]]$, we have: $[[Γ ⊢ iQ]]$ and $[[Γ ⊢ iM']]$;
-        from the inversion of $[[Γ ; Θ ⊢ uN]]$, we have: $[[Γ ; Θ ⊢ uP]]$ and $[[Γ ; Θ ⊢ uN']]$;
+        from the inversion of $[[Γ ; dom(Θ) ⊢ uN]]$, we have: $[[Γ ; dom( Θ) ⊢  uP]]$ and $[[Γ ; dom( Θ) ⊢  uN']]$;
         and since $[[uN]]$ does not contain negative unification variables,
         $[[uN']]$ does not contain negative unification variables either.
 
         This way, we can apply the induction hypothesis to $[[Γ ⊢ [uσ]uN' ≤ iM']]$ to 
-        obtain $[[Γ ; Θ ⊨ uN' ≤ iM' ⫤ SC2]]$ such that $[[Θ ⊢ SC2]]$ and $[[Θ ⊢ uσ : SC2]]$.
+        obtain $[[Γ ; Θ ⊨ uN' ≤ iM' ⫤ SC2]]$ such that $[[Θ ⊢ SC2]]$ and $[[(Θ  ⊢  SC2) ⊢ uσ]]$.
         Also, we can apply the completeness of the positive subtyping (\cref{lemma:pos-subt-completeness}) to 
-        $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ to obtain $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC1]]$ such that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ uσ : SC1]]$.
+        $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ to obtain $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC1]]$ such that $[[Θ ⊢ SC1]]$ and $[[(Θ  ⊢  SC1) ⊢ uσ]]$.
 
         Finally, we need to show that the merge of $[[SC1]]$ and $[[SC2]]$ is successful and
         satisfies the required properties.
         To do so, we apply the completeness of subtyping constraint merge (\cref{lemma:merge-completeness}).
-        This way, $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined, $[[Θ ⊢ SC]]$, and $[[Θ ⊢ uσ : SC]]$, as required.
+        This way, $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined, $[[Θ ⊢ SC]]$, and $[[(Θ  ⊢  SC) ⊢ uσ]]$, as required.
 
        \item \label{case:subt-complete-forall}
        $[[ Γ ⊢ [uσ]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneForallLabel}.

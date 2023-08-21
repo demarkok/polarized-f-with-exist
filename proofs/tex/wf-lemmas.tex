@@ -91,7 +91,6 @@
 \end{proof}
 
 
-
 \begin{lemma}[Well-formedness agrees with substitution]
   \label{lemma:wf-subst}
   Suppose that $[[Γ2 ⊢ σ : Γ1]]$. Then
@@ -134,5 +133,12 @@
 
     \item The negative cases are proved symmetrically.
   \end{caseof}
-
 \end{proof}
+
+
+\begin{lemma}[Algorithmic renaming agrees with well-formedness]
+  \begin{itemize}
+    \item[$+$]  $[[Γ, nas ⊢ iP]]$ implies $[[Γ; nuas ⊢ [nuas/nas]iP]]$;
+    \item[$-$]  $[[Γ, nas ⊢ iN]]$ implies $[[Γ; nuas ⊢ [nuas/nas]iN]]$.
+  \end{itemize}
+\end{lemma}

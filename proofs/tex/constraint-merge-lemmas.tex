@@ -72,7 +72,7 @@ If $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined then
     Then 
     \begin{enumerate}
         \item $[[Θ ⊢ SC]]$,
-        \item for any substitution $[[Θ ⊢ uσ]]$, $[[Θ ⊢ uσ : SC]]$ implies $[[Θ ⊢ uσ : SC1]]$ and $[[Θ ⊢ uσ : SC2]]$.
+        \item for any substitution $[[Θ ⊢ uσ]]$, $[[(Θ  ⊢  SC) ⊢ uσ]]$ implies $[[(Θ  ⊢  SC1) ⊢ uσ]]$ and $[[(Θ  ⊢  SC2) ⊢ uσ]]$.
     \end{enumerate}
 \end{lemma}
 \begin{proof}
@@ -90,19 +90,19 @@ If $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined then
     and $[[Θ(α̂±) ⊢ scE2]]$.  Then $[[Θ(α̂±) ⊢ scE]]$ holds by \cref{lemma:entry-merge-soundness}.
 
     Let us show the second property.
-    We take an arbitrary $[[uσ]]$ such that $[[Θ ⊢ uσ]]$ and $[[Θ ⊢ uσ : SC]]$.
-    To prove $[[Θ ⊢ uσ : SC1]]$, we need to show that for any $[[scE1]] \in [[SC1]]$, restricting $[[α̂±]]$,
+    We take an arbitrary $[[uσ]]$ such that $[[Θ ⊢ uσ]]$ and $[[(Θ  ⊢  SC) ⊢ uσ]]$.
+    To prove $[[(Θ  ⊢  SC1) ⊢ uσ]]$, we need to show that for any $[[scE1]] \in [[SC1]]$, restricting $[[α̂±]]$,
     $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$ holds.
 
     Let us assume that $[[α̂±]] \notin [[dom(SC2)]]$. It means that $[[SC]] \ni [[scE1]]$, 
-    and then since $[[Θ ⊢ uσ : SC]]$, $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$. 
+    and then since $[[(Θ  ⊢  SC) ⊢ uσ]]$, $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$. 
 
     Otherwise, $[[SC2]]$ contains an entry $[[scE2]]$ restricting $[[α̂±]]$,
     and $[[SC]] \ni [[scE]]$ where $[[Θ(α̂±) ⊢ scE1 & scE2 = scE]]$.
-    Then since $[[Θ ⊢ uσ : SC]]$, $[[Θ(α̂±) ⊢ [uσ]α̂± : scE]]$,
+    Then since $[[(Θ  ⊢  SC) ⊢ uσ]]$, $[[Θ(α̂±) ⊢ [uσ]α̂± : scE]]$,
     and by \cref{lemma:entry-merge-soundness}, $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$.
 
-    The proof of $[[Θ ⊢ uσ : SC2]]$ is symmetric.
+    The proof of $[[(Θ  ⊢  SC2) ⊢ uσ]]$ is symmetric.
 \end{proof}
 
 
@@ -150,7 +150,7 @@ If $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined then
 \begin{lemma} [Completeness of Constraint Merge] 
     \label{lemma:merge-completeness}
     Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.
-    Then for any substitution $[[Θ ⊢ uσ]]$ such that $[[Θ ⊢ uσ : SC1]]$ and $[[Θ ⊢ uσ : SC2]]$, 
+    Then for any substitution $[[Θ ⊢ uσ]]$ such that $[[(Θ  ⊢  SC1) ⊢ uσ]]$ and $[[(Θ  ⊢  SC2) ⊢ uσ]]$, 
     $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined.
 \end{lemma}
 \begin{proof}
@@ -165,13 +165,13 @@ If $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined then
 
     It is clear that the first two components of this union exist. 
     Let us show that the third component exists.  
-    Let us take two entries $[[scE1]] \in [[SC1]]$ and $[[scE2]] \in [[SC2]]$ restricting the same variable $[[α̂±]]$.  $[[Θ ⊢ uσ : SC1]]$ means that $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$ and $[[Θ ⊢ uσ : SC2]]$ means $[[Θ(α̂±) ⊢ [uσ]α̂± : scE2]]$.
+    Let us take two entries $[[scE1]] \in [[SC1]]$ and $[[scE2]] \in [[SC2]]$ restricting the same variable $[[α̂±]]$.  $[[(Θ  ⊢  SC1) ⊢ uσ]]$ means that $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$ and $[[(Θ  ⊢  SC2) ⊢ uσ]]$ means $[[Θ(α̂±) ⊢ [uσ]α̂± : scE2]]$.
     Then by \cref{lemma:entry-merge-completeness}, $[[Θ(α̂±) ⊢ scE1 & scE2 = scE]]$ is defined and $[[Θ(α̂±) ⊢ [uσ]α̂± : scE]]$.
 \end{proof}
 
 \begin{lemma}[Substitution existence]
     \label{lemma:substitution-existence}
-    If $[[Θ ⊢ SC]]$ then there exists $[[Θ ⊢ uσ]]$ such that $[[Θ ⊢ uσ : SC]]$.
+    If $[[Θ ⊢ SC]]$ then there exists $[[Θ ⊢ uσ]]$ such that $[[(Θ  ⊢  SC) ⊢ uσ]]$.
 \end{lemma}
 \begin{proof}
     

@@ -183,7 +183,7 @@ pnds {{ tex \vv{ \delta^{\pm} } }}
 iP {{ tex P }}, iQ {{ tex Q }}, iR {{ tex R }} :: 'iP_' ::= {{ com multi-quantified positive types }}
    | pa         ::   :: Var
    | ↓ iN       ::   :: Shift
-   | ∃ nas . iP ::   :: Exists {{ com $[[iP]] \neq \exists\dots$ }}
+   | ∃ nas . iP ::   :: Exists 
    | [ σ ]  iP  :: M :: AppSub  
    | [ aus ] uP :: M :: AppAUSub  
    | [ uσ ] uP  :: M :: AppUSub  
@@ -194,7 +194,7 @@ iN {{ tex N }}, iM {{ tex M }}, iK {{ tex K }} :: 'iN_' ::= {{ com multi-quantif
    | na          ::   :: Var
    | ↑ iP        ::   :: Shift
    | iP → iN     ::   :: Fun
-   | ∀ pas . iN  ::   :: Forall {{ com $[[iN]] \neq \forall\dots$ }}
+   | ∀ pas . iN  ::   :: Forall 
    | [ σ ] iN    :: M :: AppSub 
    | [ aus ] uN  :: M :: AppAUSub
    | [ mu ] iN   :: M :: AppMoving
@@ -252,8 +252,10 @@ grammar
 
 Xi {{ tex \Xi }}, Ξ {{ tex \Xi }} :: AU_Ctxt ::= {{ com anti-unification type variable context }}
     | ·                  ::   :: empty   {{ com empty context }}
-   %  | puas               ::   :: PAUList {{ com list of variables }}
-    | nuas               ::   :: NAUList {{ com list of variables }}
+    | puas               ::   :: PAUList {{ com list of positive variables }}
+    | nuas               ::   :: NAUList {{ com list of negative variables }}
+    | uv uN              ::   :: Nuv       {{ com unification variables }}
+    | uv uP              ::   :: Puv       {{ com unification variables }}
     | </ Ξi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( Ξ )              :: S :: paren
     | Ξ1 ∪ Ξ2            ::   :: union
@@ -290,14 +292,13 @@ varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
     | varset1 \ varset2  ::   :: setminus  {{ com set complement }}
     | mv imP             ::   :: Pmv       {{ com movable variables }}
     | mv imN             ::   :: Nmv       {{ com movable variables }}
-    | uv uN              ::   :: Nuv       {{ com unification variables }}
-    | uv uP              ::   :: Puv       {{ com unification variables }}
     | fv uN              ::   :: uNfv      {{ com free variables }}
     | fv uP              ::   :: uPfv      {{ com free variables }}
     | ( varset )         :: S :: paren     {{ com parenthesis }}
     | { ordVars }        ::   :: OrdVars   {{ com ordered list of variables }}
                                            {{ tex [[ordVars]] }}
     | [ mu ] varset      :: M :: moving    {{ com apply moving to varset }}
+    | Ξ                  ::   :: AU_Ctxt   {{ com anti-unification context }}
 grammar
 
 mu {{ tex \mu }}, μ {{ tex \mu }}:: Mu ::= 
@@ -415,6 +416,7 @@ uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive alg
    | [ s ] uP      :: M :: AppSub  
    | [ aus ] uP    :: M :: AppUSub  
    | [ mu ] uP     :: M :: AppMoving 
+   | [ nuas / nas ] iP :: M :: AppAUNSub
    | ( uP )        :: S :: Paren
 
 uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative algorithmic type (potentially with metavariables) }}
@@ -427,6 +429,7 @@ uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative al
    | [ s ] uN       :: M :: AppSub 
    | [ aus ] uN     :: M :: AppUSub
    | [ mu ] uN      :: M :: AppMoving
+   | [ nuas / nas ] iN :: M :: AppAUNSub
    | ( uN )         :: S :: Paren
 
 
@@ -544,10 +547,10 @@ fun
   aus1 & aus2 :: aus :: AUMRG {{ tex [[aus1]] ~ \& ~[[aus2]] }}
 by
 
-fun dom ( UC )  :: varset :: UCDom by
-fun dom ( SC )  :: varset :: SCDom by
-fun dom ( uσ )  :: varset :: uSubDom by
-fun dom ( aus ) :: varset :: ausolDom by
-fun dom ( Θ )   :: varset :: uCtxtDom by
+fun dom ( UC )  :: Ξ :: UCDom by
+fun dom ( SC )  :: Ξ :: SCDom by
+fun dom ( uσ )  :: Ξ :: uSubDom by
+fun dom ( aus ) :: Ξ :: ausolDom by
+fun dom ( Θ )   :: Ξ :: uCtxtDomXi by
 
 fun | SC | :: UC :: SCFlatten by

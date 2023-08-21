@@ -1,8 +1,8 @@
 \begin{lemma}[Soundness of the Positive Subtyping] \label{lemma:pos-subt-soundness}
-    If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iQ]]$, $[[Γ ; Θ ⊢ uP]]$, and 
+    If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iQ]]$, $[[Γ ; dom(Θ) ⊢  uP]]$, and 
     $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$,
     then $[[Θ ⊢ SC]]$ and
-    for any normalized $[[uσ]]$ such that $[[Θ ⊢ uσ : SC]]$,
+    for any normalized $[[uσ]]$ such that $[[(Θ  ⊢  SC) ⊢ uσ]]$,
     $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$.
 \end{lemma}
 \begin{proof} 
@@ -25,7 +25,7 @@
     it is clear that $[[ Θ ⊢ (â⁺ :≥ iQ') ]]$.
 
     It is left to show that $[[Γ ⊢ [uσ]â⁺ ≥ iP']]$ for any normalized $[[uσ]]$ 
-    s.t. $[[Θ ⊢ uσ : (â⁺ :≥ iQ')]]$.
+    s.t. $[[(Θ  ⊢  (â⁺ :≥ iQ')) ⊢ uσ]]$.
     The latter means that $[[ Θ(â⁺) ⊢ [uσ]â⁺ ≥ iQ' ]]$, i.e. $[[Δ ⊢ [uσ]â⁺ ≥ iQ']]$. 
     By weakening the context to $[[Γ]]$ and combining this judgment
     transitively with $[[Γ ⊢ iQ' ≥ iP]]$, we have $[[Γ ⊢ [uσ]â⁺ ≥ iP]]$,
@@ -44,7 +44,7 @@
     Then the next step of the algorithm is the unification of $[[nf(uN)]]$ and $[[nf(iM)]]$,
     and it returns the resulting unification constraint $[[lift UC]] = [[SC]]$ as the result.
     By the soundness of unification (\cref{lemma:unification-soundness}),
-    $[[Θ ⊢ SC]]$ and for any normalized $[[uσ]]$, $[[Θ ⊢ uσ : SC]]$
+    $[[Θ ⊢ SC]]$ and for any normalized $[[uσ]]$, $[[(Θ  ⊢  SC) ⊢ uσ]]$
     implies $[[ [uσ]nf(uN) = nf(iM) ]]$, 
     then we rewrite the left-hand side by \cref{lemma:norm-subst-distr}:
     $[[ nf([uσ]uN) = nf(iM) ]]$ and apply \cref{lemma:subt-equiv-algorithmization}:
@@ -60,11 +60,11 @@
         $[[G, nbs; Θ, â⁻*[G, nbs] ⊨ [â⁻*/nas] uP' ≥ iQ' ⫤ SC']]$, returning as the result
         $[[SC]] = [[SC' \ {α̂⁻*}]]$.
 
-        Let us take an arbitrary normalized $[[uσ]]$ s.t. $[[Θ ⊢ uσ : SC' \ {α̂⁻*}]]$.
+        Let us take an arbitrary normalized $[[uσ]]$ s.t. $[[(Θ  ⊢  SC' \ {α̂⁻*}) ⊢ uσ]]$.
         We wish to show $[[Γ ⊢ [uσ]uP ≥ iQ]]$, i.e. $[[Γ ⊢ ∃nas.[uσ]uP' ≥ ∃nbs.iQ']]$.
         To do that, we apply \ruleref{\ottdruleDOneExistsLabel}, and what is left to show is
         $[[Γ, nbs ⊢ [iNs/nas][uσ]uP' ≥ iQ']]$ for some $[[iNs]]$.
-        If we construct a normalized $[[uσ']]$ such that $[[Θ, â⁻*[G, nbs] ⊢ uσ' : SC']]$
+        If we construct a normalized $[[uσ']]$ such that $[[(Θ, â⁻*[G, nbs] ⊢ SC') ⊢ uσ']]$
         and for some $[[iNs]]$, $[[ [iNs/nas][uσ]uP' ]] = [[ [uσ'][â⁻*/nas]uP' ]]$,
         we can apply the induction hypothesis to 
         $[[Γ, nbs; Θ, â⁻*[G, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ SC']]$ and infer 
@@ -80,12 +80,13 @@
             \end{cases}
         $$
 
-        It is easy to see that $[[uσ']]$ is normalized.
-        Let us show that $[[Θ, â⁻*[G, nbs] ⊢ uσ' : SC']]$.
+        It is easy to see that $[[uσ']]$ is normalized: it inherits this property from 
+        $[[uσ]]$.
+        Let us show that $[[(Θ, â⁻*[G, nbs]  ⊢ SC') ⊢ uσ' ]] $.
         Let us take an arbitrary entry $[[scE]]$ from $[[SC']]$ restricting a variable $[[β̂±]]$.
         Suppose $[[β̂±]] \in [[dom(SC') \ {α̂⁻*}]]$. Then
         $[[ (Θ, â⁻*[G, nbs])(β̂±) ⊢ [uσ']β̂± : scE ]]$ is
-        rewritten as $[[ Θ(β̂±) ⊢ [uσ]β̂± : scE ]]$, which holds since $[[Θ ⊢ uσ : SC']]$.
+        rewritten as $[[ Θ(β̂±) ⊢ [uσ]β̂± : scE ]]$, which holds since $[[(Θ  ⊢  SC') ⊢ uσ]]$.
         Suppose $[[β̂±]] = [[αî⁻]] \in [[α̂⁻*]]$. Then
         $[[scE]] = [[(αî⁻ :≈ iN)]]$ for some $[[iN]]$, 
         $[[ [uσ']αî⁻ ]] = [[ nf(iN) ]]$ by the definition,
@@ -97,7 +98,7 @@
         Let us take an arbitrary variable from $[[uP]]$.
         \begin{enumerate}
             \item If this variable is a unification variable $[[β̂±]]$, then
-                $[[ [iNs/nas][uσ] β̂± ]] = [[ [uσ]β̂± ]] $, since $[[Θ ⊢ uσ : SC' \ {α̂⁻*}]]$ and 
+                $[[ [iNs/nas][uσ] β̂± ]] = [[ [uσ]β̂± ]] $, since $[[(Θ  ⊢  SC' \ {α̂⁻*}) ⊢ uσ]]$ and 
                 $[[ dom(Θ) ∩ {nas} = ∅ ]]$. 
 
                 Notice that $[[β̂±]] \in [[dom(Θ)]]$, which is disjoint from $[[{α̂⁻*}]]$, 
@@ -115,9 +116,9 @@
 \end{proof}
 
 \begin{lemma}[Completeness of the Positive Subtyping] \label{lemma:pos-subt-completeness}
-    Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iQ]]$ and $[[Γ ; Θ ⊢ uP]]$.
+    Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iQ]]$ and $[[Γ ; dom(Θ) ⊢  uP]]$.
     Then for any $[[Θ ⊢ uσ]]$ such that $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$,
-    there exists $[[Γ; Θ ⊨ uP ≥ iQ ⫤ SC]]$ and moreover, $[[Θ ⊢ uσ : SC]]$.
+    there exists $[[Γ; Θ ⊨ uP ≥ iQ ⫤ SC]]$ and moreover, $[[(Θ  ⊢  SC) ⊢ uσ]]$.
 \end{lemma}
 \begin{proof}
     Let us prove this lemma by induction on $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$.
@@ -130,7 +131,7 @@
             Let us decompose $[[iQ]]$ as $[[iQ]] = [[∃ncs.iQ0]]$, where $[[iQ0]]$ does
             not start with $[[∃]]$. 
 
-            By inversion, $[[Γ ; Θ ⊢ ∃nbs.α̂⁺]]$ implies $[[â⁺[Δ] ∊ Θ]]$ for some 
+            By inversion, $[[Γ ; dom(Θ) ⊢  ∃nbs.α̂⁺]]$ implies $[[â⁺[Δ] ∊ Θ]]$ for some 
             $[[{Δ} ⊆ {Γ}]]$.
 
             By \cref{lemma:quant-rule-decomposition} applied twice, 
@@ -163,7 +164,7 @@
             Moreover, the completeness of upgrade also says that $[[iQ0']]$ is 
             \emph{the least} supertype of $[[iQ0]]$ among types well-formed in $[[Δ]]$, 
             that is $[[Δ ⊢ [uσ]α̂⁺ ≥ iQ0']]$, which means 
-            $[[Θ ⊢ uσ : (α̂⁺ :≥ iQ0')]]$, that is $[[Θ ⊢ uσ : SC]]$.
+            $[[(Θ  ⊢  (α̂⁺ :≥ iQ0')) ⊢ uσ]]$, that is $[[(Θ  ⊢  SC) ⊢ uσ]]$.
 
         \item \label{case:pos-subt-complete-pvar}
         $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ is derived by \ruleref{\ottdruleDOnePVarLabel}\\
@@ -174,7 +175,7 @@
 
         The algorithm applies \ruleref{\ottdruleAPVarLabel} and 
         infers $[[SC]] = [[·]]$, i.e. $[[Γ;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·]]$.
-        Then $[[Θ ⊢ uσ : ·]]$ holds trivially.
+        Then $[[(Θ  ⊢  ·) ⊢ uσ]]$ holds trivially.
 
 
         \item \label{case:pos-subt-complete-upshift} $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ 
@@ -203,9 +204,9 @@
 
         \begin{itemize}
             \item $[[nf(uN)]]$ and $[[nf(iM)]]$ are normalized 
-            \item $[[Γ ; Θ ⊢ nf(uN)]]$ because $[[Γ ; Θ ⊢ uN]]$ (\cref{corollary:wf-nf-algo})
+            \item $[[Γ ; dom(Θ) ⊢  nf(uN)]]$ because $[[Γ ; dom(Θ) ⊢  uN]]$ (\cref{corollary:wf-nf-algo})
             \item $[[Γ ⊢ nf(iM)]]$ because $[[Γ ⊢ iM]]$ (\cref{corollary:wf-nf})
-            \item $[[ Θ ⊢ nf(uσ) ]]$ because $[[Θ ⊢ uσ ]]$ (\cref{corollary:wf-s-nf-algo})
+            \item $[[ Θ ⊢ nf(uσ) ]]$ because $[[Θ ⊢ uσ ]]$ (\cref{corollary:norm-subst-sig-algo})
             \item $ \begin{aligned}[t]
                     [[ Γ ⊢ [uσ]uN ≈ iM ]] &\Rightarrow [[ [uσ]uN ≈ iM ]]
                                           && \text {by \cref{lemma:equiv-completeness}}\\
@@ -218,7 +219,7 @@
         \end{itemize}
         Then by the completeness of the unification,
         $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$ exists, and
-        $[[Θ ⊢ nf(uσ) : lift UC]]$.  Then by \cref{corollary:sat-equiv}, $[[Θ ⊢ uσ : lift UC]]$.
+        $(Θ  ⊢ lift UC) ⊢ nf(uσ)$.  Then by \cref{corollary:sat-equiv}, $[[(Θ  ⊢  lift UC) ⊢ uσ]]$.
 
       \item $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ is derived by \ruleref{\ottdruleDOneExistsLabel}.\\
       We should only consider the case
@@ -250,11 +251,11 @@
       returning $[[SC1 \ {â⁻*}]]$ as the result.
 
       To show that the recursive call terminates and that 
-      $[[Θ ⊢ uσ : SC1 \ {â⁻*}]]$,
+      $[[(Θ  ⊢  SC1 \ {â⁻*}) ⊢ uσ]]$,
       it suffices to build $[[Θ, â⁻*[G, nbs] ⊢ us0]]$---an extension of $[[uσ]]$ with
       $[[â⁻*]]$ such that $[[Γ, nbs ⊢ [us0]uP0 ≥ iQ]]$.
-      Then by the induction hypothesis, $[[Θ, â⁻*[G, nbs] ⊢ us0 : SC1]]$,
-      and hence, $[[Θ ⊢ uσ : SC1 \ {â⁻*}]]$, as required.
+      Then by the induction hypothesis, $[[(Θ, â⁻*[G, nbs] ⊢ SC1) ⊢ us0]]$,
+      and hence, $[[(Θ  ⊢  SC1 \ {â⁻*}) ⊢ uσ]]$, as required.
 
       Let us construct such a substitution $[[us0]]$:
         \[

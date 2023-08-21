@@ -166,23 +166,89 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Substitutions equivalent on the metavariables]
-  \label{lemma:subst-equiv-metavar}
-  Suppose that $[[Γ ⊢ Θ]]$, $[[uσ1]]$ and $[[uσ2]]$ are substitutions 
-  of signature $[[Θ ⊢ uσi]]$.
+
+
+\begin{lemma}[Substitutions equal on the metavariables]
+  \label{lemma:subst-eq-metavar}
+  Suppose that $[[uσ1]]$ and $[[uσ2]]$ are 
+  normalized substitutions of signature $[[Θ ⊢ uσi]]$.
   Then 
   \begin{enumerate}
-    \item [$+$] for a type $[[Γ; Θ ⊢ uP]]$, if $[[Γ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ then
-      $[[Θ ⊢ uσ1 ≈ uσ2 : uv uP]]$;
-    \item [$-$] for a type $[[Γ; Θ ⊢ uN]]$, if $[[Γ ⊢ [uσ1]uN ≈ [uσ2]uN]]$ then
-      $[[Θ ⊢ uσ1 ≈ uσ2 : uv uN]]$.
+    \item [$+$] for a normalized type $[[Γ; dom(Θ) ⊢ uP]]$, if $[[ [uσ1]uP = [uσ2]uP ]]$ then
+      $[[uσ1|(uv uP)  = uσ2|(uv uP)]]$;
+    \item [$-$] for a normalized type $[[Γ; dom(Θ) ⊢ uN]]$, if $[[ [uσ1]uN = [uσ2]uN ]]$ then
+      $[[uσ1|(uv uN)  = uσ2|(uv uN)]]$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
-  The proof is a trivial structural induction on 
-  $[[Γ; Θ ⊢ uP]]$ and mutually, on $[[Γ; Θ ⊢ uN]]$.
+  The proof is a simple structural induction on 
+  $[[Γ; dom(Θ) ⊢ uP]]$ and mutually, on $[[Γ; dom(Θ) ⊢ uN]]$.
+  Let us consider the shape of $[[uN]]$ (the cases of $[[uP]]$ are symmetric).
+  \begin{caseof}
+    \item $[[Γ; dom(Θ) ⊢ α̂⁻]]$. Then $[[ [uσ1]α̂⁻ = [uσ2]α̂⁻ ]]$
+      implies $[[uσ1|(uv α̂⁻) = uσ2|(uv α̂⁻)]]$ immediately.
+    \item $[[Γ; dom(Θ) ⊢ α⁻]]$. Then $[[uv α̂⁻ = ∅]]$, and
+      $[[uσ1|(uv α̂⁻)  = uσ2|(uv α̂⁻)]]$ holds vacuously.
+    \item $[[Γ; dom(Θ) ⊢ ∀pas.uN]]$. Then we are proving that
+      $[[ [uσ1]∀pas.uN = [uσ2]∀pas.uN ]]$ implies $[[uσ1|(uv ∀pas.uN) = uσ2|(uv ∀pas.uN)]]$.
+      By definition of substitution and \ruleref{\ottdruleEOneForallLabel}, 
+      $[[ [uσ1]uN = [uσ2]uN ]]$ implies $[[uσ1|uv uN = uσ2|uv uN]]$.
+      Since $[[∀pas.uN]]$ is normalized, so is $[[Γ, pas; dom(Θ) ⊢ uN]]$, 
+      hence, the induction hypothesis is applicable and implies $[[uσ1|uv uN = uσ2|uv uN]]$,
+      as required.
+    \item $[[Γ; dom(Θ) ⊢ uP → uN]]$. Then we are proving that
+      $[[ [uσ1](uP → uN) = [uσ2](uP → uN) ]]$ implies $[[uσ1|(uv uP → uN) = uσ2|(uv uP → uN)]]$.
+      By definition of substitution and congruence of equality, 
+      $[[ [uσ1](uP → uN) = [uσ2](uP → uN) ]]$
+      means $[[ [uσ1]uP = [uσ2]uP ]]$ and $[[ [uσ1]uN = [uσ2]uN ]]$.
+      Notice that $[[uP]]$ and $[[uN]]$ are normalized since $[[uP → uN]]$ is normalized, 
+      and well-formed in the same contexts.
+      This way, by the induction hypothesis, 
+      $[[uσ1|(uv uP) = uσ2|(uv uP)]]$ and $[[uσ1|(uv uN) = uσ2|(uv uN)]]$,
+      which since $[[uv (uP → uN) = uv uP ∪ uv uN]]$ implies
+      $[[uσ1|(uv uP → uN) = uσ2|(uv uP → uN)]]$.
+    \item $[[Γ; dom(Θ) ⊢ ↑uP]]$. The proof is similar to the previous case:
+      we apply congruence of substitution, equality, and normalization,
+      then the induction hypothesis, and then the fact that $[[uv (↑uP) = uv uP]]$.
+  \end{caseof}
 \end{proof}
 
+
+\begin{corollary}[Substitutions equivalent on the metavariables]
+  \label{lemma:subst-equiv-metavar}
+  Suppose that $[[uσ1]]$ and $[[uσ2]]$ are substitutions 
+  of signature $[[Θ ⊢ uσi]]$.
+  Then 
+  \begin{enumerate}
+    \item [$+$] for a type $[[Γ; dom(Θ) ⊢ uP]]$, if $[[Θ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ then
+      $[[Θ|uv uP ⊢ uσ1 ≈ uσ2]]$;
+    \item [$-$] for a type $[[Γ; dom(Θ) ⊢ uN]]$, if $[[Θ ⊢ [uσ1]uN ≈ [uσ2]uN]]$ then
+      $[[Θ|uv uN ⊢ uσ1 ≈ uσ2]]$.
+  \end{enumerate}
+\end{corollary}
+\begin{proof}
+  First, let us normalize the types and the substitutions, and show that
+  the given equivalences and well-formedness properties are preserved. 
+  $[[Γ; dom(Θ) ⊢ uP]]$ implies $[[Γ; dom(Θ) ⊢ nf(uP)]]$ by \cref{corollary:wf-nf-algo}.
+  $[[Θ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ implies $[[ nf([uσ1]uP) = nf([uσ2]uP)]]$ by 
+  \cref{lemma:subt-equiv-algorithmization}.
+  Then $[[ nf([uσ1]uP) = nf([uσ2]uP)]]$ implies 
+  $[[ [nf(uσ1)]nf(uP) = [nf(uσ2)]nf(uP)]]$ by \cref{lemma:norm-subst-distr}.
+  Notice that by \cref{corollary:norm-subst-sig-algo}
+  $[[Θ ⊢ uσi]]$ implies $[[Θ ⊢ nf(uσi)]]$.
+
+  This way, by \cref{lemma:subst-eq-metavar}, 
+  $[[Θ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ implies 
+  $[[nf(uσ1)|(uv nf(uP)) = nf(uσ2)|(uv nf(uP))]]$.
+  Then by \cref{lemma:uv-nf}, 
+  $[[nf(uσ1)|(uv uP) = nf(uσ2)|(uv uP)]]$,
+  and by ${{corollary:subst-subt-equiv-algorithmization}}$,
+  $[[Θ|uv uP ⊢ uσ1 ≈ uσ2]]$.
+
+  Symmetrically, 
+  $[[Θ ⊢ [uσ1]uN ≈ [uσ2]uN]]$ implies 
+  $[[Θ|uv uN ⊢ uσ1 ≈ uσ2]]$.
+\end{proof}
 
 \begin{lemma}[Substitution composition well-formedness]
   If $[[Γ'1 ⊢ σ1 : Γ1]]$ and $[[Γ'2 ⊢ σ2 : Γ2]]$,

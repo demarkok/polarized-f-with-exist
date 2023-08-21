@@ -43,62 +43,60 @@ defns
   WFAT :: 'WFAT' ::=
 
 
-  defn Γ ; Θ ⊢ uN  :: :: NuWF :: '' {{ com Negative unification type well-formedness }} by
+  
+
+  defn G ; Ξ ⊢ uN  :: :: NauWF :: '' {{ com Negative algorithmic type well-formedness }} by
 
     α⁻ ∊ {Γ}
     --------- :: NVar
-    Γ; Θ ⊢ α⁻ 
+    Γ; Ξ ⊢ α⁻ 
 
-
-    α̂⁻ ∊ Θ
+    α̂⁻ ∊ Ξ
     ----------- :: NUVar
-    Γ; Θ ⊢ α̂⁻
+    Γ; Ξ ⊢ α̂⁻
 
-
-    Γ; Θ ⊢ uP
+    Γ; Ξ ⊢ uP
     --------- :: ShiftU
-    Γ; Θ ⊢ ↑uP
+    Γ; Ξ ⊢ ↑uP
 
-    Γ; Θ ⊢ uP    Γ; Θ ⊢ uN
+    Γ; Ξ ⊢ uP    Γ; Ξ ⊢ uN
     ----------------------- :: Arrow
-    Γ; Θ ⊢ uP → uN
+    Γ; Ξ ⊢ uP → uN
 
-    Γ, pas; Θ ⊢ uN
+    Γ, pas; Ξ ⊢ uN
     ------------ :: Forall
-    Γ; Θ ⊢ ∀pas.uN
+    Γ; Ξ ⊢ ∀pas.uN
 
-  defn Γ ; Θ ⊢ uP  :: :: PuWF :: '' {{ com Positive unifiication type well-formedness }} by
+  defn G ; Ξ ⊢ uP  :: :: PauWF :: '' {{ com Positive algorithmic type well-formedness }} by
 
     α⁺ ∊ {Γ}
     --------- :: PVar
-    Γ; Θ ⊢ α⁺
+    Γ; Ξ ⊢ α⁺
 
-    α̂⁺ ∊ Θ
+    α̂⁺ ∊ Ξ
     ---------- :: PUVar
-    Γ; Θ ⊢ α̂⁺
+    Γ; Ξ ⊢ α̂⁺
 
-    Γ; Θ ⊢ uN
+    Γ; Ξ ⊢ uN
     ----------- :: ShiftD
-    Γ; Θ ⊢ ↓uN
+    Γ; Ξ ⊢ ↓uN
 
-    Γ, nas; Θ ⊢ uP
+    Γ, nas; Ξ ⊢ uP
     --------------- :: Exists
-    Γ; Θ ⊢ ∃nas.uP
+    Γ; Ξ ⊢ ∃nas.uP
 
-  
-
-  defn G ; Ξ ⊢ uN  :: :: NauWF :: '' {{ com Negative anti-unification type well-formedness }} by
-  defn G ; Ξ ⊢ uP  :: :: PauWF :: '' {{ com Positive anti-unification type well-formedness }} by
 
   defn  Γ ; Ξ2 ⊢ aus : Ξ1 :: :: AUSWF :: '' {{ com Antiunification substitution well-formedness }} by
   % defn  us : Θ :: :: USWF :: '' {{ com Unification substitution well-formedness }} by
   defn  G ⊢ Θ :: :: UCtxtWF :: '' {{ com Unification context well-formedness }} 
                                   {{ tex [[G]] \vdash^{\supseteq}[[Θ]] }} by
 
-  defn  Γ1 ⊢ σ : Γ2 :: :: SWF :: '' {{ com Substitution well-formedness }} by
-  defn  Θ ⊢ uσ :: :: USWF :: '' {{ com Unification substitution well-formedness }} by
-  defn  Θ ⊢ uσ : UC :: :: USUCWF :: '' {{ com Unification substitution satisfies unification constraint }} by
-  defn  Θ ⊢ uσ : SC :: :: USSCWF :: '' {{ com Unification substitution satisfies subtyping constraint }} by
+  defn  Γ1 ⊢ σ : Γ2 :: :: SWF :: '' {{ com Substitution signature}} by
+  defn  Θ ⊢ uσ :: :: USWF :: '' {{ com Unification substitution signature }} by
+  defn  ( Θ ⊢ UC ) ⊢ uσ :: :: USUCWF :: '' {{ com Unification substitution satisfies unification constraint }} by
+  defn  ( Θ ⊢ SC ) ⊢ uσ :: :: USSCWF :: '' {{ com Unification substitution satisfies subtyping constraint }} by
+
+  defn  Γ ⊢ uσ : Ξ :: :: USWFG :: '' {{ com Unification substitution general signature }} by
 
   defn Γ ⊢ ucE :: :: UEWF :: '' {{ com Unification constraint entry well-formedness }}  by
   defn Γ ⊢ scE :: :: SEWF :: '' {{ com Subtyping constraint entry well-formedness }}  by

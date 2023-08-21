@@ -86,7 +86,7 @@
   We prove it by
   $\size{[[iP1 ≈ iP2]]} + \size{[[iP2 ≈ iP3]]}$
   and mutually, $\size{[[iN1 ≈ iN2]]} + \size{[[iN2 ≈ iN3]]}$, where
-  by size we mean the size of the nodes in the corresponding inference tree.
+  by size, we mean the size of the nodes in the corresponding inference tree.
 
   \begin{caseof}
     \item First, let us consider the case when either 
@@ -168,7 +168,7 @@
 
 \begin{lemma}[Algorithmization of declarative equivalence]
   \label{lemma:decl-equiv-algorithmization}
-  Declarative equivalence is equality of normal forms. 
+  Declarative equivalence is the equality of normal forms. 
   \begin{itemize}
     \item[$+$] $[[iP ≈ iQ]] \iff [[nf(iP) = nf(iQ)]]$,
     \item[$-$] $[[iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$.
@@ -258,15 +258,15 @@
   \label{lemma:wf-equiv-algo}
   Mutual subtyping implies declarative equivalence.
   \begin{itemize}
-  \item[$+$] if $[[uP ≈ uQ]]$ then $[[Γ; Θ ⊢ uP]] \iff [[Γ; Θ ⊢ uQ]]$,
-  \item[$-$] if $[[uN ≈ uM]]$ then $[[Γ; Θ ⊢ uN]] \iff [[Γ; Θ ⊢ uM]]$
+  \item[$+$] if $[[uP ≈ uQ]]$ then $[[Γ; Ξ ⊢ uP]] \iff [[Γ; Ξ ⊢ uQ]]$,
+  \item[$-$] if $[[uN ≈ uM]]$ then $[[Γ; Ξ ⊢ uN]] \iff [[Γ; Ξ ⊢ uM]]$
   \end{itemize}
 \end{lemma}
 \begin{proof}
   The proof coincides with the proof of \cref{lemma:wf-equiv},
   and adds two cases for equating two positive or two negative metavariables,
   which must be equal by inversion, and thus, 
-  $[[Γ; Θ ⊢ α̂±]] \iff [[Γ;  ⊢ α̂±]]$ holds trivially.
+  $[[Γ; Ξ ⊢ α̂±]] \iff [[Γ; Ξ  ⊢ α̂±]]$ holds trivially.
 \end{proof}
 
 \begin{corollary}[Normalization preserves well-formedness]
@@ -286,7 +286,7 @@
   Suppose that $[[σ]]$ is a substitution, $[[Γ1]]$ and $[[Γ2]]$ are contexts.
   Then $[[Γ2 ⊢ σ : Γ1]]$ implies $[[Γ2 ⊢ nf(σ) : Γ1]]$.
 \end{lemma}
-\being{proof}
+\begin{proof}
   Suppose that $[[α± ∊ {Γ1}]]$. 
   Then by \cref{corollary:wf-nf}, $[[Γ2 ⊢ nf([σ]α±)]] = [[ [nf(σ)]α± ]]$ 
   is equivalent to $[[Γ2 ⊢ [σ]α±]]$.
@@ -301,8 +301,8 @@
 \begin{corollary}[Normalization preserves well-formedness of algorithmic types]
   \label{corollary:wf-nf-algo}
   \begin{itemize}
-    \item[$+$] $[[Γ; Θ ⊢ uP]] \iff [[Γ; Θ ⊢ nf(uP)]]$,
-    \item[$-$] $[[Γ; Θ ⊢ uN]] \iff [[Γ; Θ ⊢ nf(uN)]]$
+    \item[$+$] $[[Γ; Ξ ⊢ uP]] \iff [[Γ; Ξ ⊢ nf(uP)]]$,
+    \item[$-$] $[[Γ; Ξ ⊢ uN]] \iff [[Γ; Ξ ⊢ nf(uN)]]$
   \end{itemize}
 \end{corollary}
 \begin{proof}
@@ -325,14 +325,17 @@
   The backward direction is proved analogously.
 \end{proof}
 
-\begin{corollary}
-  \label{corollary:wf-s-nf-algo}
+\begin{corollary}[Normalization preserves the signature of the algorithmic substitution]
+  \label{corollary:norm-subst-sig-algo}
   \hfill \\
-  $[[Θ ⊢ uσ]] \iff [[Θ ⊢ nf(σ)]]$
+  $[[Θ ⊢ uσ]] \iff [[Θ ⊢ nf(uσ)]]$ and
+  $[[Γ ⊢ uσ : Ξ]] \iff [[Γ ⊢ nf(uσ) : Ξ]]$.
 \end{corollary}
 \begin{proof}
   The proof is analogous to \cref{corollary:wf-s-nf}.
 \end{proof}
+
+
 
 \begin{lemma}[Soundness of equivalence]
   \label{lemma:equiv-soundness}
@@ -909,7 +912,14 @@
   \end{itemize}
 \end{proof}
 
-
+\begin{corollary}[Algorithmic substitution equivalence becomes equality after normalization]
+  \label{corollary:subst-subt-equiv-algorithmization}
+  Suppose that $[[Θ ⊢ uσ1]]$ and $[[Θ ⊢ uσ2]]$ are algorithmic substitutions.
+  Then
+  $[[Θ ⊢ uσ1 ≈ uσ2]] \iff [[nf(uσ1)|dom(Θ) = nf(uσ2)|dom(Θ)]]$
+  and 
+  $[[Γ ⊢ uσ1 ≈ uσ2 : Ξ]] \iff [[nf(uσ1)|Ξ = nf(uσ2)|Ξ]]$.
+\end{corollary}
 
 \begin{lemma}[Substitution preserves declarative equivalence]
   \label{corollary:subst-pres-equiv}

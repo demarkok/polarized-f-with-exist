@@ -20,8 +20,21 @@
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  By straightforward induction on $[[nf(iN) = iM]]$.
+  By straightforward induction on $[[iN]]$ and mutually on $[[iP]]$.
 \end{proof}
+
+\begin{lemma}
+  \label{lemma:uv-nf}
+  Algorithmic variables are not changed by the normalization
+  \begin{itemize}
+  \item[$-$] $[[uv uN]] \equiv [[uv nf(uN)]]$
+  \item[$+$] $[[uv uP]] \equiv [[uv nf(uP)]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  By straightforward induction on $[[uN]]$ and mutually on $[[uP]]$.
+\end{proof}
+
 
 \begin{lemma}[Soundness of normalization]
   \label{lemma:normalization-soundness}
@@ -274,7 +287,6 @@
     \end{cases} $
   \end{itemize}
 \end{lemma}
-
 \begin{proof}
   Mutual induction on $[[Γ1 ⊢ iP]]$ and $[[Γ1 ⊢ iN]]$.
   \begin{caseof}
@@ -357,3 +369,6 @@
 
   \end{caseof}
 \end{proof}
+
+
+

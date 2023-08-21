@@ -169,12 +169,12 @@
 \begin{lemma}[Soundness of Singularity]
     \label{lemma:singularity-soundness}
     Suppose $[[Θ ⊢ SC]]$, and $[[SC singular with uσ]]$. 
-    Then $[[Θ ⊢ uσ : SC]]$ and for any 
-    $[[uσ']]$ such that $[[Θ ⊢ uσ' : SC]]$,
-    $[[Θ ⊢ uσ' ≈ uσ : dom(SC)]]$.
+    Then $[[(Θ  ⊢  SC) ⊢ uσ]]$ and for any 
+    $[[uσ']]$ such that $(Θ  ⊢ SC) ⊢ uσ'$,
+    $[[Θ|dom(SC) ⊢ uσ' ≈ uσ]]$.
 \end{lemma}
 \begin{proof}
-    Suppose that $[[Θ ⊢ uσ' : SC]]$.
+    Suppose that $(Θ  ⊢ SC) ⊢ uσ'$.
     It means that for every $[[scE]] \in [[SC]]$ restricting $[[α̂±]]$,
     $[[Θ(α̂±) ⊢ [uσ']α̂± : scE]]$ holds.
     $[[SC singular with uσ]]$ means $[[scE singular with [uσ]α̂± ]]$,
@@ -187,8 +187,11 @@
 
 \begin{lemma}[Completeness of Singularity]
     \label{lemma:singularity-completeness}
-    Suppose there exists $[[Θ ⊢ uσ1]]$ such that
-    for any $[[Θ ⊢ uσ]]$, $[[Θ ⊢ uσ : SC]]$ implies $[[Θ ⊢ uσ ≈ uσ1 : varset]]$.
+    For a given $[[Θ ⊢ SC]]$
+    and $[[varset ⊆ dom(Θ)]]$,
+    suppose that all the substitutions satisfying $[[SC]]$ are equivalent,
+    in other words, suppose that there exists $[[Θ ⊢ uσ1]]$ such that
+    for any $[[Θ ⊢ uσ]]$, $[[(Θ  ⊢  SC) ⊢ uσ]]$ implies $[[Θ|varset ⊢ uσ ≈ uσ1]]$.
     Then 
     \begin{itemize}
         \item $[[SC|varset singular with uσ0]]$ for some $[[uσ0]]$, and
@@ -196,4 +199,33 @@
     \end{itemize} 
 \end{lemma}
 \begin{proof}
+    First, let us suppose that $[[varset ⊆ dom(SC)]]$ does not hold.
+    It means that there exists $[[ α̂±[Γ] ∊ Θ]]$ and $[[α̂± ∉ dom(SC)]]$
+
+    By \cref{lemma:constraint-sat}, let us take an arbitrary 
+    $[[uσ']]$ satisfying $[[SC]]$ (that is $[[(Θ  ⊢  SC) ⊢ uσ']]$).
+    Let us extend $[[uσ']]$ to $[[uσ'']]$ so that $[[Θ ⊢ uσ'']]$.
+
+    Although $[[uσ']]$ might not be defined on 
+    
+    
+
+    such that for any $[[Θ ⊢ uσ]]$, $[[(Θ  ⊢  SC) ⊢ uσ]]$ implies 
+    $[[ Γ ⊢ [uσ]α̂± ≈ [uσ1]α̂± ]]$.
+    Let us take 
+
+
+    for any $[[Θ ⊢ uσ]]$, $[[(Θ  ⊢  SC) ⊢ uσ]]$ implies $[[Θ|varset ⊢ uσ ≈ uσ1]]$.
+
+
 \end{proof}
+
+
+        \item [$-$] Suppose that there exists $[[iN]]$ well-formed in $[[Γ]]$ 
+            such that for any $[[iN']]$ well-formed in $[[Γ]]$,
+            $[[Γ ⊢ iN' : scE]]$ implies $[[Γ ⊢ iN' ≈ iN]]$. 
+            Then $[[scE singular with nf(iN)]]$.
+        \item [$+$] Suppose that there exists $[[iP]]$ well-formed in $[[Γ]]$ 
+            such that for any $[[iP']]$ well-formed in $[[Γ]]$,
+            $[[Γ ⊢ iP' : scE]]$ implies $[[Γ ⊢ iP' ≈ iP]]$. 
+            Then $[[scE singular with nf(iP)]]$ .

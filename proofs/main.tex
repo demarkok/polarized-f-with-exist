@@ -196,6 +196,7 @@ $[[args]]$ is a list of values, which are arguments of a function.
 $[[fv(iP)]]$ and $[[fv(iN)]]$ denote the set of free variables 
 in a type $[[iP]]$ and $[[iN]]$, respectively.
 
+
 \bigskip
 
 \ottgrammartabular{
@@ -204,6 +205,116 @@ in a type $[[iP]]$ and $[[iN]]$, respectively.
   \ottv\ottinterrule
   \ottc\ottinterrule
 }
+
+
+\subsection{Equalities}
+For simplicity, assume alpha-equivalent terms equal. 
+This way, we assume that substitutions do not capture bound variables.
+Besides, we equate
+$[[∀pas.∀pbs.iN]]$ with $[[∀pas,pbs.iN]]$, 
+as well as $[[∃nas.∃nbs.iP]]$ with $[[∃nas,nbs.iP]]$,
+and lift these equations transitively and congruently 
+to the whole system.
+
+\subsection{Contexts}
+
+\begin{definition}[Declarative Type Context]
+  \hfill \\
+  Declarative type context $[[Γ]]$ is represented by a set of 
+  type variables. The concatenation $[[Γ1, Γ2]]$ means the 
+  union of two contexts  $[[{Γ1} ∪ {Γ2}]]$.
+\end{definition}
+
+
+\subsection{Substitutions}
+
+\begin{definition}[Substitution]
+  Substitutions (denoted as $[[σ]]$) 
+  are represented by total functions form variables to types, preserving the polarity. 
+\end{definition}
+
+\begin{definition}[Substitution Application]
+  Substitution application (denoted as $[[ [σ]iP ]]$ or $[[ [σ]iN ]]$) 
+  is defined congruently as follows:
+  \begin{itemize}
+    \item $[[ [σ]α⁺ ]] = [[σ]] ([[α⁺]])$;
+    \item $[[ [σ]α⁻ ]] = [[σ]] ([[α⁻]])$;
+    \item $[[ [σ]↓iN ]] = [[↓[σ]iN]]$;
+    \item $[[ [σ]↑iP ]] = [[↑[σ]iP]]$;
+    \item $[[ [σ]∃nas.iQ ]] = [[∃nas.[σ]iQ]]$, 
+    \item $[[ [σ]∀pas.iN ]] = [[∀pas.[σ]iN]]$(here we assume that $[[nas]]$ and $[[pas]]$ are lists of fresh variables, 
+      that is the variable capture never happens);
+    \item $[[ [σ](iP → iN) ]] = [[ [σ]iP → [σ]iN ]]$.
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Substitution Signature]
+  The signature $[[Γ' ⊢ σ : Γ]]$ means that
+  \begin{enumerate}
+    \item for any $[[α± ∊ {Γ}]], [[ Γ' ⊢ [σ]α± ]]$; and
+    \item for any $[[α± ∉ {Γ'}]], [[ [σ]α± = α± ]]$.
+  \end{enumerate}
+\end{definition}
+
+A substitution can be restricted to a set of variables. 
+The restricted substitution is define as expected. 
+\begin{definition}[Subsitution Restriction]
+  The specification $[[σ  | varset]]$ is defined as
+  a function such that 
+  \begin{enumerate}
+    \item $[[σ|varset]]([[α± ]]) = [[σ]]([[α± ]])$, if $[[α± ]] \in [[varset]]$; and
+    \item $[[σ|varset]]([[α± ]]) = [[α± ]]$, if $[[α± ]] \notin [[varset]]$.
+  \end{enumerate}
+\end{definition}
+
+Two substitutions can be composed in two ways:
+$[[σ2 ○ σ1]]$ corresponds to a consecutive application of $[[σ1]]$ and $[[σ2]]$,
+while $[[σ2 <=< σ1]]$
+depends on a signature of $[[σ1]]$ and modifies $[[σ1]]$ by applying
+$[[σ2]]$ to its results on the domain.
+\begin{definition}[Substitution Composition]
+  $[[σ2 ○ σ1]]$ is defined as a function such that
+  $[[σ2 ○ σ1]]([[α± ]]) = [[σ2]]([[σ1]]([[α± ]]))$.
+\end{definition}
+
+\begin{definition}[Monadic Substitution Composition]
+  Suppose that $[[Γ' ⊢ σ1 : Γ]]$.
+  Then we define $[[σ2 <=< σ1]]$ as $[[(σ2 ○ σ1)|{Γ}]]$.
+\end{definition}
+Notice that the result of $[[σ2 <=< σ1]]$ depends on the 
+specification of $[[σ1]]$, which is not unique. 
+However, we assume that the used specification clear from the 
+context of the proof. 
+
+\begin{definition}[Equivalent Substitutions]
+  The substitution equivalence judgement $[[Γ' ⊢ σ1 ≈ σ2 : Γ]]$ 
+  indicates that on the domain $[[Γ]]$, 
+  the result of $[[σ1]]$ and $[[σ2]]$ are equivalent in context $[[Γ']]$.
+  Formally, for any $[[α± ∊ {Γ}]], [[ Γ' ⊢ [σ1]α± ≈ [σ2]α± ]]$.
+\end{definition}
+
+Sometimes it is convenient to construct substitution 
+explicitly mapping each variable from a list (or a set)
+to a type. Such substitutions are denoted as $[[iPs / pas]]$
+and $[[iNs / nas]]$, where $[[iPs]]$ and $[[iNs]]$ are lists of 
+the corresponding types.
+\begin{definition}[Explicit Substitution]
+  \hfill
+  \begin{itemize}
+    \item [$-$]
+      Suppose that $[[nas]]$ is a list of negative type variables,
+      and $[[iNs]]$ is a list of negative types of the same length 
+      Then $[[iNs / nas]]$ denotes a substitution such that 
+      \begin{enumerate}
+        \item for $[[αi⁺ ∊ {nas}]]$, $[[ [iNs / nas] αi⁺]] = [[iNi]]$;
+        \item for $[[β⁺ ∉ {nas}]]$, $[[ [iNs / nas] β⁺]] = [[β⁺]]$.
+      \end{enumerate}
+    \item [$+$]
+      Positive explicit substitution $[[iPs / pas]]$
+      is defined symmetrically.
+  \end{itemize}
+\end{definition}
+
 
 \subsection{Declarative Typing}
 \ottdefnsDT
@@ -222,7 +333,6 @@ in a type $[[iP]]$ and $[[iN]]$, respectively.
 
 \subsection{Grammar}
 
-\subsubsection{Variables and Types}
 In the algorithmic system, we extend the grammar of types
 by adding positive and negative \emph{algorithmic variables}
 ($[[α̂⁺]]$, $[[β̂⁺]]$, $[[γ̂⁺]]$, etc. and $[[α̂⁻]]$, $[[β̂⁻]]$, $[[γ̂⁻]]$, etc.).
@@ -230,6 +340,7 @@ They represent the unknown types, which will be inferred by the algorithm.
 This way, we add two base cases to the grammar of 
 positive and negative types, and use highlight to denote that the type
 can potentially contain algorithmic variables.
+
  
 \begin{definition}[Algorithmic Types]
   \hfill \\
@@ -239,23 +350,41 @@ can potentially contain algorithmic variables.
 }
 \end{definition}
 
-\subsubsection{Contexts}
+\subsection{Algorithmic Renaming}
 
-Unannotated set of algorithmic variables is denoted as $[[Ξ]]$,
-and it is used in the anti-unification algorithm.
+In several places of our algorithm, 
+we turn a declarative type into the algorithmic one
+via replacing certain type variables with fresh algorithmic variables.
+This is done via algorithmic renaming
+
+\begin{definition}
+  Suppose that $[[nas]]$ is a list of negative type variables, 
+
+
+\subsection{Contexts}
+
+\begin{definition}[Algorithmic Type Context]
+  \hfill \\
+  Algorithmic type context $[[Ξ]]$ is represented by a set of 
+  \emph{algorithmic} type variables ($[[α̂⁺]]$, $[[α̂⁻]]$, $[[β̂⁺]]$, \dots).
+\end{definition}
+
 $[[Γ ; Ξ ⊢ uP]]$ and $[[Γ ; Ξ ⊢ uN]]$ are used to denote
 that the algorithmic type is well-formed in the contexts
 $[[Γ]]$ and $[[Ξ]]$, which means that each algorithmic variable
-of the type is contained in $[[Ξ]]$, and each free non-algorithmic type variable
+of the type is contained in $[[Ξ]]$, and each free declarative type variable
 of the type is contained in $[[Γ]]$.
 
-Typically each algorithmic variable is associated with a
+Algorithmic Type Context are used in the unification algorithm.
+In the subtyping algorithm, 
+the context needs to remember additional information.
+In the subtyping context, each algorithmic variable is associated with a
 context it must be instantiated in 
 (i.e. the context in which the type replacing the variable must be well-formed).
-This association is represented by an \emph{algorithmic variable context} $[[Θ]]$.
-\begin{definition}[Algorithmic Context]
+This association is represented by \emph{algorithmic subtyping context} $[[Θ]]$.
+\begin{definition}[Algorithmic Subtyping Context]
   \hfill \\
-  Algorithmic Context $[[Θ]]$ is represented by a set of 
+  Algorithmic Subtyping Context $[[Θ]]$ is represented by a set of 
   entries of form $[[ α̂⁺[Γ] ]]$ and $[[ α̂⁻[Γ] ]]$,
   where $[[α̂⁺]]$ and $[[α̂⁻]]$ are algorithmic variables,
   and $[[Γ]]$ is a context in which they must be instantiated.
@@ -266,7 +395,7 @@ This association is represented by an \emph{algorithmic variable context} $[[Θ]
   $[[dom(Θ)]] = \{ [[α̂±]] \mid [[α̂±[Γ] ]] \in [[Θ]] \}$.
 \end{definition}
 
-\subsubsection{Subsitutions}
+\subsection{Subsitutions}
 
 Substitution that operates on algorithmic type variables is denoted as
 $[[uσ]]$. It is defined as a total function from algorithmic 
@@ -303,7 +432,6 @@ variable appearing in $[[Ξ1]]$ to a term well-formed in $[[Γ]]$ and $[[Ξ2]]$.
     \item for any $[[ α̂⁻ ∉ Ξ1]]$, $[[ [aus]α̂⁻ = α̂⁻ ]]$.
   \end{enumerate}
 \end{definition}
-
 
 \subsection{Normalization}
 
@@ -435,67 +563,6 @@ can be merged in the following way:
 \input{../_build/_gen/tex/wf-lemmas.tex}
 
 \subsection{Substitution}
-
-\begin{definition}[Substitution]
-  Substitutions (denoted as $[[σ]]$) 
-  are represented by total functions form variables to types, preserving the polarity. 
-\end{definition}
-
-\begin{definition}[Substitution Application]
-  Substitution application (denoted as $[[ [σ]iP ]]$ or $[[ [σ]iN ]]$) 
-  is defined congruently as follows:
-  \begin{itemize}
-    \item $[[ [σ]α⁺ ]] = [[σ]] ([[α⁺]])$;
-    \item $[[ [σ]α⁻ ]] = [[σ]] ([[α⁻]])$;
-    \item $[[ [σ]↓iN ]] = [[↓[σ]iN]]$;
-    \item $[[ [σ]↑iP ]] = [[↑[σ]iP]]$;
-    \item $[[ [σ]∃nas.iQ ]] = [[∃nas.[σ]iQ]]$, 
-    \item $[[ [σ]∀pas.iN ]] = [[∀pas.[σ]iN]]$(here we assume that $[[nas]]$ and $[[pas]]$ are lists of fresh variables, 
-      that is the variable capture never happens);
-    \item $[[ [σ](iP → iN) ]] = [[ [σ]iP → [σ]iN ]]$.
-  \end{itemize}
-\end{definition}
-
-\begin{definition}[Substitution Signature]
-  The signature $[[Γ' ⊢ σ : Γ]]$ means that
-  \begin{enumerate}
-    \item for any $[[α± ∊ {Γ}]], [[ Γ' ⊢ [σ]α± ]]$; and
-    \item for any $[[α± ∉ {Γ'}]], [[ [σ]α± = α± ]]$.
-  \end{enumerate}
-\end{definition}
-
-A substitution can be restricted to a set of variables. 
-The restricted substitution is define as expected. 
-\begin{definition}[Subsitution Restriction]
-  The specification $[[σ  | varset]]$ is defined as
-  a function such that 
-  \begin{enumerate}
-    \item $[[σ|varset]]([[α± ]]) = [[σ]]([[α± ]])$, if $[[α± ]] \in [[varset]]$; and
-    \item $[[σ|varset]]([[α± ]]) = [[α± ]]$, if $[[α± ]] \notin [[varset]]$.
-  \end{enumerate}
-\end{definition}
-
-Two substitutions can be composed in two ways:
-$[[σ2 ○ σ1]]$ corresponds to a consecutive application of $[[σ1]]$ and $[[σ2]]$,
-while $[[σ2 <=< σ1]]$
-depends on a signature of $[[σ1]]$ and modifies $[[σ1]]$ by applying
-$[[σ2]]$ to its results on the domain.
-\begin{definition}[Substitution Composition]
-  $[[σ2 ○ σ1]]$ is defined as a function such that
-  $[[σ2 ○ σ1]]([[α± ]]) = [[σ2]]([[σ1]]([[α± ]]))$.
-\end{definition}
-
-\begin{definition}[Monadic Substitution Composition]
-  Suppose that $[[Γ' ⊢ σ1 : Γ]]$.
-  Then we define $[[σ2 <=< σ1]]$ as $[[(σ2 ○ σ1)|{Γ}]]$.
-\end{definition}
-
-\begin{definition}[Equivalent Substitutions]
-  The substitution equivalence judgement $[[Γ' ⊢ σ1 ≈ σ2 : Γ]]$ 
-  indicates that on the domain $[[Γ]]$, 
-  the result of $[[σ1]]$ and $[[σ2]]$ are equivalent in context $[[Γ']]$.
-  Formally, for any $[[α± ∊ {Γ}]], [[ Γ' ⊢ [σ1]α± ≈ [σ2]α± ]]$.
-\end{definition}
 
 
 \input{../_build/_gen/tex/subst-lemmas.tex}
