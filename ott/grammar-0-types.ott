@@ -115,6 +115,7 @@ us {{ tex \widehat{\sigma} }}, uσ {{ tex \widehat{\sigma} }} :: 'us_' ::= {{ co
    | iPs / puas          ::   :: PosSubs 
    | iNs / nuas          ::   :: NegSubs
    | ( uσ )               :: S :: paren
+   | uσ1 ○ uσ2           ::   :: Compose
    | </ uσi // , // i />  ::   :: concat  {{ com concatenate }}
 
 grammar
@@ -414,8 +415,9 @@ uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive alg
    | ↓ uN          ::   :: Shift
    | ∃ nas . uP    ::   :: Exists
    | [ s ] uP      :: M :: AppSub  
-   | [ aus ] uP    :: M :: AppUSub  
+   | [ aus ] uP    :: M :: AppAUSub  
    | [ mu ] uP     :: M :: AppMoving 
+   | [ uσ ] uP     :: M :: AppUSub  
    | [ nuas / nas ] iP :: M :: AppAUNSub
    | ( uP )        :: S :: Paren
 
@@ -427,8 +429,9 @@ uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative al
    | uP → uN        ::   :: Fun
    | ∀ pas . uN     ::   :: Forall
    | [ s ] uN       :: M :: AppSub 
-   | [ aus ] uN     :: M :: AppUSub
+   | [ aus ] uN     :: M :: AppAUSub
    | [ mu ] uN      :: M :: AppMoving
+   | [ uσ ] uN      :: M :: AppUSub
    | [ nuas / nas ] iN :: M :: AppAUNSub
    | ( uN )         :: S :: Paren
 

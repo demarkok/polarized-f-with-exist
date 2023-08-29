@@ -92,11 +92,11 @@ defns
                                   {{ tex [[G]] \vdash^{\supseteq}[[Θ]] }} by
 
   defn  Γ1 ⊢ σ : Γ2 :: :: SWF :: '' {{ com Substitution signature}} by
-  defn  Θ ⊢ uσ :: :: USWF :: '' {{ com Unification substitution signature }} by
-  defn  ( Θ ⊢ UC ) ⊢ uσ :: :: USUCWF :: '' {{ com Unification substitution satisfies unification constraint }} by
-  defn  ( Θ ⊢ SC ) ⊢ uσ :: :: USSCWF :: '' {{ com Unification substitution satisfies subtyping constraint }} by
-
+  defn  Θ ⊢ uσ : Ξ :: :: USWF :: '' {{ com Unification substitution signature }} by
   defn  Γ ⊢ uσ : Ξ :: :: USWFG :: '' {{ com Unification substitution general signature }} by
+  defn  Θ ⊢ uσ : UC :: :: USUCWF :: '' {{ com Unification substitution satisfies unification constraint }} by
+  defn  Θ ⊢ uσ : SC :: :: USSCWF :: '' {{ com Unification substitution satisfies subtyping constraint }} by
+
 
   defn Γ ⊢ ucE :: :: UEWF :: '' {{ com Unification constraint entry well-formedness }}  by
   defn Γ ⊢ scE :: :: SEWF :: '' {{ com Subtyping constraint entry well-formedness }}  by
@@ -106,6 +106,9 @@ defns
 
   defn Γ ⊢ iP : scE  :: :: PSCWF :: '' {{ com Positive type satisfies subtyping constraint }} by
   defn Γ ⊢ iN : scE :: :: NSCWF :: '' {{ com Negative type satisfies subtyping constraint }} by
+
+  defn Θ ⊢ UC : Ξ :: :: UCWFSp :: '' {{ com Unification constraint well-formedness with specified domain }} by
+  defn Θ ⊢ SC : Ξ :: :: SCWFSp :: '' {{ com Subtyping constraint well-formedness with specified domain }} by
 
   defn Θ ⊢ UC :: :: UCWF :: '' {{ com Unification constraint well-formedness }} by
   defn Θ ⊢ SC :: :: SCWF :: '' {{ com Subtyping constraint well-formedness }} by

@@ -69,7 +69,7 @@ defns
   {{ com Equivalence of substitutions }}
   {{ tex [[Γ]] [[⊢]] [[σ1]] \eqDOne [[σ2]] : [[varset]] }} by
 
-  defn Θ ⊢ uσ1 ≈ uσ2  :: :: USubsEq :: 'USubsEq'
+  defn Θ ⊢ uσ1 ≈ uσ2 : varset :: :: USubsEq :: 'USubsEq'
   {{ com Equivalence of unification substitutions }}
   {{ tex [[Θ]] [[⊢]] [[uσ1]] \eqDOne [[uσ2]] : [[varset]] }} by
 

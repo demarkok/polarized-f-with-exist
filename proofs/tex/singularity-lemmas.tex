@@ -168,10 +168,11 @@
 
 \begin{lemma}[Soundness of Singularity]
     \label{lemma:singularity-soundness}
-    Suppose $[[Θ ⊢ SC]]$, and $[[SC singular with uσ]]$. 
-    Then $[[(Θ  ⊢  SC) ⊢ uσ]]$ and for any 
-    $[[uσ']]$ such that $(Θ  ⊢ SC) ⊢ uσ'$,
-    $[[Θ|dom(SC) ⊢ uσ' ≈ uσ]]$.
+    Suppose $[[Θ ⊢ SC : Ξ]]$, and $[[SC singular with uσ]]$. 
+    Then $[[ Θ ⊢ uσ : Ξ ]]$,
+     $[[ Θ ⊢ uσ : SC ]]$ and for any 
+    $[[uσ']]$ such that $[[Θ ⊢ uσ : SC]]$,
+    $[[Θ ⊢ uσ' ≈ uσ : Ξ]]$.
 \end{lemma}
 \begin{proof}
     Suppose that $(Θ  ⊢ SC) ⊢ uσ'$.
@@ -187,15 +188,16 @@
 
 \begin{lemma}[Completeness of Singularity]
     \label{lemma:singularity-completeness}
-    For a given $[[Θ ⊢ SC]]$
-    and $[[varset ⊆ dom(Θ)]]$,
-    suppose that all the substitutions satisfying $[[SC]]$ are equivalent,
-    in other words, suppose that there exists $[[Θ ⊢ uσ1]]$ such that
-    for any $[[Θ ⊢ uσ]]$, $[[(Θ  ⊢  SC) ⊢ uσ]]$ implies $[[Θ|varset ⊢ uσ ≈ uσ1]]$.
+    For a given $[[Θ ⊢ SC : Ξ]]$,
+    suppose that all the substitutions satisfying $[[SC]]$ are equivalent
+    on $[[Ξ']] \supseteq [[Ξ]]$.
+    In other words, suppose that there exists $[[Θ ⊢ uσ1 : Ξ']]$ such that
+    for any $[[Θ ⊢ uσ : Ξ']]$, $[[Θ ⊢ uσ : SC]]$ implies 
+    $[[Θ ⊢ uσ ≈ uσ1 : Ξ']]$.
     Then 
     \begin{itemize}
-        \item $[[SC|varset singular with uσ0]]$ for some $[[uσ0]]$, and
-        \item $[[varset ⊆ dom(SC)]]$.
+        \item $[[SC singular with uσ0]]$ for some $[[uσ0]]$ and
+        \item $[[Ξ']] = [[Ξ]]$.
     \end{itemize} 
 \end{lemma}
 \begin{proof}
@@ -203,19 +205,19 @@
     It means that there exists $[[ α̂±[Γ] ∊ Θ]]$ and $[[α̂± ∉ dom(SC)]]$
 
     By \cref{lemma:constraint-sat}, let us take an arbitrary 
-    $[[uσ']]$ satisfying $[[SC]]$ (that is $[[(Θ  ⊢  SC) ⊢ uσ']]$).
+    $[[uσ']]$ satisfying $[[SC]]$ (that is $[[ Θ   ⊢ uσ' : SC ]]$).
     Let us extend $[[uσ']]$ to $[[uσ'']]$ so that $[[Θ ⊢ uσ'']]$.
 
     Although $[[uσ']]$ might not be defined on 
     
     
 
-    such that for any $[[Θ ⊢ uσ]]$, $[[(Θ  ⊢  SC) ⊢ uσ]]$ implies 
+    such that for any $[[Θ ⊢ uσ]]$, $[[ Θ   ⊢ uσ : SC ]]$ implies 
     $[[ Γ ⊢ [uσ]α̂± ≈ [uσ1]α̂± ]]$.
     Let us take 
 
 
-    for any $[[Θ ⊢ uσ]]$, $[[(Θ  ⊢  SC) ⊢ uσ]]$ implies $[[Θ|varset ⊢ uσ ≈ uσ1]]$.
+    for any $[[Θ ⊢ uσ]]$, $[[ Θ   ⊢ uσ : SC ]]$ implies $[[Θ|varset ⊢ uσ ≈ uσ1]]$.
 
 
 \end{proof}

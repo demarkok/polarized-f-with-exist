@@ -401,22 +401,26 @@ Substitution that operates on algorithmic type variables is denoted as
 $[[uσ]]$. It is defined as a total function from algorithmic 
 type variables to non-algorithmic types, preserving the polarity.
 
-The signature $[[Θ ⊢ uσ]]$ means that $[[uσ]]$ maps each algorithmic 
-variable appearing in $[[Θ]]$ to a type well-formed in the corresponding
-context; and for each variable not appearing in $[[dom(Θ)]]$, acts as identity.
+The signature $[[Θ ⊢ uσ : Ξ]]$ means that
+$[[Ξ ⊆ dom(Θ)]]$ and 
+$[[uσ]]$ maps each algorithmic variable 
+from $[[Ξ]]$ to a type well-formed in $[[Θ(α̂±)]]$;
+and for each variable not appearing in $[[dom(Θ)]]$, 
+it acts as identity.
 
 \begin{definition}[Signature of Algorithmic Substitution]
-  $[[Θ ⊢ uσ]]$ means that
+  $[[Θ ⊢ uσ : Θ]]$ means that
   \begin{enumerate}
-    \item for any $[[ α̂±[Γ] ∊ Θ]]$, $[[ Γ ⊢ [uσ]α̂± ]]$ and
-    \item for any $[[ α̂± ∉ dom(Θ)]]$, $[[ [uσ]α̂± ]] =  [[ α̂± ]]$.
+    \item for any $[[α̂± ∊ Ξ]]$,
+      there exists $[[Γ]]$ such that $[[ α̂±[Γ] ∊ Θ ]]$
+      and $[[ Γ ⊢ [uσ]α̂± ]]$; 
+    \item for any $[[ α̂± ∉ Ξ]]$, $[[ [uσ]α̂± ]] =  [[ α̂± ]]$.
   \end{enumerate}
 \end{definition}
 
 Anti-unification substitution is denoted as $[[aus]]$ and $[[ausr]]$.
 In contrast to algorithmic substitution $[[uσ]]$,
-it only defined on the negative algorithmic variables, 
-and it allows mapping algorithmic variables to
+it allows mapping algorithmic variables to
 \emph{algorithmic} terms.
 
 The pair of contexts $[[Γ]]$ and $[[Ξ]]$,

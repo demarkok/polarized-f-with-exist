@@ -1,108 +1,124 @@
 \begin{lemma} [Soundness of Constraint Entry Merge]
-\label{lemma:entry-merge-soundness}
-For a fixed context $[[Γ]]$,
-suppose that  $[[Γ ⊢ scE1]]$ and $[[Γ ⊢ scE2]]$. 
-If $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined then
-\begin{enumerate}
-    \item $[[Γ ⊢ scE]]$
-    \item For any $[[Γ ⊢ iP]]$, $[[Γ ⊢ iP : scE]]$ implies $[[Γ ⊢ iP : scE1]]$ and $[[Γ ⊢ iP : scE2]]$ 
-\end{enumerate}
+    \label{lemma:entry-merge-soundness}
+    For a fixed context $[[Γ]]$,
+    suppose that  $[[Γ ⊢ scE1]]$ and $[[Γ ⊢ scE2]]$. 
+    If $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined then
+    \begin{enumerate}
+        \item $[[Γ ⊢ scE]]$
+        \item For any $[[Γ ⊢ iP]]$, $[[Γ ⊢ iP : scE]]$ implies $[[Γ ⊢ iP : scE1]]$ and $[[Γ ⊢ iP : scE2]]$ 
+    \end{enumerate}
 \end{lemma}
 \begin{proof}
     Let us consider the rule forming $[[Γ ⊢ scE1 & scE2 = scE]]$.
     \begin{caseof}
         \item \ruleref{\ottdruleSCMEPEqEqLabel}, i.e. 
-        $[[Γ ⊢ scE1 & scE2 = scE]]$
-        has form $[[Γ ⊢ (pua :≈ iQ) & (pua :≈ iQ') = (pua :≈ iQ)]]$
-        and $[[nf(iQ) = nf(iQ')]]$. The latter implies $[[Γ ⊢ iQ ≈ iQ']]$ by
-        \cref{lemma:subt-equiv-algorithmization}.
-        Then
-        \begin{enumerate}
-            \item $[[Γ ⊢ scE]]$, i.e. $[[Γ ⊢ pua :≈ iQ]]$ holds by assumption;
-            \item by inversion, $[[Γ ⊢ iP : (pua :≈ iQ)]]$ means $[[Θ ⊢ iP ≈ iQ]]$,
-            and by transitivity of equivalence (\cref{corollary:equivalence-transitivity}), 
-            $[[Θ ⊢ iP ≈ iQ']]$. Thus, $[[Γ ⊢ iP : scE1]]$ and $[[Γ ⊢ iP : scE2]]$ hold
-            by \ruleref{\ottdruleSATSCEPEqLabel}.
-        \end{enumerate}
+            $[[Γ ⊢ scE1 & scE2 = scE]]$
+            has form $[[Γ ⊢ (pua :≈ iQ) & (pua :≈ iQ') = (pua :≈ iQ)]]$
+            and $[[nf(iQ) = nf(iQ')]]$. The latter implies $[[Γ ⊢ iQ ≈ iQ']]$ by
+            \cref{lemma:subt-equiv-algorithmization}.
+            Then
+            \begin{enumerate}
+                \item $[[Γ ⊢ scE]]$, i.e. $[[Γ ⊢ pua :≈ iQ]]$ holds by assumption;
+                \item by inversion, $[[Γ ⊢ iP : (pua :≈ iQ)]]$ means $[[Γ ⊢ iP ≈ iQ]]$,
+                and by transitivity of equivalence (\cref{corollary:equivalence-transitivity}), 
+                $[[Γ ⊢ iP ≈ iQ']]$. Thus, $[[Γ ⊢ iP : scE1]]$ and $[[Γ ⊢ iP : scE2]]$ hold
+                by \ruleref{\ottdruleSATSCEPEqLabel}.
+            \end{enumerate}
         \item \ruleref{\ottdruleSCMENEqEqLabel} the negative case is proved in exactly the same way as the positive one.
         \item \ruleref{\ottdruleSCMESupSupLabel} 
-        Then $[[scE1]]$ is $[[pua :≥ iQ1]]$, $[[scE2]]$ is $[[pua :≥ iQ2]]$,
-        and $[[scE1 & scE2]] = [[scE]]$ is $[[pua :≥ iQ]]$ where $[[iQ]]$ is the least upper bound of $[[iQ1]]$ and $[[iQ2]]$.
-        Then by \cref{lemma:lub-soundness},
-        \begin{itemize}
-            \item $[[Γ ⊢ iQ]]$,
-            \item $[[Γ ⊢ iQ ≥ iQ1]]$,
-            \item $[[Γ ⊢ iQ ≥ iQ2]]$.
-        \end{itemize}
+            Then $[[scE1]]$ is $[[pua :≥ iQ1]]$, $[[scE2]]$ is $[[pua :≥ iQ2]]$,
+            and $[[scE1 & scE2]] = [[scE]]$ is $[[pua :≥ iQ]]$ where $[[iQ]]$ is the least upper bound of $[[iQ1]]$ and $[[iQ2]]$.
+            Then by \cref{lemma:lub-soundness},
+            \begin{itemize}
+                \item $[[Γ ⊢ iQ]]$,
+                \item $[[Γ ⊢ iQ ≥ iQ1]]$,
+                \item $[[Γ ⊢ iQ ≥ iQ2]]$.
+            \end{itemize}
 
-        Let us show the required properties.
-        \begin{itemize}
-            \item $[[Γ ⊢ scE]]$ holds from $[[Γ ⊢ iQ]]$,
-            \item Assuming $[[Γ ⊢ iP : scE]]$, by inversion, we have $[[Γ ⊢ iP ≥ iQ]]$.
-                Combining it transitively with $[[Γ ⊢ iQ ≥ iQ1]]$, we have $[[Γ ⊢ iP ≥ iQ1]]$.
-                Analogously, $[[Γ ⊢ iP ≥ iQ2]]$.
-                Then $[[Γ ⊢ iP : scE1]]$ and $[[Γ ⊢ iP : scE2]]$ hold by \ruleref{\ottdruleSATSCESupLabel}.
-        \end{itemize}
+            Let us show the required properties.
+            \begin{itemize}
+                \item $[[Γ ⊢ scE]]$ holds from $[[Γ ⊢ iQ]]$,
+                \item Assuming $[[Γ ⊢ iP : scE]]$, by inversion, we have $[[Γ ⊢ iP ≥ iQ]]$.
+                    Combining it transitively with $[[Γ ⊢ iQ ≥ iQ1]]$, we have $[[Γ ⊢ iP ≥ iQ1]]$.
+                    Analogously, $[[Γ ⊢ iP ≥ iQ2]]$.
+                    Then $[[Γ ⊢ iP : scE1]]$ and $[[Γ ⊢ iP : scE2]]$ hold by \ruleref{\ottdruleSATSCESupLabel}.
+            \end{itemize}
 
         \item \ruleref{\ottdruleSCMESupEqLabel}
-        Then $[[scE1]]$ is $[[pua :≥ iQ1]]$, $[[scE2]]$ is $[[pua :≈ iQ2]]$, 
-        where $[[Γ;· ⊨ uQ2 ≥ iQ1 ⫤ ·]]$, and the resulting   
-        $[[scE1 & scE2]] = [[scE]]$ is equal to $[[scE2]]$, that is $[[pua :≈ iQ2]]$.
+            Then $[[scE1]]$ is $[[pua :≥ iQ1]]$, $[[scE2]]$ is $[[pua :≈ iQ2]]$, 
+            where $[[Γ;· ⊨ uQ2 ≥ iQ1 ⫤ ·]]$, and the resulting   
+            $[[scE1 & scE2]] = [[scE]]$ is equal to $[[scE2]]$, that is $[[pua :≈ iQ2]]$.
     
-        Let us show the required properties.
-        \begin{itemize}
-            \item By assumption, $[[Γ ⊢ iQ]]$, and hence $[[Γ ⊢ scE]]$.
-            \item Since $[[uv(uQ2) = ∅]]$, 
-                $[[Γ;· ⊨ uQ2 ≥ iQ1 ⫤ ·]]$ implies $[[Γ ⊢ iQ2 ≥ iQ1]]$
-                by the soundness of positive subtyping (\cref{lemma:pos-subt-soundness}).
-                Then let us take an arbitrary $[[Γ ⊢ iP]]$ such that $[[Γ ⊢ iP : scE]]$.
-                Since $[[scE2]] = [[scE]]$, $[[Γ ⊢ iP : scE2]]$ holds immediately.
-                
-                By inversion, $[[Γ ⊢ iP : (pua :≈ iQ2)]]$ means $[[Γ ⊢ iP ≈ iQ2]]$, 
-                and then by transitivity of subtyping (\cref{lemma:subtyping-transitivity}),
-                $[[Γ⊢ iP ≥ iQ1]]$.  Then $[[Γ ⊢ iP : scE1]]$ holds by \ruleref{\ottdruleSATSCESupLabel}.
-        \end{itemize}
+            Let us show the required properties.
+            \begin{itemize}
+                \item By assumption, $[[Γ ⊢ iQ]]$, and hence $[[Γ ⊢ scE]]$.
+                \item Since $[[uv(uQ2) = ∅]]$, 
+                    $[[Γ;· ⊨ uQ2 ≥ iQ1 ⫤ ·]]$ implies $[[Γ ⊢ iQ2 ≥ iQ1]]$
+                    by the soundness of positive subtyping (\cref{lemma:pos-subt-soundness}).
+                    Then let us take an arbitrary $[[Γ ⊢ iP]]$ such that $[[Γ ⊢ iP : scE]]$.
+                    Since $[[scE2]] = [[scE]]$, $[[Γ ⊢ iP : scE2]]$ holds immediately.
+                    
+                    By inversion, $[[Γ ⊢ iP : (pua :≈ iQ2)]]$ means $[[Γ ⊢ iP ≈ iQ2]]$, 
+                    and then by transitivity of subtyping (\cref{lemma:subtyping-transitivity}),
+                    $[[Γ⊢ iP ≥ iQ1]]$.  Then $[[Γ ⊢ iP : scE1]]$ holds by \ruleref{\ottdruleSATSCESupLabel}.
+            \end{itemize}
         \item \ruleref{\ottdruleSCMEEqSupLabel} Thee proof is analogous to the previous case.
     \end{caseof}
 \end{proof}
 
 \begin{lemma} [Soundness of Constraint Merge] \label{lemma:merge-soundness}
-    Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$ 
+    Suppose that $[[Θ ⊢ SC1 : Ξ1]]$ and $[[Θ ⊢ SC2 : Ξ2]]$ 
     and $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined.
     Then 
     \begin{enumerate}
-        \item $[[Θ ⊢ SC]]$,
-        \item for any substitution $[[Θ ⊢ uσ]]$, $[[(Θ  ⊢  SC) ⊢ uσ]]$ implies $[[(Θ  ⊢  SC1) ⊢ uσ]]$ and $[[(Θ  ⊢  SC2) ⊢ uσ]]$.
+        \item $[[Θ ⊢ SC : Ξ1 ∪ Ξ2]]$,
+        \item for any substitution $[[Θ ⊢ uσ : Ξ1 ∪ Ξ2]]$, 
+            $[[ Θ ⊢ uσ : SC ]]$
+            implies $[[ Θ ⊢ uσ : SC1 ]]$ and $[[ Θ ⊢ uσ : SC2 ]]$.
     \end{enumerate}
 \end{lemma}
 \begin{proof}
-    By definition, $[[SC1 & SC2]] = [[SC]]$ consists of three parts:
-    entries of $[[SC1]]$ that do not have matching entries of $[[SC]]$,
+    By definition, $[[Θ ⊢ SC1 & SC2 = SC]]$ consists of three parts:
+    entries of $[[SC1]]$ that do not have matching entries of $[[SC2]]$,
     entries of $[[SC2]]$ that do not have matching entries of $[[SC1]]$,
     and the merge of matching entries.
 
-    Let us show $[[Θ ⊢ SC]]$.
-    First, let us assume that an entry $[[scE]] \in [[SC]]$ belongs to the first group, 
-    i.e. $[[scE]] \in [[SC1]]$.  Let us denote the variable $[[scE]]$ as $[[α̂±]]$. 
-    Then $[[Θ(α̂±) ⊢ scE]]$ holds since $[[Θ ⊢ SC1]] \ni [[scE]]$.
-    Analogously, if $[[scE]]$ belongs to the second group, then $[[Θ(α̂±) ⊢ scE]]$ holds since $[[Θ ⊢ SC2]] \ni [[scE]]$.
-    Finally, if $[[scE]]$ belongs to the third group, then $[[scE]]$ is a merge of two entries $[[Θ(α̂±) ⊢ scE1]]$ 
-    and $[[Θ(α̂±) ⊢ scE2]]$.  Then $[[Θ(α̂±) ⊢ scE]]$ holds by \cref{lemma:entry-merge-soundness}.
+    Notice that $[[α̂± ∊ Ξ1 \ Ξ2]]$
+    if and only if there is an entry $[[scE]]$ in $[[SC1]]$ 
+    restricting $[[α̂±]]$, but there is no such entry in $[[SC2]]$.
+    Therefore, for any $[[α̂± ∊ Ξ1 \ Ξ2]]$,
+    there is an entry $[[scE]]$ in $[[SC]]$ restricting $[[α̂±]]$.
+    Notice that $[[Θ(α̂±) ⊢ scE]]$ holds since $[[Θ ⊢ SC1 : Ξ1]]$.
+
+    Analogously, for any $[[β̂± ∊ Ξ2 \ Ξ1]]$,
+    there is an entry $[[scE]]$ in $[[SC]]$ restricting $[[β̂±]]$.
+    Notice that  $[[Θ(β̂±) ⊢ scE]]$ holds since $[[Θ ⊢ SC2 : Ξ2]]$.
+
+    Finally, for any $[[γ̂± ∊ Ξ1 ∩ Ξ2]]$,
+    there is an entry $[[scE1]]$ in $[[SC1]]$ restricting $[[γ̂±]]$
+    and an entry $[[scE2]]$ in $[[SC2]]$ restricting $[[γ̂±]]$.
+    Since $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined,
+    $[[Θ(γ̂±) ⊢ scE1 & scE2 = scE]]$ restricting $[[γ̂±]]$ is
+    defined and belongs to $[[SC]]$,
+    moreover, $[[Θ(γ̂±) ⊢ scE]]$ by \cref{lemma:entry-merge-soundness}.
+    This way, $[[Θ ⊢ SC : Ξ1 ∪ Ξ2]]$.
 
     Let us show the second property.
-    We take an arbitrary $[[uσ]]$ such that $[[Θ ⊢ uσ]]$ and $[[(Θ  ⊢  SC) ⊢ uσ]]$.
-    To prove $[[(Θ  ⊢  SC1) ⊢ uσ]]$, we need to show that for any $[[scE1]] \in [[SC1]]$, restricting $[[α̂±]]$,
-    $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$ holds.
+    We take an arbitrary $[[uσ]]$ such that $[[Θ ⊢ uσ : Ξ1 ∪ Ξ2]]$ 
+    and $[[ Θ ⊢ uσ : SC ]]$.
+    To prove $[[ Θ ⊢ uσ : SC1 ]]$, 
+    we need to show that for any $[[scE1]] \in [[SC1]]$, 
+    restricting $[[α̂±]]$, $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$ holds.
 
     Let us assume that $[[α̂±]] \notin [[dom(SC2)]]$. It means that $[[SC]] \ni [[scE1]]$, 
-    and then since $[[(Θ  ⊢  SC) ⊢ uσ]]$, $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$. 
+    and then since $[[ Θ ⊢ uσ : SC ]]$, $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$. 
 
     Otherwise, $[[SC2]]$ contains an entry $[[scE2]]$ restricting $[[α̂±]]$,
     and $[[SC]] \ni [[scE]]$ where $[[Θ(α̂±) ⊢ scE1 & scE2 = scE]]$.
-    Then since $[[(Θ  ⊢  SC) ⊢ uσ]]$, $[[Θ(α̂±) ⊢ [uσ]α̂± : scE]]$,
+    Then since $[[ Θ ⊢ uσ : SC ]]$, $[[Θ(α̂±) ⊢ [uσ]α̂± : scE]]$,
     and by \cref{lemma:entry-merge-soundness}, $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$.
 
-    The proof of $[[(Θ  ⊢  SC2) ⊢ uσ]]$ is symmetric.
+    The proof of $[[ Θ ⊢ uσ : SC2 ]]$ is symmetric.
 \end{proof}
 
 
@@ -149,9 +165,11 @@ If $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined then
 
 \begin{lemma} [Completeness of Constraint Merge] 
     \label{lemma:merge-completeness}
-    Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.
-    Then for any substitution $[[Θ ⊢ uσ]]$ such that $[[(Θ  ⊢  SC1) ⊢ uσ]]$ and $[[(Θ  ⊢  SC2) ⊢ uσ]]$, 
-    $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined.
+    Suppose that $[[Θ ⊢ SC1 : Ξ1]]$ and $[[Θ ⊢ SC2 : Ξ2]]$.
+    If there exists a substitution $[[Θ ⊢ uσ : Ξ1 ∪ Ξ2]]$ such that 
+    $[[ Θ ⊢ uσ : SC1 ]]$ and $[[ Θ ⊢ uσ : SC2 ]]$
+    then $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined,
+    and $[[ Θ ⊢ uσ : SC ]]$.
 \end{lemma}
 \begin{proof}
     By  definition, $[[SC1 & SC2]]$ is a union of
@@ -161,18 +179,20 @@ If $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined then
         \item the merge of matching entries.
     \end{enumerate}
 
-    This way, to show that $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined, we need to demonstrate that each of these components is defined.
+    This way, to show that $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined, we need to demonstrate that 
+    each of these components is defined and satisfies 
+    the required property 
+    (that the result of $[[uσ]]$ satisfies the corresponding constraint entry).
 
     It is clear that the first two components of this union exist. 
+    Moreover, if $[[scE]]$ is an entry of $[[SCi]]$
+    restricting $[[α̂± ∉ dom(SC2)]]$,
+    then $[[ Θ ⊢ uσ : SCi ]]$ implies $[[ Θ(α̂±) ⊢ [uσ]α̂± : scE]]$,
+
     Let us show that the third component exists.  
-    Let us take two entries $[[scE1]] \in [[SC1]]$ and $[[scE2]] \in [[SC2]]$ restricting the same variable $[[α̂±]]$.  $[[(Θ  ⊢  SC1) ⊢ uσ]]$ means that $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$ and $[[(Θ  ⊢  SC2) ⊢ uσ]]$ means $[[Θ(α̂±) ⊢ [uσ]α̂± : scE2]]$.
+    Let us take two entries $[[scE1]] \in [[SC1]]$ and $[[scE2]] \in [[SC2]]$ restricting the same variable $[[α̂±]]$.  $[[ Θ   ⊢ uσ : SC1 ]]$ means that $[[Θ(α̂±) ⊢ [uσ]α̂± : scE1]]$ and $[[ Θ   ⊢ uσ : SC2 ]]$ means $[[Θ(α̂±) ⊢ [uσ]α̂± : scE2]]$.
     Then by \cref{lemma:entry-merge-completeness}, $[[Θ(α̂±) ⊢ scE1 & scE2 = scE]]$ is defined and $[[Θ(α̂±) ⊢ [uσ]α̂± : scE]]$.
+
 \end{proof}
 
-\begin{lemma}[Substitution existence]
-    \label{lemma:substitution-existence}
-    If $[[Θ ⊢ SC]]$ then there exists $[[Θ ⊢ uσ]]$ such that $[[(Θ  ⊢  SC) ⊢ uσ]]$.
-\end{lemma}
-\begin{proof}
-    
-\end{proof}
+

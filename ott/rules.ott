@@ -10,6 +10,8 @@ grammar
     | UC1 ⊆ UC2                              ::   :: UC_subset
     | UC1 = UC2                              ::   :: UC_eq
     | SC1 ⊆ SC2                              ::   :: SC_subset
+    | scE ∊ SC                                ::   :: scE_in_SC
+    | ucE ∊ UC                                ::   :: ucE_in_UC
     % | us1 ⊆ us2                              ::   :: unif_subset
     | varset1 ⊆ varset2                      ::   :: varset_subset
     | varset1 ⊆ varset2 ⊆ varset3            ::   :: varset_subset_bounds

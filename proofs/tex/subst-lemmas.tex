@@ -52,6 +52,22 @@
   \end{caseof}
 \end{proof}
 
+\begin{lemma}[Algorithmic Substitution strengthening]
+  \label{lemma:subst-restr-uv}
+  Restricting the substitution to the free algorithmic 
+  variables of the
+  substitution subject does not affect the result.
+  Suppose that $[[uσ]]$ is an algorithmic substitution,
+  $[[uP]]$ and $[[uN]]$ are algorithmic types. Then
+ \begin{itemize}
+    \item[$+$] $[[ [uσ]uP ]] = [[ [uσ|uv uP]uP ]]$,
+    \item[$-$] $[[ [uσ]uN ]] = [[ [uσ|uv iN]uN ]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  The proof is analogous to the proof of \cref{lemma:subst-restr-fv}.
+\end{proof}
+
 \begin{lemma}[Signature of a restricted substitution]
   \label{lemma:subst-restr-sig}
   If $[[Γ2 ⊢ σ : Γ1]]$ then $[[Γ2 ⊢ σ|varset : Ord {Γ1} ∩ varset]]$.

@@ -1,14 +1,14 @@
 \begin{lemma}[Soundness of Negative Subtyping] \label{lemma:neg-subt-soundness}
         If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; dom(Θ) ⊢ uN]]$ and 
         $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$, then 
-        $[[Θ ⊢ SC]]$ and 
-        for any normalized $[[uσ]]$ such that $[[(Θ ⊢ SC) ⊢ uσ]]$,
+        $[[Θ ⊢ SC : uv(uN)]]$ and 
+        for any normalized $[[uσ]]$ such that $[[ Θ  ⊢ uσ : SC ]]$,
         $[[ Γ ⊢ [uσ]uN ≤ iM ]]$.
 \end{lemma}
 \begin{proof}
     We prove it by induction on $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$.
 
-    Suppose that $[[uσ]]$ is normalized and $[[(Θ ⊢ SC) ⊢ uσ]]$,
+    Suppose that $[[uσ]]$ is normalized and $[[ Θ  ⊢ uσ : SC ]]$,
     Let us consider the last rule to infer this judgment. 
     \begin{caseof}
         \item \ruleref{\ottdruleAArrowLabel}. Then $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$ has shape
@@ -18,7 +18,7 @@
         and returns $[[Θ ⊢ SC1 & SC2 = SC]]$ as the result.
 
         By the soundness of constraint merge (\cref{lemma:merge-soundness}),
-        $[[(Θ ⊢ SC1) ⊢ uσ]]$ and $[[(Θ ⊢ SC2) ⊢ uσ]]$.
+        $[[ Θ  ⊢ uσ : SC1 ]]$ and $[[ Θ  ⊢ uσ : SC2 ]]$.
         Then by the soundness of positive subtyping (\cref{lemma:pos-subt-soundness}), $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$; 
         and by the induction hypothesis, $[[ Γ ⊢ [uσ]uN' ≤ iM' ]]$.
         This way, by \ruleref{\ottdruleDOneArrowLabel}, $[[Γ ⊢ [uσ](uP → uN') ≤ iQ → iM']]$.
@@ -40,71 +40,74 @@
     \label{lemma:neg-subt-completeness}
     Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; dom(Θ) ⊢ uN]]$,
     and $[[uN]]$ does not contain negative unification variables ($[[α̂⁻]] \notin [[uv uN]]$).
-    Then for any $[[Θ ⊢ uσ]]$ such that $[[Γ ⊢ [uσ]uN ≤ iM]]$,
-    there exists $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$, such that $[[Θ ⊢ SC]]$ and moreover, $[[(Θ  ⊢  SC) ⊢ uσ]]$.
+    Then for any $[[Θ ⊢ uσ : uv(uN)]]$ such that $[[Γ ⊢ [uσ]uN ≤ iM]]$,
+    there exists $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$ and moreover, $[[ Θ ⊢ uσ : SC ]]$.
 \end{lemma}
 \begin{proof}
     We prove it by induction on $[[ Γ ⊢ [uσ]uN ≤ iM ]]$.
     Let us consider the last rule used in the derivation of $[[ Γ ⊢ [uσ]uN ≤ iM ]]$.
     \begin{caseof}
         \item $[[ Γ ⊢ [uσ]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneShiftULabel}\\
-        Then $[[ uN ]] = [[ ↑uP ]]$, since
-        the substitution $[[ [uσ]uN ]]$ must preserve the 
-        top-level constructor of $[[uN]] \neq [[α̂⁻]]$ (since by assumption, $[[α̂⁻]] \notin [[uv uN]]$), 
-        and $[[uQ]] = [[ ↓iM ]]$, and by inversion, $[[ Γ ⊢ [uσ]uN ≈ iM ]]$.
-        The rest of the proof is symmetric to \cref{case:pos-subt-complete-upshift} of
-         \cref{lemma:pos-subt-completeness}: notice that the algorithm does not make a recursive call, 
-        and the difference in the induction statement for the positive and 
-        the negative case here does not matter.
+            Then $[[ uN ]] = [[ ↑uP ]]$, since
+            the substitution $[[ [uσ]uN ]]$ must preserve the 
+            top-level constructor of $[[uN]] \neq [[α̂⁻]]$ (since by assumption, $[[α̂⁻]] \notin [[uv uN]]$), 
+            and $[[uQ]] = [[ ↓iM ]]$, and by inversion, $[[ Γ ⊢ [uσ]uN ≈ iM ]]$.
+            The rest of the proof is symmetric to \cref{case:pos-subt-complete-upshift} of
+            \cref{lemma:pos-subt-completeness}: notice that the algorithm does not make a recursive call, 
+            and the difference in the induction statement for the positive and 
+            the negative case here does not matter.
 
         \item $[[ Γ ⊢ [uσ]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneArrowLabel}, 
-        i.e. $[[ [uσ]uN ]] = [[ [uσ]uP → [uσ]uN' ]]$ and $[[iM]] = [[iQ → iM']]$, 
-        and by inversion, $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ and $[[ Γ ⊢ [uσ]uN' ≤ iM' ]]$.
+            i.e. $[[ [uσ]uN ]] = [[ [uσ]uP → [uσ]uN' ]]$ and $[[iM]] = [[iQ → iM']]$, 
+            and by inversion, $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ and $[[ Γ ⊢ [uσ]uN' ≤ iM' ]]$.
 
-        The algorithm makes two recursive calls: $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC1]]$ and $[[Γ ; Θ ⊨ uN' ≤ iM' ⫤ SC2]]$,
-        and then returns $[[Θ ⊢ SC1 & SC2 = SC]]$ as the result.
-        Let us show that these recursive calls are successful and the returning constraints 
-        are fulfilled by $[[uσ]]$.
+            The algorithm makes two recursive calls: $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC1]]$ and $[[Γ ; Θ ⊨ uN' ≤ iM' ⫤ SC2]]$,
+            and then returns $[[Θ ⊢ SC1 & SC2 = SC]]$ as the result.
+            Let us show that these recursive calls are successful and the returning constraints 
+            are fulfilled by $[[uσ]]$.
 
-        Notice that from the inversion of $[[Γ ⊢ iM]]$, we have: $[[Γ ⊢ iQ]]$ and $[[Γ ⊢ iM']]$;
-        from the inversion of $[[Γ ; dom(Θ) ⊢ uN]]$, we have: $[[Γ ; dom( Θ) ⊢  uP]]$ and $[[Γ ; dom( Θ) ⊢  uN']]$;
-        and since $[[uN]]$ does not contain negative unification variables,
-        $[[uN']]$ does not contain negative unification variables either.
+            Notice that from the inversion of $[[Γ ⊢ iM]]$, we have: $[[Γ ⊢ iQ]]$ and $[[Γ ⊢ iM']]$;
+            from the inversion of $[[Γ ; dom(Θ) ⊢ uN]]$, we have: $[[Γ ; dom( Θ) ⊢  uP]]$ and $[[Γ ; dom( Θ) ⊢  uN']]$;
+            and since $[[uN]]$ does not contain negative unification variables,
+            $[[uN']]$ does not contain negative unification variables either.
 
-        This way, we can apply the induction hypothesis to $[[Γ ⊢ [uσ]uN' ≤ iM']]$ to 
-        obtain $[[Γ ; Θ ⊨ uN' ≤ iM' ⫤ SC2]]$ such that $[[Θ ⊢ SC2]]$ and $[[(Θ  ⊢  SC2) ⊢ uσ]]$.
-        Also, we can apply the completeness of the positive subtyping (\cref{lemma:pos-subt-completeness}) to 
-        $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ to obtain $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC1]]$ such that $[[Θ ⊢ SC1]]$ and $[[(Θ  ⊢  SC1) ⊢ uσ]]$.
+            This way, we can apply the induction hypothesis to $[[Γ ⊢ [uσ]uN' ≤ iM']]$ to 
+            obtain $[[Γ ; Θ ⊨ uN' ≤ iM' ⫤ SC2]]$ such that $[[Θ ⊢ SC2 : uv(uN')]]$ and $[[ Θ ⊢ uσ : SC2 ]]$.
+            Also, we can apply the completeness of the positive subtyping (\cref{lemma:pos-subt-completeness}) to 
+            $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ to obtain $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC1]]$ such that $[[Θ ⊢ SC1 : uv(uP)]]$
+            and $[[ Θ ⊢ uσ : SC1 ]]$.
 
-        Finally, we need to show that the merge of $[[SC1]]$ and $[[SC2]]$ is successful and
-        satisfies the required properties.
-        To do so, we apply the completeness of subtyping constraint merge (\cref{lemma:merge-completeness}).
-        This way, $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined, $[[Θ ⊢ SC]]$, and $[[(Θ  ⊢  SC) ⊢ uσ]]$, as required.
+            Finally, we need to show that the merge of $[[SC1]]$ and $[[SC2]]$ is successful and
+            satisfies the required properties.
+            To do so, we apply the completeness of subtyping constraint merge (\cref{lemma:merge-completeness})
+            (notice that $[[Θ ⊢ uσ : uv(uP → uN')]]$ means 
+            $[[Θ ⊢ uσ : uv(uP) ∪ uv(uN')]]$).
+            This way, $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined and $[[ Θ ⊢ uσ : SC ]]$ holds. 
 
        \item \label{case:subt-complete-forall}
-       $[[ Γ ⊢ [uσ]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneForallLabel}.
-       Since $[[uN]]$ does not contain negative unification variables,
-       $[[uN]]$ must be of the form $[[∀pas.uN']]$,
-       such that $[[ [uσ]uN = ∀pas.[uσ]uN' ]]$ and $[[ [uσ]uN']] \neq [[∀]]\dots$
-       (assuming $[[pas]]$ does not intersect with the range of $[[uσ]]$).
-       Also, $[[iM]] = [[∀pbs.iM']]$ and either $[[pas]]$ or $[[pbs]]$ is non-empty.
+            $[[ Γ ⊢ [uσ]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneForallLabel}.
+            Since $[[uN]]$ does not contain negative unification variables,
+            $[[uN]]$ must be of the form $[[∀pas.uN']]$,
+            such that $[[ [uσ]uN = ∀pas.[uσ]uN' ]]$ and $[[ [uσ]uN']] \neq [[∀]]\dots$
+            (assuming $[[pas]]$ does not intersect with the range of $[[uσ]]$).
+            Also, $[[iM]] = [[∀pbs.iM']]$ and either $[[pas]]$ or $[[pbs]]$ is non-empty.
 
-       The rest of the proof is symmetric to \cref{case:pos-subt-complete-exists} of
-       \cref{lemma:pos-subt-completeness}.
-       To apply the induction hypothesis, we need to show additionally that
-       there are no negative unification variables in $[[uN0]] = [[ [â⁺*/pas]uN' ]]$.
-       This is because $[[ uv uN0 ⊆ uv uN ∪ {â⁺*} ]]$, and $[[uN]]$ is free of negative
-       unification variables by assumption.
+            The rest of the proof is symmetric to \cref{case:pos-subt-complete-exists} of
+            \cref{lemma:pos-subt-completeness}.
+            To apply the induction hypothesis, we need to show additionally that
+            there are no negative unification variables in $[[uN0]] = [[ [â⁺*/pas]uN' ]]$.
+            This is because $[[ uv uN0 ⊆ uv uN ∪ {â⁺*} ]]$, and $[[uN]]$ is free of negative
+            unification variables by assumption.
 
        \item $[[ Γ ⊢ [uσ]uN ≤ iM ]]$ is derived by \ruleref{\ottdruleDOneNVarLabel}.\\
-       Then $[[iN]] = [[ [uσ]uN ]] = [[ α⁻ ]] = [[iM]]$. 
-       Here the first equality holds because $[[uN]]$ is not a unification variable:
-       by assumption, $[[uN]]$ is free of negative unification variables.
-       The second and the third equations hold because \ruleref{\ottdruleDOneNVarLabel}
-       was applied. 
+            Then $[[iN]] = [[ [uσ]uN ]] = [[ α⁻ ]] = [[iM]]$. 
+            Here the first equality holds because $[[uN]]$ is not a unification variable:
+            by assumption, $[[uN]]$ is free of negative unification variables.
+            The second and the third equations hold because \ruleref{\ottdruleDOneNVarLabel}
+            was applied. 
 
-       The rest of the proof is symmetric to \cref{case:pos-subt-complete-pvar} of
-       \cref{lemma:pos-subt-completeness}.
+            The rest of the proof is symmetric to \cref{case:pos-subt-complete-pvar} of
+            \cref{lemma:pos-subt-completeness}.
 
     \end{caseof}
 \end{proof}

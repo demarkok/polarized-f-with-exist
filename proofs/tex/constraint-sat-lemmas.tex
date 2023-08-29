@@ -1,7 +1,12 @@
 \begin{lemma}[Any constraint is satisfiable]
     \label{lemma:constraint-sat}
-    Suppose that $[[Θ ⊢ SC]]$ then there exists 
-    $[[uσ]]$ such that $[[(Θ  ⊢  SC) ⊢ uσ]]$.
+    Suppose that $[[Θ ⊢ SC]]$
+    and $[[Ξ]]$ is a set such that
+    $[[dom(SC)]] \subseteq [[Ξ]] \subseteq [[dom(Θ)]]$.
+    Then there exists 
+    $[[uσ]]$ such that 
+    $[[ Θ  ⊢ uσ : Ξ ]]$ and
+    $[[ Θ  ⊢ uσ : SC ]]$.
 \end{lemma}
 \begin{proof}
     Let us define $[[uσ]]$
@@ -9,12 +14,14 @@
     $$
     [[ [uσ]α̂± ]] = 
     \begin{cases}
-        [[iP]] & \text{if $[[(α̂± :≈ iP)]] \in [[SC]]$} \\
-        [[iP]] & \text{if $[[(α̂± :≥ iP)]] \in [[SC]]$} \\
-        [[iN]] & \text{if $[[(α̂± :≈ iN)]] \in [[SC]]$} \\
+        [[iP]]      & \text{if $[[(α̂± :≈ iP)]] \in [[SC]]$} \\
+        [[iP]]      & \text{if $[[(α̂± :≥ iP)]] \in [[SC]]$} \\
+        [[iN]]      & \text{if $[[(α̂± :≈ iN)]] \in [[SC]]$} \\
+        [[∃β⁻.↓β⁻]] & \text{if $[[α̂± = α̂⁺]] \in [[Ξ \ dom(SC)]]$} \\
+        [[∀β⁺.↑β⁺]] & \text{if $[[α̂± = α̂⁻]] \in [[Ξ \ dom(SC)]]$} \\
     \end{cases}
     $$
-    Then $[[(Θ  ⊢  SC) ⊢ uσ]]$ follows immediately
+    Then $[[ Θ ⊢ uσ : SC ]]$ follows immediately
     from the reflexivity of equivalence and subtyping
     (\cref{lemma:subtyping-reflexivity}) and the corresponding
     rules 
@@ -52,15 +59,15 @@
 \begin{corollary}[Constraint Satisfaction is stable under Equivalence]
     \label{corollary:sat-equiv}
     \hfill\\
-    If $[[(Θ  ⊢  SC) ⊢ uσ1]]$ and $[[Θ|dom(SC) ⊢ uσ1 ≈ uσ2]]$ then $[[(Θ  ⊢  SC) ⊢ uσ2]]$;\\
-    if $[[(Θ  ⊢  UC) ⊢ uσ1]]$ and $[[Θ|dom(SC) ⊢ uσ1 ≈ uσ2]]$ then $[[(Θ  ⊢  UC) ⊢ uσ2]]$.
+    If $[[ Θ ⊢ uσ1 : SC ]]$ and $[[Θ ⊢ uσ1 ≈ uσ2 : dom(SC) ]]$ then $[[ Θ ⊢ uσ2 : SC ]]$;\\
+    if $[[ Θ ⊢ uσ1 : UC ]]$ and $[[Θ ⊢ uσ1 ≈ uσ2 : dom(SC) ]]$ then $[[ Θ ⊢ uσ2 : UC ]]$.
 \end{corollary}
 
 \begin{corollary}[Normalization preserves Constraint Satisfaction]
     \label{corollary:nf-sat}
     \hfill\\
-    If $[[(Θ  ⊢  SC) ⊢ uσ]]$ then $(Θ  ⊢ SC) ⊢ nf(uσ)$;\\
-    if $[[(Θ  ⊢  UC) ⊢ uσ]]$ then $(Θ  ⊢ UC) ⊢ nf(uσ)$.
+    If $[[Θ ⊢ uσ : SC]]$ then $[[Θ  ⊢ nf(uσ) : SC]]$;\\
+    if $[[Θ ⊢ uσ : UC]]$ then $[[Θ  ⊢ nf(uσ) : UC]]$.
 \end{corollary}
 
 
