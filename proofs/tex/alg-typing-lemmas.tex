@@ -945,11 +945,11 @@ the metric of the inference tree.
                             which, by the soundness, implies, in particular
                             that 
                             \begin{enumerate}
-                                \item $[[Γ; dom(Θ) ⊢  uM]]$ is normalized and 
+                                \item $[[Γ; dom(Θ) ⊢  uM']]$ is normalized and 
                                     free of negative metavariables, 
-                                \item $[[uM']]$ 
+                                \item $[[Θ|uv(uM') ⊢ SC]]$, which means $[[dom(SC) ⊆ uv(uM')]]$,
                                 \item \label{point:typing-completeness:AppLet:ih-sound} 
-                                    for any $[[ Θ   ⊢ uσ : SC ]]$, 
+                                    for any $[[Θ ⊢ uσ : uv uM' ]]$ such that $[[ Θ ⊢ uσ : SC ]]$, 
                                     we have $[[ Γ ; Φ ⊢ nf(iM) ● args ⇒> [uσ]uM' ]]$,
                                     which, since $[[Γ ; Φ ⊢ nf(iM) ● args ⇒> ↑iQ uniq]]$,
                                     means $[[Γ ⊢ [uσ]uM' ≈ ↑iQ]]$.
@@ -984,19 +984,19 @@ the metric of the inference tree.
 
                 \item $[[Γ; Φ ; · ⊨ nf(uM) ● args ⇒> ↑uP ⫤ Θ; SC]]$ holds as noted above;
 
-                \item To show $[[uv uP ⊆ dom(SC)]]$ and 
-                    $[[SC | uv uP singular with uσ0]]$ (for some $[[uσ0]]$),
-                    we apply \cref{lemma:singularity-completeness}.
-                    Let us show that the premise of this lemma holds.
+                \item To show $[[uv uP = dom(SC)]]$ and 
+                    $[[SC singular with uσ0]]$ for some $[[uσ0]]$,
+                    we apply \cref{lemma:singularity-completeness}
+                    with $[[Ξ = uv uP]] = [[uv(uM')]]$ (as noted above, $[[dom(SC) ⊆ uv(uM')]] = [[Ξ]]$).
 
+                    Now we will show that any substitution satisfying $[[SC]]$ is equivalent to $[[uσ1]]$.
                     As noted in \ref{point:typing-completeness:AppLet:ih-sound},
-                    for any $[[uσ]]$, $[[ Θ ⊢ uσ : SC ]]$ implies 
+                    for any substitution $[[Θ ⊢ uσ : Ξ]]$, $[[ Θ ⊢ uσ : SC ]]$ implies 
                     $[[Γ ⊢ [uσ]uM' ≈ ↑iQ]]$,
                     which is rewritten as $[[Γ ⊢ [uσ]uP ≈ iQ]]$.
-                    And since $[[Γ ⊢ [uσ']uP ≈ iQ]]$, 
-                    we have $[[Γ ⊢ [uσ]uP ≈ [uσ']uP]]$.
-                    It implies $[[Θ ⊢ uσ ≈ uσ' : uv uP]]$
-                    by \cref{lemma:subst-equiv-metavar}.
+                    And since $[[Γ ⊢ [uσ1]uP ≈ iQ]]$, 
+                    we have $[[Γ ⊢ [uσ]uP ≈ [uσ1]uP]]$,
+                    which implies $[[Θ ⊢ uσ ≈ uσ1 : Ξ]]$ by \cref{lemma:subst-equiv-metavar}.
 
                 \item Let us show $[[Γ; Φ, x:[uσ0]uP ⊨ c' : nf(iN)]]$.
                     By the soundness of singularity 

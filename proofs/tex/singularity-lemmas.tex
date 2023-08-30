@@ -188,46 +188,77 @@
 
 \begin{lemma}[Completeness of Singularity]
     \label{lemma:singularity-completeness}
-    For a given $[[Θ ⊢ SC : Ξ]]$,
+    For a given $[[Θ ⊢ SC]]$,
     suppose that all the substitutions satisfying $[[SC]]$ are equivalent
-    on $[[Ξ']] \supseteq [[Ξ]]$.
-    In other words, suppose that there exists $[[Θ ⊢ uσ1 : Ξ']]$ such that
-    for any $[[Θ ⊢ uσ : Ξ']]$, $[[Θ ⊢ uσ : SC]]$ implies 
-    $[[Θ ⊢ uσ ≈ uσ1 : Ξ']]$.
+    on $[[Ξ]] \supseteq [[dom(SC)]]$.
+    In other words, suppose that there exists $[[Θ ⊢ uσ1 : Ξ]]$ such that
+    for any $[[Θ ⊢ uσ : Ξ]]$, $[[Θ ⊢ uσ : SC]]$ implies 
+    $[[Θ ⊢ uσ ≈ uσ1 : Ξ]]$.
     Then 
     \begin{itemize}
         \item $[[SC singular with uσ0]]$ for some $[[uσ0]]$ and
-        \item $[[Ξ']] = [[Ξ]]$.
+        \item $[[Ξ]] = [[dom(SC)]]$.
     \end{itemize} 
 \end{lemma}
 \begin{proof}
-    First, let us suppose that $[[varset ⊆ dom(SC)]]$ does not hold.
-    It means that there exists $[[ α̂±[Γ] ∊ Θ]]$ and $[[α̂± ∉ dom(SC)]]$
 
-    By \cref{lemma:constraint-sat}, let us take an arbitrary 
-    $[[uσ']]$ satisfying $[[SC]]$ (that is $[[ Θ   ⊢ uσ' : SC ]]$).
-    Let us extend $[[uσ']]$ to $[[uσ'']]$ so that $[[Θ ⊢ uσ'']]$.
+    First, let us assume $[[Ξ]] \neq [[dom(SC)]]$. 
+    Then there exists $[[α̂± ∊ Ξ \ dom(SC)]]$.
+    Let us take $[[Θ ⊢ uσ1 : Ξ]]$ such that 
+    any other substitution $[[Θ ⊢ uσ : Ξ]]$ satisfying $[[SC]]$
+    is equivalent to $[[uσ1]]$ on $[[Ξ]]$.
 
-    Although $[[uσ']]$ might not be defined on 
-    
-    
+    Notice that $[[Θ ⊢ uσ1 : SC]]$: 
+    by \cref{lemma:constraint-sat}, there exists $[[uσ']]$
+    such that $[[Θ ⊢ uσ' : Ξ]]$ and $[[Θ ⊢ uσ' : SC]]$,
+    and by assumption, $[[Θ ⊢ uσ' ≈ uσ1 : Ξ]]$,
+    implying  $[[Θ ⊢ uσ' ≈ uσ1 : dom(SC)]]$.
 
-    such that for any $[[Θ ⊢ uσ]]$, $[[ Θ   ⊢ uσ : SC ]]$ implies 
-    $[[ Γ ⊢ [uσ]α̂± ≈ [uσ1]α̂± ]]$.
-    Let us take 
+    Let us construct $[[uσ2]]$ such that $[[Θ ⊢ uσ2 : Ξ]]$ as
+    follows:
+    $$
+    \begin{cases}
+        [[ [uσ2]β̂± = [uσ1]β̂±  ]] & \text{if } [[β̂± ≠ α̂±]] \\
+        [[ [uσ2]α̂± ]] = T & \text{where $T$ is any closed type not equivalent to $[[ [uσ1]α̂± ]]$} \\
+    \end{cases}
+    $$
+    It is easy to see that $[[Θ ⊢ uσ2 : SC]]$ since
+    $[[uσ1|dom(SC) = uσ2|dom(SC)]]$, and $[[Θ ⊢ uσ1 : SC]]$.
+    However, $[[Θ ⊢ uσ2 ≈ uσ1 : Ξ]]$ does not hold because
+    by construction, $[[Θ(α̂±) ⊢ [uσ2]α̂± ≈ [uσ1]α̂±]]$ does not hold. 
+    This way, we have a contradiction.
 
+    Second, let us show $[[SC singular with uσ0]]$.
+    Let us take arbitrary $[[scE ∊ SC]]$ restricting $[[β̂±]]$.
+    We need to show that $[[scE]]$ is singular.
+    Notice that $[[Θ ⊢ uσ1 : SC]]$ implies $[[Θ(β̂±) ⊢ [uσ1]β̂±]]$ and $[[Θ(β̂±) ⊢ [uσ1]β̂± : scE ]]$.
+    We will show that any other type satisfying $[[scE]]$ is equivalent to $[[ [uσ1]β̂± ]]$,
+    then by \cref{lemma:entry-singularity-completeness}, $[[scE singular with [uσ1]β̂± ]]$.
+    \begin{itemize}
+        \item if $[[β̂±]]$ is positive, 
+            let us take any type $[[Θ(β̂±) ⊢ iP']]$
+            and assume $[[Θ(β̂±) ⊢ iP' : scE]]$.
+            We will show that $[[Θ(β̂±) ⊢ iP' ≈ [uσ1]β̂±]]$,
+            which by \cref{lemma:subt-equiv-algorithmization} will
+            imply $[[scE singular with nf([uσ1]β̂±)]]$.
 
-    for any $[[Θ ⊢ uσ]]$, $[[ Θ   ⊢ uσ : SC ]]$ implies $[[Θ|varset ⊢ uσ ≈ uσ1]]$.
+            Let us construct $[[uσ2]]$ such that $[[Θ ⊢ uσ2 : Ξ]]$ as
+            follows:
+            $$
+            \begin{cases}
+                [[ [uσ2]γ̂± = [uσ1]γ̂±  ]] & \text{if } [[γ̂± ≠ β̂±]] \\
+                [[ [uσ2]β̂± = iP' ]]
+            \end{cases}
+            $$
+            It is easy to see that $[[Θ ⊢ uσ2 : SC]]$:
+            for $[[scE]]$, $[[Θ(β̂±) ⊢ [uσ2]β̂± : scE ]]$ by construction,
+            since $[[Θ(β̂±) ⊢ iP' : scE]]$; for any other $[[scE' ∊ SC]]$
+            restricting $[[γ̂±]]$, $[[ [uσ2]γ̂± = [uσ1]γ̂± ]]$, 
+            and $[[Θ(γ̂±) ⊢ [uσ1]γ̂± : scE' ]]$ since $[[Θ ⊢ uσ1 : SC]]$.
 
-
+            Then by assumption, $[[Θ ⊢ uσ2 ≈ uσ1 : Ξ]]$,
+            which in particular means $[[Θ(β̂±) ⊢ [uσ2]β̂± ≈ [uσ1]β̂±]]$,
+            that is $[[Θ(β̂±) ⊢ iP' ≈ [uσ1]β̂±]]$.
+        \item if $[[β̂±]]$ is negative, the proof is analogous.
+    \end{itemize}
 \end{proof}
-
-
-        \item [$-$] Suppose that there exists $[[iN]]$ well-formed in $[[Γ]]$ 
-            such that for any $[[iN']]$ well-formed in $[[Γ]]$,
-            $[[Γ ⊢ iN' : scE]]$ implies $[[Γ ⊢ iN' ≈ iN]]$. 
-            Then $[[scE singular with nf(iN)]]$.
-        \item [$+$] Suppose that there exists $[[iP]]$ well-formed in $[[Γ]]$ 
-            such that for any $[[iP']]$ well-formed in $[[Γ]]$,
-            $[[Γ ⊢ iP' : scE]]$ implies $[[Γ ⊢ iP' ≈ iP]]$. 
-            Then $[[scE singular with nf(iP)]]$ .

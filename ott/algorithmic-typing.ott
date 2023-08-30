@@ -49,7 +49,7 @@ defns
   Γ; Φ ⊨ let x:iP = v(args); c : iN
 
   Γ; Φ ⊨ v : ↓iM   Γ; Φ ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC   
-  uv uQ ⊆ dom(SC)    SC | uv uQ singular with uσ 
+  uv uQ = dom(SC)    SC singular with uσ 
   Γ; Φ, x:[uσ]uQ ⊨ c : iN
   --------------------------------------------------------------- :: AppLet
   Γ; Φ ⊨ let x = v(args); c : iN

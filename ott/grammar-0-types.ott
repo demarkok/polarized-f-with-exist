@@ -518,8 +518,8 @@ fun σ'   | varset :: σ :: Restr {{ tex [[σ']]|_{[[varset]]} }} by
 fun uσ'  | varset :: uσ :: USRestr {{ tex [[uσ']]|_{[[varset]]} }} by 
 fun aus' | varset :: aus :: AURestr {{ tex [[aus']]|_{[[varset]]} }} by
 fun Xi'  | varset :: Xi :: XiRestr {{ tex [[Xi']]|_{[[varset]]} }} by
-fun SC'  | varset :: SC :: SCRestr {{ tex [[SC]]|_{[[varset]]} }} by
-fun UC'  | varset :: UC :: UCRestr {{ tex [[UC]]|_{[[varset]]} }} by
+fun SC'  | varset :: SC :: SCRestr {{ tex [[SC']]|_{[[varset]]} }} by
+fun UC'  | varset :: UC :: UCRestr {{ tex [[UC']]|_{[[varset]]} }} by
 
 fun
    ucE1 & ucE2 :: ucE :: UCEM {{ tex [[ucE1]] ~ \& ~ [[ucE2]] }}
