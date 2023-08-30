@@ -168,8 +168,7 @@
     Suppose that $[[Θ ⊢ SC1 : Ξ1]]$ and $[[Θ ⊢ SC2 : Ξ2]]$.
     If there exists a substitution $[[Θ ⊢ uσ : Ξ1 ∪ Ξ2]]$ such that 
     $[[ Θ ⊢ uσ : SC1 ]]$ and $[[ Θ ⊢ uσ : SC2 ]]$
-    then $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined,
-    and $[[ Θ ⊢ uσ : SC ]]$.
+    then $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined.
 \end{lemma}
 \begin{proof}
     By  definition, $[[SC1 & SC2]]$ is a union of
@@ -195,4 +194,11 @@
 
 \end{proof}
 
+\begin{corollary} [Completeness of Unification Constraint Merge] 
+    \label{corollary:merge-completeness-unif}
+    Suppose that $[[Θ ⊢ UC1 : Ξ1]]$ and $[[Θ ⊢ UC2 : Ξ2]]$.
+    If there exists a substitution $[[Θ ⊢ uσ : Ξ1 ∪ Ξ2]]$ such that 
+    $[[ Θ ⊢ uσ : UC1 ]]$ and $[[ Θ ⊢ uσ : UC2 ]]$
+    then $[[Θ ⊢ UC1 & UC2 = UC]]$ is defined.
+\end{corollary}
 
