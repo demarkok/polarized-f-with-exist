@@ -63,10 +63,8 @@ s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
    | N / na               ::   :: NegSub
    | iPs / pas            ::   :: PosSubs 
    | iNs / nas            ::   :: NegSubs
-   | pmas / pas           ::   :: PosMSubs
-   | nmas / nas           ::   :: NegMSubs
-   | puas / pas           ::   :: PosUSubs
-   | nuas / nas           ::   :: NegUSubs
+   % | pmas / pas           ::   :: PosMSubs
+   % | nmas / nas           ::   :: NegMSubs
    | nas / nuas           ::   :: NegFromUSubs
    | Sub μ                ::   :: FromMoving {{ tex [[μ]] }}
    % | Sub us               ::   :: FromUs {{ tex [[us]] }}
@@ -263,8 +261,8 @@ Xi {{ tex \Xi }}, Ξ {{ tex \Xi }} :: AU_Ctxt ::= {{ com anti-unification type v
     | Ξ1 ∩ Ξ2            ::   :: intersect
 
                                        % {{ com context containing only negative uvars }}
-grammar
 
+grammar
 ordVars {{ tex \vv{ \alpha } }}, ordVarsb {{ tex \vv{ \beta } }} :: OrdVars ::= {{ com ordered positive or negative variables }}
     | ·                         ::   :: empty     {{ com empty list }}
     | pas                       ::   :: PList     {{ com list of variables }}
@@ -278,10 +276,10 @@ ordVars {{ tex \vv{ \alpha } }}, ordVarsb {{ tex \vv{ \beta } }} :: OrdVars ::= 
     | </ ordVarsi // , // i />  ::   :: concat    {{ com concatenate contexts }}
     | ( ordVars )               :: S :: paren     {{ com parenthesis }}
     | [ mu ] ordVars            :: M :: moving    {{ com apply moving to list }}
+    | [ umu ] ordVars           :: M :: umoving   {{ com apply umoving to list }}
 
 
 grammar
-
 varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
     | ∅                  ::   :: emptyset  {{ com empty set }}
     | fv iP              ::   :: Pfv       {{ com free variables }}
@@ -300,8 +298,8 @@ varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
                                            {{ tex [[ordVars]] }}
     | [ mu ] varset      :: M :: moving    {{ com apply moving to varset }}
     | Ξ                  ::   :: AU_Ctxt   {{ com anti-unification context }}
-grammar
 
+grammar
 mu {{ tex \mu }}, μ {{ tex \mu }}:: Mu ::= 
     | ·                   ::   :: empty   {{ com empty moving }}
     | pma1 ↦ pma2         ::   :: Psingle {{ com Positive unit substitution }}
@@ -313,6 +311,12 @@ mu {{ tex \mu }}, μ {{ tex \mu }}:: Mu ::=
                                           {{ tex [[mu]]|_{[[varset]]}  }} 
     | mu -1               :: M :: inv     {{ com inversion }} 
                                           {{ tex [[mu]]^{-1} }} 
+
+grammar
+umu {{ tex \vv{\mu} }} :: UMu ::=
+   | ·                    ::   :: empty    {{ com empty moving }}
+   | puas / pas           ::   :: PosUSubs
+   | nuas / nas           ::   :: NegUSubs
 
 
 % pma {{ tex \widetilde{\alpha}^{+} }} :: pma_ ::= {{ com positive movable variable }}
@@ -384,8 +388,8 @@ nub {{ tex \widehat{\beta}^{-} }}
     | nua [ Δ ]          :: :: AnnotVar {{ tex [[nua]]\{ [[Δ]] \} }}
     | pnua               :: :: PN
 
-puas {{ tex \vv{ \widetilde{ \alpha^{+} } } }},
-pubs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
+puas {{ tex \vv{ \widehat{ \alpha}^{+} } }},
+pubs {{ tex \vv{ \widehat{ \beta}^{+} } }}
 :: 'puas_' ::= {{ com positive unification variable list }}
    | ·                     ::   :: empty    {{ com empty list }}
    | pua                   ::   :: Var      {{ com a variable }}
@@ -393,8 +397,8 @@ pubs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
                                             {{ tex \vv{ [[pua]] } }}
    | </ puasi // , // i /> ::   :: concat   {{ com concatenate lists }}
 
-nuas {{ tex \vv{ \widehat{ \alpha^{-} } } }},
-nubs {{ tex \vv{ \widehat{ \beta^{-}  } } }}
+nuas {{ tex \vv{ \widehat{\alpha}^{-} } }},
+nubs {{ tex \vv{ \widehat{\beta}^{-} } }}
 :: 'nuas_' ::= {{ com negative unification variable list }}
    | ·                     ::   :: empty    {{ com empty list }}
    | nua                   ::   :: Var      {{ com a variable }}
@@ -418,7 +422,7 @@ uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive alg
    | [ aus ] uP    :: M :: AppAUSub  
    | [ mu ] uP     :: M :: AppMoving 
    | [ uσ ] uP     :: M :: AppUSub  
-   | [ nuas / nas ] iP :: M :: AppAUNSub
+   | [ umu ] iP    :: M :: AppAUNSub
    | ( uP )        :: S :: Paren
 
 uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative algorithmic type (potentially with metavariables) }}
@@ -432,7 +436,7 @@ uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative al
    | [ aus ] uN     :: M :: AppAUSub
    | [ mu ] uN      :: M :: AppMoving
    | [ uσ ] uN      :: M :: AppUSub
-   | [ nuas / nas ] iN :: M :: AppAUNSub
+   | [ umu ] iN     :: M :: AppAUNSub
    | ( uN )         :: S :: Paren
 
 
