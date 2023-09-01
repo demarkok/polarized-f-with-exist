@@ -350,16 +350,20 @@ can potentially contain algorithmic variables.
 }
 \end{definition}
 
-\subsection{Algorithmic Renaming}
+\subsection{Variable Algorithmization}
 
 In several places of our algorithm, 
 we turn a declarative type into the algorithmic one
 via replacing certain type variables with fresh algorithmic variables.
-This is done via algorithmic renaming
 
-\begin{definition}
-  Suppose that $[[nas]]$ is a list of negative type variables, 
-
+\begin{definition}[Variable Algorithmization]
+  Suppose that $[[nas]]$ is a list of negative type variables
+  and $[[nuas]]$ is a list of negative algorithmic variables of the same length. 
+  Then $[[ nuas/nas ]]$ is a substitution turning each $[[αi⁻]]$ from $[[nas]]$ into 
+  $[[αî⁻]]$ from $[[nuas]]$.
+  Positive algorithmization $[[ puas/pas ]]$
+  is defined symmetrically.
+\end{definition}
 
 \subsection{Contexts}
 
@@ -393,6 +397,9 @@ This association is represented by \emph{algorithmic subtyping context} $[[Θ]]$
 
   $[[dom(Θ)]]$ denotes the set of variables appearing in $[[Θ]]$:
   $[[dom(Θ)]] = \{ [[α̂±]] \mid [[α̂±[Γ] ]] \in [[Θ]] \}$.
+
+
+  If $[[ α̂±[Γ] ]] \in [[Θ]]$, we denote $[[Γ]]$ as $[[Θ(α̂±)]]$.
 \end{definition}
 
 \subsection{Subsitutions}
@@ -409,13 +416,21 @@ and for each variable not appearing in $[[dom(Θ)]]$,
 it acts as identity.
 
 \begin{definition}[Signature of Algorithmic Substitution]
-  $[[Θ ⊢ uσ : Θ]]$ means that
-  \begin{enumerate}
-    \item for any $[[α̂± ∊ Ξ]]$,
-      there exists $[[Γ]]$ such that $[[ α̂±[Γ] ∊ Θ ]]$
-      and $[[ Γ ⊢ [uσ]α̂± ]]$; 
-    \item for any $[[ α̂± ∉ Ξ]]$, $[[ [uσ]α̂± ]] =  [[ α̂± ]]$.
-  \end{enumerate}
+  \hfill
+  \begin{itemize}
+    \item $[[Θ ⊢ uσ : Ξ]]$ means that
+      \begin{enumerate}
+        \item for any $[[α̂± ∊ Ξ]]$,
+          there exists $[[Γ]]$ such that $[[ α̂±[Γ] ∊ Θ ]]$
+          and $[[ Γ ⊢ [uσ]α̂± ]]$; 
+        \item for any $[[ α̂± ∉ Ξ]]$, $[[ [uσ]α̂± ]] =  [[ α̂± ]]$.
+      \end{enumerate}
+    \item $[[Γ ⊢ uσ : Ξ]]$ means that
+      \begin{enumerate}
+        \item for any $[[α̂± ∊ Ξ]]$, $[[ Γ ⊢ [uσ]α̂± ]]$; 
+        \item for any $[[ α̂± ∉ Ξ]]$, $[[ [uσ]α̂± ]] =  [[ α̂± ]]$.
+      \end{enumerate}
+  \end{itemize}
 \end{definition}
 
 Anti-unification substitution is denoted as $[[aus]]$ and $[[ausr]]$.
@@ -477,8 +492,13 @@ The constraints are represented by set of constraint entries.
     \item unification constraint (denoted as $[[UC]]$) is a set of 
       unification constraint entries.
   \end{itemize}
-
 \end{definition}
+
+However, in subtyping we need to consider more general
+kind of constraints. Specifically,
+subtyping constraint entries can restrict a variable
+not only to be equivalent to a certain type, but
+also to be a supertype of a positive type.
 
 \begin{definition}[Subtyping Constraint]
   \hfill
@@ -499,6 +519,23 @@ The constraints are represented by set of constraint entries.
   \end{itemize}
 \end{definition}
 
+
+\begin{definition}[Well-formed Constraint]
+  We say that a constraint is well-formed in a
+  subtyping context $[[Θ]]$ if all its entries are well-formed in
+  the corresponding elements of $[[Θ]]$.
+  More formally, 
+  $[[Θ ⊢ UC]]$ iff for every $[[ucE]] \in $ $[[UC]]$,
+  such that $[[ucE]]$ restricts $[[α̂±]]$,
+  there exists $[[ α̂±[Γ] ]] \in [[Θ]]$
+  and $[[Γ ⊢ ucE]]$.
+\end{definition}
+
+Next, define the least upper bound 
+for two subtyping constraints.
+First, we define the least upper bound for entries,
+and then extend it to the set of entries.
+
 \begin{definition} [Matching Entries]
   We call two unification constraint entries 
   or two subtyping constraint entries matching 
@@ -508,35 +545,46 @@ The constraints are represented by set of constraint entries.
 Two matching entries formed in the same context $[[Γ]]$ 
 can be merged in the following way:
 \begin{definition}[Merge of Matching Constraint Entries]
+  \label{definition:merge-matching-entries}
    \hfill \\
-\ottdefnSCME\\
+  \ottdefnSCME\\
 \end{definition}
+
+Unification constraint entries are a special case of subtyping constraint
+entries. They are merged using the same algorithm 
+(\cref{definition:merge-matching-entries}).
+Notice that the merge of two matching unification constraint entries
+is a unification constraint entry.
+\begin{lemma}[Merge of Matching Unification Constraint Entries is well-defined]
+  Suppose that $[[Γ ⊢ ucE1]]$ and $[[Γ ⊢ ucE2]]$
+  are unification constraint entries. 
+  Then the merge of $[[ucE1]]$ and $[[ucE2]]$ 
+  $[[Γ ⊢ ucE1 & ucE2 = ucE]]$
+  according to \cref{definition:merge-matching-entries},
+  is a unification constraint entry.
+\end{lemma}
+\begin{proof}
+  Since $[[ucE1]]$ and $[[ucE2]]$ are matching unification constraint entries,
+  they have the shape $([[pua :≈ iP1]], [[pua :≈ iP2]])$ or
+  $([[nua :≈ iN1]], [[nua :≈ iN2]])$.
+  Then the merge of $[[ucE1]]$ and $[[ucE2]]$ 
+  can only be defined by \ruleref{\ottdruleSCMEPEqEqLabel} or
+  \ruleref{\ottdruleSCMENEqEqLabel}.
+  In both cases the result, if it exists, 
+  is a unification constraint entry:
+  in the first case, the result has shape $[[pua :≈ iP1]]$,
+  in the second case, the result has shape $[[nua :≈ iN1]]$.
+\end{proof}
+
+
 % Notice that in case of equivalence, the assigned types
 % must be equal (i.e. alpha-equivalent) to be merged. This is because
 % the unification algorithm assumes that every type is normalized,
 % and hence, equivalence is alpha-equivalence 
 % (\cref{corollary:nf-complete-wrt-subt-equiv,corollary:nf-sound-wrt-subt-equiv}).
 
-\begin{definition}[Constraint Context]
-  Constraint context (denoted as $[[Θ]]$) is a set of entries of shape $[[ pua[Γ] ]]$ 
-  and $[[ nua[Γ] ]]$, specifying that the unification variable ($[[pua]]$ or $[[nua]]$)
-  must be instantiated in a type well-formed in context $[[Γ]]$.
-  We assume that for each $[[α̂±]]$, at most one entry of shape $[[ α̂±[Γ] ]]$ is in $[[Θ]]$.
-  If $[[ α̂±[Γ] ]] \in [[Θ]]$, we denote $[[Γ]]$ as $[[Θ(α̂±)]]$.
-\end{definition}
-
-\begin{definition}[Well-formed Constraint]
-  We say that a constraint is well-formed in a
-  constraint context $[[Θ]]$ if all its entries are well-formed in
-  the corresponding elements of $[[Θ]]$.
-  More formally, 
-  $[[Θ ⊢ UC]]$ iff for every $[[ucE]] \in $ $[[UC]]$,
-  such that $[[ucE]]$ restricts $[[α̂±]]$,
-  there exists $[[ α̂±[Γ] ]] \in [[Θ]]$
-  and $[[Γ ⊢ ucE]]$.
-\end{definition}
-
 \begin{definition}[Merge of Subtyping Constraints]
+  \label{definition:merge-subtyping-constraints}
   Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.
   Then $[[Θ ⊢ SC1 & SC2 = SC]]$
   defines a set such that $[[ucE]] \in [[SC]]$ iff either
@@ -548,6 +596,29 @@ can be merged in the following way:
       $[[α̂±]]$. 
   \end{itemize}
 \end{definition}
+
+
+Unification constraints can be considered 
+as a special case of subtyping constraints,
+and the merge of unification constraints
+is defined as the merge of subtyping constraints.
+Then it is easy to see that the merge of two 
+unification constraints is a unification constraint.
+
+\begin{lemma}[Merge of Unification Constraints is well-defined]
+  Suppose that $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$
+  are unification constraints. 
+  Then the merge of $[[UC1]]$ and $[[UC2]]$ 
+  $[[Θ ⊢ lift UC1 & lift UC2 = lift UC]]$
+  according to \cref{definition:merge-subtyping-constraints},
+  is a unification constraint.
+\end{lemma}
+\begin{proof}
+  $[[UC]]$ consists of unmatched entries of $[[UC1]]$ and $[[UC2]]$,
+  which are \emph{unification} constraint entries by assumption,
+  and merge of matching entries, which also are  
+  \emph{unification} constraint entries by \cref{lemma:merge-matching-entries-is-well-defined}.
+\end{proof}
 
 \subsection{Constraint Satisfaction}
 \ottdefnsSATSCE

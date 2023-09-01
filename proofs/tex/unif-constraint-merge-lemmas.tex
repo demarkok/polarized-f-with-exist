@@ -67,8 +67,8 @@
     If $[[Θ ⊢ UC1 & UC2 = UC]]$ is defined then
     \begin{enumerate}
         \item $[[Θ ⊢ UC]]$ is normalized unification constraint,
-        \item for any substitution $[[Θ ⊢ uσ]]$, $[[ Θ   ⊢ uσ : lift UC ]]$ implies 
-        $[[ Θ   ⊢ uσ : lift UC1 ]]$ and $[[ Θ   ⊢ uσ : lift UC2 ]]$.
+        \item for any substitution $[[Θ ⊢ uσ : dom(UC)]]$, $[[ Θ  ⊢ uσ : lift UC ]]$ implies 
+        $[[ Θ ⊢ uσ : lift UC1 ]]$ and $[[Θ ⊢ uσ : lift UC2]]$.
     \end{enumerate}
 \end{corollary}
 \begin{proof}
@@ -78,34 +78,12 @@
     Analogously, $[[Θ ⊢ UC]] = [[UC1 ∪ UC2]]$ holds immediately, 
     since $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$.
 
-    Let us take an arbitrary substitution $[[Θ ⊢ uσ]]$ and assume that 
+    Let us take an arbitrary substitution $[[Θ ⊢ uσ : dom(UC)]]$ and assume that 
     $[[ Θ   ⊢ uσ : lift UC ]]$.
     Then $[[ Θ   ⊢ uσ : lift UCi ]]$ holds by definition:
-    If $[[ucE]] \in [[lift UCi]] \subseteq [[lift UC1 ∪ lift UC2]] = [[lift UC]]$.
-    So $[[Θ(α̂±) ⊢ [uσ]α̂± : ucE]]$ holds.
+    If $[[ucE]] \in [[lift UCi]] \subseteq [[lift UC1 ∪ lift UC2]] = [[lift UC]]$ then
+    $[[Θ(α̂±) ⊢ [uσ]α̂± : ucE]]$ (where $[[ucE]]$ restricts $[[α̂±]]$) holds since $[[Θ ⊢ uσ : dom(UC)]]$.
 \end{proof}
-
-
-% \begin{lemma} [Completeness of Unification Constraint Merge]
-%     \label{lemma:unif-merge-completeness}
-%     Suppose that $[[Θ ⊢ UC|varset1]]$ and $[[Θ ⊢ UC|varset2]]$.
-%     Then $[[Θ ⊢ UC|varset1 & UC|varset2 = UC']]$ exists and
-%     $[[UC' = UC|varset1 ∪ varset2]]$.
-% \end{lemma}
-% \begin{proof}
-%     $[[Θ ⊢ UC|varset1 & UC|varset2 = UC']]$ is defined as the union of three parts:
-%     entries of $[[UC|varset1]]$ that do not have matching entries of $[[UC|varset2]]$,
-%     entries of $[[UC|varset2]]$ that do not have matching entries of $[[UC|varset1]]$,
-%     and the merge of matching entries.
-%     The first two parts are defined. The merge of matching entries is defined
-%     by \ruleref{\ottdruleUCMEPEqEqLabel}, since the matching entries must be equal
-%     if they both belong to $[[UC]]$.
-
-%     It remains to show that $[[UC' = UC|varset1 ∪ varset2]]$.
-%     It is easy to see that the three parts comprising $[[UC']]$ 
-%     correspond to the three parts comprising 
-%     $[[UC|varset1 ∪ varset2]] = [[UC | (varset1 \ varset2) ∪ UC | (varset2 \ varset1) ∪ UC | varset1 ∩ varset2]]$. 
-% \end{proof}
 
 \begin{lemma} [Completeness of Unification Constraint Entry Merge]
     \label{lemma:unif-entry-merge-completeness}
@@ -134,7 +112,8 @@
 \begin{lemma} [Completeness of Unification Constraint Merge] 
     \label{lemma:unif-merge-completeness}
     Suppose that $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$.
-    Then for any substitution $[[Θ ⊢ uσ]]$ such that $[[ Θ   ⊢ uσ : lift UC1 ]]$ and $[[ Θ   ⊢ uσ : lift UC2 ]]$, 
+    Then for any $[[Ξ]] \supseteq [[dom(UC1) ∪ dom(UC2)]]$ 
+    and substitution $[[Θ ⊢ uσ : Ξ]]$ such that $[[ Θ ⊢ uσ : lift UC1 ]]$ and $[[ Θ   ⊢ uσ : lift UC2 ]]$, 
     \begin{enumerate}
         \item $[[Θ ⊢ UC1 & UC2 = UC]]$ is defined and
         \item $[[ Θ   ⊢ uσ : UC ]]$.

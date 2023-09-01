@@ -328,7 +328,7 @@
 \begin{corollary}[Normalization preserves the signature of the algorithmic substitution]
   \label{corollary:norm-subst-sig-algo}
   \hfill \\
-  $[[Θ ⊢ uσ : Ξ]] \iff [[Θ ⊢ nf(uσ) : Ξ]]$ and
+  $[[Θ ⊢ uσ : Ξ]] \iff [[Θ ⊢ nf(uσ) : Ξ]]$,
   $[[Γ ⊢ uσ : Ξ]] \iff [[Γ ⊢ nf(uσ) : Ξ]]$.
 \end{corollary}
 \begin{proof}
@@ -681,7 +681,7 @@
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  We prove it by induction on $[[iP]]$ (and mutually on $[[N]]$).
+  We prove it by induction on $[[iP]]$ (and mutually on $[[iN]]$).
   \begin{caseof}
     \item $[[iN = α⁻]]$\\
       Then since by inversion, $[[α⁻ ∊ {Γ}]]$, 
@@ -914,11 +914,9 @@
 
 \begin{corollary}[Algorithmic substitution equivalence becomes equality after normalization]
   \label{corollary:subst-subt-equiv-algorithmization}
-  Suppose that $[[Θ ⊢ uσ1]]$ and $[[Θ ⊢ uσ2]]$ are algorithmic substitutions.
-  Then
-  $[[Θ ⊢ uσ1 ≈ uσ2]] \iff [[nf(uσ1)|dom(Θ) = nf(uσ2)|dom(Θ)]]$
-  and 
-  $[[Γ ⊢ uσ1 ≈ uσ2 : Ξ]] \iff [[nf(uσ1)|Ξ = nf(uσ2)|Ξ]]$.
+  Suppose that $[[Θ ⊢ uσ1 : Ξ']]$ and $[[Θ ⊢ uσ2 : Ξ']]$ are algorithmic substitutions
+  and $[[Ξ ⊆ Ξ']]$. 
+  Then $[[Γ ⊢ uσ1 ≈ uσ2 : Ξ]] \iff [[nf(uσ1)|Ξ = nf(uσ2)|Ξ]]$.
 \end{corollary}
 
 \begin{lemma}[Substitution preserves declarative equivalence]
