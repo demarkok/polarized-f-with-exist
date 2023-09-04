@@ -3,8 +3,8 @@
     \hfill
 
   \begin{itemize}
-    \item[$+$] if $[[Γ ⊢ iP]]$ then $[[fv(iP) ⊆ {Γ}]]$;
-    \item[$-$] if $[[Γ ⊢ iN]]$ then $[[fv(iN) ⊆ {Γ}]]$.
+    \item[$+$] if $[[Γ ⊢ iP]]$ then $[[fv(iP) ⊆ Γ]]$;
+    \item[$-$] if $[[Γ ⊢ iN]]$ then $[[fv(iN) ⊆ Γ]]$.
   \end{itemize}
 \end{lemma}
 \begin{proof}
@@ -12,15 +12,15 @@
   $[[Γ⊢ iP]]$ and mutually, $[[Γ ⊢ iN]]$.
   \begin{caseof}
     \item $[[Γ ⊢ α±]]$ means by inversion that $[[α±]] \in [[Γ]]$,
-      that is, $[[α±]] = [[fv(α±) ⊆ {Γ}]]$.
+      that is, $[[α±]] = [[fv(α±) ⊆ Γ]]$.
     \item $[[Γ ⊢ iQ → iM]]$ means by inversion that
       $[[Γ ⊢ iQ]]$ and $[[Γ ⊢ iM]]$.
-      Then by the induction hypothesis, $[[fv(iQ) ⊆ {Γ}]]$ and $[[fv(iM) ⊆ {Γ}]]$,
-      and hence, $[[fv(iQ → iM) = fv(iQ) ∪ fv(iM)]] \subseteq [[{Γ}]]$.
+      Then by the induction hypothesis, $[[fv(iQ) ⊆ Γ]]$ and $[[fv(iM) ⊆ Γ]]$,
+      and hence, $[[fv(iQ → iM) = fv(iQ) ∪ fv(iM)]] \subseteq [[Γ]]$.
     \item the cases when $[[iP = ↓iN']]$ or $[[iN = ↑iP']]$ are proven analogously.
     \item $[[Γ ⊢ ∀pas.iM]]$ means by inversion that $[[Γ, pas ⊢ iM]]$.
-      Then by the induction hypothesis, $[[fv(iM) ⊆ {Γ, pas}]]$, and hence,
-      $[[fv(∀pas.iM) = fv(iM) \ {pas}]] \subseteq [[{Γ, pas} \ {pas} = {Γ}]]$.
+      Then by the induction hypothesis, $[[fv(iM) ⊆ Γ, pas]]$, and hence,
+      $[[fv(∀pas.iM) = fv(iM) \ {pas}]] \subseteq [[{Γ, pas} \ {pas} = Γ]]$.
     \item The case $[[iP = ∃nas.iQ]]$ is proven analogously.
   \end{caseof}
 \end{proof}
@@ -30,9 +30,9 @@
 
   In the well-formedness judgment, only used variables matter:
   \begin{itemize}
-  \item[$+$] if $[[{Γ1} ∩ fv iP]] = [[{Γ2} ∩ fv iP]]$ then
+  \item[$+$] if $[[Γ1 ∩ fv iP]] = [[Γ2 ∩ fv iP]]$ then
     $[[Γ1 ⊢ iP]] \iff [[Γ2 ⊢ iP]]$,
-  \item[$-$] if $[[{Γ1} ∩ fv iN]] = [[{Γ2} ∩ fv iN]]$ then
+  \item[$-$] if $[[Γ1 ∩ fv iN]] = [[Γ2 ∩ fv iN]]$ then
     $[[Γ1 ⊢ iN]] \iff [[Γ2 ⊢ iN]]$.
   \end{itemize}
 \end{lemma}
@@ -45,23 +45,23 @@
   \hfill
   
   \begin{itemize}
-    \item [$+$] If $[[Γ ⊢ iP]]$ then $[[Ord fv(iP) ⊢ iP]]$;
-    \item [$-$] If $[[Γ ⊢ iN]]$ then $[[Ord fv(iN) ⊢ iN]]$.
+    \item [$+$] If $[[Γ ⊢ iP]]$ then $[[fv(iP) ⊢ iP]]$;
+    \item [$-$] If $[[Γ ⊢ iN]]$ then $[[fv(iN) ⊢ iN]]$.
   \end{itemize}
 \end{corollary}
 \begin{proof}
   It follows from \cref{lemma:wf-ctxt-equiv} and \cref{lemma:wf-soundness}.
   \begin{itemize}
     \item [$+$] 
-      By \cref{lemma:wf-soundness}, $[[fv(iP) ⊆ {Γ}]]$, and hence,
-      $[[{Γ} ∩ fv iP = fv iP ]]$, which makes \cref{lemma:wf-ctxt-equiv}
-      applicable fore contexts $[[Γ]]$ and $[[Ord fv(iP)]]$.
+      By \cref{lemma:wf-soundness}, $[[fv(iP) ⊆ Γ]]$, and hence,
+      $[[Γ ∩ fv iP = fv iP ]]$, which makes \cref{lemma:wf-ctxt-equiv}
+      applicable fore contexts $[[Γ]]$ and $[[fv(iP)]]$.
     \item[$-$] The negative case is proven analogously.
   \end{itemize}
 
 \begin{corollary}[Well-formedness Context Weakening]
   \label{lemma:wf-weakening}
-  Suppose that $[[{Γ1} ⊆ {Γ2}]]$, then
+  Suppose that $[[Γ1 ⊆ Γ2]]$, then
   \begin{itemize}
     \item[$+$] if $[[Γ1 ⊢ iP]]$ then $[[Γ2 ⊢ iP]]$,
     \item[$-$] if $[[Γ1 ⊢ iN]]$ then $[[Γ2 ⊢ iN]]$.
@@ -69,9 +69,9 @@
 \end{corollary}
 \begin{proof}
   By \cref{lemma:wf-soundness},
-  $[[Γ1 ⊢ iP]]$ implies $[[fv(iP) ⊆ {Γ1}]]$,
-  which means that $[[fv(iP) ⊆ {Γ2}]]$,
-  and thus, $[[fv(iP)]] = [[fv(iP) ∩ {Γ1}]] = [[fv(iP) ∩ {Γ2}]]$.
+  $[[Γ1 ⊢ iP]]$ implies $[[fv(iP) ⊆ Γ1]]$,
+  which means that $[[fv(iP) ⊆ Γ2]]$,
+  and thus, $[[fv(iP)]] = [[fv(iP) ∩ Γ1]] = [[fv(iP) ∩ Γ2]]$.
   Then by \cref{lemma:wf-ctxt-equiv}, $[[Γ2 ⊢ iP]]$. 
   The negative case is symmetric.
 \end{proof}
@@ -80,7 +80,7 @@
 \begin{corollary}
   \label{lemma:mut-sub-types-wf-equiv}
   Suppose that all the types below are well-formed in $[[Γ]]$ and
-  $[[{Γ'} ⊆ {Γ}]]$. Then
+  $[[Γ' ⊆ Γ]]$. Then
   \begin{itemize}
   \item[$+$] $[[Γ ⊢ iP ≈ iQ]]$ implies $[[Γ' ⊢ iP]] \iff [[Γ' ⊢ iQ]]$
   \item[$-$] $[[Γ ⊢ iN ≈ iM]]$ implies $[[Γ' ⊢ iN]] \iff [[Γ' ⊢ iM]]$
@@ -107,10 +107,10 @@
       i.e. $[[iP]]$ is $[[α⁺]]$.\\
       By inversion, $[[α⁺ ∊ {Γ, Γ1}]]$, then
       \begin{itemize}
-        \item if $[[α⁺ ∊ {Γ1}]]$ then $[[ Γ2 ⊢ [σ]α⁺ ]]$, 
+        \item if $[[α⁺ ∊ Γ1]]$ then $[[ Γ2 ⊢ [σ]α⁺ ]]$, 
           and by weakening (\cref{lemma:wf-weakening}),
           $[[ Γ, Γ2 ⊢ [σ]α⁺ ]]$;
-        \item if $[[α⁺ ∊ {Γ} \ {Γ1}]]$ then $[[ [σ]α⁺ = α⁺ ]]$,
+        \item if $[[α⁺ ∊ Γ \ Γ1]]$ then $[[ [σ]α⁺ = α⁺ ]]$,
           and by \ruleref{\ottdruleWFTPVarLabel}, $[[ Γ, Γ2 ⊢ α⁺ ]]$.
       \end{itemize}
 
@@ -125,9 +125,9 @@
       i.e. $[[iP]]$ is $[[∃nas.iQ]]$.\\
       Then $[[Γ, Γ1 ⊢ ∃nas.iQ]]$ means $[[Γ, nas, Γ1 ⊢ iQ]]$ 
       by inversion, and by the induction hypothesis, 
-      $[[Γ, nas, Γ2 ⊢ [σ]iQ]]$.
+      $[[Γ, {nas}, Γ2 ⊢ [σ]iQ]]$.
       Then by  \ruleref{\ottdruleWFTExistsLabel}, 
-      $[[Γ, nas, Γ2 ⊢ ∃nas.[σ]iQ]]$, 
+      $[[Γ, {nas}, Γ2 ⊢ ∃nas.[σ]iQ]]$, 
       which by definition of substitution is rewritten as 
       $[[Γ, Γ2 ⊢ [σ]∃nas.iQ]]$.
 

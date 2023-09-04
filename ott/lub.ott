@@ -1,28 +1,28 @@
 defns
   LUB :: 'LUB' ::=
 
-  defn G ⊨ iP1 ∨ iP2 = iQ  :: :: Nsub :: ''
+  defn Γ ⊨ iP1 ∨ iP2 = iQ  :: :: Nsub :: ''
   {{ com Least Upper Bound (Least Common Supertype) }} by
 
   
   ---------------- :: Var
-  G ⊨ pa ∨ pa = pa
+  Γ ⊨ pa ∨ pa = pa
 
 
-  G,· ⊨ nf(↓iN) ≈au nf(↓iM) ⫤ (Ξ, uP, aus1, aus2)
+  Γ,· ⊨ nf(↓iN) ≈au nf(↓iM) ⫤ (Ξ, uP, aus1, aus2)
   -------------------------------------------------- :: Shift
-  G ⊨ ↓iN ∨ ↓iM = ∃nas.[nas / ToList Ξ]uP
+  Γ ⊨ ↓iN ∨ ↓iM = ∃nas.[nas / ToList Ξ]uP
 
-  % G ⊨ ↓iN ∨ ↓iM = ∃ nas . [nas/ToList Ξ] uP
+  % Γ ⊨ ↓iN ∨ ↓iM = ∃ nas . [nas/ToList Ξ] uP
 
   % {nas} ∩ fv iP2 = ∅    {nbs} ∩ fv iP1 = ∅
-  G, nas, nbs ⊨ iP1 ∨ iP2 = iQ
+  Γ, {nas}, {nbs} ⊨ iP1 ∨ iP2 = iQ
   --------------------------------------- :: Exists
-  G ⊨ ∃nas.iP1 ∨ ∃nbs.iP2 = iQ
+  Γ ⊨ ∃nas.iP1 ∨ ∃nbs.iP2 = iQ
 
 
 
-  defn upgrade G ⊢ iP to Δ = iQ :: :: Up :: '' by
+  defn upgrade Γ ⊢ iP to Δ = iQ :: :: Up :: '' by
 
   Γ = Δ, pnas   {pnbs} is fresh    {pncs} is fresh 
   Δ, pnbs, pncs ⊨ [pnbs/pnas]iP ∨ [pncs/pnas]iP = iQ

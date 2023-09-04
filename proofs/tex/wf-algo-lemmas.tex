@@ -2,25 +2,25 @@
     \label{lemma:wf-algo-soundness}
     \hfill
   \begin{itemize}
-    \item[$+$] if $[[Γ ; Ξ ⊢ uP]]$ then $[[fv(uP) ⊆ {Γ}]]$ and $[[uv(uP) ⊆ Ξ]]$;
-    \item[$-$] if $[[Γ ; Ξ ⊢ uN]]$ then $[[fv(uN) ⊆ {Γ}]]$ and $[[uv(uN) ⊆ Ξ]]$.
+    \item[$+$] if $[[Γ ; Ξ ⊢ uP]]$ then $[[fv(uP) ⊆ Γ]]$ and $[[uv(uP) ⊆ Ξ]]$;
+    \item[$-$] if $[[Γ ; Ξ ⊢ uN]]$ then $[[fv(uN) ⊆ Γ]]$ and $[[uv(uN) ⊆ Ξ]]$.
   \end{itemize}
 \end{lemma}
 \begin{proof}
   The proof is analogous to \cref{lemma:wf-soundness}.
   The additional base case is when $[[Γ ; Ξ ⊢ uP]]$ is derived by \ruleref{\ottdruleWFATPUVarLabel},
   and the symmetric negative case.
-  In this case, $[[uP]] = [[α̂⁺]]$, and $[[uv(uP)]] = [[{α̂⁺} ⊆ Ξ]]$ by inversion; $[[fv(uP)]] = [[∅ ⊆ {Γ}]]$ vacuously.
+  In this case, $[[uP]] = [[α̂⁺]]$, and $[[uv(uP)]] = [[{α̂⁺} ⊆ Ξ]]$ by inversion; $[[fv(uP)]] = [[∅ ⊆ Γ]]$ vacuously.
 \end{proof}
 
 \begin{lemma}[Completeness of algorithmic type well-formedness]
   \label{lemma:wf-algo-ctxt-equiv}
   In the well-formedness judgment, only used variables matter:
   \begin{itemize}
-  \item[$+$] if $[[{Γ1} ∩ fv iP]] = [[{Γ2} ∩ fv iP]]$
+  \item[$+$] if $[[Γ1 ∩ fv iP]] = [[Γ2 ∩ fv iP]]$
     and $[[Ξ1 ∩ uv uP]] = [[Ξ2 ∩ uv uP]]$ then
     $[[Γ1 ; Ξ1 ⊢ uP]] \iff [[Γ2 ; Ξ2 ⊢ uP]]$, and
-  \item[$-$] if $[[{Γ1} ∩ fv iN]] = [[{Γ2} ∩ fv iN]]$
+  \item[$-$] if $[[Γ1 ∩ fv iN]] = [[Γ2 ∩ fv iN]]$
     and $[[Ξ1 ∩ uv uN]] = [[Ξ2 ∩ uv uN]]$ then
     $[[Γ1 ; Ξ1 ⊢ uN]] \iff [[Γ2 ; Ξ2 ⊢ uN]]$.
   \end{itemize}
@@ -32,8 +32,8 @@
 \begin{lemma}[Variable algorithmization agrees with well-formedness]
   \hfill
   \begin{itemize}
-    \item[$+$]  $[[Γ, nas ⊢ iP]]$ implies $[[Γ; nuas ⊢ [nuas/nas]iP]]$;
-    \item[$-$]  $[[Γ, nas ⊢ iN]]$ implies $[[Γ; nuas ⊢ [nuas/nas]iN]]$.
+    \item[$+$]  $[[Γ, nas ⊢ iP]]$ implies $[[Γ; {nuas} ⊢ [nuas/nas]iP]]$;
+    \item[$-$]  $[[Γ, nas ⊢ iN]]$ implies $[[Γ; {nuas} ⊢ [nuas/nas]iN]]$.
   \end{itemize}
 \end{lemma}
 \begin{proof}
@@ -43,7 +43,7 @@
 
 \begin{corollary}[Well-formedness Algorithmic Context Weakening]
   \label{lemma:wf-weakening-algo}
-  Suppose that $[[{Γ1} ⊆ {Γ2}]]$,
+  Suppose that $[[Γ1 ⊆ Γ2]]$,
   and $[[Ξ1 ⊆ Ξ2]]$. Then
   \begin{itemize}
     \item[$+$] if $[[Γ1 ; Ξ1 ⊢ uP]]$ implies $[[Γ2 ; Ξ2 ⊢ uP]]$,
@@ -52,9 +52,9 @@
 \end{corollary}
 \begin{proof}
   By \cref{lemma:wf-soundness},
-  $[[Γ1 ⊢ iP]]$ implies $[[fv(iP) ⊆ {Γ1}]]$,
-  which means that $[[fv(iP) ⊆ {Γ2}]]$,
-  and thus, $[[fv(iP)]] = [[fv(iP) ∩ {Γ1}]] = [[fv(iP) ∩ {Γ2}]]$.
+  $[[Γ1 ⊢ iP]]$ implies $[[fv(iP) ⊆ Γ1]]$,
+  which means that $[[fv(iP) ⊆ Γ2]]$,
+  and thus, $[[fv(iP)]] = [[fv(iP) ∩ Γ1]] = [[fv(iP) ∩ Γ2]]$.
   Then by \cref{lemma:wf-ctxt-equiv}, $[[Γ2 ⊢ iP]]$. 
   The negative case is symmetric.
 \end{proof}

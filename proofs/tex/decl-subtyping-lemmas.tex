@@ -72,7 +72,7 @@
           If $[[pbs]]$ is empty, then $[[Γ, pbs ⊢ iN ≤ iM]]$ holds by assumption.
           Otherwise, $[[Γ ⊢ ∀pas.iN' ≤ ∀pbs.∀pbs'.iM]]$ is inferred by
           \ruleref{\ottdruleDOneForallLabel}, and by inversion:
-          $[[Γ,pbs,pbs' ⊢ [iPs/pas]iN' ≤ iM']]$ for some $[[Γ,pbs,pbs' ⊢ iPs]]$.
+          $[[Γ, {pbs}, {pbs'} ⊢ [iPs/pas]iN' ≤ iM']]$ for some $[[Γ, {pbs}, {pbs'} ⊢ iPs]]$.
           Then again by \ruleref{\ottdruleDOneForallLabel} with the same $[[iPs]]$,
           $[[Γ,pbs ⊢ ∀pas.iN' ≤ ∀pbs'.iM']]$, that is $[[Γ,pbs ⊢ iN ≤ iM]]$.
         \item [$\Leftarrow$] let us assume $[[Γ, pbs ⊢ iN ≤ iM]]$, and let us decompose 
@@ -81,8 +81,8 @@
           if $[[pas]]$ and $[[pbs']]$ are empty then $[[Γ, pbs ⊢ iN ≤ iM]]$
           is turned into $[[Γ ⊢ iN ≤ ∀pbs.iM]]$ by \ruleref{\ottdruleDOneForallLabel}.
           Otherwise, $[[Γ, pbs ⊢ ∀pas.iN' ≤ ∀pbs'.iM']]$ is inferred by
-          \ruleref{\ottdruleDOneForallLabel}, that is $[[Γ, pbs, pbs' ⊢ [iPs/pas]iN' ≤ iM']]$
-          for some $[[Γ, pbs, pbs' ⊢ iPs]]$.
+          \ruleref{\ottdruleDOneForallLabel}, that is $[[Γ, {pbs}, {pbs'} ⊢ [iPs/pas]iN' ≤ iM']]$
+          for some $[[Γ, {pbs}, {pbs'} ⊢ iPs]]$.
           Then by \ruleref{\ottdruleDOneForallLabel} again,
           $[[Γ ⊢ ∀pas.iN' ≤ ∀pbs,pbs'.iM']]$, in other words, $[[Γ ⊢ ∀pas.iN' ≤ ∀pbs.∀pbs'.iM']]$, 
           that is $[[Γ ⊢ iN ≤ ∀pbs.iM]]$.
@@ -99,7 +99,7 @@
           and by inversion, 
           there exist $[[Γ ⊢ iPs,iPs']]$ 
           such that $[[Γ ⊢ [iPs/pas][iPs'/pas']iN' ≤ iM']]$ 
-          (the decomposition of substitutions is possible since $[[{pas} ∩ {Γ} = ∅]]$).
+          (the decomposition of substitutions is possible since $[[{pas} ∩ Γ = ∅]]$).
           Then by \ruleref{\ottdruleDOneForallLabel} again,
           $[[Γ ⊢ ∀pas'.[iPs'/pas']iN' ≤ iM']]$ (notice that $[[ [iPs'/pas']iN' ]]$ cannot
           start with $[[∀]]$).
@@ -259,7 +259,7 @@
   $[[Γ2 ⊢ ∃nas.iP ≥ ∃nbs.iQ]]$ (the other implication is proven symmetrically).
 
   By inversion  of $[[Γ1 ⊢ ∃nas.iP ≥ ∃nbs.iQ]]$, 
-  we obtain $[[σ]]$ such that $[[ Γ1, nbs ⊢ σ : nas]]$
+  we obtain $[[σ]]$ such that $[[ Γ1, nbs ⊢ σ :{nas}]]$
   and $[[Γ1, nbs ⊢ [σ]iP ≥ iQ]]$.
   By \cref{lemma:fv-propagation}, $[[fv([σ]iP) ⊆ fv(iQ)]]$.
 
@@ -270,10 +270,10 @@
       by \cref{lemma:wf-subst};
     \item $[[Γ2, nas ⊢ iP]]$;
     \item $[[Γ1, nbs ⊢ iQ]]$; and 
-    \item $[[Γ2, nbs ⊢ iQ]]$, which means $[[ fv(iQ) ⊆ {Γ2, nbs} ]]$
+    \item $[[Γ2, nbs ⊢ iQ]]$, which means $[[ fv(iQ) ⊆ Γ2, nbs ]]$
       by \cref{lemma:wf-soundness},
       and  combining it with $[[fv([σ]iP) ⊆ fv(iQ)]]$, 
-      we have $[[fv([σ]iP) ⊆ {Γ2, nbs}]]$.
+      we have $[[fv([σ]iP) ⊆ Γ2, nbs]]$.
   \end{itemize}
 
   Let us construct a substitution $[[σ0]]$ in the following way:
@@ -294,19 +294,19 @@
       (where the first and the last equalities are by
        \cref{lemma:subst-restr-fv}).
 
-    \item $[[ Ord fv([σ]iP) ⊢ σ0 : nas]]$.
+    \item $[[  fv([σ]iP) ⊢ σ0 :{nas}]]$.
       To show that, let us consider $[[αi⁻]]$ 
       \begin{itemize}
         \item if $[[αi⁻ ∊ {nas} \ fv(iP)]]$ then
           $[[· ⊢ [σ0]αi⁻]]$, which can be weakened to 
-          $[[Ord fv([σ]iP) ⊢ [σ0]αi⁻]]$;
+          $[[ fv([σ]iP) ⊢ [σ0]αi⁻]]$;
         \item if $[[αi⁻ ∊ {nas} ∩ fv(iP)]]$, 
           we have $[[ [σ0]αi⁻ = [σ]αi⁻ ]]$, and thus, by
           specification of $[[σ]]$, $[[Γ1, pbs ⊢ [σ0]αi⁻ ]]$. 
           By \cref{corollary:wf-ctxt-strengthening}, 
-          it means $[[Ord fv([σ0]αi⁻) ⊢ [σ0]αi⁻]]$,
+          it means $[[ fv([σ0]αi⁻) ⊢ [σ0]αi⁻]]$,
           which we weaken (\cref{lemma:wf-weakening}) 
-          to $[[Ord fv([σ]iP) ⊢ [σ0]αi⁻]]$ 
+          to $[[ fv([σ]iP) ⊢ [σ0]αi⁻]]$ 
           (since $[[fv([σ0]αi⁻) ⊆ fv([σ0]iP)]]$ by \cref{lemma:subst-fv-image},
           and $[[ [σ0]iP = [σ]iP]]$, as noted above).
       \end{itemize} 
@@ -314,8 +314,8 @@
 
   By \cref{corollary:wf-ctxt-strengthening}, 
   $[[Γ1, nbs ⊢ [σ]iP]]$ implies 
-  $[[ Ord fv([σ]iP) ⊢ [σ]iP ]]$, which,
-  since $[[fv([σ]iP) ⊆ {Γ2, nbs}]]$,
+  $[[  fv([σ]iP) ⊢ [σ]iP ]]$, which,
+  since $[[fv([σ]iP) ⊆ Γ2, nbs]]$,
   is weakened to $[[Γ2, nbs ⊢ [σ]iP]]$.
   and rewritten as $[[Γ2, nbs ⊢ [σ0]iP]]$.
   
@@ -331,7 +331,7 @@
   \end{enumerate}
   This way, by the induction hypothesis,
   $[[Γ2, nbs ⊢ [σ0]iP ≥ iQ ]]$.
-  Combining it with $[[ Γ2, nbs ⊢ σ0 : nas]]$
+  Combining it with $[[ Γ2, nbs ⊢ σ0 :{nas}]]$
   by \ruleref{\ottdruleDOneExistsLabel},
   we obtain $[[Γ2 ⊢ ∃nas.iP ≥ ∃nbs.iQ]]$.
 
@@ -342,7 +342,7 @@
 \begin{lemma}[Weakening of subtyping context]
   \label{lemma:subt-weakening}
   Suppose $[[Γ1]]$ and $[[Γ2]]$ are contexts 
-  and $[[ {Γ1} ⊆ {Γ2} ]]$.
+  and $[[ Γ1 ⊆ Γ2 ]]$.
   Then 
   \begin{enumerate}
     \item [$+$] $[[Γ1 ⊢ iP ≥ iQ]]$ implies $[[Γ2 ⊢ iP ≥ iQ]]$;
@@ -499,7 +499,7 @@
       $[[ [σ]iM1 = [σ]iM2 ]]$ means that $[[ ∀pbs1.[σ]α⁻ = [σ]iM2 ]]$.
       Applying $[[σ]]$ to both sides of $[[Γ ⊢ iM2 ≤ iK]]$ (by \cref{lemma:subst-pres-subt}),
       we obtain $[[Γ' ⊢ [σ]iM2 ≤ [σ]iK]]$, that is $[[Γ' ⊢  ∀pbs1.[σ]α⁻ ≤ [σ]iK]]$.
-      Since $[[ fv([σ]α⁻) ⊆ {Γ,α⁻} ]]$, it is disjoint from $[[pas]]$ and $[[pbs1]]$,
+      Since $[[ fv([σ]α⁻) ⊆ Γ,α⁻ ]]$, it is disjoint from $[[pas]]$ and $[[pbs1]]$,
       This way, by \cref{corollary:red-quant-elim}, 
       $[[Γ' ⊢  ∀pbs1.[σ]α⁻ ≤ [σ]iK]]$ is equivalent to 
       $[[Γ' ⊢  [σ]α⁻ ≤ [σ]iK]]$, which is equivalent to $[[Γ' ⊢  ∀pas.[σ]α⁻ ≤ [σ]iK]]$,
@@ -540,12 +540,12 @@
       $[[Γ, pcs ⊢ [iQs/pbs]iM2' ≤ iK']]$ is a proper subderivation of $[[Γ ⊢ iM2 ≤ iK]]$.
 
       Notice that we can weaken and rearrange the contexts without changing the sizes of the 
-      derivations: $[[Γ, pbs, pcs ⊢ [iPs/pas]iN' ≤ iM1']]$
-      and $[[Γ, pbs, pcs ⊢ [iQs/pbs]iM2' ≤ iK']]$. This way, 
+      derivations: $[[Γ, {pbs}, {pcs} ⊢ [iPs/pas]iN' ≤ iM1']]$
+      and $[[Γ, {pbs}, {pcs} ⊢ [iQs/pbs]iM2' ≤ iK']]$. This way, 
       the sum of the sizes of these derivations is smaller than the sum of the sizes of
       $[[Γ ⊢ iN ≤ iM1]]$ and $[[Γ ⊢ iM2 ≤ iK]]$.
       Let us apply the induction hypothesis to these derivations, 
-      with the substitution $[[ Γ', pcs ⊢ σ ○ (iQs/pbs) : Γ, pbs, pcs  ]]$
+      with the substitution $[[ Γ', pcs ⊢ σ ○ (iQs/pbs) : Γ, {pbs}, {pcs}  ]]$
       (\cref{lemma:subst-domain-weakening}).
       To apply the induction hypothesis, it is left to show that 
       $[[ σ ○ (iQs/pbs) ]]$ unifies $[[iM1']]$ and $[[ [iQs/pbs]iM2']]$:

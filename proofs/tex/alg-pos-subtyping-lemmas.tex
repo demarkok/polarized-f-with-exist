@@ -22,7 +22,7 @@
         \end{enumerate}
 
         Since $[[â⁺[Δ] ∊ Θ]]$ and $[[Δ ⊢ iQ']]$, 
-        it is clear that $[[ Θ ⊢ (â⁺ :≥ iQ') : â⁺]]$.
+        it is clear that $[[ Θ ⊢ (â⁺ :≥ iQ') : {â⁺}]]$.
 
         It is left to show that $[[Γ ⊢ [uσ]â⁺ ≥ iP']]$ for any normalized $[[uσ]]$ 
         s.t. $[[ Θ   ⊢ uσ : (â⁺ :≥ iQ') ]]$.
@@ -132,12 +132,12 @@
             not start with $[[∃]]$. 
 
             By inversion, $[[Γ ; dom(Θ) ⊢  ∃nbs.α̂⁺]]$ implies $[[â⁺[Δ] ∊ Θ]]$ for some 
-            $[[{Δ} ⊆ {Γ}]]$.
+            $[[{Δ} ⊆ Γ]]$.
 
             By \cref{lemma:quant-rule-decomposition} applied twice, 
             $[[ Γ ⊢ ∃nbs.[uσ]α̂⁺ ≥ ∃ncs.iQ0 ]]$ implies
             $[[ Γ,ncs  ⊢ [iNs/nbs][uσ]α̂⁺ ≥ iQ0 ]]$ for some $[[iN]]$, 
-            and since $[[ {nbs} ∩ fv([uσ]α̂⁺) ⊆ {nbs} ∩ {Θ(α̂⁺)} ⊆ {nbs} ∩ {Γ} = ∅ ]]$,
+            and since $[[ {nbs} ∩ fv([uσ]α̂⁺) ⊆ {nbs} ∩ {Θ(α̂⁺)} ⊆ {nbs} ∩ Γ = ∅ ]]$,
             $[[ [iNs/nbs][uσ]α̂⁺ = [uσ]α̂⁺ ]]$, that is $[[ Γ,ncs ⊢ [uσ]α̂⁺ ≥ iQ0]]$.
 
             When algorithm tires to infer the subtyping 
@@ -157,7 +157,7 @@
             Because $[[ [uσ]α̂⁺ ]]$ satisfies the pre-conditions of the completeness of the upgrade
             (\cref{lemma:upgrade-completeness}):
             \begin{enumerate}
-                \item $[[Δ ⊢ [uσ]α̂⁺ ]]$ because $[[Θ ⊢ uσ : α̂⁺]]$ and $[[α̂⁺[Δ] ∊ Θ]]$,
+                \item $[[Δ ⊢ [uσ]α̂⁺ ]]$ because $[[Θ ⊢ uσ : {α̂⁺}]]$ and $[[α̂⁺[Δ] ∊ Θ]]$,
                 \item $[[ Γ,ncs ⊢ [uσ]α̂⁺ ≥ iQ0]]$ as noted above
             \end{enumerate}
 
@@ -237,7 +237,7 @@
             (assuming $[[nas]]$ does not intersect with the range of $[[uσ]]$)
             and $[[iQ]] = [[ ∃nbs.iQ' ]]$, where either $[[nas]]$ or $[[nbs]]$ is not empty.
 
-            By inversion, $[[ Γ ⊢ [σ][uσ]uP' ≥ iQ' ]]$ for some $[[Γ, nbs ⊢ σ : nas]]$.
+            By inversion, $[[ Γ ⊢ [σ][uσ]uP' ≥ iQ' ]]$ for some $[[Γ, nbs ⊢ σ :{nas}]]$.
             Since $[[σ]]$ and $[[uσ]]$ have disjoint domains,
             and the range of one does not intersect with the domain of the other,
             they commute, i.e. $[[ Γ, nbs ⊢ [uσ][σ]uP' ≥ iQ' ]]$
@@ -272,7 +272,7 @@
             $[[uv(uP0)]] = [[ uv([â⁻*/nas]uP') ]] = [[{â⁻*} ∩ uv(uP0) ∪ uv(uP')]]$. Then
             \begin{enumerate}
                     \item for $[[αî⁻]] \in [[{â⁻*} ∩ uv(uP0)]]$, $[[ (Θ, â⁻*[Γ, nbs])(αî⁻) ⊢ [uσ0] αî⁻]]$, 
-                    i.e. $[[ Γ, nbs ⊢ [σ]αi⁻ ]]$ holds since $[[Γ, nbs ⊢ σ : nas]]$,
+                    i.e. $[[ Γ, nbs ⊢ [σ]αi⁻ ]]$ holds since $[[Γ, nbs ⊢ σ :{nas}]]$,
                     \item for $[[β̂±]] \in [[ uv(uP') ]] \subseteq [[dom(Θ)]]$, $[[ (Θ, â⁻*[Γ, nbs])(β̂±) ⊢ [uσ0] β̂± ]]$,
                     i.e. $[[Θ(β̂±) ⊢ [uσ] β̂± ]]$ holds since $[[Θ ⊢ uσ : uv(uP)]]$ and $[[β̂±]] \in [[ uv(uP') ]] = [[uv(uP)]]$.
             \end{enumerate}

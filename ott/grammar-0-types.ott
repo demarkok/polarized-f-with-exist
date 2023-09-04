@@ -209,15 +209,19 @@ grammar
 
 G {{ tex \Gamma }}, Δ {{ tex \Delta }}, Γ {{ tex \Gamma }} :: DT_Ctxt ::= {{ com declarative type context }}
     | ·                  ::   :: empty   {{ com empty context }}
-    % | varset             ::   :: nvar     {{ com a negative variable }}
-    | pas                ::   :: PList   {{ com list of variables }}
-    | nas                ::   :: NList   {{ com list of variables }}
+    | { pas }            ::   :: PList   {{ com list of variables }}
+                                         {{ tex [[pas]] }}
+    | { nas }            ::   :: NList   {{ com list of variables }}
+                                         {{ tex [[nas]] }}         
     | pnas               ::   :: PNList  {{ com list of variables }}
-    | Ord varset         ::   :: fromset {{ tex [[varset]] }}
     | </ Gi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( G )              :: S :: paren
+    | G , pas            :: M :: appendP {{ com append a list of variables }}
+    | G , nas            :: M :: appendN {{ com append a list of variables }}
     | Θ ( pua )          :: M :: pfromUC 
     | Θ ( nua )          :: M :: nfromUC 
+    | Γ1 ∪ Γ2            ::   :: union
+    | Γ1 ∩ varset        ::   :: intersect
 
 grammar
 
@@ -236,14 +240,16 @@ grammar
 
 Xi {{ tex \Xi }}, Ξ {{ tex \Xi }} :: AU_Ctxt ::= {{ com anti-unification type variable context }}
     | ·                  ::   :: empty   {{ com empty context }}
-    | puas               ::   :: PAUList {{ com list of positive variables }}
-    | nuas               ::   :: NAUList {{ com list of negative variables }}
-    | uv uN              ::   :: Nuv       {{ com unification variables }}
-    | uv uP              ::   :: Puv       {{ com unification variables }}
+    | { puas }           ::   :: PAUList {{ com list of positive variables }}
+                                         {{ tex [[puas]] }}
+    | { nuas }           ::   :: NAUList {{ com list of negative variables }}
+                                         {{ tex [[nuas]] }}
+    | Ξ , puas           :: M :: appendP {{ com append a list of variables }}
+    | Ξ , nuas           :: M :: appendN {{ com append a list of variables }}
     | </ Ξi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( Ξ )              :: S :: paren
     | Ξ1 ∪ Ξ2            ::   :: union
-    | Ξ1 ∩ Ξ2            ::   :: intersect
+    | Ξ1 ∩ varset        ::   :: intersect
 
                                        % {{ com context containing only negative uvars }}
 
@@ -256,8 +262,7 @@ ordVars {{ tex \vv{ \alpha } }}, ordVarsb {{ tex \vv{ \beta } }} :: OrdVars ::= 
     | puas                      ::   :: PUList    {{ com list of variables }}
     | nuas                      ::   :: NUList    {{ com list of variables }}
     | ordVars1 \ varset         ::   :: Setminus  {{ com setminus }}
-    | G                         ::   :: Cntxt     {{ com context }}
-    | Ord varset                ::   :: fromset   {{ tex [[varset]] }}
+    |  varset                ::   :: fromset   {{ tex [[varset]] }}
     | </ ordVarsi // , // i />  ::   :: concat    {{ com concatenate contexts }}
     | ( ordVars )               :: S :: paren     {{ com parenthesis }}
     | [ mu ] ordVars            :: M :: moving    {{ com apply moving to list }}
@@ -267,22 +272,15 @@ ordVars {{ tex \vv{ \alpha } }}, ordVarsb {{ tex \vv{ \beta } }} :: OrdVars ::= 
 grammar
 varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
     | ∅                  ::   :: emptyset  {{ com empty set }}
-    | fv iP              ::   :: Pfv       {{ com free variables }}
-    | fv iN              ::   :: Nfv       {{ com free variables }}
-    | fv imP             ::   :: mPfv      {{ com free variables }}
-    | fv imN             ::   :: mNfv      {{ com free variables }}
     | varset1 ∩ varset2  ::   :: intersect {{ com set intersection }}
     | varset1 ∪ varset2  ::   :: union     {{ com set union }}
     | varset1 \ varset2  ::   :: setminus  {{ com set complement }}
-    | mv imP             ::   :: Pmv       {{ com movable variables }}
-    | mv imN             ::   :: Nmv       {{ com movable variables }}
-    | fv uN              ::   :: uNfv      {{ com free variables }}
-    | fv uP              ::   :: uPfv      {{ com free variables }}
     | ( varset )         :: S :: paren     {{ com parenthesis }}
     | { ordVars }        ::   :: OrdVars   {{ com ordered list of variables }}
                                            {{ tex [[ordVars]] }}
     | [ mu ] varset      :: M :: moving    {{ com apply moving to varset }}
     | Ξ                  ::   :: AU_Ctxt   {{ com anti-unification context }}
+    | Γ                  ::   :: DT_Ctxt   {{ com declarative type context }}
 
 grammar
 mu {{ tex \mu }}, μ {{ tex \mu }}:: Mu ::= 
@@ -302,57 +300,6 @@ umu {{ tex \vv{\mu} }} :: UMu ::=
    | ·                    ::   :: empty    {{ com empty moving }}
    | puas / pas           ::   :: PosUSubs
    | nuas / nas           ::   :: NegUSubs
-
-
-% pma {{ tex \widetilde{\alpha}^{+} }} :: pma_ ::= {{ com positive movable variable }}
-%     | a + : coh :: :: Var {{ tex \widetilde{[[a]]}^{+ [[coh]] } }}
-
-
-% nma {{ tex \widetilde{\alpha}^{-} }} :: nma_ ::= {{ com negative movable variable }}
-%     | a - : coh :: :: Var {{ tex \widetilde{[[a]]}^{- [[coh]] } }}
-
-
-% pmas {{ tex \vv{ \widetilde{ \alpha^{+} } } }},
-% pmbs {{ tex \vv{ \widetilde{ \beta^{+}  } } }}
-% :: 'pmas_' ::= {{ com positive movable variable list }}
-%    | ·                     ::   :: empty    {{ com empty list }}
-%    | pma                   ::   :: Var      {{ com a variable }}
-%    % | pas : coh             ::   :: FromVars {{ com from a list of non-movable variables }}
-%    %                                          {{ tex \vv{ \widetilde{ [[pas]]^{+[[coh]]} } } }}
-%    | a + * : coh            ::   :: FromVar  {{ com from a non-movable variable }}
-%                                             {{ tex \vv{ \widetilde{ [[a]]^{+[[coh]]} } } }}
-%    | </ pmasi // , // i /> ::   :: concat   {{ com concatenate lists }}
-
-% nmas {{ tex \vv{ \widetilde{ \alpha^{-} } } }},
-% nmbs {{ tex \vv{ \widetilde{ \beta^{-}  } } }}
-% :: 'nmas_' ::= {{ com negatiive movable variable list }}
-%    | ·                     ::   :: empty    {{ com empty list }}
-%    | nma                   ::   :: Var      {{ com a variable }}
-%    % | nas : coh             ::   :: FromVars {{ com transofmed non-movable variables }}
-%    %                                          {{ tex \vv{ \widetilde{ [[nas]]^{-[[coh]]} } } }}
-%    | a - * : coh            ::   :: FromVar  {{ com from a non-movable variable }}
-%                                             {{ tex \vv{ \widetilde{ [[a]]^{-[[coh]]} } } }}
-%    | </ nmasi // , // i /> ::   :: concat   {{ com concatenate lists }}
-
-
-% imP {{ tex P }}, imQ {{ tex Q }}:: 'imP_' ::= {{ com multi-quantified positive types with movable variables }}
-%    | pa          ::   :: Var
-%    | pma         ::   :: MovVar
-%    | ↓ imN       ::   :: Shift
-%    | ∃ nas . imP ::   :: Exists
-%    | [ s ] imP   :: M :: AppSub  
-%    | [ mu ] imP  :: M :: AppMoving 
-
-% imN {{ tex N }}, imM {{ tex M }} :: 'imN_' ::= {{ com multi-quantified negative types with movable variables }}
-%    | na          ::   :: Var
-%    | nma         ::   :: MovVar
-%    | ↑ imP       ::   :: Shift
-%    | imP → imN    ::   :: Fun
-%    | ∀ pas . imN ::   :: Forall
-%    | [ s ] imN   :: M :: AppSub 
-%    | [ mu ] imN  :: M :: AppMoving
-
-
 
 grammar
 
@@ -474,12 +421,6 @@ terminals :: 'terminals_' ::=
 
 
 
-% subrules
-%   iP <:: imP
-%   iN <:: imN
-% subrules
-%   iP <:: uP  
-%   iN <:: uN  
 
 
 funs
@@ -488,10 +429,10 @@ fun
   iP1 ∨ iP2 :: iQ :: LUB 
 by
 
-fun ord varset in uP :: ordVars :: uPOrd by
-fun ord varset in uN :: ordVars :: uNOrd by
-fun ord varset in iP :: ordVars :: NOrd by
-fun ord varset in iN :: ordVars :: POrd by
+fun ord varset in uP :: ordVars :: uP by
+fun ord varset in uN :: ordVars :: uN by
+fun ord varset in iP :: ordVars :: N by
+fun ord varset in iN :: ordVars :: P by
 
 fun nf ( iN' )  :: iN :: NNf by
 fun nf ( iP' )  :: iP :: PNf by
@@ -546,3 +487,11 @@ fun dom ( aus ) :: Ξ :: ausolDom by
 fun dom ( Θ )   :: Ξ :: uCtxtDomXi by
 
 fun | SC | :: UC :: SCFlatten by
+
+fun fv uN :: Γ :: uNfv by
+fun fv uP :: Γ :: uPfv by
+fun fv iP :: Γ :: Pfv by
+fun fv iN :: Γ :: Nfv by
+
+fun uv uN :: Ξ :: uNuv by
+fun uv uP :: Ξ :: uPuv by

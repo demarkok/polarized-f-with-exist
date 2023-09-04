@@ -60,12 +60,12 @@
 
             By inversion of $[[Γ ; Φ ⊢ ∀pas1.iN1' ● args ⇒> iM]]$:
             \begin{enumerate}
-                \item $[[Γ ⊢ σ : pas1]]$        
+                \item $[[Γ ⊢ σ :{pas1}]]$        
                 \item $[[Γ ; Φ ⊢ [σ]iN1' ● args ⇒> iM]]$
                 \item $[[args ≠ ·]]$
             \end{enumerate}
 
-            Let us construct $[[Γ ⊢ σ0 : pas2]]$ in the following way:
+            Let us construct $[[Γ ⊢ σ0 :{pas2}]]$ in the following way:
             $$
             \begin{cases}
                 [[ [σ0]α⁺ =  [σ][mu]α⁺ ]] & \text{if } [[α⁺]] \in [[ {pas2} ∩ fv iN2' ]] \\
@@ -77,7 +77,7 @@
             apply \ruleref{\ottdruleDTArrowAppLabel} with $[[σ0]]$. 
             Let us show the required premises:
             \begin{enumerate}
-                \item $[[Γ ⊢ σ0 : pas2]]$ by construction;
+                \item $[[Γ ⊢ σ0 :{pas2}]]$ by construction;
                 \item $[[args ≠ ·]]$ as noted above;
                 \item To show $[[Γ ; Φ ⊢ [σ0]iN2' ● args ⇒> iM]]$,
                 Notice that $[[ [σ0]iN2' = [σ][mu]iN2' ]]$   
@@ -305,7 +305,7 @@
             $[[Γ ; Φ1 ⊢ ∀pas.iN ● args ⇒> iM]]$ (inferred by \ruleref{\ottdruleDTForallAppLabel})
             implies $[[Γ ; Φ2 ⊢ ∀pas.iN ● args ⇒> iM]]$.
 
-            By inversion, we have $[[σ]]$ such that $[[Γ ⊢ σ : pas]]$ and
+            By inversion, we have $[[σ]]$ such that $[[Γ ⊢ σ :{pas}]]$ and
             $[[Γ ; Φ1 ⊢ [σ]iN ● args ⇒> iM]]$ is inferred.
             Let us denote the inference tree as $T_1'$.
             Notice that the induction hypothesis is applicable to $T_1'$:
@@ -316,7 +316,7 @@
             This way, by the induction hypothesis, 
             there exists a tree $T_2'$ inferring
             $[[Γ ; Φ2 ⊢ [σ]iN ● args ⇒> iM]]$.
-            Notice that the premises $[[args ≠ ·]]$, $[[Γ ⊢ σ : pas]]$,
+            Notice that the premises $[[args ≠ ·]]$, $[[Γ ⊢ σ :{pas}]]$,
             and $[[pas ≠ ·]]$ do not depend on the variable context,
             and hold by inversion.
             Then we infer $[[Γ ; Φ2 ⊢ ∀pas.iN ● args ⇒> iM]]$ by \ruleref{\ottdruleDTForallAppLabel}.

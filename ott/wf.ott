@@ -1,9 +1,9 @@
 defns
   WFT :: 'WFT' ::=
 
-  defn G ⊢ iN  :: :: NiWF :: '' {{ com Negative type well-formedness }} by
+  defn Γ ⊢ iN  :: :: NiWF :: '' {{ com Negative type well-formedness }} by
 
-    α⁻ ∊ {Γ}
+    α⁻ ∊ Γ
     --------- :: NVar
     Γ ⊢ α⁻ 
 
@@ -15,13 +15,13 @@ defns
     ----------------- :: Arrow
     Γ ⊢ iP → iN
 
-    Γ, pas ⊢ iN
+    Γ, {pas} ⊢ iN
     ------------ :: Forall
     Γ ⊢ ∀pas.iN
 
-  defn G ⊢ iP  :: :: PiWF :: '' {{ com Positive type well-formedness }} by
+  defn Γ ⊢ iP  :: :: PiWF :: '' {{ com Positive type well-formedness }} by
 
-    α⁺ ∊ {Γ}
+    α⁺ ∊ Γ
     -------- :: PVar
     Γ ⊢ α⁺
 
@@ -37,9 +37,9 @@ defns
   WFAT :: 'WFAT' ::=
 
 
-  defn G ; Ξ ⊢ uN  :: :: NauWF :: '' {{ com Negative algorithmic type well-formedness }} by
+  defn Γ ; Ξ ⊢ uN  :: :: NauWF :: '' {{ com Negative algorithmic type well-formedness }} by
 
-    α⁻ ∊ {Γ}
+    α⁻ ∊ Γ
     --------- :: NVar
     Γ; Ξ ⊢ α⁻ 
 
@@ -59,9 +59,9 @@ defns
     ------------ :: Forall
     Γ; Ξ ⊢ ∀pas.uN
 
-  defn G ; Ξ ⊢ uP  :: :: PauWF :: '' {{ com Positive algorithmic type well-formedness }} by
+  defn Γ ; Ξ ⊢ uP  :: :: PauWF :: '' {{ com Positive algorithmic type well-formedness }} by
 
-    α⁺ ∊ {Γ}
+    α⁺ ∊ Γ
     --------- :: PVar
     Γ; Ξ ⊢ α⁺
 
@@ -81,14 +81,14 @@ defns
 defns
   WFALL :: 'WFALL' ::=
 
-  defn G ⊢ iNs  :: :: NisWF :: '' {{ com Negative type list well-formedness }} by
-  defn G ⊢ iPs  :: :: PisWF :: '' {{ com Positive type list well-formedness }} by
+  defn Γ ⊢ iNs  :: :: NisWF :: '' {{ com Negative type list well-formedness }} by
+  defn Γ ⊢ iPs  :: :: PisWF :: '' {{ com Positive type list well-formedness }} by
 
 
   defn  Γ ; Ξ2 ⊢ aus : Ξ1 :: :: AUSWF :: '' {{ com Antiunification substitution well-formedness }} by
   % defn  us : Θ :: :: USWF :: '' {{ com Unification substitution well-formedness }} by
-  defn  G ⊢ Θ :: :: UCtxtWF :: '' {{ com Unification context well-formedness }} 
-                                  {{ tex [[G]] \vdash^{\supseteq}[[Θ]] }} by
+  defn  Γ ⊢ Θ :: :: UCtxtWF :: '' {{ com Unification context well-formedness }} 
+                                  {{ tex [[Γ]] \vdash^{\supseteq}[[Θ]] }} by
 
   defn  Γ1 ⊢ σ : Γ2 :: :: SWF :: '' {{ com Substitution signature}} by
   defn  Θ ⊢ uσ : Ξ :: :: USWF :: '' {{ com Unification substitution signature }} by

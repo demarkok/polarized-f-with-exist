@@ -536,12 +536,12 @@ the metric of the inference tree.
                     that is $[[ Γ ; Φ ⊢ ∀pas.[uσ]uN ● args ⇒> [uσ]uM ]]$,
                     we apply the corresponding declarative rule \ruleref{\ottdruleDTForallAppLabel}.
                     To do so, we need to provide a substitution for $[[pas]]$, 
-                    i.e. $[[Γ ⊢ σ0 : pas]]$ such that
+                    i.e. $[[Γ ⊢ σ0 : {pas}]]$ such that
                     $[[Γ; Φ ⊢ [σ0][uσ]uN ● args ⇒> [uσ]uM ]]$.
 
                     By \cref{lemma:constraint-sat},
                     we construct $[[uσ0]]$ such that
-                    $[[Θ' ⊢ uσ0 : â⁺*]]$
+                    $[[Θ' ⊢ uσ0 : {â⁺*}]]$
                     and 
                     $[[Θ' ⊢ uσ0 : SC|{â⁺*}]]$.
 
@@ -551,7 +551,7 @@ the metric of the inference tree.
                     Let us show that the premises of 
                     \ruleref{\ottdruleDTForallAppLabel} hold:
                     \begin{itemize}
-                        \item To show $[[Γ ⊢ σ0 : pas]]$,
+                        \item To show $[[Γ ⊢ σ0 :{pas}]]$,
                             let us take $[[αi⁺ ∊ {pas}]]$.
                             If $[[ αî⁺ ∊ uv(uM)]]$
                             then $[[ [σ0]αi⁺ = [uσ]αî⁺ ]]$,
@@ -559,7 +559,7 @@ the metric of the inference tree.
                             implies $[[Θ'(α̂⁺) ⊢ [uσ]α̂⁺]]$.
                             Analogously, if $[[ αî⁺ ∊ {â⁺*} \ uv(uM)]]$
                             then $[[ [σ0]αi⁺ = [uσ0]αî⁺ ]]$,
-                            and $[[Θ' ⊢ uσ0 : â⁺*]]$ implies $[[Θ'(αî⁺) ⊢ [uσ0]αî⁺]]$.
+                            and $[[Θ' ⊢ uσ0 : {â⁺*}]]$ implies $[[Θ'(αî⁺) ⊢ [uσ0]αî⁺]]$.
                             In any case, $[[Θ'(αî⁺) ⊢ [σ]αi⁺ ]]$
                             can be weakened to $[[Γ ⊢ [σ0]αi⁺]]$, 
                             since $[[Γ ⊢ Θ']]$.
@@ -581,10 +581,10 @@ the metric of the inference tree.
                             Let us take $[[uσ1]] = [[(uσ0 ○ uσ)|Ξ ∪ uv(uN) ∪ uv(uM)]]$, then 
                             \begin{enumerate}
                                 \item $[[Θ' ⊢ uσ1 : Ξ ∪ uv(uN) ∪ uv(uM)]]$,
-                                    since $[[Θ' ⊢ uσ0 : â⁺*]]$ and 
+                                    since $[[Θ' ⊢ uσ0 : {â⁺*}]]$ and 
                                     $[[ Θ' ⊢ uσ : uv(uN) ∪ uv(uM) ]]$, 
                                     we have 
-                                    $[[Θ' ⊢ uσ0 ○ uσ : â⁺* ∪ uv(uN) ∪ uv(uM)]]$, 
+                                    $[[Θ' ⊢ uσ0 ○ uσ : {â⁺*} ∪ uv(uN) ∪ uv(uM)]]$, 
                                     which we restrict to $[[Ξ ∪ uv(uN) ∪ uv(uM)]]$.
                                 \item $[[Θ' ⊢ uσ1 : SC]]$,
                                     Let us take any constraint $[[scE ∊ SC]]$ restricting 
@@ -615,7 +615,7 @@ the metric of the inference tree.
                                                 && \text{by \cref{lemma:subst-restr-uv}}\\
                                             &= [[ [uσ0][uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]]
                                                 && \text{$[[uv(uN) ∩ {â⁺*} = ∅]]$ and 
-                                                    $[[{pas} ∩ {Γ} = ∅]]$}\\
+                                                    $[[{pas} ∩ Γ = ∅]]$}\\
                                             &= [[ [uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]] 
                                                 && \text{$[[ [uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]]$
                                                 is ground}\\
@@ -1031,7 +1031,7 @@ the metric of the inference tree.
                     that is $[[Γ; Φ ⊢ (∀pas.[uσ]uN1) ● args ⇒> iM]]$.
                     Then by inversion there exists $[[σ]]$ such that 
                     \begin{enumerate}
-                        \item $[[Γ ⊢ σ : pas]]$;
+                        \item $[[Γ ⊢ σ : {pas}]]$;
                         \item $[[args ≠ ·]]$ and $[[pas ≠ ·]]$; and
                         \item $[[Γ ; Φ ⊢ [σ][uσ]uN1 ● args ⇒> iM]]$.
                             \label{point:typing-completeness-forall-app-inversion-2}

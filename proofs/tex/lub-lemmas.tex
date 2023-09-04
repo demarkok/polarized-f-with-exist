@@ -155,7 +155,7 @@
       $[[iQ]] \in \UB([[Γ ⊢ ↓iM]])$.
       Then by definition of $\UB{}$,
       $[[iQ = ∃nas.↓iM']]$ 
-      for some $[[nas]]$, $[[iM']]$, and $[[Γ ⊢ σ : nas]]$ s.t.  
+      for some $[[nas]]$, $[[iM']]$, and $[[Γ ⊢ σ :{nas}]]$ s.t.  
       $[[ [σ] ↓iM' ≈ ↓iM ]]$.
 
       We need to show that $[[nf(iQ)]] \in \NFUB([[Γ ⊢ ↓iM]])$.
@@ -165,7 +165,7 @@
       The belonging of $[[∃nas0.↓iM0]]$ to $\NFUB([[Γ ⊢ ↓iM]])$ means that
       \begin{enumerate}
         \item $[[ord {nas0} in iM0 = nas0]]$ and
-        \item that there exists $[[Γ ⊢ σ0 : nas0]]$ such that 
+        \item that there exists $[[Γ ⊢ σ0 :{nas0}]]$ such that 
           $[[ [σ0] ↓iM0 = ↓iM ]]$.
       \end{enumerate}
       The first requirement holds by \cref{corollary:ord-idemp}.
@@ -173,17 +173,17 @@
       $[[σ0]]$ as $[[nf(σ|fv iM')]]$.
       Let us show the required properties of $[[σ0]]$:
       \begin{enumerate}
-        \item $[[Γ ⊢ σ0 : nas0]]$. 
+        \item $[[Γ ⊢ σ0 :{nas0}]]$. 
           Notice that by \cref{lemma:subst-restr-sig},
-          $[[Γ ⊢ σ|fv(iM') : Ord {nas} ∩ fv(iM')]]$, 
+          $[[Γ ⊢ σ|fv(iM') :  {nas} ∩ fv(iM')]]$, 
           which we rewrite as 
-          $[[Γ ⊢ σ|fv(iM') : nas0]]$ 
+          $[[Γ ⊢ σ|fv(iM') :{nas0}]]$ 
           (since by \cref{lemma:ord-soundness}
           $[[{nas0} = {nas} ∩ fv iM0]]$ as sets, 
           and $[[fv(iM0) = fv(iM')]]$ by \cref{lemma:fv-nf}).
           Then by \cref{lemma:norm-subst-sig}, 
-          $[[Γ ⊢ nf(σ|fv(iM')) : nas0]]$,
-          that is $[[Γ ⊢ σ0 : nas0]]$.
+          $[[Γ ⊢ nf(σ|fv(iM')) :{nas0}]]$,
+          that is $[[Γ ⊢ σ0 :{nas0}]]$.
         \item $[[ [σ0] ↓iM0 = ↓iM ]]$.
           $[[ [σ] ↓iM' ≈ ↓iM ]]$ means 
           $[[ [σ|fv(iM')]↓iM' ≈ ↓iM ]]$ by 
@@ -200,7 +200,7 @@
       Suppose that a type belongs to $\NFUB([[Γ ⊢ ↓iM]])$ for a normalized 
       $[[↓iM]]$.
       Then it must have shape $[[∃nas0.↓iM0]]$ for some $[[nas0]]$, $[[iM0]]$,
-      and $[[Γ ⊢ σ0 : nas0]]$ such that 
+      and $[[Γ ⊢ σ0 :{nas0}]]$ such that 
       $[[ ord {nas0} in iM0 = nas0 ]]$ and $[[ [σ0] ↓iM0 = ↓iM ]]$.
       It is suffices to show that 
       \begin{enumerate*}
@@ -260,11 +260,11 @@
       Suppose that $[[∃nas.↓iM']] \in \UB([[Γ1 ⊢ ↓iM]])$. It means that 
       $[[Γ1, nas ⊢ iM']]$ and there exist $[[Γ1 ⊢ iNs]]$ s.t. 
       $[[ [iNs/nas] ↓iM' ≈ ↓iM ]]$, or in other terms, 
-      there exists $[[Γ1 ⊢ σ : nas]]$ such that $[[ [σ] ↓iM' ≈ ↓iM ]]$.
+      there exists $[[Γ1 ⊢ σ :{nas}]]$ such that $[[ [σ] ↓iM' ≈ ↓iM ]]$.
 
       We need to show that $[[∃nas.↓iM']] \in UB([[Γ2 ⊢ ↓iM]])$,  
       in other words, $[[Γ2, nas ⊢ iM']]$ and there exists
-      $[[Γ2 ⊢ σ0 : nas]]$ such that $[[ [σ0] ↓iM' ≈ ↓iM ]]$.
+      $[[Γ2 ⊢ σ0 :{nas}]]$ such that $[[ [σ0] ↓iM' ≈ ↓iM ]]$.
 
       First, let us show $[[Γ2, nas ⊢ iM']]$. 
       Notice that $[[ [σ] ↓iM' ≈ ↓iM ]]$ implies $[[ fv([σ]iM') = fv(↓iM) ]]$ 
@@ -272,8 +272,8 @@
       $[[ fv(iM') \ {nas} ⊆ fv([σ]iM') ]]$. This way, 
       $[[ fv(iM') \ {nas} ⊆ fv(iM) ]]$,
       implying $[[ fv(iM') ⊆ fv(iM) ∪ {nas} ]]$.
-      By \cref{lemma:wf-soundness}, $[[Γ2 ⊢ ↓iM]]$ implies $[[fv iM ⊆ {Γ2}]]$,
-      hence, $[[fv iM' ⊆ {Γ2, nas}]]$, which by \cref{corollary:wf-ctxt-strengthening}
+      By \cref{lemma:wf-soundness}, $[[Γ2 ⊢ ↓iM]]$ implies $[[fv iM ⊆ Γ2]]$,
+      hence, $[[fv iM' ⊆ (Γ2, nas)]]$, which by \cref{corollary:wf-ctxt-strengthening}
       means $[[Γ2, nas ⊢ iM']]$.
       
       Second, let us construct the required $[[σ0]]$ in the following way:
@@ -292,11 +292,11 @@
           which in particular, implies $[[ [σ0]↓iM = [σ]↓iM ]]$,
           and thus, $[[ [σ]↓iM' ≈ ↓iM ]]$ can be rewritten to
           $[[ [σ0]↓iM' ≈ ↓iM ]]$; and
-        \item $[[ Ord fv([σ]iM') ⊢ σ0 : nas]]$,
+        \item $[[  fv([σ]iM') ⊢ σ0 :{nas}]]$,
           which, as noted above, can be rewritten to 
-          $[[ Ord fv(iM) ⊢ σ0 : nas]]$,
-          and since $[[fv iM ⊆ {Γ2}]]$, 
-          weakened to $[[ Γ2 ⊢ σ0 : nas]]$.
+          $[[  fv(iM) ⊢ σ0 :{nas}]]$,
+          and since $[[fv iM ⊆ Γ2]]$, 
+          weakened to $[[ Γ2 ⊢ σ0 :{nas}]]$.
       \end{enumerate}
 
       The proof of $\NFUB([[Γ1 ⊢ ↓iM]]) \subseteq \NFUB([[Γ2 ⊢ ↓iM]])$
@@ -328,36 +328,36 @@
      $[[Γ ⊢ pa ≥ pa]]$ by \ruleref{\ottdruleDOnePVarLabel}.
    \item $[[Γ ⊨ ∃nas.iP1 ∨ ∃nbs.iP2 = iQ]]$\\
      Then by inversion of $[[Γ ⊢ ∃nas.iPi]]$  and
-     weakening, $[[Γ, nas, nbs ⊢ iPi]]$, hence, the induction
-     hypothesis applies to $[[Γ, nas, nbs ⊨ iP1 ∨ iP2 = iQ]]$. Then
+     weakening, $[[Γ, {nas}, {nbs} ⊢ iPi]]$, hence, the induction
+     hypothesis applies to $[[Γ, {nas}, {nbs} ⊨ iP1 ∨ iP2 = iQ]]$. Then
      \begin{itemize}
-       \item[(i)] $[[Γ, nas, nbs ⊢ iQ]]$,
-       \item[(ii)] $[[Γ, nas, nbs ⊢ iQ ≥ iP1]]$,
-       \item[(iii)] $[[Γ, nas, nbs ⊢ iQ ≥ iP2]]$.
+       \item[(i)] $[[Γ, {nas}, {nbs} ⊢ iQ]]$,
+       \item[(ii)] $[[Γ, {nas}, {nbs} ⊢ iQ ≥ iP1]]$,
+       \item[(iii)] $[[Γ, {nas}, {nbs} ⊢ iQ ≥ iP2]]$.
      \end{itemize}
 
      To prove $[[Γ ⊢ iQ]]$, it suffices to show that
-     $[[fv(iQ) ∩ {Γ, nas, nbs}]] = [[fv(iQ) ∩ {Γ}]]$ (and then apply \cref{lemma:wf-ctxt-equiv}).
+     $[[fv(iQ) ∩ (Γ, {nas}, {nbs})]] = [[fv(iQ) ∩ Γ]]$ (and then apply \cref{lemma:wf-ctxt-equiv}).
      The inclusion right-to-left is self-evident. To show
-     $[[fv(iQ) ∩ {Γ, nas, nbs}]] \subseteq [[fv(iQ) ∩ {Γ}]]$, we prove that 
-     $[[fv(iQ)]] \subseteq [[{Γ}]]$
+     $[[fv(iQ) ∩ (Γ, {nas}, {nbs})]] \subseteq [[fv(iQ) ∩ Γ]]$, we prove that 
+     $[[fv(iQ)]] \subseteq [[Γ]]$
 
      $
      \begin{aligned}[t]
        [[fv(iQ)]] &\subseteq [[fv iP1 ∩ fv iP2]]
                   && \text{by \cref{lemma:fv-propagation}}\\
-                  &\subseteq [[({Γ, nas} \ {nbs}) ∩ ({Γ, nbs} \ {nas})]]
+                  &\subseteq [[((Γ, nas) \ {nbs}) ∩ ((Γ, nbs) \ {nas})]]
                   &&
                   \begin{array}{l}
                   \text{since $[[Γ ⊢ ∃nas.iP1]]$,~ $[[fv(iP1)]]
-                  \subseteq [[{Γ, nas}]] = [[{Γ, nas}
+                  \subseteq [[(Γ, nas)]] = [[(Γ, nas)
                   \ {nbs}]]$}\\
                   \text{(the latter is because by the Barendregt's
                   convention,}\\
-                    \text{$[[{Γ, nas} ∩ {nbs} = ∅]]$);
-                    similarly, $[[fv(iP2)]] \subseteq [[{Γ, nbs} \ {nas}]]$}\\
+                    \text{$[[(Γ, nas) ∩ {nbs} = ∅]]$);
+                    similarly, $[[fv(iP2)]] \subseteq [[(Γ, nbs) \ {nas}]]$}\\
                   \end{array}\\
-                  &\subseteq [[{Γ}]]
+                  &\subseteq [[Γ]]
      \end{aligned}
      $
      % we notice that 
@@ -370,7 +370,7 @@
      To show $[[Γ ⊢ iQ ≥ ∃nas.iP1]]$, we apply
      \ruleref{\ottdruleDOneExistsLabel}.
      Then $[[Γ, nas ⊢ iQ ≥ iP1]]$ holds since
-     $[[Γ, nas, nbs ⊢ iQ ≥ iP1]]$ (by the induction hypothesis),
+     $[[Γ, {nas}, {nbs} ⊢ iQ ≥ iP1]]$ (by the induction hypothesis),
      $[[Γ, nas ⊢ iQ]]$ (by weakening), and $[[Γ, nas ⊢ iP1]]$.
 
      Judgment $[[Γ ⊢ iQ ≥ ∃nbs.iP2]]$ is proved symmetrically.
@@ -453,25 +453,25 @@
       [[iQ]] &\in         \UB([[Γ ⊢ ∃nbs1.iQ1]]) \cap \UB([[Γ ⊢ ∃nbs2.iQ2]]) \\
              & \subseteq  \UB([[Γ, nbs1 ⊢ iQ1]]) \cap \UB([[Γ, nbs2 ⊢ iQ2]])
              && \text{from the definition of $\UB{}$}\\
-             & =  \UB([[Γ, nbs1, nbs2 ⊢ iQ1]]) \cap \UB([[Γ, nbs1, nbs2 ⊢ iQ2]])
+             & =  \UB([[Γ, {nbs1}, {nbs2} ⊢ iQ1]]) \cap \UB([[Γ, {nbs1}, {nbs2} ⊢ iQ2]])
              && \text{by \cref{observation:ub-context-irrelevant}, weakening and
                 exchange}\\
-             & = \{[[iQ']]\ \mid \ [[Γ, nbs1, nbs2  ⊢ iQ' ≥ iQ1]] \} \cap
-                 \{[[iQ']]\ \mid \ [[Γ, nbs1, nbs2  ⊢ iQ' ≥ iQ2]] \}
+             & = \{[[iQ']]\ \mid \ [[Γ, {nbs1}, {nbs2}  ⊢ iQ' ≥ iQ1]] \} \cap
+                 \{[[iQ']]\ \mid \ [[Γ, {nbs1}, {nbs2}  ⊢ iQ' ≥ iQ2]] \}
              && \text{by \cref{lemma:shape-of-supertypes},}\\
     \end{aligned}
     $\\
-    meaning that $[[Γ, nbs1, nbs2 ⊢ iQ ≥ iQ1]]$ and $[[Γ, nbs1, nbs2 ⊢ iQ ≥
+    meaning that $[[Γ, {nbs1}, {nbs2} ⊢ iQ ≥ iQ1]]$ and $[[Γ, {nbs1}, {nbs2} ⊢ iQ ≥
     iQ2]]$. Then the next step of the algorithm---the recursive call 
-    $[[Γ, nbs1, nbs2 ⊨ iQ1 ∨ iQ2 = iQ']]$
+    $[[Γ, {nbs1}, {nbs2} ⊨ iQ1 ∨ iQ2 = iQ']]$
     terminates by the induction hypothesis, 
-    and moreover, $[[ Γ, nbs1, nbs2 ⊢ iQ ≥ iQ' ]]$.
+    and moreover, $[[ Γ, {nbs1}, {nbs2} ⊢ iQ ≥ iQ' ]]$.
     This way, the result of the algorithm is $[[iQ']]$, i.e.
     $[[Γ ⊨ iP1 ∨ iP2 = iQ']]$.
 
     Since both $[[iQ]]$ and $[[iQ']]$ are sound upper bounds,
     $[[Γ ⊢ iQ]]$ and $[[Γ ⊢ iQ']]$, and therefore,
-    $[[ Γ, nbs1, nbs2 ⊢ iQ ≥ iQ' ]]$ can be strengthened to
+    $[[ Γ, {nbs1}, {nbs2} ⊢ iQ ≥ iQ' ]]$ can be strengthened to
     $[[ Γ ⊢ iQ ≥ iQ' ]]$ by \cref{lemma:subt-ctxt-irrelevance}.
 
   \item $[[iP1]] = [[pa]]$ and $[[iP2]] = [[↓iN]]$\\
@@ -568,9 +568,9 @@
 
     \begin{itemize}
       \item $[[nuas]]$ is negative by construction,
-      \item $[[Γ ; nuas ⊢ [nuas/nas]↓iM']]$ because $[[Γ, nas ⊢ ↓iM']]$ \ilyam{lemma!},
-      \item $[[Γ ; · ⊢ (iNs1/nuas) : nuas]]$ because $[[Γ ⊢ iNs1]]$ and
-        $[[Γ ; · ⊢ (iNs2/nuas) : nuas]]$ because $[[Γ ⊢ iNs2]]$,
+      \item $[[Γ ; {nuas} ⊢ [nuas/nas]↓iM']]$ because $[[Γ, nas ⊢ ↓iM']]$ \ilyam{lemma!},
+      \item $[[Γ ; · ⊢ (iNs1/nuas) :{nuas}]]$ because $[[Γ ⊢ iNs1]]$ and
+        $[[Γ ; · ⊢ (iNs2/nuas) :{nuas}]]$ because $[[Γ ⊢ iNs2]]$,
       \item $[[ [iNs1/nuas] [nuas/nas] ↓iM' ]] = [[ [iNs1/nas] ↓iM' ]] =
         [[↓nf(iM1)]] = [[nf(↓iM1)]]$.
       \item $[[ [iNs2/nuas] [nuas/nas] ↓iM' ]] = [[ [iNs2/nas] ↓iM' ]] = [[↓nf(iM2)]] = [[nf(↓iM2)]]$.
@@ -585,7 +585,7 @@
 
     Moreover, \cref{lemma:anti-unification-completeness} also says that the found anti-unification 
     solution is initial, i.e. there exists $[[aus]]$ such that
-     $[[Γ;Ξ ⊢ aus : nuas]]$ and $[[ [aus][nuas/nas]↓uM' = uP ]]$.
+     $[[Γ;Ξ ⊢ aus :{nuas}]]$ and $[[ [aus][nuas/nas]↓uM' = uP ]]$.
 
      Let $[[σ]]$ be a sequential Kleisli composition of the following
      substitutions:
@@ -594,7 +594,7 @@
      \item[(ii)] $[[aus]]$, and
      \item[(iii)] $[[nbs / ToList Ξ]]$.
      \end{enumerate*}
-     Notice that $[[Γ, nbs ⊢ σ : nas]]$
+     Notice that $[[Γ, nbs ⊢ σ :{nas}]]$
      and $[[ [σ]↓uM' ]] = [[ [nbs / ToList Ξ][aus][nuas/nas]↓uM' ]] = [[ [nbs /
      ToList Ξ]uP ]]$. In particular, from the reflexivity of subtyping:
      $[[Γ, nbs ⊢ [σ]↓iM' ≥ [nbs / ToList Ξ]uP]]$.

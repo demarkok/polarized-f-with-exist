@@ -175,12 +175,12 @@
         \item \ruleref{\ottdruleAUAULabel}, which applies 
         when other rules do not, and $[[G ⊢ iNi]]$,
         returning as the result $[[(Ξ, uM, aus1, aus2)]] = $
-        $[[(â⁻_{iN1, iN2}, â⁻_{iN1, iN2}, (â⁻_{iN1, iN2} :≈ iN1) ,  (â⁻_{iN1, iN2} :≈ iN2))]]$.
+        $[[({â⁻_{iN1, iN2}}, â⁻_{iN1, iN2}, (â⁻_{iN1, iN2} :≈ iN1) ,  (â⁻_{iN1, iN2} :≈ iN2))]]$.
 
         \begin{enumerate}
-            \item $[[Γ ; Ξ ⊢ uM]]$ is rewritten as $[[Γ ; â⁻_{iN1, iN2} ⊢ â⁻_{iN1, iN2}]]$,
+            \item $[[Γ ; Ξ ⊢ uM]]$ is rewritten as $[[Γ ; { â⁻_{iN1, iN2} } ⊢ â⁻_{iN1, iN2}]]$,
                 which holds trivially;
-            \item $[[Γ ; · ⊢ ausi : Ξ]]$ is rewritten as $[[Γ ; · ⊢ (â⁻_{iN1, iN2} :≈ iNi) : â⁻_{iN1, iN2}]]$,
+            \item $[[Γ ; · ⊢ ausi : Ξ]]$ is rewritten as $[[Γ ; · ⊢ (â⁻_{iN1, iN2} :≈ iNi) : {â⁻_{iN1, iN2}}]]$,
                 which holds since $[[Γ ⊢ iNi]]$ by the premise of the rule;
             \item $[[ [ausi] uM = iNi ]]$ is rewritten as $[[ [â⁻_{iN1, iN2} :≈ iNi] â⁻_{iN1, iN2} = iNi ]]$,
                 which holds trivially by the definition of substitution.

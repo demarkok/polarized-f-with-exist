@@ -209,13 +209,13 @@
   Mutual induction on $[[iN]]$ and $[[iP]]$.
   \begin{caseof}
     \item $[[iN = na]]$ \\
-      If $[[na ∉ {Γ1}]]$ then $[[ [σ]na = na ]]$ and $[[ ord varset in [σ]na ]] = [[ ord varset in na ]]$, 
+      If $[[na ∉ Γ1]]$ then $[[ [σ]na = na ]]$ and $[[ ord varset in [σ]na ]] = [[ ord varset in na ]]$, 
       as requried.
-      If $[[na ∊ {Γ1}]]$ then $[[na ∉ varset]]$, so $[[ ord varset in na ]] = [[·]]$.
-      Moreover, $[[Γ2 ⊢ σ : Γ1]]$ means $[[ fv([σ]na) ⊆ {Γ2} ]]$, and thus, 
-      as a set, $[[ ord varset in [σ]na ]] = [[varset ∩ fv([σ]na)]] \subseteq [[varset ∩ {Γ2}]] = [[·]]$.
+      If $[[na ∊ Γ1]]$ then $[[na ∉ varset]]$, so $[[ ord varset in na ]] = [[·]]$.
+      Moreover, $[[Γ2 ⊢ σ : Γ1]]$ means $[[ fv([σ]na) ⊆ Γ2 ]]$, and thus, 
+      as a set, $[[ ord varset in [σ]na ]] = [[varset ∩ fv([σ]na)]] \subseteq [[varset ∩ Γ2]] = [[·]]$.
     \item $[[iN = ∀pas.iM]]$\\
-      We can assume $[[{pas} ∩ {Γ1} = ∅]]$
+      We can assume $[[{pas} ∩ Γ1 = ∅]]$
       and $[[{pas} ∩ varset = ∅]]$. Then 
 
       $\begin{aligned}[t]

@@ -10,62 +10,62 @@ embed {{ tex-preamble
 defns
   D1 :: 'D1' ::=
 
-  defn G ⊢ iN ≈ iM :: :: Neq :: ''
+  defn Γ ⊢ iN ≈ iM :: :: Neq :: ''
   {{ com Negative subtyping-induced equivalence }}
-  {{ tex [[G]] [[⊢]] [[iN]] \eqDOne [[iM]] }} by
+  {{ tex [[Γ]] [[⊢]] [[iN]] \eqDOne [[iM]] }} by
 
-  G ⊢ iN ≤ iM   G ⊢ iM ≤ iN
+  Γ ⊢ iN ≤ iM   Γ ⊢ iM ≤ iN
   ------------------------- :: NDef
-  G ⊢ iN ≈ iM 
+  Γ ⊢ iN ≈ iM 
 
-  defn G ⊢ iP ≈ iQ :: :: Peq :: ''
+  defn Γ ⊢ iP ≈ iQ :: :: Peq :: ''
   {{ com Positive subtyping-induced equivalence }}
-  {{ tex [[G]] [[⊢]] [[iP]] \eqDOne [[iQ]] }} by
+  {{ tex [[Γ]] [[⊢]] [[iP]] \eqDOne [[iQ]] }} by
 
-  G ⊢ iP ≥ iQ   G ⊢ iQ ≥ iP
+  Γ ⊢ iP ≥ iQ   Γ ⊢ iQ ≥ iP
   --------------------- :: PDef
-  G ⊢ iP ≈ iQ 
+  Γ ⊢ iP ≈ iQ 
 
-  defn G ⊢ iN ≤ iM :: :: Nsub :: ''
+  defn Γ ⊢ iN ≤ iM :: :: Nsub :: ''
   {{ com Negative subtyping }}
-  {{ tex [[G]] [[⊢]] [[iN]] \subDOne [[iM]] }} by
+  {{ tex [[Γ]] [[⊢]] [[iN]] \subDOne [[iM]] }} by
 
   ----------- :: NVar
-  G ⊢ a⁻ ≤ a⁻ 
+  Γ ⊢ a⁻ ≤ a⁻ 
 
-  G ⊢ iP ≈ iQ
+  Γ ⊢ iP ≈ iQ
   ------------ :: ShiftU
-  G ⊢ ↑iP ≤ ↑iQ
+  Γ ⊢ ↑iP ≤ ↑iQ
 
-  G ⊢ iP ≥ iQ    G ⊢ iN ≤ iM 
+  Γ ⊢ iP ≥ iQ    Γ ⊢ iN ≤ iM 
   -------------------------- :: Arrow
-  G ⊢ iP → iN ≤ iQ → iM
+  Γ ⊢ iP → iN ≤ iQ → iM
 
-  Γ, pbs ⊢ σ : pas    G, pbs ⊢ [σ] iN ≤ iM
+  Γ, pbs ⊢ σ :{pas}    Γ, pbs ⊢ [σ] iN ≤ iM
   ---------------------------------------- :: Forall
-  G ⊢ ∀pas.iN ≤ ∀pbs.iM
+  Γ ⊢ ∀pas.iN ≤ ∀pbs.iM
 
-  defn G ⊢ iP ≥ iQ :: :: Psup :: ''
+  defn Γ ⊢ iP ≥ iQ :: :: Psup :: ''
   {{ com Positive supertyping }}
-  {{ tex [[G]] [[⊢]] [[iP]] \supDOne [[iQ]] }} by
+  {{ tex [[Γ]] [[⊢]] [[iP]] \supDOne [[iQ]] }} by
 
   ------------- :: PVar
-  G ⊢ a⁺ ≥ a⁺ 
+  Γ ⊢ a⁺ ≥ a⁺ 
 
-  G ⊢ iN ≈ iM
+  Γ ⊢ iN ≈ iM
   -------------- :: ShiftD
-  G ⊢ ↓iN ≥ ↓iM
+  Γ ⊢ ↓iN ≥ ↓iM
 
-  G, nbs ⊢ σ : nas    G, nbs ⊢ [σ]iP ≥ iQ
+  Γ, nbs ⊢ σ : {nas}    Γ, nbs ⊢ [σ]iP ≥ iQ
   --------------------------------------- :: Exists
-  G ⊢ ∃nas.iP ≥ ∃nbs.iQ
+  Γ ⊢ ∃nas.iP ≥ ∃nbs.iQ
 
 defns 
   D1S :: 'D1S' ::=
 
-  defn G2 ⊢ σ1 ≈ σ2 : G1 :: :: SEq :: ''
+  defn Γ2 ⊢ σ1 ≈ σ2 : Γ1 :: :: SEq :: ''
   {{ com Equivalence of substitutions }}
-  {{ tex [[G2]] [[⊢]] [[σ1]] \eqDOne [[σ2]] : [[G1]] }} by
+  {{ tex [[Γ2]] [[⊢]] [[σ1]] \eqDOne [[σ2]] : [[Γ1]] }} by
 
 
   defn Γ ⊢ σ1 ≈ σ2 : varset :: :: SubsEq :: 'SubsEq'

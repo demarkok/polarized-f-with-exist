@@ -1,5 +1,5 @@
 Let us consider a type $[[iP]]$ well-formed in $[[Γ]]$.
-Some of its $[[Γ]]$-supertypes are also well-formed in a smaller context $[[{Δ} ⊆ {Γ}]]$.
+Some of its $[[Γ]]$-supertypes are also well-formed in a smaller context $[[{Δ} ⊆ Γ]]$.
 The upgrade is the operation that returns the least of such supertypes.
 
 \begin{lemma}[Soundness of Upgrade]\label{lemma:upgrade-soundness}
@@ -32,7 +32,7 @@ The upgrade is the operation that returns the least of such supertypes.
                   &= [[ (fv iP \ {pnas}) ∩ (fv iP \ {pnas}) ]]
                   &&\text{since $[[pnbs]]$ and $[[pncs]]$ are fresh}\\
                   &= [[ fv iP \ {pnas} ]]\\
-                  &\subseteq [[ {Γ} \ {pnas} ]]
+                  &\subseteq [[ Γ \ {pnas} ]]
                   &&\text{since $[[iP]]$ is well-formed in $[[Γ]]$}\\
                   &\subseteq [[ {Δ} ]]\\
     \end{aligned}

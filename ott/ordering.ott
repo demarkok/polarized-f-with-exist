@@ -1,7 +1,7 @@
 defns
   Order :: 'O' ::=
 
-  defn ord varset in iN = ordVars :: :: NVarOrd :: '' by
+  defn ord varset in iN = ordVars :: :: NVar :: '' by
 
   na ∊ varset
   ---------------------  :: NVarIn
@@ -25,7 +25,7 @@ defns
   ord varset in ∀pas.iN = ordVars
 
 
-  defn ord varset in iP = ordVars :: :: PVarOrd :: '' by
+  defn ord varset in iP = ordVars :: :: PVar :: '' by
 
   pa ∊ varset
   ---------------------  :: PVarIn
@@ -43,12 +43,12 @@ defns
   --------------------------------------------- :: Exists
   ord varset in ∃nas.iP = ordVars
 
-  defn ord varset in uN = ordVars :: :: uNVarOrd :: '' by
+  defn ord varset in uN = ordVars :: :: uNVar :: '' by
 
   ----------------------- :: NUVar
   ord varset in α̂⁻ = · 
 
-  defn ord varset in uP = ordVars :: :: uPVarOrd :: '' by
+  defn ord varset in uP = ordVars :: :: uPVar :: '' by
 
   ------------------------  :: PUVar
   ord varset in α̂⁺ = · 

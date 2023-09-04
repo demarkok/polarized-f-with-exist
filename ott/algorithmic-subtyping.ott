@@ -8,43 +8,43 @@ embed {{ tex-preamble
 defns
   A :: 'A' ::=
 
-  defn G ; Θ ⊨ uN ≤ iM ⫤ SC :: :: Nsub :: ''
+  defn Γ ; Θ ⊨ uN ≤ iM ⫤ SC :: :: Nsub :: ''
   {{ com Negative subtyping }}
-  {{ tex [[G]] ;\, [[Θ]] [[⊨]] [[uN]] \subA [[iM]] [[⫤]] [[SC]] }} by
+  {{ tex [[Γ]] ;\, [[Θ]] [[⊨]] [[uN]] \subA [[iM]] [[⫤]] [[SC]] }} by
 
   ----------------- :: NVar
-  G;Θ ⊨ a⁻ ≤ a⁻ ⫤ · 
+  Γ;Θ ⊨ a⁻ ≤ a⁻ ⫤ · 
 
   Γ;Θ ⊨ nf(uP) ≈u nf(iQ) ⫤ UC 
   ---------------------------- :: ShiftU
-  G;Θ ⊨ ↑uP ≤ ↑iQ ⫤ lift UC
+  Γ;Θ ⊨ ↑uP ≤ ↑iQ ⫤ lift UC
 
-  G;Θ ⊨ uP ≥ iQ ⫤ SC1    G;Θ ⊨ uN ≤ iM ⫤ SC2    Θ ⊢ SC1 & SC2 = SC
+  Γ;Θ ⊨ uP ≥ iQ ⫤ SC1    Γ;Θ ⊨ uN ≤ iM ⫤ SC2    Θ ⊢ SC1 & SC2 = SC
   ----------------------------------------------------------------:: Arrow
-  G;Θ ⊨ uP → uN ≤ iQ → iM ⫤ SC 
+  Γ;Θ ⊨ uP → uN ≤ iQ → iM ⫤ SC 
 
-  % *[G, pbs]
-  G, pbs; Θ, â⁺*[G, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ SC
+  % *[Γ, pbs]
+  Γ, pbs; Θ, â⁺*[Γ, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ SC
   ----------------------------------- :: Forall
-  G;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ SC \ {â⁺*}
+  Γ;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ SC \ {â⁺*}
 
-  defn G ; Θ ⊨ uP ≥ iQ ⫤ SC :: :: Psup :: ''
+  defn Γ ; Θ ⊨ uP ≥ iQ ⫤ SC :: :: Psup :: ''
   {{ com Positive supertyping }}
-  {{ tex [[G]] ;\, [[Θ]] [[⊨]] [[uP]] \supA [[iQ]] [[⫤]] [[SC]] }} by
+  {{ tex [[Γ]] ;\, [[Θ]] [[⊨]] [[uP]] \supA [[iQ]] [[⫤]] [[SC]] }} by
 
   ---------------- :: PVar
-  G;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·
+  Γ;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·
 
-  G;Θ ⊨ nf(uN) ≈u nf(iM) ⫤ UC
+  Γ;Θ ⊨ nf(uN) ≈u nf(iM) ⫤ UC
   --------------------------- :: ShiftD
-  G;Θ ⊨ ↓uN ≥ ↓iM ⫤ lift UC 
+  Γ;Θ ⊨ ↓uN ≥ ↓iM ⫤ lift UC 
 
-  % *[G, nbs]
-  G, nbs; Θ,â⁻*[G, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ SC
+  % *[Γ, nbs]
+  Γ, nbs; Θ,â⁻*[Γ, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ SC
   ------------------------------------------ :: Exists
-  G;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ SC \ {â⁻*}
+  Γ;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ SC \ {â⁻*}
 
     
-  â⁺[Δ] ∊ Θ   upgrade G ⊢ iP to Δ = iQ
+  â⁺[Δ] ∊ Θ   upgrade Γ ⊢ iP to Δ = iQ
   -------------------------------------- :: PUVar
-  G;Θ ⊨ â⁺ ≥ iP ⫤ (â⁺ :≥ iQ)
+  Γ;Θ ⊨ â⁺ ≥ iP ⫤ (â⁺ :≥ iQ)

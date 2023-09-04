@@ -222,7 +222,7 @@ to the whole system.
   \hfill \\
   Declarative type context $[[Γ]]$ is represented by a set of 
   type variables. The concatenation $[[Γ1, Γ2]]$ means the 
-  union of two contexts $[[{Γ1} ∪ {Γ2}]]$.
+  union of two contexts $[[Γ1 ∪ Γ2]]$.
 \end{definition}
 
 
@@ -251,8 +251,8 @@ to the whole system.
 \begin{definition}[Substitution Signature]
   The signature $[[Γ' ⊢ σ : Γ]]$ means that
   \begin{enumerate}
-    \item for any $[[α± ∊ {Γ}]], [[ Γ' ⊢ [σ]α± ]]$; and
-    \item for any $[[α± ∉ {Γ'}]], [[ [σ]α± = α± ]]$.
+    \item for any $[[α± ∊ Γ]], [[ Γ' ⊢ [σ]α± ]]$; and
+    \item for any $[[α± ∉ Γ']], [[ [σ]α± = α± ]]$.
   \end{enumerate}
 \end{definition}
 
@@ -279,7 +279,7 @@ $[[σ2]]$ to its results on the domain.
 
 \begin{definition}[Monadic Substitution Composition]
   Suppose that $[[Γ' ⊢ σ1 : Γ]]$.
-  Then we define $[[σ2 <=< σ1]]$ as $[[(σ2 ○ σ1)|{Γ}]]$.
+  Then we define $[[σ2 <=< σ1]]$ as $[[(σ2 ○ σ1)|Γ]]$.
 \end{definition}
 Notice that the result of $[[σ2 <=< σ1]]$ depends on the 
 specification of $[[σ1]]$, which is not unique. 
@@ -290,7 +290,7 @@ context of the proof.
   The substitution equivalence judgement $[[Γ' ⊢ σ1 ≈ σ2 : Γ]]$ 
   indicates that on the domain $[[Γ]]$, 
   the result of $[[σ1]]$ and $[[σ2]]$ are equivalent in context $[[Γ']]$.
-  Formally, for any $[[α± ∊ {Γ}]], [[ Γ' ⊢ [σ1]α± ≈ [σ2]α± ]]$.
+  Formally, for any $[[α± ∊ Γ]], [[ Γ' ⊢ [σ1]α± ≈ [σ2]α± ]]$.
 \end{definition}
 
 Sometimes it is convenient to construct substitution 
