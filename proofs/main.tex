@@ -48,8 +48,8 @@
 % \makeatother
 
 
-\newcommand{\depth}[1]{\mathsf{depth}(#1)}
-\newcommand{\size}[1]{\mathsf{size}(#1)}
+\newcommand{\depth}[1]{\ensuremath{\mathsf{depth}(#1)}}
+\newcommand{\size}[1]{\ensuremath{\mathsf{size}(#1)}}
 
 \newcommand{\ruleref}[1]{Rule \nameref{#1}}
 
@@ -222,7 +222,7 @@ to the whole system.
   \hfill \\
   Declarative type context $[[Γ]]$ is represented by a set of 
   type variables. The concatenation $[[Γ1, Γ2]]$ means the 
-  union of two contexts  $[[{Γ1} ∪ {Γ2}]]$.
+  union of two contexts $[[{Γ1} ∪ {Γ2}]]$.
 \end{definition}
 
 
@@ -327,7 +327,6 @@ the corresponding types.
 
 \subsection{Well-Formedness}
 \ottdefnsWFT
-\ottdefnsWFAT
 
 \section{Algorithm}
 
@@ -371,6 +370,7 @@ via replacing certain type variables with fresh algorithmic variables.
   \hfill \\
   Algorithmic type context $[[Ξ]]$ is represented by a set of 
   \emph{algorithmic} type variables ($[[α̂⁺]]$, $[[α̂⁻]]$, $[[β̂⁺]]$, \dots).
+  The concatenation $[[Ξ1, Ξ2]]$ means the union of two contexts $[[Ξ1 ∪ Ξ2]]$.
 \end{definition}
 
 $[[Γ ; Ξ ⊢ uP]]$ and $[[Γ ; Ξ ⊢ uN]]$ are used to denote
@@ -401,6 +401,9 @@ This association is represented by \emph{algorithmic subtyping context} $[[Θ]]$
 
   If $[[ α̂±[Γ] ]] \in [[Θ]]$, we denote $[[Γ]]$ as $[[Θ(α̂±)]]$.
 \end{definition}
+
+\subsection{Algorithmic Type Well-formedness}
+\ottdefnsWFAT
 
 \subsection{Subsitutions}
 
@@ -632,16 +635,14 @@ unification constraints is a unification constraint.
 \subsection{Typing}
 \ottdefnsAT
 
-\section{Proofs}
+\section{Properties of the Declarative System}
 
-\subsection{Type well-formedness}
+\subsection{Type Well-formedness}
 \input{../_build/_gen/tex/wf-lemmas.tex}
 
 \subsection{Substitution}
 
-
 \input{../_build/_gen/tex/subst-lemmas.tex}
-
 
 \subsection{Declarative Subtyping}
 \input{../_build/_gen/tex/decl-subtyping-lemmas.tex}
@@ -657,6 +658,11 @@ unification constraints is a unification constraint.
 
 \subsection{Equivalence}
 \input{../_build/_gen/tex/equiv-lemmas.tex}
+
+\section{Properties of the Algorithmic System}
+
+\subsection{Algorithmic Type Well-formedness}
+\input{../_build/_gen/tex/wf-algo-lemmas.tex}
 
 \subsection{Unification Constraint Merge}
 \input{../_build/_gen/tex/unif-constraint-merge-lemmas.tex}

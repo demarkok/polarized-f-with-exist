@@ -1,4 +1,4 @@
-\begin{lemma}[Soundness of well-formedness]
+\begin{lemma}[Soundness of type well-formedness]
     \label{lemma:wf-soundness}
     \hfill
 
@@ -25,7 +25,7 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Completeness of well-formedness]
+\begin{lemma}[Completeness of type well-formedness]
   \label{lemma:wf-ctxt-equiv}
 
   In the well-formedness judgment, only used variables matter:
@@ -134,11 +134,3 @@
     \item The negative cases are proved symmetrically.
   \end{caseof}
 \end{proof}
-
-
-\begin{lemma}[Algorithmic renaming agrees with well-formedness]
-  \begin{itemize}
-    \item[$+$]  $[[Γ, nas ⊢ iP]]$ implies $[[Γ; nuas ⊢ [nuas/nas]iP]]$;
-    \item[$-$]  $[[Γ, nas ⊢ iN]]$ implies $[[Γ; nuas ⊢ [nuas/nas]iN]]$.
-  \end{itemize}
-\end{lemma}

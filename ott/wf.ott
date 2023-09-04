@@ -33,17 +33,9 @@ defns
     ----------- :: Exists
     Γ ⊢ ∃nas.iP
 
-  defn G ⊢ N   :: :: NWF :: ''   {{ com Negative type well-formedness }} by
-  defn G ⊢ P   :: :: PWF :: ''   {{ com Positive type well-formedness }} by
-
-  defn G ⊢ iNs  :: :: NisWF :: '' {{ com Negative type list well-formedness }} by
-  defn G ⊢ iPs  :: :: PisWF :: '' {{ com Positive type list well-formedness }} by
-
 defns
   WFAT :: 'WFAT' ::=
 
-
-  
 
   defn G ; Ξ ⊢ uN  :: :: NauWF :: '' {{ com Negative algorithmic type well-formedness }} by
 
@@ -84,6 +76,13 @@ defns
     Γ, nas; Ξ ⊢ uP
     --------------- :: Exists
     Γ; Ξ ⊢ ∃nas.uP
+
+
+defns
+  WFALL :: 'WFALL' ::=
+
+  defn G ⊢ iNs  :: :: NisWF :: '' {{ com Negative type list well-formedness }} by
+  defn G ⊢ iPs  :: :: PisWF :: '' {{ com Positive type list well-formedness }} by
 
 
   defn  Γ ; Ξ2 ⊢ aus : Ξ1 :: :: AUSWF :: '' {{ com Antiunification substitution well-formedness }} by

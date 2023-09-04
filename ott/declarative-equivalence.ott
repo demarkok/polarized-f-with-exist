@@ -1,7 +1,7 @@
 embed {{ tex-preamble
 
 \colorlet{colorEOne}{Orange!70!Red}
-\newcommand{\eqEOne}{ \mathcolor{colorEOne}{ [[≈]]_1^{D} } } 
+\newcommand{\eqEOne}{ \mathcolor{colorEOne}{ [[≈]]^{D} } } 
 
 }}
 

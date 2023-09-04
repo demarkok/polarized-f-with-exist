@@ -1,9 +1,9 @@
 embed {{ tex-preamble
 
 \colorlet{colorOne}{Yellow!50!Brown}
-\newcommand{\eqDOne}{ \mathcolor{colorOne}{ [[≈]]_1^{ \scaleto{[[≤]]}{3.5pt} } } } 
-\newcommand{\subDOne}{ \mathcolor{colorOne}{ [[≤]]_1 } } 
-\newcommand{\supDOne}{ \mathcolor{colorOne}{ [[≥]]_1 } } 
+\newcommand{\eqDOne}{ \mathcolor{colorOne}{ [[≈]]^{ \scaleto{[[≤]]}{3.5pt} } } } 
+\newcommand{\subDOne}{ \mathcolor{colorOne}{ [[≤]] } } 
+\newcommand{\supDOne}{ \mathcolor{colorOne}{ [[≥]] } } 
 
 }}
 
@@ -11,7 +11,7 @@ defns
   D1 :: 'D1' ::=
 
   defn G ⊢ iN ≈ iM :: :: Neq :: ''
-  {{ com Negative equivalence on MQ types }}
+  {{ com Negative subtyping-induced equivalence }}
   {{ tex [[G]] [[⊢]] [[iN]] \eqDOne [[iM]] }} by
 
   G ⊢ iN ≤ iM   G ⊢ iM ≤ iN
@@ -19,7 +19,7 @@ defns
   G ⊢ iN ≈ iM 
 
   defn G ⊢ iP ≈ iQ :: :: Peq :: ''
-  {{ com Positive equivalence on MQ types }}
+  {{ com Positive subtyping-induced equivalence }}
   {{ tex [[G]] [[⊢]] [[iP]] \eqDOne [[iQ]] }} by
 
   G ⊢ iP ≥ iQ   G ⊢ iQ ≥ iP
@@ -60,6 +60,9 @@ defns
   --------------------------------------- :: Exists
   G ⊢ ∃nas.iP ≥ ∃nbs.iQ
 
+defns 
+  D1S :: 'D1S' ::=
+
   defn G2 ⊢ σ1 ≈ σ2 : G1 :: :: SEq :: ''
   {{ com Equivalence of substitutions }}
   {{ tex [[G2]] [[⊢]] [[σ1]] \eqDOne [[σ2]] : [[G1]] }} by
@@ -76,6 +79,9 @@ defns
   defn Γ ⊢ uσ1 ≈ uσ2 : varset :: :: USubsEqG :: 'USubsEqG'
   {{ com Equivalence of unification substitutions }}
   {{ tex [[Γ]] [[⊢]] [[uσ1]] \eqDOne [[uσ2]] : [[varset]] }} by
+
+defns 
+  D1C :: 'D1C' ::=
 
   defn Γ ⊢ Φ1 ≈ Φ2 :: :: CtxEq :: 'CtxEq'
   {{ com Equivalence of contexts }}
