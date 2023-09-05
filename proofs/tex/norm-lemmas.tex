@@ -23,18 +23,6 @@
   By straightforward induction on $[[iN]]$ and mutually on $[[iP]]$.
 \end{proof}
 
-\begin{lemma}
-  \label{lemma:uv-nf}
-  Algorithmic variables are not changed by the normalization
-  \begin{itemize}
-  \item[$-$] $[[uv uN]] \equiv [[uv nf(uN)]]$
-  \item[$+$] $[[uv uP]] \equiv [[uv nf(uP)]]$
-  \end{itemize}
-\end{lemma}
-\begin{proof}
-  By straightforward induction on $[[uN]]$ and mutually on $[[uP]]$.
-\end{proof}
-
 
 \begin{lemma}[Soundness of normalization]
   \label{lemma:normalization-soundness}
@@ -68,25 +56,12 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Soundness of normalization of algorithmic types]
-  \label{lemma:normalization-soundness-alg}
-  \hfill
-  \begin{itemize}
-    \item[$-$] $[[uN ≈ nf(uN)]]$
-    \item[$+$] $[[uP ≈ nf(uP)]]$
-  \end{itemize}
-\end{lemma}
-\begin{proof}
-  The proof coincides with the proof of \cref{lemma:normalization-soundness}.
-\end{proof}
-
-
 \begin{corollary}[Normalization preserves ordering]
   \label{corollary:normalization-ord}
   For any $[[varset]]$,
   \begin{itemize}
-  \item[$-$] $[[ord varset in nf(uN)]] = [[ord varset in uM]]$
-  \item[$+$] $[[ord varset in nf(uP)]] = [[ord varset in uQ]]$
+  \item[$-$] $[[ord varset in nf(iN)]] = [[ord varset in iM]]$
+  \item[$+$] $[[ord varset in nf(iP)]] = [[ord varset in iQ]]$
   \end{itemize}
 \end{corollary}
 \begin{proof}
@@ -193,7 +168,6 @@
   \item[$-$] If $[[iN ≈ iM]]$ then $[[nf(iN)]] = [[nf(iM)]]$
   \item[$+$] If $[[iP ≈ iQ]]$ then $[[nf(iP)]] = [[nf(iQ)]]$
   \end{itemize}
-  (Here equality means alpha-equivalence)
 \end{lemma}
 
 \begin{proof}

@@ -379,7 +379,7 @@
     Then by the soundness of anti-unification (\cref{lemma:au-soundness}),
     \begin{enumerate}
     \item[(i)] $[[Γ ; Ξ ⊢ uP]]$, then
-      by \cref{todo},
+      by \cref{lemma:var-dealgo-wf},
       \begin{equation} \label{fact:nas-uP-is-wf} [[Γ, nas ⊢ [nas / ToList Ξ]uP]] \end{equation}
     \item[(ii)] $[[Γ ; · ⊢ aus1 : Ξ]]$ and $[[Γ ; · ⊢ aus2 : Ξ]]$.
       Assuming that $[[Ξ]] = [[nub1,..,nubn]]$,

@@ -10,7 +10,7 @@ defns
   --------------------------------- :: SupVar
   pua :≥ ∃nas.pa singular with pa
 
-           iN ≈ nai
+           nf(iN) = nai
   ----------------------------------- :: SupShift
   pua :≥ ∃nas.↓iN singular with ∃α⁻.↓α⁻
 

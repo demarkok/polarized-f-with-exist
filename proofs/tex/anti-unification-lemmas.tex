@@ -125,7 +125,8 @@
                 This way, by the induction hypothesis:
                 \begin{enumerate}
                     \item $[[Γ ; Ξ ⊢ uQ]]$ and $[[Γ ; Ξ' ⊢ uM]]$. 
-                    Then by weakening (\cref{todo}), $[[Γ ; Ξ ∪ Ξ' ⊢ uQ]]$ and 
+                    Then by weakening (\cref{lemma:wf-weakening-algo}), 
+                    $[[Γ ; Ξ ∪ Ξ' ⊢ uQ]]$ and 
                     $[[Γ ; Ξ ∪ Ξ' ⊢ uM]]$, which implies $[[Γ ; Ξ ∪ Ξ' ⊢ uQ → uM]]$;
 
                     \item $[[Γ ; · ⊢ ausi : Ξ]]$ and $[[Γ ; · ⊢ aus'i : Ξ']]$
@@ -329,7 +330,7 @@
     \end{itemize}
 \end{lemma}
 \begin{proof}
-    First, let us assume that $[[uM']]$ is a metavariable $[[α̂⁻]]$. 
+    First, let us assume that $[[uM']]$ is a algorithmic variable $[[α̂⁻]]$. 
     Then we can take $[[ausr]] = [[α̂⁻]] \mapsto [[uM]]$, which satisfies the required properties:
     \begin{itemize}
         \item $[[Γ ; Ξ ⊢ ausr : (Ξ' | uv uM')]]$ holds since 
@@ -340,11 +341,11 @@
             in context $[[Γ]]$, and hence, it is uniquely determined by them (\cref{obs:anti-unification-deterministic}).
     \end{itemize}
 
-    Now, we can assume that $[[uM']]$ is not a metavariable. 
+    Now, we can assume that $[[uM']]$ is not a algorithmic variable. 
     We prove by induction on the derivation of $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
     and mutually on the derivation of $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$.
 
-    Since $[[uM']]$ is not a metavariable, 
+    Since $[[uM']]$ is not a algorithmic variable, 
     the substitution acting on $[[uM']]$ preserves its outer constructor. 
     In other words, 
     $[[ [aus'i] uM' = iNi ]]$ means that $[[uM']]$, 
@@ -361,7 +362,7 @@
         Then $[[Ξ]] = [[·]]$, $[[uM]] = [[α⁻]]$, 
         and $[[aus1]] = [[aus2]] = [[·]]$.
         Since $[[ [aus'i] uM' = iNi ]] = [[α⁻]]$
-        and $[[uM']]$ is not a metavariable, $[[uM']] = [[α⁻]]$.
+        and $[[uM']]$ is not a algorithmic variable, $[[uM']] = [[α⁻]]$.
         Then we can take $[[ausr]] = [[·]]$, which satisfies the required properties:
         \begin{itemize}
             \item $[[Γ ; Ξ ⊢ ausr : (Ξ' | uv uM')]]$ holds vacuously since 
@@ -375,7 +376,7 @@
         $[[iN1]] = [[↑iP1]]$ and $[[iN2]] = [[↑iP2]]$.
         \label{case:anti-unification-initial:shiftu}
 
-        Then since $[[ [aus'i] uM' = iNi ]] = [[↑iPi]]$ and $[[uM']]$ is not a metavariable,
+        Then since $[[ [aus'i] uM' = iNi ]] = [[↑iPi]]$ and $[[uM']]$ is not a algorithmic variable,
         $[[uM']] = [[↑uQ']]$, where $[[ [aus'i] uQ' = iPi ]]$. 
         Let us show that $[[(Ξ', uQ', aus'1, aus'2)]]$ 
         is an anti-unifier of $[[iP1]]$ and $[[iP2]]$.
@@ -408,7 +409,7 @@
         \item \ruleref{\ottdruleAUArrowLabel}, i.e.
         $[[iN1]] = [[iP1 → iN'1]]$ and $[[iN2]] = [[iP2 → iN'2]]$.
 
-        Then since $[[ [aus'i] uM' = iNi ]] = [[iPi → iN'i]]$ and $[[uM']]$ is not a metavariable,
+        Then since $[[ [aus'i] uM' = iNi ]] = [[iPi → iN'i]]$ and $[[uM']]$ is not a algorithmic variable,
         $[[uM']] = [[uQ' → uM'']]$, where $[[ [aus'i] uQ' = iPi ]]$ and $[[ [aus'i] uM'' = iN''i ]]$.
 
         Let us show that $[[(Ξ', uQ', aus'1, aus'2)]]$

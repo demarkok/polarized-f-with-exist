@@ -1,4 +1,4 @@
-\begin{lemma}[AASoundness of algorithmic type well-formedness]
+\begin{lemma}[Soundness of algorithmic type well-formedness]
     \label{lemma:wf-algo-soundness}
     \hfill
   \begin{itemize}
@@ -30,6 +30,7 @@
 \end{proof}
 
 \begin{lemma}[Variable algorithmization agrees with well-formedness]
+  \label{lemma:var-algo-wf}
   \hfill
   \begin{itemize}
     \item[$+$]  $[[Γ, nas ⊢ iP]]$ implies $[[Γ; {nuas} ⊢ [nuas/nas]iP]]$;
@@ -37,7 +38,22 @@
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  The proof is a simple structural induction on $[[Γ, nas ⊢ iP]]$ and mutually, on $[[Γ, nas ⊢ iN]]$.
+  The proof is a structural induction on $[[Γ, nas ⊢ iP]]$ and mutually, on $[[Γ, nas ⊢ iN]]$.
+  Notice that the substitutions commute with all the constructors,
+  providing the step of the induction. 
+\end{proof}
+
+\begin{lemma}[Variable dealgorithmization agrees with well-formedness]
+  \label{lemma:var-dealgo-wf}
+  \hfill
+  \begin{itemize}
+    \item[$+$]  $[[Γ; {nuas} ⊢ uP]]$ implies $[[Γ, nas ⊢ [nas/nuas]iP]]$;
+    \item[$-$]  $[[Γ; {nuas} ⊢ uN]]$ implies $[[Γ, nas ⊢ [nas/nuas]iN]]$.
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  As for \cref{lemma:var-algo-wf}, the proof is a structural induction on 
+  $[[Γ; {nuas} ⊢ uP]]$ and mutually, on $[[Γ; {nuas} ⊢ uN]]$.
 \end{proof}
 
 
@@ -51,10 +67,11 @@
   \end{itemize}
 \end{corollary}
 \begin{proof}
-  By \cref{lemma:wf-soundness},
-  $[[Γ1 ⊢ iP]]$ implies $[[fv(iP) ⊆ Γ1]]$,
-  which means that $[[fv(iP) ⊆ Γ2]]$,
-  and thus, $[[fv(iP)]] = [[fv(iP) ∩ Γ1]] = [[fv(iP) ∩ Γ2]]$.
-  Then by \cref{lemma:wf-ctxt-equiv}, $[[Γ2 ⊢ iP]]$. 
+  By \cref{lemma:wf-algo-soundness},
+  $[[Γ1; Ξ1 ⊢ uP]]$ implies $[[fv(uP) ⊆ Γ1 ⊆ Γ2]]$
+  and $[[uv(uP) ⊆ Ξ1 ⊆ Ξ2]]$,
+  and thus, $[[fv(uP)]] = [[fv(uP) ∩ Γ1]] = [[fv(uP) ∩ Γ2]]$, 
+  and $[[uv(uP)]] = [[uv(uP) ∩ Ξ1]] = [[uv(uP) ∩ Ξ2]]$.
+  Then by \cref{lemma:wf-algo-ctxt-equiv}, $[[Γ2; Ξ2 ⊢ uP]]$. 
   The negative case is symmetric.
 \end{proof}

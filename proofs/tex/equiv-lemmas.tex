@@ -166,29 +166,6 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Algorithmization of declarative equivalence]
-  \label{lemma:decl-equiv-algorithmization}
-  Declarative equivalence is the equality of normal forms. 
-  \begin{itemize}
-    \item[$+$] $[[iP ≈ iQ]] \iff [[nf(iP) = nf(iQ)]]$,
-    \item[$-$] $[[iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$.
-  \end{itemize}
-\end{lemma}
-\begin{proof} \hfill
-  \begin{itemize}
-    \item[$+$] Let us prove both directions separately.
-    \begin{itemize}
-      \item[$\Rightarrow$] 
-        exactly by \cref{lemma:normalization-completeness},
-      \item[$\Leftarrow$] 
-        from \cref{lemma:normalization-soundness}, we know
-        $[[iP ≈ nf(iP)]] = [[nf(iQ) ≈ iQ]]$, then by transitivity (\cref{lemma:decl-equiv-transitivity}),
-        $[[iP ≈ iQ]]$.
-    \end{itemize}
-    \item[$-$] The proof is exactly the same.
-  \end{itemize}
-\end{proof}
-
 \begin{lemma}[Type well-formedness is invariant under equivalence]
   \label{lemma:wf-equiv}
   Mutual subtyping implies declarative equivalence.
@@ -254,21 +231,6 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Algorithmic type well-formedness is invariant under equivalence]
-  \label{lemma:wf-equiv-algo}
-  Mutual subtyping implies declarative equivalence.
-  \begin{itemize}
-  \item[$+$] if $[[uP ≈ uQ]]$ then $[[Γ; Ξ ⊢ uP]] \iff [[Γ; Ξ ⊢ uQ]]$,
-  \item[$-$] if $[[uN ≈ uM]]$ then $[[Γ; Ξ ⊢ uN]] \iff [[Γ; Ξ ⊢ uM]]$
-  \end{itemize}
-\end{lemma}
-\begin{proof}
-  The proof coincides with the proof of \cref{lemma:wf-equiv},
-  and adds two cases for equating two positive or two negative metavariables,
-  which must be equal by inversion, and thus, 
-  $[[Γ; Ξ ⊢ α̂±]] \iff [[Γ; Ξ  ⊢ α̂±]]$ holds trivially.
-\end{proof}
-
 \begin{corollary}[Normalization preserves well-formedness]
   \label{corollary:wf-nf}
   \hfill
@@ -279,6 +241,22 @@
 \end{corollary}
 \begin{proof}
   Immediately from \cref{lemma:wf-equiv,lemma:normalization-soundness}.
+\end{proof}
+
+\begin{corollary}[Normalization preserves well-formedness of substitution]
+  \label{corollary:wf-s-nf}
+  \hfill \\
+   $[[Γ2 ⊢ σ : Γ1]] \iff [[Γ2 ⊢ nf(σ) : Γ1]]$
+\end{corollary}
+\begin{proof}
+  Let us prove the forward direction.
+  Suppose that $[[α± ∊ Γ1]]$.  Let us show that $[[Γ2 ⊢ [nf(σ)]α±]]$.
+  By the definition of substitution normalization,
+  $[[ [nf(σ)]α± = nf([σ]α±) ]]$. Then by \cref{corollary:wf-nf},
+  to show $[[Γ2 ⊢ nf([σ]α±)]]$, it suffices to show $[[Γ2 ⊢ [σ]α±]]$,
+  which holds by the assumption $[[Γ2 ⊢ σ : Γ1]]$.
+
+  The backward direction is proved analogously.
 \end{proof}
 
 \begin{lemma}[Normalization preserves substitution signature]
@@ -295,45 +273,6 @@
   $[[Γ2 ⊢ σ : Γ1]]$ means that $[[ [σ]α± = α± ]]$, 
   and then $[[ [nf(σ)]α± ]] = [[nf([σ]α±)]] = [[nf(α±)]] = [[α±]]$.
 \end{proof}
-
-
-\begin{corollary}[Normalization preserves well-formedness of algorithmic types]
-  \label{corollary:wf-nf-algo}
-  \begin{itemize}
-    \item[$+$] $[[Γ; Ξ ⊢ uP]] \iff [[Γ; Ξ ⊢ nf(uP)]]$,
-    \item[$-$] $[[Γ; Ξ ⊢ uN]] \iff [[Γ; Ξ ⊢ nf(uN)]]$
-  \end{itemize}
-\end{corollary}
-\begin{proof}
-  Immediately from \cref{lemma:wf-equiv-algo,lemma:normalization-soundness-alg}.
-\end{proof}
-
-\begin{corollary}[Normalization preserves well-formedness of substitution]
-  \label{corollary:wf-s-nf}
-  \hfill \\
-   $[[Γ2 ⊢ σ : Γ1]] \iff [[Γ2 ⊢ nf(σ) : Γ1]]$
-\end{corollary}
-\begin{proof}
-  Let us prove the forward direction.
-  Suppose that $[[α± ∊ Γ1]]$.  Let us show that $[[Γ2 ⊢ [nf(σ)]α±]]$.
-  By the definition of substitution normalization,
-  $[[ [nf(σ)]α± = nf([σ]α±) ]]$. Then by \cref{corollary:wf-nf-algo},
-  to show $[[Γ2 ⊢ nf([σ]α±)]]$, it suffices to show $[[Γ2 ⊢ [σ]α±]]$,
-  which holds by the assumption $[[Γ2 ⊢ σ : Γ1]]$.
-
-  The backward direction is proved analogously.
-\end{proof}
-
-\begin{corollary}[Normalization preserves the signature of the algorithmic substitution]
-  \label{corollary:norm-subst-sig-algo}
-  \hfill \\
-  $[[Θ ⊢ uσ : Ξ]] \iff [[Θ ⊢ nf(uσ) : Ξ]]$,
-  $[[Γ ⊢ uσ : Ξ]] \iff [[Γ ⊢ nf(uσ) : Ξ]]$.
-\end{corollary}
-\begin{proof}
-  The proof is analogous to \cref{corollary:wf-s-nf}.
-\end{proof}
-
 
 
 \begin{lemma}[Soundness of equivalence]
@@ -449,9 +388,9 @@
   where $[[Γi ⊆ Γ]]$ and $[[Γ1 ∩ Γ2= ∅]]$. Then
   \begin{itemize}
   \item[$-$] assuming $[[Γ ⊢ iN]]$,~
-    $[[Γ ⊢ [σ1]iN ≤ [σ2]iN]]$ implies $[[Γ ⊢ σi ≈ id :  fv iN]]$
+    $[[Γ ⊢ [σ1]iN ≤ [σ2]iN]]$ implies $[[Γ ⊢ σi ≈ id : fv iN]]$
   \item[$+$] assuming $[[Γ ⊢ iP]]$,~
-    $[[Γ ⊢ [σ1]iP ≥ [σ2]iP]]$ implies $[[Γ ⊢ σi ≈ id :  fv iP]]$
+    $[[Γ ⊢ [σ1]iP ≥ [σ2]iP]]$ implies $[[Γ ⊢ σi ≈ id : fv iP]]$
   \end{itemize}
 \end{lemma}
 \begin{proof}
@@ -895,7 +834,7 @@
 
 \begin{lemma}[Algorithmization of subtyping-induced equivalence]
   \label{lemma:subt-equiv-algorithmization}
-  Mutual subtyping is equality of normal forms.
+  Mutual subtyping is the equality of normal forms.
  Assuming all the types below are well-formed in $[[Γ]]$:
   \begin{itemize}
     \item [$+$] $[[Γ ⊢ iP ≈ iQ]] \iff [[nf(iP) = nf(iQ)]]$,
@@ -910,13 +849,6 @@
     \item [$\Leftarrow$] by \cref{lemma:decl-equiv-algorithmization,lemma:equiv-soundness}.
   \end{itemize}
 \end{proof}
-
-\begin{corollary}[Algorithmic substitution equivalence becomes equality after normalization]
-  \label{corollary:subst-subt-equiv-algorithmization}
-  Suppose that $[[Θ ⊢ uσ1 : Ξ']]$ and $[[Θ ⊢ uσ2 : Ξ']]$ are algorithmic substitutions
-  and $[[Ξ ⊆ Ξ']]$. 
-  Then $[[Γ ⊢ uσ1 ≈ uσ2 : Ξ]] \iff [[nf(uσ1)|Ξ = nf(uσ2)|Ξ]]$.
-\end{corollary}
 
 \begin{lemma}[Substitution preserves declarative equivalence]
   \label{corollary:subst-pres-equiv}

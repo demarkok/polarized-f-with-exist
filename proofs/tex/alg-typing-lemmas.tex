@@ -33,14 +33,14 @@ the metric of the inference tree.
         \item [$+$] If $T_1$ infers $[[Γ; Φ ⊨ v : iP]]$ then $[[Γ ⊢ iP]]$ and $[[Γ; Φ ⊢ v : iP]]$
         \item [$-$] If $T_1$ infers $[[Γ; Φ ⊨ c : iN]]$ then $[[Γ ⊢ iN]]$ and $[[Γ; Φ ⊢ c : iN]]$
         \item  If $T_1$ infers $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$
-                for $[[Γ ⊢ Θ]]$ and $[[Γ; dom(Θ) ⊢  uN]]$ free from negative metavariables, 
+                for $[[Γ ⊢ Θ]]$ and $[[Γ; dom(Θ) ⊢  uN]]$ free from negative algorithmic variables, 
                 then
             \begin{enumerate}
                 \item $[[Γ ⊢ Θ']]$
                 \item $[[Θ ⊆ Θ']]$
                 \item $[[Γ; dom(Θ') ⊢  uM]]$
                 \item $[[dom(Θ) ∩ uv(uM) ⊆ uv uN]]$
-                \item $[[uM]]$ is normalized and free from negative metavariables
+                \item $[[uM]]$ is normalized and free from negative algorithmic variables
                 \item $[[Θ'|uv uN ∪ uv uM ⊢ SC]]$
                 \item for any $[[ Θ' ⊢ uσ : uv uN ∪ uv uM ]]$,
                     $[[ Θ' ⊢ uσ : SC ]]$ implies $[[ Γ ; Φ ⊢ [uσ]uN ● args ⇒> [uσ]uM ]]$
@@ -369,7 +369,7 @@ the metric of the inference tree.
             Then by assumption:
             \begin{itemize}
                 \item $[[Γ ⊢ Θ]]$,
-                \item $[[Γ; dom(Θ) ⊢  uN]]$ is free from negative metavariables,
+                \item $[[Γ; dom(Θ) ⊢  uN]]$ is free from negative algorithmic variables,
                 \item $[[Γ; Φ; Θ ⊨ uN ● · ⇒> nf(uN) ⫤ Θ; ·]]$.
             \end{itemize}
 
@@ -381,7 +381,7 @@ the metric of the inference tree.
                     $[[Γ; dom(Θ) ⊢  uN]]$ implies $[[Γ; dom(Θ) ⊢  nf(uN)]]$ by 
                     \cref{corollary:wf-nf-algo},
                     and \cref{lemma:fv-nf} means that $[[nf(uN)]]$ is 
-                    inherently free from negative metavariables,
+                    inherently free from negative algorithmic variables,
                 \item $[[dom(Θ) ∩ uv(nf(uN)) ⊆ uv uN]]$
                     holds since $[[uv(nf(uN)) = uv(uN)]]$,
                 \item $[[Θ|uv uN ∪ uv nf(uN) ⊢ ·]]$ holds trivially,
@@ -402,7 +402,7 @@ the metric of the inference tree.
             By assumption:
             \begin{enumerate}
                 \item $[[Γ ⊢ Θ]]$,
-                \item $[[Γ; dom(Θ) ⊢ uQ → uN]]$ is free from negative metavariables,
+                \item $[[Γ; dom(Θ) ⊢ uQ → uN]]$ is free from negative algorithmic variables,
                     and hence, so are $[[uQ]]$ and $[[uN]]$,
                 \item $[[Γ; Φ; Θ ⊨ uQ → uN ● v , args ⇒> uM ⫤ Θ'; SC]]$, 
                     and by inversion: 
@@ -423,7 +423,7 @@ the metric of the inference tree.
                             \begin{enumerate}
                                 \item $[[Γ ⊢ Θ']]$,
                                 \item $[[Θ ⊆ Θ']]$,
-                                \item $[[Γ; dom(Θ') ⊢  uM]]$ is normalized and free from negative metavariables,
+                                \item $[[Γ; dom(Θ') ⊢  uM]]$ is normalized and free from negative algorithmic variables,
                                 \item $[[dom(Θ) ∩ uv(uM) ⊆ uv uN]]$,
                                 \item $[[Θ'|uv(uM) ∪ uv(uN) ⊢ SC2]]$, and thus, $[[dom(SC2) ⊆ uv(uM) ∪ uv(uN)]]$,
                                 \item for any $[[uσ]]$ such that
@@ -442,7 +442,7 @@ the metric of the inference tree.
             \begin{enumerate}
                 \item $[[Γ ⊢ Θ']]$ is shown above,
                 \item $[[Θ ⊆ Θ']]$ is shown above,
-                \item $[[Γ; dom(Θ') ⊢  uM]]$ is normalized and free from negative metavariables, as shown above,
+                \item $[[Γ; dom(Θ') ⊢  uM]]$ is normalized and free from negative algorithmic variables, as shown above,
                 \item $[[dom(Θ) ∩ uv(uM) ⊆ uv uN ⊆ uv(uQ → uN)]]$
                     (the first inclusion is shown above, the second one is by definition),
                 \item To show $[[Θ'|uv(uQ) ∪ uv(uN) ∪ uv(uM) ⊢ SC]]$,
@@ -483,7 +483,7 @@ the metric of the inference tree.
             By assumption:
             \begin{enumerate}
                 \item $[[Γ ⊢ Θ]]$,
-                \item $[[Γ; dom(Θ) ⊢  ∀pas.uN]]$ is free from negative metavariables,
+                \item $[[Γ; dom(Θ) ⊢  ∀pas.uN]]$ is free from negative algorithmic variables,
                 \item $[[Γ; Φ; Θ ⊨ ∀pas.uN ● args ⇒> uM ⫤ Θ'; SC]]$, which by inversion means
                     $[[args ≠ ·]]$, $[[pas ≠ ·]]$, and $[[Γ; Φ; Θ, â⁺*[Γ] ⊨ [â⁺*/pas]uN ● args ⇒> uM ⫤ Θ'; SC]]$.
                     It is easy to see that the induction hypothesis is applicable to the latter judgment:
@@ -491,7 +491,7 @@ the metric of the inference tree.
                         \item $[[Γ ⊢ Θ, â⁺*[Γ] ]]$ holds by $[[Γ ⊢ Θ]]$, 
                         \item $[[Γ; dom(Θ), â⁺* ⊢ [â⁺*/pas]uN]]$
                             holds since $[[Γ; dom(Θ) ⊢ ∀pas.uN]]$
-                            $[[ [â⁺*/pas]uN ]]$ is normalized and free from negative metavariables
+                            $[[ [â⁺*/pas]uN ]]$ is normalized and free from negative algorithmic variables
                             since so is $[[uN]]$;
                     \end{itemize}
                     This way, by the inductive hypothesis applied to 
@@ -500,7 +500,7 @@ the metric of the inference tree.
                     \begin{enumerate}
                         \item $[[Γ ⊢ Θ']]$,
                         \item $[[Θ, â⁺*[Γ] ⊆ Θ']]$,
-                        \item $[[Γ; dom(Θ') ⊢ uM]]$ is normalized and free from negative metavariables,
+                        \item $[[Γ; dom(Θ') ⊢ uM]]$ is normalized and free from negative algorithmic variables,
                         \item $[[dom(Θ, â⁺*[Γ]) ∩ uv(uM) ⊆ uv([â⁺*/pas]uN)]]$,
                         \item $[[Θ'|Ξ ∪ uv(uN) ∪ uv(uM) ⊢ SC]]$, where $[[Ξ]]$ denotes $[[uv([â⁺*/pas]uN) ∩ {â⁺*}]]$,
                             that is the algorithmization of the $[[∀]]$-variables that are actually used in $[[uN]]$.
@@ -516,7 +516,7 @@ the metric of the inference tree.
             \begin{enumerate}
                 \item $[[Γ ⊢ Θ']]$ is shown above;
                 \item $[[Θ ⊆ Θ']]$ since $[[Θ, â⁺*[Γ] ⊆ Θ']]$;
-                \item $[[Γ; dom(Θ') ⊢  uM]]$ is normalized and free from negative metavariables, as shown above;
+                \item $[[Γ; dom(Θ') ⊢  uM]]$ is normalized and free from negative algorithmic variables, as shown above;
                 \item $[[dom(Θ) ∩ uv(uM) ⊆ uv(uN)]]$
                     since 
                     $[[dom(Θ, â⁺*[Γ]) ∩ uv(uM) ⊆ uv([â⁺*/pas]uN)]]$
@@ -661,7 +661,7 @@ the metric of the inference tree.
             \begin{enumerate}
                 \item $[[Γ ⊢ Θ]]$, 
                 \item $[[Γ ⊢ iM]]$,
-                \item $[[Γ; dom(Θ) ⊢ uN]]$ (free from negative metavariables, that is $[[α̂⁻]] \notin [[uv uN]]$), and
+                \item $[[Γ; dom(Θ) ⊢ uN]]$ (free from negative algorithmic variables, that is $[[α̂⁻]] \notin [[uv uN]]$), and
                 \item $[[Θ ⊢ uσ : uv(uN)]]$,
             \end{enumerate}
             then there exist $[[uM']]$, $[[Θ']]$, and $[[SC]]$ such that
@@ -887,7 +887,7 @@ the metric of the inference tree.
                             $[[ Θ ⊢ uσ0 : uv uM']]$,
                             $[[ Θ ⊢ uσ0 : SC1]]$,
                             $[[Γ ⊢ [uσ0]uM' ≈ ↑iQ]]$.
-                            Since $uM'$ is normalized and free of negative metavariables,
+                            Since $uM'$ is normalized and free of negative algorithmic variables,
                             the latter equivalence means
                             $[[uM' = ↑uQ0]]$ for some $[[uQ0]]$, and $[[Γ ⊢ [uσ0]uQ0 ≈ iQ]]$.
                     \end{enumerate}
@@ -946,7 +946,7 @@ the metric of the inference tree.
                             that 
                             \begin{enumerate}
                                 \item $[[Γ; dom(Θ) ⊢  uM']]$ is normalized and 
-                                    free of negative metavariables, 
+                                    free of negative algorithmic variables, 
                                 \item $[[Θ|uv(uM') ⊢ SC]]$, which means $[[dom(SC) ⊆ uv(uM')]]$,
                                 \item \label{point:typing-completeness:AppLet:ih-sound} 
                                     for any $[[Θ ⊢ uσ : uv uM' ]]$ such that $[[ Θ ⊢ uσ : SC ]]$, 
@@ -967,7 +967,7 @@ the metric of the inference tree.
                                     in particular, $[[Γ ⊢ [uσ1]uM' ≈ ↑iQ]]$.
                                     Since $[[uM']]$ is
                                     normalized and free of 
-                                    negative metavariables, it means that 
+                                    negative algorithmic variables, it means that 
                                     $[[uM' = ↑uP]]$ for some $[[uP]]$ 
                                     ($[[Γ; dom(Θ) ⊢  uP]]$)
                                     that is $[[Γ ⊢ [uσ1]uP ≈ iQ]]$.
@@ -996,7 +996,7 @@ the metric of the inference tree.
                     which is rewritten as $[[Γ ⊢ [uσ]uP ≈ iQ]]$.
                     And since $[[Γ ⊢ [uσ1]uP ≈ iQ]]$, 
                     we have $[[Γ ⊢ [uσ]uP ≈ [uσ1]uP]]$,
-                    which implies $[[Θ ⊢ uσ ≈ uσ1 : Ξ]]$ by \cref{lemma:subst-equiv-metavar}.
+                    which implies $[[Θ ⊢ uσ ≈ uσ1 : Ξ]]$ by \cref{lemma:subst-equiv-algovar}.
 
                 \item Let us show $[[Γ; Φ, x:[uσ0]uP ⊨ c' : nf(iN)]]$.
                     By the soundness of singularity 
@@ -1015,15 +1015,15 @@ the metric of the inference tree.
             \end{enumerate}
 
         \item \ruleref{\ottdruleDTForallAppLabel}\\
-            Since $[[uN]]$ cannot be a metavariable,  
+            Since $[[uN]]$ cannot be a algorithmic variable,  
             if $[[ [uσ]uN ]]$ starts with $[[∀]]$,
             so does $[[uN]]$. This way,
             $[[uN = ∀pas.uN1]]$.
             Then by assumption:
             \begin{enumerate}
                 \item $[[Γ ⊢ Θ]]$
-                \item $[[Γ; dom(Θ) ⊢  ∀pas.uN1]]$ is free from negative metavariables, 
-                    and then $[[Γ, pas; dom(Θ) ⊢  uN1]]$ is free from negative metavariables too;
+                \item $[[Γ; dom(Θ) ⊢  ∀pas.uN1]]$ is free from negative algorithmic variables, 
+                    and then $[[Γ, pas; dom(Θ) ⊢  uN1]]$ is free from negative algorithmic variables too;
                 \item $[[Θ ⊢ uσ : uv uN1]]$;
                 \item $[[Γ ⊢ iM]]$;
                 \item $[[Γ; Φ ⊢ [uσ]∀pas.uN1 ● args ⇒> iM]]$, 
@@ -1037,7 +1037,7 @@ the metric of the inference tree.
                             \label{point:typing-completeness-forall-app-inversion-2}
                             Notice that $[[σ]]$ and $[[uσ]]$ commute because 
                             the codomain of $[[σ]]$ does not contain
-                            metavariables (and thus, does not intersect with 
+                            algorithmic variables (and thus, does not intersect with 
                             the domain of $[[uσ]]$), and the codomain of $[[uσ]]$ is 
                             $[[Γ]]$ and does not intersect with $[[pas]]$---the domain of $[[σ]]$.
 
@@ -1129,14 +1129,14 @@ the metric of the inference tree.
             \end{enumerate}
            
         \item \ruleref{\ottdruleDTArrowAppLabel}\\
-            Since $[[uN]]$ cannot be a metavariable,  
+            Since $[[uN]]$ cannot be a algorithmic variable,  
             if the shape of $[[ [uσ]uN ]]$ is an arrow, 
             so is the shape of $[[uN]]$. This way, 
             $[[uN = uQ → uN1]]$.
             Then by assumption:
             \begin{enumerate}
                 \item $[[Γ ⊢ Θ]]$;
-                \item $[[Γ; dom(Θ) ⊢  uQ → uN1]]$ is free from negative metavariables;
+                \item $[[Γ; dom(Θ) ⊢  uQ → uN1]]$ is free from negative algorithmic variables;
                 \item $[[Θ ⊢ uσ : uv uQ ∪ uv uN1]]$;
                 \item $[[Γ ⊢ iM]]$;
                 \item $[[Γ; Φ ⊢ [uσ](uQ → uN1) ● v, args ⇒> iM]]$, 
@@ -1157,7 +1157,7 @@ the metric of the inference tree.
                         \item $[[Γ; Φ ⊢ [uσ]uN1 ● args ⇒> iM]]$. 
                             \label{point:completeness-arrow-app-ih}
                             Notice that the induction hypothesis is applicable to this case:
-                            $[[Γ ; dom(Θ) ⊢  uN1]]$ is free from negative metavariables because
+                            $[[Γ ; dom(Θ) ⊢  uN1]]$ is free from negative algorithmic variables because
                             so is $[[uQ → uN1]]$. This way, there exist 
                             $[[uM']]$, $[[Θ']]$, and $[[SC2]]$ such that 
                             \begin{enumerate}

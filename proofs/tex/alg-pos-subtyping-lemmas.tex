@@ -137,7 +137,7 @@
             By \cref{lemma:quant-rule-decomposition} applied twice, 
             $[[ Γ ⊢ ∃nbs.[uσ]α̂⁺ ≥ ∃ncs.iQ0 ]]$ implies
             $[[ Γ,ncs  ⊢ [iNs/nbs][uσ]α̂⁺ ≥ iQ0 ]]$ for some $[[iN]]$, 
-            and since $[[ {nbs} ∩ fv([uσ]α̂⁺) ⊆ {nbs} ∩ {Θ(α̂⁺)} ⊆ {nbs} ∩ Γ = ∅ ]]$,
+            and since $[[ {nbs} ∩ fv([uσ]α̂⁺) ⊆ {nbs} ∩ {Θ(α̂⁺)} ⊆ {nbs} ∩ Γ]] = [[ ∅ ]]$,
             $[[ [iNs/nbs][uσ]α̂⁺ = [uσ]α̂⁺ ]]$, that is $[[ Γ,ncs ⊢ [uσ]α̂⁺ ≥ iQ0]]$.
 
             When algorithm tires to infer the subtyping 
@@ -281,13 +281,13 @@
             To do that, we notice that $[[ [uσ0]uP0 ]] = [[ [uσ][σ][nas/â⁻*]uP0 ]]$:
             let us consider an arbitrary variable appearing freely in $[[uP0]]$:
             \begin{enumerate}
-                \item if this variable is a metavariable $[[αî⁻]] \in [[â⁻*]]$, then
+                \item if this variable is a algorithmic variable $[[αî⁻]] \in [[â⁻*]]$, then
                 $[[ [uσ0]αî⁻ ]] = [[ [σ]αi⁻ ]]$ and 
                 $[[ [uσ][σ][nas/â⁻*]αî⁻ ]] = [[ [uσ][σ]αi⁻ ]] = [[ [σ]αi⁻ ]]$,
-                \item if this variable is a metavariable $[[β̂±]] \in [[ uv(uP0) \ {â⁻*} ]] = [[uv(uP')]]$, then
+                \item if this variable is a algorithmic variable $[[β̂±]] \in [[ uv(uP0) \ {â⁻*} ]] = [[uv(uP')]]$, then
                 $[[ [uσ0]β̂± ]] = [[ [uσ]β̂± ]]$ and $[[ [uσ][σ][nas/â⁻*]β̂± ]] = [[ [uσ][σ]β̂± ]] = [[ [uσ]β̂± ]]$,
                 \item if this variable is a regular variable from $[[fv(uP0)]]$, both substitutions do not change it:
-                $[[ uσ0 ]]$, $[[ uσ ]]$ and $[[ nas / â⁻* ]]$ act on metavariables, 
+                $[[ uσ0 ]]$, $[[ uσ ]]$ and $[[ nas / â⁻* ]]$ act on algorithmic variables, 
                 and $[[σ]]$ is defined on $[[nas]]$, however, $[[{nas} ∩ fv(uP0) = ∅]]$.
             \end{enumerate}
             This way, $[[ [uσ0]uP0 ]] = [[ [uσ][σ][nas/â⁻*]uP0 ]] = [[ [uσ][σ]uP' ]]$,

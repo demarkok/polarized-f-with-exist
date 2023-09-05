@@ -10,7 +10,7 @@ defns
   E1 :: 'E1' ::=
 
   defn iN ≈ iM :: :: Neq :: ''
-  {{ com Negative multi-quantified type equivalence }}
+  {{ com Negative type equivalence }}
   {{ tex [[iN]] \eqEOne [[iM]] }} by
 
   ------- :: NVar
@@ -30,7 +30,7 @@ defns
 
 
   defn iP ≈ iQ :: :: Peq :: ''
-  {{ com Positive multi-quantified type equivalence }}
+  {{ com Positive type equivalence }}
   {{ tex [[iP]] \eqEOne [[iQ]] }} by
 
   -------- :: PVar

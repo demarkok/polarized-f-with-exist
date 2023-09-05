@@ -179,8 +179,7 @@
 
 \newpage
 
-\section{Declarative System}
-First, we present the top-level system, which is easy to understand.
+\section{Declarative Type Systems}
 
 \subsection{Grammar}
 We assume that there is an infinite set of positive and 
@@ -202,10 +201,7 @@ in a type $[[iP]]$ and $[[iN]]$, respectively.
 \ottgrammartabular{
   \ottiP\ottinterrule
   \ottiN\ottinterrule
-  \ottv\ottinterrule
-  \ottc\ottinterrule
 }
-
 
 \subsection{Equalities}
 For simplicity, assume alpha-equivalent terms equal. 
@@ -216,7 +212,7 @@ as well as $[[∃nas.∃nbs.iP]]$ with $[[∃nas,nbs.iP]]$,
 and lift these equations transitively and congruently 
 to the whole system.
 
-\subsection{Contexts}
+\subsection{Contexts and Well-formedness}
 
 \begin{definition}[Declarative Type Context]
   \hfill \\
@@ -224,6 +220,13 @@ to the whole system.
   type variables. The concatenation $[[Γ1, Γ2]]$ means the 
   union of two contexts $[[Γ1 ∪ Γ2]]$.
 \end{definition}
+
+$[[Γ ⊢ iP]]$ and $[[Γ ⊢ iN]]$ denote that the type is well-formed in the context $[[Γ]]$,
+which, in fact, means that each free type variable of the type is contained in $[[Γ]]$
+(it will be shown later in \cref{lemma:wf-soundness,lemma:wf-ctxt-equiv}).
+
+\hfill\\
+\ottdefnsWFT
 
 
 \subsection{Substitutions}
@@ -316,19 +319,13 @@ the corresponding types.
 \end{definition}
 
 
-\subsection{Declarative Typing}
-\ottdefnsDT
-
 \subsection{Declarative Subtyping}
 \ottdefnsDOne
 
 \subsection{Declarative Equivalence}
 \ottdefnsEOne
 
-\subsection{Well-Formedness}
-\ottdefnsWFT
-
-\section{Algorithm}
+\section{Algorithmic Type System}
 
 \subsection{Grammar}
 
@@ -351,20 +348,28 @@ can potentially contain algorithmic variables.
 
 \subsection{Variable Algorithmization}
 
-In several places of our algorithm, 
+In several places of our algorithm, in particular, during anti-unification,
 we turn a declarative type into the algorithmic one
 via replacing certain type variables with fresh algorithmic variables.
 
 \begin{definition}[Variable Algorithmization]
   Suppose that $[[nas]]$ is a list of negative type variables
   and $[[nuas]]$ is a list of negative algorithmic variables of the same length. 
-  Then $[[ nuas/nas ]]$ is a substitution turning each $[[αi⁻]]$ from $[[nas]]$ into 
-  $[[αî⁻]]$ from $[[nuas]]$.
-  Positive algorithmization $[[ puas/pas ]]$
-  is defined symmetrically.
+  Then $[[ nuas/nas ]]$ is a substitution-like procedure turning each $[[αi⁻ ∊ {nas}]]$ 
+  into $[[αî⁻ ∊ {nuas}]]$.
 \end{definition}
 
-\subsection{Contexts}
+Conversely, we can turn algorithmic type variables
+into declarative type variables via \emph{dealgorithmization}.
+
+\begin{definition}[Variable Dealgorithmization]
+  Suppose that $[[nuas]]$ is a list of negative algorithmic variables
+  and $[[nas]]$ is a list of negative type variables of the same length. 
+  Then $[[ nas/nuas ]]$ is a substitution-like procedure turning each
+  $[[αî⁻ ∊ {nuas}]]$ into $[[αi⁻ ∊ {nas}]]$.
+\end{definition}
+
+\subsection{Contexts and Well-formedness}
 
 \begin{definition}[Algorithmic Type Context]
   \hfill \\
@@ -378,6 +383,9 @@ that the algorithmic type is well-formed in the contexts
 $[[Γ]]$ and $[[Ξ]]$, which means that each algorithmic variable
 of the type is contained in $[[Ξ]]$, and each free declarative type variable
 of the type is contained in $[[Γ]]$.
+
+\hfill\\
+\ottdefnsWFAT
 
 Algorithmic Type Context are used in the unification algorithm.
 In the subtyping algorithm, 
@@ -402,8 +410,6 @@ This association is represented by \emph{algorithmic subtyping context} $[[Θ]]$
   If $[[ α̂±[Γ] ]] \in [[Θ]]$, we denote $[[Γ]]$ as $[[Θ(α̂±)]]$.
 \end{definition}
 
-\subsection{Algorithmic Type Well-formedness}
-\ottdefnsWFAT
 
 \subsection{Subsitutions}
 
@@ -468,12 +474,6 @@ We also define normalization of a substitution pointwise:
   For a substitution $[[σ]]$, we define $[[nf(σ)]]$
   as a substitution that maps $[[α±]]$ into $[[nf([σ]α±)]]$.
 \end{definition}
-
-\subsection{Singularity}
-\ottdefnsSING
-
-% \subsection{Algorithmic Equivalence}
-% \ottdefnsEOneA
 
 \subsection{Unification}
 \ottdefnsU
@@ -600,7 +600,6 @@ is a unification constraint entry.
   \end{itemize}
 \end{definition}
 
-
 Unification constraints can be considered 
 as a special case of subtyping constraints,
 and the merge of unification constraints
@@ -632,10 +631,31 @@ unification constraints is a unification constraint.
 \subsection{Antiunification}
 \ottdefnsAU
 
-\subsection{Typing}
+
+\section{Declarative Typing}
+ 
+\subsection{Grammar}
+
+\bigskip
+\ottgrammartabular{
+  \ottv\ottinterrule
+  \ottc\ottinterrule
+}
+
+\subsection{Declarative Type Inference}
+\ottdefnsDT
+
+
+\section{Algorithmic Typing}
+
+\subsection{Algorithmic Type Inference}
 \ottdefnsAT
 
-\section{Properties of the Declarative System}
+\subsection{Singularity}
+\ottdefnsSING
+
+
+\section{Properties of the Declarative Type System}
 
 \subsection{Type Well-formedness}
 \input{../_build/_gen/tex/wf-lemmas.tex}
@@ -647,9 +667,6 @@ unification constraints is a unification constraint.
 \subsection{Declarative Subtyping}
 \input{../_build/_gen/tex/decl-subtyping-lemmas.tex}
 
-\subsection{Overview}
-\input{../_build/_gen/tex/lemmas-overview.tex}
-
 \subsection{Variable Ordering}
 \input{../_build/_gen/tex/ord-lemmas.tex}
 
@@ -659,10 +676,20 @@ unification constraints is a unification constraint.
 \subsection{Equivalence}
 \input{../_build/_gen/tex/equiv-lemmas.tex}
 
-\section{Properties of the Algorithmic System}
+
+\section{Properties of the Algorithmic Type System}
 
 \subsection{Algorithmic Type Well-formedness}
 \input{../_build/_gen/tex/wf-algo-lemmas.tex}
+
+\subsection{Substitution}
+\input{../_build/_gen/tex/subst-algo-lemmas.tex}
+
+\subsection{Normalization}
+\input{../_build/_gen/tex/norm-alg-lemmas.tex}
+
+\subsection{Equivalence}
+\input{../_build/_gen/tex/equiv-alg-lemmas.tex}
 
 \subsection{Unification Constraint Merge}
 \input{../_build/_gen/tex/unif-constraint-merge-lemmas.tex}
@@ -691,13 +718,21 @@ unification constraints is a unification constraint.
 \subsection{Negative Subtyping}
 \input{../_build/_gen/tex/alg-neg-subtyping-lemmas.tex}
 
+
+
+
+\section{Properties of the Declarative Typing}
+\input{../_build/_gen/tex/decl-typing-lemmas.tex}
+
+
+
+
+\section{Properties of the Algorithmic Typing}
+
 \subsection{Singularity}
 \input{../_build/_gen/tex/singularity-lemmas.tex}
 
-\subsection{Declarative Typing}
-\input{../_build/_gen/tex/decl-typing-lemmas.tex}
-
-\subsection{Algorithmic Typing}
+\subsection{Correctness of the Typing Algorithm}
 \input{../_build/_gen/tex/alg-typing-lemmas.tex}
 
 \end{document}

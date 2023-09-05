@@ -10,15 +10,15 @@
 
 \begin{lemma}[Soundness of variable ordering]
   \label{lemma:ord-soundness}
-  Variable ordering extracts precisely used free variables.
+  Variable ordering extracts used free variables.
   \begin{itemize}
-    \item[$-$] $[[ {ord varset in uN} ]] \equiv [[varset ∩ fv uN]]$ (as sets)
-    \item[$+$] $[[ {ord varset in uP} ]] \equiv [[varset ∩ fv uP]]$ (as sets)
+    \item[$-$] $[[ {ord varset in iN} ]] = [[varset ∩ fv iN]]$ (as sets)
+    \item[$+$] $[[ {ord varset in iP} ]] = [[varset ∩ fv iP]]$ (as sets)
   \end{itemize}
 \end{lemma}
 \begin{proof}
   Straightforward mutual induction on 
-  $[[ ord varset in uN = ordVars ]]$ and $[[ ord varset in uP = ordVars ]]$
+  $[[ ord varset in iN = ordVars ]]$ and $[[ ord varset in iP = ordVars ]]$
 \end{proof}
 
 
@@ -262,8 +262,8 @@
   \label{lemma:ord-completeness}
   Variable ordering is invariant under equivalence. For arbitrary $[[varset]]$,
    \begin{itemize}
-  \item[$-$] If $[[iN ≈ iM]]$ then $[[ord varset in uN]] = [[ord varset in uM]]$ (as lists)
-  \item[$+$] If $[[iP ≈ iQ]]$ then $[[ord varset in uP]] = [[ord varset in uQ]]$ (as lists)
+  \item[$-$] If $[[iN ≈ iM]]$ then $[[ord varset in iN]] = [[ord varset in iM]]$ (as lists)
+  \item[$+$] If $[[iP ≈ iQ]]$ then $[[ord varset in iP]] = [[ord varset in iQ]]$ (as lists)
   \end{itemize}
 \end{lemma}
 \begin{proof}

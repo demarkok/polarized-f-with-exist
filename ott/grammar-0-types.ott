@@ -164,7 +164,7 @@ pnds {{ tex \vv{ \delta^{\pm} } }}
    | </ pnasi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
 
-iP {{ tex P }}, iQ {{ tex Q }}, iR {{ tex R }} :: 'iP_' ::= {{ com multi-quantified positive types }}
+iP {{ tex P }}, iQ {{ tex Q }}, iR {{ tex R }} :: 'iP_' ::= {{ com positive declarative types }}
    | pa         ::   :: Var
    | ↓ iN       ::   :: Shift
    | ∃ nas . iP ::   :: Exists 
@@ -174,7 +174,7 @@ iP {{ tex P }}, iQ {{ tex Q }}, iR {{ tex R }} :: 'iP_' ::= {{ com multi-quantif
    | [ mu ] iP  :: M :: AppMoving 
    | ( iP )     :: S :: Paren
 
-iN {{ tex N }}, iM {{ tex M }}, iK {{ tex K }} :: 'iN_' ::= {{ com multi-quantified negative types }}
+iN {{ tex N }}, iM {{ tex M }}, iK {{ tex K }} :: 'iN_' ::= {{ com negative declarative types }}
    | na          ::   :: Var
    | ↑ iP        ::   :: Shift
    | iP → iN     ::   :: Fun
@@ -213,11 +213,12 @@ G {{ tex \Gamma }}, Δ {{ tex \Delta }}, Γ {{ tex \Gamma }} :: DT_Ctxt ::= {{ c
                                          {{ tex [[pas]] }}
     | { nas }            ::   :: NList   {{ com list of variables }}
                                          {{ tex [[nas]] }}         
-    | pnas               ::   :: PNList  {{ com list of variables }}
+    | { pnas }           ::   :: PNList  {{ com list of variables }}
     | </ Gi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( G )              :: S :: paren
     | G , pas            :: M :: appendP {{ com append a list of variables }}
     | G , nas            :: M :: appendN {{ com append a list of variables }}
+    | G , pnas           :: M :: appendPN {{ com append a list of variables }}
     | Θ ( pua )          :: M :: pfromUC 
     | Θ ( nua )          :: M :: nfromUC 
     | Γ1 ∪ Γ2            ::   :: union
@@ -279,7 +280,7 @@ varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
     | { ordVars }        ::   :: OrdVars   {{ com ordered list of variables }}
                                            {{ tex [[ordVars]] }}
     | [ mu ] varset      :: M :: moving    {{ com apply moving to varset }}
-    | Ξ                  ::   :: AU_Ctxt   {{ com anti-unification context }}
+    | Ξ                  ::   :: AU_Ctxt   {{ com algorithmic type context }}
     | Γ                  ::   :: DT_Ctxt   {{ com declarative type context }}
 
 grammar
@@ -344,7 +345,7 @@ nubs {{ tex \vv{ \widehat{\beta}^{-} } }}
 
 
 
-uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive algorithmic type (potentially with metavariables) }}
+uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive algorithmic type (potentially with algorithmic variables) }}
                                                             {{ tex \ngbox{[[uP]]} }} 
    | pua           ::   :: UnifVar 
    | pa            ::   :: Var 
@@ -357,7 +358,7 @@ uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive alg
    | [ umu ] iP    :: M :: AppAUNSub
    | ( uP )        :: S :: Paren
 
-uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative algorithmic type (potentially with metavariables) }}
+uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative algorithmic type (potentially with algorithmic variables) }}
                                                              {{ tex \ngbox{[[uN]]} }}
    | nua            ::   :: UnifVar
    | na             ::   :: Var

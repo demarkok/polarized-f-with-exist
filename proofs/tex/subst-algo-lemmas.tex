@@ -1,0 +1,97 @@
+\begin{lemma}[Algorithmic Substitution Strengthening]
+  \label{lemma:subst-restr-uv}
+  Restricting the substitution to the algorithmic 
+  variables of the
+  substitution subject does not affect the result.
+  Suppose that $[[uσ]]$ is an algorithmic substitution,
+  $[[uP]]$ and $[[uN]]$ are algorithmic types. Then
+ \begin{itemize}
+    \item[$+$] $[[ [uσ]uP ]] = [[ [uσ|uv uP]uP ]]$,
+    \item[$-$] $[[ [uσ]uN ]] = [[ [uσ|uv uN]uN ]]$
+  \end{itemize}
+\end{lemma}
+\begin{proof}
+  The proof is analogous to the proof of \cref{lemma:subst-restr-fv}.
+\end{proof}
+
+\begin{lemma}[Substitutions equal on the algorithmic variables]
+  \label{lemma:subst-eq-algovar}
+  Suppose that $[[uσ1]]$ and $[[uσ2]]$ are 
+  normalized substitutions of signature $[[Θ ⊢ uσi : Ξ]]$.
+  Then 
+  \begin{enumerate}
+    \item [$+$] for a normalized type $[[Γ; Ξ ⊢ uP]]$, if $[[ [uσ1]uP = [uσ2]uP ]]$ then
+      $[[uσ1|(uv uP)  = uσ2|(uv uP)]]$;
+    \item [$-$] for a normalized type $[[Γ; Ξ ⊢ uN]]$, if $[[ [uσ1]uN = [uσ2]uN ]]$ then
+      $[[uσ1|(uv uN)  = uσ2|(uv uN)]]$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  The proof is a simple structural induction on 
+  $[[Γ; Ξ ⊢ uP]]$ and mutually, on $[[Γ; Ξ ⊢ uN]]$.
+  Let us consider the shape of $[[uN]]$ (the cases of $[[uP]]$ are symmetric).
+  \begin{caseof}
+    \item $[[Γ; Ξ ⊢ α̂⁻]]$. Then $[[ [uσ1]α̂⁻ = [uσ2]α̂⁻ ]]$
+      implies $[[uσ1|(uv α̂⁻) = uσ2|(uv α̂⁻)]]$ immediately.
+    \item $[[Γ; Ξ ⊢ α⁻]]$. Then $[[uv α̂⁻ = ∅]]$, and
+      $[[uσ1|(uv α̂⁻)  = uσ2|(uv α̂⁻)]]$ holds vacuously.
+    \item $[[Γ; Ξ ⊢ ∀pas.uN]]$. Then we are proving that
+      $[[ [uσ1]∀pas.uN = [uσ2]∀pas.uN ]]$ implies $[[uσ1|(uv ∀pas.uN) = uσ2|(uv ∀pas.uN)]]$.
+      By definition of substitution and \ruleref{\ottdruleEOneForallLabel}, 
+      $[[ [uσ1]uN = [uσ2]uN ]]$ implies $[[uσ1|uv uN = uσ2|uv uN]]$.
+      Since $[[∀pas.uN]]$ is normalized, so is $[[Γ, pas; Ξ ⊢ uN]]$, 
+      hence, the induction hypothesis is applicable and implies $[[uσ1|uv uN = uσ2|uv uN]]$,
+      as required.
+    \item $[[Γ; Ξ ⊢ uP → uN]]$. Then we are proving that
+      $[[ [uσ1](uP → uN) = [uσ2](uP → uN) ]]$ implies $[[uσ1|(uv uP → uN) = uσ2|(uv uP → uN)]]$.
+      By definition of substitution and congruence of equality, 
+      $[[ [uσ1](uP → uN) = [uσ2](uP → uN) ]]$
+      means $[[ [uσ1]uP = [uσ2]uP ]]$ and $[[ [uσ1]uN = [uσ2]uN ]]$.
+      Notice that $[[uP]]$ and $[[uN]]$ are normalized since $[[uP → uN]]$ is normalized, 
+      and well-formed in the same contexts.
+      This way, by the induction hypothesis, 
+      $[[uσ1|(uv uP) = uσ2|(uv uP)]]$ and $[[uσ1|(uv uN) = uσ2|(uv uN)]]$,
+      which since $[[uv (uP → uN) = uv uP ∪ uv uN]]$ implies
+      $[[uσ1|(uv uP → uN) = uσ2|(uv uP → uN)]]$.
+    \item $[[Γ; Ξ ⊢ ↑uP]]$. The proof is similar to the previous case:
+      we apply congruence of substitution, equality, and normalization,
+      then the induction hypothesis, and then the fact that $[[uv (↑uP) = uv uP]]$.
+  \end{caseof}
+\end{proof}
+
+
+\begin{corollary}[Substitutions equivalent on the algorithmic variables]
+  \label{lemma:subst-equiv-algovar}
+  Suppose that $[[uσ1]]$ and $[[uσ2]]$ are substitutions 
+  of signature $[[Θ ⊢ uσi : Ξ]]$.
+  Then 
+  \begin{enumerate}
+    \item [$+$] for a type $[[Γ; Ξ ⊢ uP]]$, if $[[Θ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ then
+      $[[Θ ⊢ uσ1 ≈ uσ2 : uv uP]]$;
+    \item [$-$] for a type $[[Γ; Ξ ⊢ uN]]$, if $[[Θ ⊢ [uσ1]uN ≈ [uσ2]uN]]$ then
+      $[[Θ ⊢ uσ1 ≈ uσ2 : uv uN]]$.
+  \end{enumerate}
+\end{corollary}
+\begin{proof}
+  First, let us normalize the types and the substitutions, and show that
+  the given equivalences and well-formedness properties are preserved. 
+  $[[Γ; Ξ ⊢ uP]]$ implies $[[Γ; Ξ ⊢ nf(uP)]]$ by \cref{corollary:wf-nf-algo}.
+  $[[Θ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ implies $[[ nf([uσ1]uP) = nf([uσ2]uP)]]$ by 
+  \cref{lemma:subt-equiv-algorithmization}.
+  Then $[[ nf([uσ1]uP) = nf([uσ2]uP)]]$ implies 
+  $[[ [nf(uσ1)]nf(uP) = [nf(uσ2)]nf(uP)]]$ by \cref{lemma:norm-subst-distr}.
+  Notice that by \cref{corollary:norm-subst-sig-algo}
+  $[[Θ ⊢ uσi : Ξ]]$ implies $[[Θ ⊢ nf(uσi) : Ξ]]$.
+
+  This way, by \cref{lemma:subst-eq-algovar}, 
+  $[[Θ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ implies 
+  $[[nf(uσ1)|(uv nf(uP)) = nf(uσ2)|(uv nf(uP))]]$.
+  Then by \cref{lemma:uv-nf}, 
+  $[[nf(uσ1)|(uv uP) = nf(uσ2)|(uv uP)]]$,
+  and by ${{corollary:subst-subt-equiv-algorithmization}}$,
+  $[[Θ ⊢ uσ1 ≈ uσ2 : uv uP]]$.
+
+  Symmetrically, 
+  $[[Θ ⊢ [uσ1]uN ≈ [uσ2]uN]]$ implies 
+  $[[Θ ⊢ uσ1 ≈ uσ2 : uv uN]]$.
+\end{proof}
