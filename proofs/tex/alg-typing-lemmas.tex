@@ -1,3 +1,22 @@
+\begin{lemma}[Determinicity of typing algorithm]
+    \label{lemma:typing-determinicity}
+    Suppose that $[[Γ ⊢ Φ]]$ and $[[Γ ⊢ Θ]]$. Then 
+    \begin{itemize}
+        \item [$+$] If $[[Γ; Φ ⊨ v : iP]]$ and $[[Γ; Φ ⊨ v : iP']]$ then $[[iP = iP']]$.
+        \item [$-$] If $[[Γ; Φ ⊨ c : iN]]$ and $[[Γ; Φ ⊨ c : iN']]$ then $[[iN = iN']]$.
+        \item If $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$ and 
+            $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM' ⫤ Θ'; SC']]$ then 
+            $[[uM = uM']]$, $[[Θ]] = [[Θ']]$, and $[[SC]] =[[SC']]$.  
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    We show it by structural induction on the inference tree.
+    Notice that the last rule used to infer the judgement is uniquely
+    determined by the input, and that each premise
+    of each inference rule is deterministic by the corresponding 
+    observation.
+\end{proof}
+
 Let us extend the declarative typing metric (\cref{def:decl-typing-metric}) 
 to the algorithmic typing.
 
@@ -229,7 +248,7 @@ the metric of the inference tree.
                     for any $[[ Θ' ⊢ uσ : SC1 ]]$, we have $[[ Γ ; Φ ⊢ [uσ]uM ● args ⇒> [uσ]↑uQ ]]$.
             \end{enumerate}
 
-            By soundness of negative subtyping (\cref{lemma:neg-subtyping-soundness})
+            By soundness of negative subtyping (\cref{lemma:neg-subt-soundness})
             applied to $[[Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2]]$, we have
             $[[Θ ⊢ SC2 : uv(↑uQ)]]$, and thus, $[[uv(↑uQ) = dom(SC2)]]$.
 
@@ -245,7 +264,7 @@ the metric of the inference tree.
 
             Then as noted above (\ref{typing-soundness:SC1-initiality}),
             $[[ Γ ; Φ ⊢ iM ● args ⇒> [uσ]↑uQ ]]$
-            And again, by soundness of negative subtyping (\cref{lemma:neg-subtyping-soundness})
+            And again, by soundness of negative subtyping (\cref{lemma:neg-subt-soundness})
             applied to $[[Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2]]$,
             we have
             $[[Γ ⊢ [uσ]↑uQ ≤ ↑iP]]$.
@@ -714,7 +733,7 @@ the metric of the inference tree.
                     Since $[[iQ]]$ is ground, 
                     we have $[[Γ ; · ⊢ uQ]]$ and $[[Γ ⊢ [·]uQ ≥ nf(iP)]]$.
                     Then by the completeness of subtyping
-                    (\cref{lemma:subtyping-completeness}), we have 
+                    (\cref{lemma:pos-subt-completeness}), we have 
                     $[[Γ ; · ⊨ uQ ≥ nf(iP) ⫤ SC]]$, where $[[· ⊢ SC]]$ 
                     (implying $[[SC]] = [[·]]$).
                     This way, $[[Γ ; · ⊨ uQ ≥ nf(iP) ⫤ ·]]$.
@@ -1041,7 +1060,8 @@ the metric of the inference tree.
                             the domain of $[[uσ]]$), and the codomain of $[[uσ]]$ is 
                             $[[Γ]]$ and does not intersect with $[[pas]]$---the domain of $[[σ]]$.
 
-                            Let us construct $[[uN0]]$ = $[[ [â⁺*/pas]uN1 ]]$
+                            Let us take fresh $[[â⁺*]]$ and 
+                            construct $[[uN0]]$ = $[[ [â⁺*/pas]uN1 ]]$
                             and $[[Θ, â⁺*[Γ] ⊢ uσ0 : uv(uN0)]]$ defined as
                             $$
                             \begin{cases}

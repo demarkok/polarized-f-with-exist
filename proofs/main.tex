@@ -346,6 +346,17 @@ can potentially contain algorithmic variables.
 }
 \end{definition}
 
+\subsection{Fresh Variable Selection}
+\label{sec:fresh-selection}
+Both the subtyping and the type inference algorithm
+rely on the ability to select fresh, unused variables.
+In the inference rules, it is indicated as 
+$[[{varset} are fresh]]$. 
+We assume that the selection subroutine always succeeds and is 
+deterministic. In other words, whenever it is called in 
+an algorithmic inference rule, it returns the same result, 
+uniquely determined by the input of this rule.
+
 \subsection{Variable Algorithmization}
 
 In several places of our algorithm, in particular, during anti-unification,
@@ -368,6 +379,7 @@ into declarative type variables via \emph{dealgorithmization}.
   Then $[[ nas/nuas ]]$ is a substitution-like procedure turning each
   $[[αî⁻ ∊ {nuas}]]$ into $[[αi⁻ ∊ {nas}]]$.
 \end{definition}
+
 
 \subsection{Contexts and Well-formedness}
 
@@ -559,6 +571,7 @@ entries. They are merged using the same algorithm
 Notice that the merge of two matching unification constraint entries
 is a unification constraint entry.
 \begin{lemma}[Merge of Matching Unification Constraint Entries is well-defined]
+  \label{lemma:merge-matching-entries-welldef}
   Suppose that $[[Γ ⊢ ucE1]]$ and $[[Γ ⊢ ucE2]]$
   are unification constraint entries. 
   Then the merge of $[[ucE1]]$ and $[[ucE2]]$ 
@@ -619,7 +632,7 @@ unification constraints is a unification constraint.
   $[[UC]]$ consists of unmatched entries of $[[UC1]]$ and $[[UC2]]$,
   which are \emph{unification} constraint entries by assumption,
   and merge of matching entries, which also are  
-  \emph{unification} constraint entries by \cref{lemma:merge-matching-entries-is-well-defined}.
+  \emph{unification} constraint entries by \cref{lemma:merge-matching-entries-welldef}.
 \end{proof}
 
 \subsection{Constraint Satisfaction}
@@ -698,7 +711,7 @@ unification constraints is a unification constraint.
 \input{../_build/_gen/tex/unification-lemmas.tex}\
 
 \subsection{Anti-unification}
-\input{../_build/_gen/tex/anti-unification-lemmas.tex}
+\input{../_build/_gen/tex/au-lemmas.tex}
 
 \subsection{Upper Bounds}
 \input{../_build/_gen/tex/lub-lemmas.tex}

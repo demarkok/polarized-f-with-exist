@@ -24,8 +24,8 @@ defns
   Γ;Θ ⊨ uP → uN ≤ iQ → iM ⫤ SC 
 
   % *[Γ, pbs]
-  Γ, pbs; Θ, â⁺*[Γ, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ SC
-  ----------------------------------- :: Forall
+  {â⁺*} are fresh    Γ, pbs; Θ, â⁺*[Γ, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ SC
+  ----------------------------------------------------------------- :: Forall
   Γ;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ SC \ {â⁺*}
 
   defn Γ ; Θ ⊨ uP ≥ iQ ⫤ SC :: :: Psup :: ''
@@ -40,11 +40,11 @@ defns
   Γ;Θ ⊨ ↓uN ≥ ↓iM ⫤ lift UC 
 
   % *[Γ, nbs]
-  Γ, nbs; Θ,â⁻*[Γ, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ SC
-  ------------------------------------------ :: Exists
+  {â⁻*} are fresh   Γ, nbs; Θ,â⁻*[Γ, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ SC
+  ---------------------------------------------------------------- :: Exists
   Γ;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ SC \ {â⁻*}
 
     
-  â⁺[Δ] ∊ Θ   upgrade Γ ⊢ iP to Δ = iQ
+  upgrade Γ ⊢ iP to Θ(â⁺) = iQ
   -------------------------------------- :: PUVar
   Γ;Θ ⊨ â⁺ ≥ iP ⫤ (â⁺ :≥ iQ)

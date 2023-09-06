@@ -1,3 +1,23 @@
+\begin{observation}[Positive Subtyping is Deterministic]
+    \label{obs:pos-subt-deterministic}
+    For fixed $[[Γ]]$, $[[Θ]]$, $[[uP]]$, and $[[iQ]]$,
+    if $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$ and $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC']]$
+    then $[[SC]] = [[SC']]$.
+\end{observation}
+\begin{proof}
+    We prove it by induction on $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$.
+    First, it is easy to see that the rule applied to infer 
+    $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$ uniquely depends on the input, 
+    and those, it is the same rule that is inferring
+    $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC']]$.
+    Second, the premises of each rule are deterministic on the input: 
+    unification is deterministic by \cref{obs:unif-deterministic},
+    upgrade is deterministic by \cref{obs:upgrade-deterministic},
+    the choice of the fresh algorithmic variables is deterministic by
+    convention, as discussed in \cref{sec:fresh-selection},
+    positive subtyping by the induction hypothesis.
+\end{proof}
+
 \begin{lemma}[Soundness of the Positive Subtyping] \label{lemma:pos-subt-soundness}
     If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iQ]]$, $[[Γ ; dom(Θ) ⊢  uP]]$, and 
     $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$,

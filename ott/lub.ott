@@ -24,7 +24,7 @@ defns
 
   defn upgrade Γ ⊢ iP to Δ = iQ :: :: Up :: '' by
 
-  Γ = Δ, pnas   {pnbs} is fresh    {pncs} is fresh 
+  Γ = Δ, pnas   {pnbs} are fresh    {pncs} are fresh 
   Δ, pnbs, pncs ⊨ [pnbs/pnas]iP ∨ [pncs/pnas]iP = iQ
   --------------------------------------------------- :: Upgrade
   upgrade Γ ⊢ iP to Δ = iQ 

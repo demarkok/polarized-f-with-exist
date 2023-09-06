@@ -175,7 +175,7 @@
     $[[Θ ⊢ uσ' ≈ uσ : Ξ]]$.
 \end{lemma}
 \begin{proof}
-    Suppose that $(Θ  ⊢ SC) ⊢ uσ'$.
+    Suppose that $[[Θ ⊢ uσ' : SC]]$.
     It means that for every $[[scE]] \in [[SC]]$ restricting $[[α̂±]]$,
     $[[Θ(α̂±) ⊢ [uσ']α̂± : scE]]$ holds.
     $[[SC singular with uσ]]$ means $[[scE singular with [uσ]α̂± ]]$,
@@ -185,6 +185,30 @@
     Since the uniqueness holds for every variable from $[[dom(SC)]]$,
     $[[uσ]]$ is equivalent to $[[uσ']]$ on this set.
 \end{proof}
+
+\begin{observation}[Singularity is Deterministiic]
+    For a fixed $[[SC]]$ such that $[[Θ ⊢ SC : Ξ]]$,
+    if $[[SC singular with uσ]]$ and $[[SC singular with uσ']]$,
+    then $[[uσ = uσ']]$.
+\end{observation}
+\begin{proof}
+    By \label{lemma:singularity-soundness},
+    $[[Θ ⊢ uσ : Ξ]]$ and $[[Θ ⊢ uσ' : Ξ]]$.
+    It means that both $[[uσ]]$ and $[[uσ']]$
+    act as identity outside of $[[Ξ]]$.
+
+    Moreover, for any $[[α̂± ∊ Ξ]]$,
+    $[[Θ ⊢ SC : Ξ]]$ means that 
+    there is a unique $[[scE ∊ SC]]$ restricting $[[α̂±]]$.
+    Then $[[SC singular with uσ]]$ means 
+    that $[[scE singular with [uσ]α̂± ]]$.
+    By looking at the inference rules, it is easy to see that
+    $[[ [uσ]α̂± ]]$ is uniquely determined by $[[scE]]$, which, 
+    Similarly, $[[ [uσ']α̂± ]]$ is also uniquely determined by $[[scE]]$,  
+    in the same way, and hence, $[[ [uσ]α̂± = [uσ']α̂± ]]$.
+\end{proof}
+
+
 
 \begin{lemma}[Completeness of Singularity]
     \label{lemma:singularity-completeness}

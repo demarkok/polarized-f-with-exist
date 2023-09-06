@@ -1,3 +1,15 @@
+\begin{observation}[Ordering is deterministic]
+  \label{obs:ord-deterministic}
+  If $[[ord varset in iN = ordVars1]]$ and $[[ord varset in iN = ordVars2]]$ then $[[ordVars1 = ordVars2]]$.
+  If $[[ord varset in iP = ordVars1]]$ and $[[ord varset in iP = ordVars2]]$ then $[[ordVars1 = ordVars2]]$.
+  This way, we can use $[[ord varset in iN]]$ and as a function on $[[iN]]$,
+  and $[[ord varset in iP]]$ as a function on $[[iP]]$.
+\end{observation}
+\begin{proof}
+  By straightforward induction.
+\end{proof}
+
+
 \begin{definition} [Collision free bijection]
   We say that a bijection $\mu : A \leftrightarrow B$ between sets of
   variables is \textbf{collision free on sets} $P$ and $Q$ if and only if
@@ -269,20 +281,3 @@
 \begin{proof}
   Mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$.
 \end{proof}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

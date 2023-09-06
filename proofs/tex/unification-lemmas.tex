@@ -1,3 +1,25 @@
+\begin{observation}[Unification is deterministic]
+    \label{obs:unif-deterministic}
+    \hfill
+    \begin{itemize}
+        \item [$+$] If $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$
+            and $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC']]$ then $[[UC = UC']]$.
+        \item [$-$] If $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$
+            and $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC']]$ then $[[UC = UC']]$.
+    \end{itemize}
+\end{observation}
+\begin{proof}
+    We prove it by mutual structural induction on 
+    $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$ and $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC']]$.
+    Let us consider the positive case, since the negative case is symmetric.
+
+    First, notice that the rule applied the last is uniquely determined by the
+    shape of $[[uP]]$ and $[[iQ]]$.
+    Second, the premises of each rule are
+    deterministic on the input either by the induction 
+    hypothesis or by \cref{obs:unif-merge-deterministic}.
+\end{proof}
+
 \begin{lemma}[Soundness of Unification] \label{lemma:unification-soundness}
     \hfill
     \begin{itemize}

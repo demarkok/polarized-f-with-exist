@@ -1,3 +1,34 @@
+\begin{observation}[Constraint Entry Merge is Deterministic]
+    \label{obs:entry-merge-deterministic}
+    For fixed $[[Γ]]$, $[[scE1]]$, $[[scE2]]$,
+    if $[[Γ ⊢ scE1 & scE2 = scE]]$ and $[[Γ ⊢ scE1 & scE2 = scE']]$ 
+    then $[[scE]] = [[scE']]$.
+\end{observation}
+\begin{proof}
+    First, notice that the shape of $[[scE1]]$ and $[[scE2]]$
+    uniquely determines the rule applied to infer  
+    $[[Γ ⊢ scE1 & scE2 = scE]]$,
+    which is consequently, the same rule used to 
+    infer $[[Γ ⊢ scE1 & scE2 = scE']]$.
+    Second, notice that the premises of each rule are deterministic
+    on the input:
+    the positive subtyping is deterministic by \cref{obs:pos-subt-deterministic},
+    and the least upper bound is deterministic by \cref{obs:lub-deterministic}.
+\end{proof}
+
+\begin{observation}[Subgyping Constraint Merge is Deterministic]
+    \label{obs:subt-merge-deterministic}
+    Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$
+    If $[[Θ ⊢ SC1 & SC2 = UC]]$ and $[[Θ ⊢ SC1 & SC2 = UC']]$ are defined then 
+    $[[SC]] = [[SC']]$.
+\end{observation}
+\begin{proof}
+    The proof is analogous to the proof of \cref{obs:unif-merge-deterministic} 
+    but uses \cref{obs:entry-merge-deterministic} to show 
+    that the merge of the matching constraint entries is fixed.
+\end{proof}
+
+
 \begin{lemma} [Soundness of Constraint Entry Merge]
     \label{lemma:entry-merge-soundness}
     For a fixed context $[[Γ]]$,
@@ -137,13 +168,7 @@
     Let us consider the shape of $[[scE1]]$ and $[[scE2]]$.
     \begin{caseof}
         \item $[[scE1]]$ is $[[pua :≈ iQ1]]$ and $[[scE2]]$ is $[[pua :≈ iQ2]]$.
-            Then $[[Γ ⊢ iP : scE1]]$ means $[[Γ ⊢ iP ≈ iQ1]]$, 
-            and $[[Γ ⊢ iP : scE2]]$ means $[[Γ ⊢ iP ≈ iQ2]]$.
-            Then by transitivity of equivalence (\cref{corollary:equivalence-transitivity}),
-            $[[Γ ⊢ iQ1 ≈ iQ2]]$, which means $[[nf(iQ1) = nf(iQ2)]]$ by
-            \cref{lemma:subt-equiv-algorithmization}.
-            Hence, \ruleref{\ottdruleSCMEPEqEqLabel} applies to infer
-            $[[Γ ⊢ scE1 & scE2 = scE2]]$, and $[[Γ ⊢ iP : scE2]]$ holds by assumption.
+            The proof repeats the corresponding case of \cref{lemma:unif-entry-merge-completeness}
         \item $[[scE1]]$ is $[[pua :≈ iQ1]]$ and $[[scE2]]$ is $[[pua :≥ iQ2]]$.
             Then $[[Γ ⊢ iP : scE1]]$ means $[[Γ ⊢ iP ≈ iQ1]]$, 
             and $[[Γ ⊢ iP : scE2]]$ means $[[Γ ⊢ iP ≥ iQ2]]$.
@@ -193,12 +218,4 @@
     Then by \cref{lemma:entry-merge-completeness}, $[[Θ(α̂±) ⊢ scE1 & scE2 = scE]]$ is defined and $[[Θ(α̂±) ⊢ [uσ]α̂± : scE]]$.
 
 \end{proof}
-
-\begin{corollary} [Completeness of Unification Constraint Merge] 
-    \label{corollary:merge-completeness-unif}
-    Suppose that $[[Θ ⊢ UC1 : Ξ1]]$ and $[[Θ ⊢ UC2 : Ξ2]]$.
-    If there exists a substitution $[[Θ ⊢ uσ : Ξ1 ∪ Ξ2]]$ such that 
-    $[[ Θ ⊢ uσ : UC1 ]]$ and $[[ Θ ⊢ uσ : UC2 ]]$
-    then $[[Θ ⊢ UC1 & UC2 = UC]]$ is defined.
-\end{corollary}
 

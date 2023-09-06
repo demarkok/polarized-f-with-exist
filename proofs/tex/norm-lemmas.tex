@@ -1,3 +1,14 @@
+\begin{observation}[Normalization is deterministic]
+  \label{obs:norm-deterministic}
+  If $[[nf(iN) = iM]]$ and $[[nf(iN) = iM']]$ then $[[iM = iM']]$.
+  If $[[nf(iP) = iQ]]$ and $[[nf(iP) = iQ']]$ then $[[iQ = iQ']]$.
+  This way, we can use normalization as a function.
+\end{observation}
+\begin{proof}
+  By straightforward induction using \cref{obs:ord-deterministic}.
+\end{proof}
+
+
 \begin{lemma}
   \label{lemma:equiv-fv}
   Set of free variables is invariant under equivalence.
@@ -343,6 +354,5 @@
 
   \end{caseof}
 \end{proof}
-
 
 

@@ -1,3 +1,31 @@
+\begin{observation} [Unification Constraint Merge is Deterministic]
+    \label{obs:unif-merge-deterministic}
+    Suppose that $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$
+    If $[[Θ ⊢ UC1 & UC2 = UC]]$ and $[[Θ ⊢ UC1 & UC2 = UC']]$ are defined then 
+    $[[UC]] = [[UC']]$.
+\end{observation}
+\begin{proof}
+    $[[UC]]$ and $[[UC']]$ both consists of three parts: 
+    Entries of $[[UC1]]$ that do not have matching entries in $[[UC2]]$,
+    entries of $[[UC2]]$ that do not have matching entries in $[[UC1]]$,
+    and the merge of matching entries.
+
+    The parts corresponding to unmatched entries of $[[UC1]]$ and $[[UC2]]$ coincide, 
+    since $[[UC1]]$ and $[[UC2]]$ are fixed.
+    To show that the merge of matching entries coincide,
+    let us take any pair of matching $[[ucE1 ∊ UC1]]$ and $[[ucE2 ∊ UC2]]$
+    and consider their shape.
+    \begin{caseof}
+        \item $[[ucE1]]$ is $[[pua :≈ iQ1]]$ and $[[ucE2]]$ is $[[pua :≈ iQ2]]$
+            then the result, if it exists, is always $[[ucE1]]$,
+            by inversion of \ruleref{\ottdruleSCMEPEqEqLabel}.
+        \item $[[ucE1]]$ is $[[nua :≈ iN1]]$ and $[[ucE2]]$ is $[[nua :≈ iN2]]$
+            then analogously, the result, if it exists, is always $[[ucE1]]$,
+            by inversion of \ruleref{\ottdruleSCMENEqEqLabel}.
+    \end{caseof}
+    This way, the third group of entries coincide as well.
+\end{proof}
+
 \begin{lemma} [Soundness of Unification Constraint Merge]
     \label{lemma:unif-merge-soundness}
     Suppose that $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$ 
@@ -26,7 +54,7 @@
             \item $[[α̂⁺ :≈ iP1]]$ and $[[α̂⁺ :≈ iP2]]$, 
                 where $[[iP1]]$ and $[[iP2]]$ are normalized,
                 and then since $[[Θ(α̂⁺) ⊢ ucE1 & ucE2 = ucE]]$ exists, 
-                \ruleref{\ottdruleUCMEPEqEqLabel} was applied to infer it.
+                \ruleref{\ottdruleSCMEPEqEqLabel} was applied to infer it.
                 It means that $[[ucE]] = [[ucE1]] = [[ucE2]]$;
             \item $[[α̂⁻ :≈ iN1]]$ and $[[α̂⁻ :≈ iN2]]$, 
                then symmetrically, 
@@ -45,9 +73,9 @@
             Otherwise, there is a normalized matching
             $[[ucE2]] = [[(α̂⁺ :≈ iP')]] \in [[UC2]]$ and then
             since $[[UC1 & UC2]]$ exists, 
-            \ruleref{\ottdruleUCMEPEqEqLabel} was applied to construct
+            \ruleref{\ottdruleSCMEPEqEqLabel} was applied to construct
             $[[ucE1 & ucE2]] \in [[UC1 & UC2]]$.
-            By inversion of \ruleref{\ottdruleUCMEPEqEqLabel},
+            By inversion of \ruleref{\ottdruleSCMEPEqEqLabel},
             $[[ucE1 & ucE2]] = [[ucE1]]$, and
             $[[nf(iP) = nf(iP')]]$, which since $[[iP]]$
             and $[[iP']]$ are normalized, implies that $[[iP = iP']]$, 
@@ -97,16 +125,19 @@
     \end{itemize}
 \end{lemma}
 \begin{proof}
-    The proof repeats the one of \cref{lemma:entry-merge-completeness}
-    and is done by the case analysis on the shape of $[[ucE1]]$ and $[[ucE2]]$.
-    However, it only needs to consider two cases.
+    Let us consider the shape of $[[ucE1]]$ and $[[ucE2]]$.
     \begin{caseof}
         \item $[[ucE1]]$ is $[[pua :≈ iQ1]]$ and $[[ucE2]]$ is $[[pua :≈ iQ2]]$.
+            Then $[[Γ ⊢ iP : ucE1]]$ means $[[Γ ⊢ iP ≈ iQ1]]$, 
+            and $[[Γ ⊢ iP : ucE2]]$ means $[[Γ ⊢ iP ≈ iQ2]]$.
+            Then by transitivity of equivalence (\cref{corollary:equivalence-transitivity}),
+            $[[Γ ⊢ iQ1 ≈ iQ2]]$, which means $[[nf(iQ1) = nf(iQ2)]]$ by
+            \cref{lemma:subt-equiv-algorithmization}.
+            Hence, \ruleref{\ottdruleSCMEPEqEqLabel} applies to infer
+            $[[Γ ⊢ ucE1 & ucE2 = ucE2]]$, and $[[Γ ⊢ iP : ucE2]]$ holds by assumption.
         \item $[[ucE1]]$ is $[[nua :≈ iN1]]$ and $[[ucE2]]$ is $[[nua :≈ iM2]]$.
+            The proof is symmetric.
     \end{caseof}
-    The proof of these cases is based only on \cref{lemma:subt-equiv-algorithmization}
-    and \cref{corollary:equivalence-transitivity}, and does not require the properties of 
-    the least upper bound or subtyping.
 \end{proof}
 
 \begin{lemma} [Completeness of Unification Constraint Merge] 
@@ -120,6 +151,7 @@
     \end{enumerate}
 \end{lemma}
 \begin{proof}
-    The proof repeats the proof of \cref{lemma:merge-completeness} but 
+    The proof repeats the proof of \cref{lemma:merge-completeness}
+    for cases 
     uses \cref{lemma:unif-entry-merge-completeness} instead of \cref{lemma:entry-merge-completeness}.
 \end{proof}

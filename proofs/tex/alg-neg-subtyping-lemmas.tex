@@ -1,3 +1,39 @@
+\begin{observation}[Negative Algorithmic Subtyping is Deterministic]
+    \label{obs:neg-subt-deterministic}
+    For fixed $[[Γ]]$, $[[Θ]]$, $[[iM]]$, and $[[uN]]$, 
+    if $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$ 
+    and $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC']]$
+    then $[[SC]]$ = $[[SC']]$.
+\end{observation}
+\begin{proof}
+    First, notice that the shape of
+    the input uniquely determines the rule applied to infer
+    $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$,
+    which is consequently, the same rule used to
+    infer $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC']]$.
+
+    Second, notice that for each of the inference rules, 
+    the premises are deterministic on the input.
+    Specifically, 
+    \begin{itemize}
+        \item \ruleref{\ottdruleAShiftULabel} relies on unification,
+            which is deterministic by \cref{obs:unif-deterministic};
+        \item \ruleref{\ottdruleAForallLabel} relies on
+            the choice of fresh algorithmic variables,
+            which is deterministic as discussed in \cref{sec:fresh-selection},
+            and on the negative subtyping, which is deterministic by
+            the induction hypothesis;
+        \item \ruleref{\ottdruleAArrowLabel} uses 
+            the negative subtyping 
+            (deterministic by the induction hypothesis),
+            the positive subtyping 
+            (\cref{obs:pos-subt-deterministic}),
+            and the merge of subtyping constraints
+            (\cref{obs:subt-merge-deterministic});
+    \end{itemize}
+\end{proof}
+
+
 \begin{lemma}[Soundness of Negative Subtyping] \label{lemma:neg-subt-soundness}
         If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; dom(Θ) ⊢ uN]]$ and 
         $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$, then 
