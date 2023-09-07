@@ -92,7 +92,7 @@
       \begin{itemize}
         \item [$\Rightarrow$] Let us assume $[[Γ ⊢ ∀pas.iN ≤ iM]]$.
           then if $[[pas = ·]]$, $[[Γ ⊢ iN ≤ iM]]$ holds immediately.
-          Otherwise, let us decompose  $iN$ as $[[∀pas'.iN']]$ where 
+          Otherwise, let us decompose  $[[iN]]$ as $[[∀pas'.iN']]$ where 
           $[[iN']]$ does not start with $[[∀]]$.
           Then $[[Γ ⊢ ∀pas.∀pas'.iN' ≤ iM']]$ is inferred by
           \ruleref{\ottdruleDOneForallLabel},
@@ -105,7 +105,7 @@
           start with $[[∀]]$).
         \item [$\Leftarrow$] Let us assume 
           $[[Γ ⊢ [iPs/pas]iN ≤ iM]]$ for some $[[Γ ⊢ iPs]]$.
-          let us decompose $iN$ as $[[∀pas'.iN']]$ where $[[iN']]$ does not start with $[[∀]]$.
+          let us decompose $[[iN]]$ as $[[∀pas'.iN']]$ where $[[iN']]$ does not start with $[[∀]]$.
           Then $[[Γ ⊢ [iPs/pas]∀pas'.iN' ≤ iM']]$ or, equivalently,
           $[[Γ ⊢ ∀pas'.[iPs/pas]iN' ≤ iM']]$ is inferred by \ruleref{\ottdruleDOneForallLabel}
           (notice that $[[ [iPs/pas]iN' ]]$ cannot start with $[[∀]]$).

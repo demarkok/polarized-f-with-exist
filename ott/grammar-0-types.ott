@@ -63,11 +63,8 @@ s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
    | N / na               ::   :: NegSub
    | iPs / pas            ::   :: PosSubs 
    | iNs / nas            ::   :: NegSubs
-   % | pmas / pas           ::   :: PosMSubs
-   % | nmas / nas           ::   :: NegMSubs
    | nas / nuas           ::   :: NegFromUSubs
    | Sub μ                ::   :: FromMoving {{ tex [[μ]] }}
-   % | Sub us               ::   :: FromUs {{ tex [[us]] }}
    | σ1 ○ σ2              ::   :: Compose
    | σ1 <=< σ2            ::   :: ComposeM
    | ordVars1 / ordVars2  ::   :: VarSubs
@@ -75,15 +72,15 @@ s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
    | </ si // , // i />   ::   :: concat  {{ com concatenate }}
 
 scE {{ tex e }} :: 'scE_' ::= {{ com entry of a subtyping constraint }}
-   | pua :≈ iP            ::   :: PEq {{ tex [[pua]] :\approx   [[iP]] }}
-   | nua :≈ iN            ::   :: NEq {{ tex [[nua]] :\approx   [[iN]] }}
-   | pua :≥ iP            ::   :: Sup {{ tex [[pua]] :\geqslant [[iP]] }}
+   | pua :≈ iP            ::   :: PEq 
+   | nua :≈ iN            ::   :: NEq 
+   | pua :≥ iP            ::   :: Sup 
    | ( scE )              :: S :: paren
    | SC ( nua )           :: M :: NSelect
 
 ucE  {{ tex e }} :: 'ucE_' ::= {{ com entry of a unification constraint }}
-   | pua :≈ iP            :: :: PEq {{ tex [[pua]] :\approx   [[iP]] }}
-   | nua :≈ iN            :: :: NEq {{ tex [[nua]] :\approx   [[iN]] }}
+   | pua :≈ iP            ::   :: PEq 
+   | nua :≈ iN            ::   :: NEq 
    | ( ucE )              :: S :: paren
 
 
@@ -160,7 +157,7 @@ pnds {{ tex \vv{ \delta^{\pm} } }}
    | ·                     ::   :: empty   {{ com empty list }}
    | pna                   ::   :: Var     {{ com a variable }}
    | pna *                 ::   :: Vars    {{ com variables }}
-                                           {{ tex \vv{[[pa]]} }}
+                                           {{ tex \vv{[[pna]]} }}
    | </ pnasi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
 
@@ -411,8 +408,8 @@ terminals :: 'terminals_' ::=
   | ≡n  :: :: equivn   {{ tex \equiv_{n} }}
   | ∨  :: :: LUB       {{ tex \vee }}
   | ⇓ :: :: norm       {{ tex \Downarrow }}
-  | :≥ :: :: solGeq    {{ tex :[[≥]] }}
-  | :≈ :: :: solEq     {{ tex :[[≈]] }}
+  | :≥ :: :: solGeq    {{ tex :\geqslant }}
+  | :≈ :: :: solEq     {{ tex :\simeq }}
   | Λ    :: :: bigLam    {{ tex \Lambda }}
   | λ    :: :: lam       {{ tex \lambda }}
   | let∃ :: :: letExists {{ tex \ottkw{let}^{\exists} }}

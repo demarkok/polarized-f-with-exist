@@ -381,12 +381,6 @@
                   &\subseteq [[Γ]]
      \end{aligned}
      $
-     % we notice that 
-     % $[[fv iQ]] \subseteq [[fv iP1]] ∩ [[fv iP2]]
-     % Let us show that $Γ \$
-     % From \cref{lemma:fv-propagation},
-     % $[[fv iQ]] \subseteq [[fv iP1]] ∩ [[fv iP2]] \subseteq {\Gamma}$.
-     % Hence, since 
 
      To show $[[Γ ⊢ iQ ≥ ∃nas.iP1]]$, we apply
      \ruleref{\ottdruleDOneExistsLabel}.
@@ -589,7 +583,8 @@
 
       \begin{itemize}
         \item $[[nuas]]$ is negative by construction,
-        \item $[[Γ ; {nuas} ⊢ [nuas/nas]↓iM']]$ because $[[Γ, nas ⊢ ↓iM']]$ \ilyam{lemma!},
+        \item $[[Γ ; {nuas} ⊢ [nuas/nas]↓iM']]$ because $[[Γ, nas ⊢ ↓iM']]$ 
+        (\cref{lemma:var-algo-wf}),
         \item $[[Γ ; · ⊢ (iNs1/nuas) :{nuas}]]$ because $[[Γ ⊢ iNs1]]$ and
           $[[Γ ; · ⊢ (iNs2/nuas) :{nuas}]]$ because $[[Γ ⊢ iNs2]]$,
         \item $[[ [iNs1/nuas] [nuas/nas] ↓iM' ]] = [[ [iNs1/nas] ↓iM' ]] =
