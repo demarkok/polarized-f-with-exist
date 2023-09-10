@@ -148,10 +148,20 @@
 \end{proof}
   
 
-Next, we define the notion of a collision free bijection.
-It allows us to deal with the situations when
-the domain and the range of the bijection overlap.
-Intuitively, 
+Next we make a set-theoretical observation
+that will be useful further.
+In general, any injective function (its image)
+distributes over set intersection.
+However, for convenience we allow the bijections
+on variables to be applied
+\emph{outside of their domains}
+(as identities), which may violate
+the injectivity. To deal with these cases, 
+we define a special notion of
+bijections collision-free on certain sets
+in such a way that
+a bijection that is collision-free on $P$ and $Q$,
+distributes over intersection of $P$ and $Q$.
 
 \begin{definition} [Collision free bijection]
   We say that a bijection $\mu : A \leftrightarrow B$ between sets of
@@ -162,7 +172,12 @@ Intuitively,
   \end{enumerate}
 \end{definition}
 
-
+\begin{observation}
+  Suppose that $\mu : A \leftrightarrow B$ is a bijection between two sets of variables,
+  and $\mu$ is collision free on $P$ and $Q$.
+  Then $\mu(P \cap Q) = \mu(P) \cap \mu(Q)$.
+\end{observation}
+  
 
 \begin{lemma}[Distributivity of renaming over variable ordering]
   \label{lemma:distr-mu-ord}
