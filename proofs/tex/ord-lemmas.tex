@@ -6,18 +6,11 @@
   and $[[ord varset in iP]]$ as a function on $[[iP]]$.
 \end{observation}
 \begin{proof}
-  By straightforward induction.
+  By mutual structural induction on $[[iN]]$ and $[[iP]]$.
+  Notice that the shape of the term $[[iN]]$ or $[[iP]]$
+  uniquely determines the last used inference rule,
+  and all the premises are deterministic on the input.
 \end{proof}
-
-
-\begin{definition} [Collision free bijection]
-  We say that a bijection $\mu : A \leftrightarrow B$ between sets of
-  variables is \textbf{collision free on sets} $P$ and $Q$ if and only if
-  \begin{enumerate}
-    \item $\mu(P \cap A) \cap Q = \emptyset$
-    \item $\mu(Q \cap A) \cap P = \emptyset$
-  \end{enumerate}
-\end{definition}
 
 
 \begin{lemma}[Soundness of variable ordering]
@@ -29,8 +22,42 @@
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  Straightforward mutual induction on 
-  $[[ ord varset in iN = ordVars ]]$ and $[[ ord varset in iP = ordVars ]]$
+  We prove it by mutual induction on 
+  $[[ ord varset in iN = ordVars ]]$ and $[[ ord varset in iP = ordVars ]]$.
+  The only non-trivial cases are 
+  \ruleref{\ottdruleOArrowLabel} and 
+  \ruleref{\ottdruleOForallLabel}.  
+  \begin{caseof}
+    \item \ruleref{\ottdruleOArrowLabel}  
+      Then the inferred ordering judgement has shape
+      $[[ord varset in iP → iN = ordVars1, (ordVars2 \ {ordVars1})]]$
+      and by inversion, 
+      $[[ord varset in iP = ordVars1]]$   
+      and 
+      $[[ord varset in iN = ordVars2]]$.
+
+      By definition of free variables, 
+      $[[varset ∩ fv iP → iN = varset ∩ fv iP ∪ varset ∩ fv iN]]$,
+      and since by the induction hypothesis 
+      $[[varset ∩ fv iP = {ordVars1}]]$ and
+      $[[varset ∩ fv iN = {ordVars2}]]$,
+      we have
+      $[[varset ∩ fv iP → iN = {ordVars1} ∪ {ordVars2}]]$.
+
+      On the other hand, 
+      As a set, $[[{ordVars1} ∪ {ordVars2}]]$
+      is equal to $[[ordVars1, (ordVars2 \ {ordVars1})]]$. 
+    \item  \ruleref{\ottdruleOForallLabel}.
+      Then  the inferred ordering judgement has shape
+      $[[ord varset in ∀pas.iN = ordVars]]$,
+      and by inversion, 
+      $[[varset ∩ {pas} = ∅]]$    
+      $[[ord varset in iN = ordVars]]$.
+      The latter implies that $[[varset ∩ fv iN = {ordVars}]]$.
+      We need to show that $[[varset ∩ fv ∀pas.iN = {ordVars}]]$,
+      or equivalently, that
+      $[[varset ∩ (fv iN \ {pas}) = varset ∩ fv iN ]]$,
+      which holds since $[[varset ∩ {pas} = ∅]]$.
 \end{proof}
 
 
@@ -38,25 +65,73 @@
   \label{corollary:ord-additivity}
   Variable ordering is additive (in terms of set union) with respect to its first argument.
   \begin{itemize}
-    \item[$-$] $[[ {ord (varset1 ∪ varset2) in iN} ]]
-                \equiv
-                [[{ord varset1 in iN} ∪ {ord varset2 in iN}]]$ (as sets)
-    \item[$+$] $[[{ord (varset1 ∪ varset2) in iP}]]
-                \equiv
-                [[{ord varset1 in iP} ∪ {ord varset2 in iP}]]$ (as sets)
+    \item[$-$] $[[ {ord (varset1 ∪ varset2) in iN} 
+                = 
+                {ord varset1 in iN} ∪ {ord varset2 in iN}]]$ (as sets)
+    \item[$+$] $[[{ord (varset1 ∪ varset2) in iP}
+                =
+                {ord varset1 in iP} ∪ {ord varset2 in iP}]]$ (as sets)
 
   \end{itemize}
 \end{corollary}
 
-\begin{corollary}[Weakening of ordering]
+\begin{lemma}[Weakening of ordering]
   \label{corollary:ord-weakening}
-  Extending the first argument of the ordering with unused variables does not
-  change the result.
+  Only used variables matter in the first argument of the ordering,
   \begin{itemize}
     \item[$-$] $[[ ord (varset ∩ fv iN) in iN ]] = [[ ord varset in iN ]]$
     \item[$+$] $[[ ord (varset ∩ fv iP) in iP ]] = [[ ord varset in iP ]]$
   \end{itemize}
-\end{corollary}
+\end{lemma}
+\begin{proof}
+  Mutual structural induction on $[[iN]]$ and $[[iP]]$.
+
+  \begin{caseof}
+    \item If $[[iN]]$ is a variable $[[na]]$,
+      we notice that $[[na ∊ varset]]$ 
+      is equivalent to $[[na ∊ varset ∩ {na}]]$.
+    \item If $[[iN]]$ has shape $[[↑iP]]$, then
+      the required property holds immediately by the 
+      induction hypothesis, since 
+      $[[fv(↑iP) = fv(iP)]]$.
+    \item If the term has shape $[[iP → iN]]$ then
+      \ruleref{\ottdruleOArrowLabel} was applied
+      to infer $[[ ord (varset ∩ (fv iP ∪ fv iN)) in iP → iN ]]$
+      and $[[ ord varset in iP → iN]]$. 
+      By inversion, the result of 
+      $[[ ord (varset ∩ (fv iP ∪ fv iN)) in iP → iN ]]$
+      depends on 
+      $A = [[ ord (varset ∩ (fv iP ∪ fv iN)) in iP]]$
+      and 
+      $B = [[ ord (varset ∩ (fv iP ∪ fv iN)) in iN]]$.
+      The result of
+       $[[ ord varset in iP → iN]]$ 
+       depends on 
+      $X = [[ord varset in iP]]$ and
+      $Y = [[ord varset in iN]]$.
+
+      Let us show that that $A = B$ and $X = Y$, so the results are equal. 
+      By the induction hypothesis and set properties,
+      $[[ ord (varset ∩ (fv iP ∪ fv iN)) in iP ]] = 
+       [[ ord (varset ∩ (fv iP ∪ fv iN)) ∩ fv(iP) in iP ]] = 
+       [[ ord varset ∩ fv(iP) in iP ]] = 
+       [[ ord varset in iP ]]$.
+      Analogously, 
+      $[[ ord (varset ∩ (fv iP ∪ fv iN)) in iN ]] = 
+       [[ ord varset in iN ]]$.
+    \item If the term has shape $[[∀pas.iN]]$,
+      we can assume that $[[pas]]$ is disjoint
+      from $[[varset]]$,
+      since we operate on alpha-equivalence classes.
+      Then using the induction hypothesis,
+      set properties and \ruleref{\ottdruleOForallLabel}: 
+      $[[ord varset ∩ (fv(∀pas.iN)) in ∀pas.iN]] =
+       [[ord varset ∩ (fv(iN) \ {pas}) in iN]] =
+       [[ord varset ∩ (fv(iN) \ {pas}) ∩ fv(iN) in iN]] =
+       [[ord varset ∩ fv(iN) in iN]] =
+       [[ord varset in iN]]$.
+  \end{caseof}
+\end{proof}
 
 \begin{corollary}[Idempotency of ordering]
   \label{corollary:ord-idemp}
@@ -72,7 +147,22 @@
   By \cref{lemma:ord-soundness,corollary:ord-weakening}.
 \end{proof}
   
-\end{proof}
+
+Next, we define the notion of a collision free bijection.
+It allows us to deal with the situations when
+the domain and the range of the bijection overlap.
+Intuitively, 
+
+\begin{definition} [Collision free bijection]
+  We say that a bijection $\mu : A \leftrightarrow B$ between sets of
+  variables is \textbf{collision free on sets} $P$ and $Q$ if and only if
+  \begin{enumerate}
+    \item $\mu(P \cap A) \cap Q = \emptyset$
+    \item $\mu(Q \cap A) \cap P = \emptyset$
+  \end{enumerate}
+\end{definition}
+
+
 
 \begin{lemma}[Distributivity of renaming over variable ordering]
   \label{lemma:distr-mu-ord}
@@ -280,4 +370,43 @@
 \end{lemma}
 \begin{proof}
   Mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$.
+  Let us consider the rule inferring $[[iN ≈ iM]]$. 
+  \begin{caseof}
+    \item \ruleref{\ottdruleEOneNVarLabel}
+    \item \ruleref{\ottdruleEOneShiftULabel}
+    \item \ruleref{\ottdruleEOneArrowLabel}
+      Then the equivalence has shape $[[iP → iN ≈ iQ → iM]]$,
+      and by inversion, $[[iP ≈ iQ]]$ and $[[iN ≈ iM]]$.
+      They by the induction hypothesis,
+      $[[ord varset in iP]] = [[ord varset in iQ]]$ 
+      and $[[ord varset in iN]] = [[ord varset in iM]]$.
+      Since the resulting ordering for $[[iP → iN]]$ and $[[iQ → iM]]$
+      depend on the ordering of the corresponding components, 
+      which are equal, the results are equal.
+    \item \ruleref{\ottdruleEOneForallLabel}
+      Then the equivalence has shape $[[∀pas.iN ≈ ∀pbs.iM]]$.
+      and by inversion there exists 
+      $[[mu : ({pbs} ∩ fv iM) ↔ ({pas} ∩ fv iN)]]$ such that
+      \begin{itemize}
+        \item $[[{pas} ∩ fv iM = ∅]]$ and 
+        \item $[[iN ≈ [mu] iM]]$
+      \end{itemize}
+
+      Let us assume that $[[varset]]$ is disjoint from 
+      $[[pas]]$ and $[[pbs]]$ 
+      (we can always alpha-rename the bound variables).
+      Then $[[ord varset in ∀pas.iN = ord varset in iN]]$, 
+      $[[ord varset in ∀pas.iM = ord varset in iM]]$
+      and by the induction hypothesis,
+      $[[ord varset in iN]] = [[ord varset in [mu]iM]]$.
+      This way, it suffices tho show  that 
+      $[[ord varset in [mu]iM = ord varset in iM]]$.
+      It holds by \cref{lemma:ord-sigma} since
+      $[[varset]]$ is disjoint form 
+      the domain and the codomain of 
+      $[[mu : ({pbs} ∩ fv iM) ↔ ({pas} ∩ fv iN)]]$ 
+      by assumption.
+
+    \item The positive cases are proved symmetrically.
+  \end{caseof}
 \end{proof}
