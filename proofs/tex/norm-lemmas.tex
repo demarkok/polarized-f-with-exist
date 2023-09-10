@@ -13,12 +13,45 @@
   \label{lemma:equiv-fv}
   Set of free variables is invariant under equivalence.
   \begin{itemize}
-  \item[$-$] If $[[iN ≈ iM]]$ then $[[fv iN]] \equiv [[fv iM]]$ (as sets)
-  \item[$+$] If $[[iP ≈ iQ]]$ then $[[fv iP]] \equiv [[fv iQ]]$ (as sets)
+  \item[$-$] If $[[iN ≈ iM]]$ then $[[fv iN = fv iM]]$ (as sets)
+  \item[$+$] If $[[iP ≈ iQ]]$ then $[[fv iP = fv iQ]]$ (as sets)
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  Straightforward mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$
+  Mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$
+  The base cases 
+  (\ruleref{\ottdruleEOneNVarLabel} and \ruleref{\ottdruleEOnePVarLabel})
+  are trivial.
+  So are \ruleref{\ottdruleEOneShiftULabel}, 
+  \ruleref{\ottdruleEOneShiftDLabel}, and
+  \ruleref{\ottdruleEOneArrowLabel}, where
+  the required property follows from the induction hypothesis.
+
+  Let us consider the case when the equivalence is formed by
+  \ruleref{\ottdruleEOneForallLabel}, 
+  that is the equivalence has shape 
+  $[[∀pas.iN ≈ ∀pbs.iM]]$, 
+  and by inversion,
+  there is a bijection 
+  $[[mu : ({pbs} ∩ fv iM) ↔ ({pas} ∩ fv iN)]]$
+  such that $[[iN ≈ [mu] iM]]$, which 
+  by the induction hypothesis means
+  $[[ fv iN = fv [mu]iM ]] = [[ [mu] fv iM]] $.
+  
+  Let us ensure by alpha-equivalence that 
+  $[[pas]]$ is disjoint from $[[fv iM]]$.
+  Then $[[ (fv ∀pbs.iM) \ {pas}]] = [[fv ∀pbs.iM]]$.
+  Then we apply the following chain of equalities:
+  $[[fv ∀pas.iN = fv iN \ {pas}]] = 
+  [[ ([mu] fv iM) \ {pas}]] = 
+  [[ [mu] (fv ∀pbs.iM ∪ ({pbs} ∩ fv iM)) \ {pas}]] = 
+  [[ ([mu] fv ∀pbs.iM ∪ [mu]({pbs} ∩ fv iM)) \ {pas}]] = 
+  [[ ([mu] fv ∀pbs.iM) \ {pas}]] = 
+  [[ (fv ∀pbs.iM) \ {pas}]] = 
+  [[  fv ∀pbs.iM ]]$.
+
+  Symmetrically, we prove the case when the equivalence is formed by
+  \ruleref{\ottdruleEOneExistsLabel}.
 \end{proof}
 
 
@@ -26,12 +59,36 @@
   \label{lemma:fv-nf}
   Free variables are not changed by the normalization
   \begin{itemize}
-  \item[$-$] $[[fv iN]] \equiv [[fv nf(iN)]]$
-  \item[$+$] $[[fv iP]] \equiv [[fv nf(iP)]]$
+  \item[$-$] $[[fv iN = fv nf(iN)]]$
+  \item[$+$] $[[fv iP = fv nf(iP)]]$
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  By straightforward induction on $[[iN]]$ and mutually on $[[iP]]$.
+  By mutual induction on $[[iN]]$ and $[[iP]]$.
+  The base cases 
+  (\ruleref{\ottdruleNrmNVarLabel} and \ruleref{\ottdruleNrmPVarLabel})
+  are trivial; the congruent cases
+  (\ruleref{\ottdruleNrmShiftULabel},
+  \ruleref{\ottdruleNrmShiftDLabel}, and
+  \ruleref{\ottdruleNrmArrowLabel}) are proved by the induction hypothesis.
+
+  Let us consider the case when the term is formed by $[[∀]]$,
+  that is the normalization judgement has shape 
+  $[[nf(∀pas.iN) = ∀pas'.iN']]$,
+  where by inversion $[[nf(iN) = iN']]$
+  and $[[ord {pas} in iN' = pas']]$.
+  By the induction hypothesis, $[[fv iN = fv iN']]$.
+  Since $[[fv(∀pas.iN) = fv iN \ {pas}]]$,
+  and $[[fv(∀pas'.iN') = fv iN' \ {pas'}]]$,
+  it is left to show that $[[fv iN \ {pas} = fv iN \ {pas'}]]$.
+  By \cref{lemma:ord-completeness}, 
+  $[[{pas'}]] = [[{pas} ∩ fv iN']] = [[{pas} ∩ fv iN]]$.
+  Then
+  $[[fv iN \ {pas} = fv iN \ ({pas} ∪ fv iN)]]$ by
+  set-theoretic properties, and
+  thus, $[[fv iN \ {pas} = fv iN \ {pas'}]]$.
+
+  The case when the term is positive and formed by $[[∃]]$ is symmetric.
 \end{proof}
 
 

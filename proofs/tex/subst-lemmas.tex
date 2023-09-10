@@ -286,5 +286,20 @@
   \end{itemize}
 \end{lemma}
 \begin{proof}
-  By straightforward mutual induction on $[[iP]]$ and $[[iN]]$.
+  By mutual induction on $[[iP]]$ and $[[iN]]$.
+  The base cases (when $[[iP]]$ or $[[iN]]$ is a variable) 
+  are trivial, since then $[[α± ∊ fv(iP)]]$ means 
+  $[[α± = iP]]$ (and symmetrically for $[[iN]]$).
+  The congruent cases 
+  (when the type is formed by $[[↓]]$, $[[↑]]$, or $[[→]]$)
+  hold since $[[α±]]$ occurs in type means that it occurs
+  in one of its parts, to which we apply the induction hypothesis.
+
+  Let us suppose that te type is $[[∃nas.iQ]]$.
+  Then $[[α± ∊ fv(∃nas.iQ)]]$ means
+  $[[α± ∊ fv(iQ)]]$ and $[[α± ∉ {nas}]]$.
+  Then by the induction hypothesis, 
+  $[[ fv([σ]α±) ⊆ fv([σ]iQ) ]]$,
+  and it is left to notice that $[[ fv([σ]α±) ∩ {nas} = ∅ ]]$,
+  which we can ensure by alpha-equivalence.
 \end{proof}
