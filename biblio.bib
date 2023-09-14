@@ -1,0 +1,690 @@
+@inproceedings{botlanMLFRaisingML2003,
+  title = {{{MLF Raising ML}} to the {{Power}} of {{System F}}},
+  booktitle = {{{ICFP}} '03},
+  author = {Botlan, Didier Le and R{\'e}my, Didier},
+  year = {2003},
+  month = aug,
+  pages = {52--63},
+  publisher = {{ACM Press}},
+  address = {{Uppsala, Sweden}},
+  abstract = {We propose a type system MLF that generalizes ML with first-class polymorphism as in System F. Expressions may contain secondorder type annotations. Every typable expression admits a principal type, which however depends on type annotations. Principal types capture all other types that can be obtained by implicit type instantiation and they can be inferred. All expressions of ML are welltyped without any annotations. All expressions of System F can be mechanically encoded into MLF by dropping all type abstractions and type applications, and injecting types of lambda-abstractions into MLF types. Moreover, only parameters of lambda-abstractions that are used polymorphically need to remain annotated.},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/7FEYWDJR/Botlan and Rémy - MLF Raising ML to the Power of System F.pdf}
+}
+
+@techreport{cardelliImplementation1993,
+  title = {An Implementation of {{F}}{$<$}:},
+  author = {Cardelli, Luca},
+  year = {1993},
+  institution = {{Systems Research Center, Digital Equipment Corporation}},
+  abstract = {F{$<$}: is a highly expressive typed {$\lambda$}-calculus with subtyping. This paper describes an implementation of F{$<$}: (extended with recursive types), and documents the algorithms used. Using this implementation, one can test F{$<$}: programs and examine typing derivations. To facilitate the writing of complex F{$<$}: encodings, we provide a flexible syntax-extension mechanism. New syntax can be defined from scratch, and the existing syntax can be extended on the fly. It is possible to introduce new binding constructs, while avoiding problems with variable capture. To reduce the syntactic clutter, we provide a practical type inference mechanism that is applicable to any explicitly typed polymorphic language. Syntax extension and type inference interact in useful ways.},
+  file = {/Users/Henry/Documents/Zotero Library/storage/JFP5U4GH/Cardelli - 1993 - An implementation of F.pdf}
+}
+
+@article{cervesatolinearspinecalculus2003,
+  title = {A {{Linear Spine Calculus}}},
+  author = {Cervesato, I.},
+  year = {2003},
+  month = oct,
+  journal = {Journal of Logic and Computation},
+  volume = {13},
+  number = {5},
+  pages = {639--688},
+  issn = {0955-792X, 1465-363X},
+  doi = {10.1093/logcom/13.5.639},
+  abstract = {We present the spine calculus S\textrightarrow -{$\smwhtcircle\&$} as an efficient representation for the linear {$\lambda$}-calculus {$\lambda\rightarrow -\smwhtcircle\&$} which includes unrestricted functions (\textrightarrow ), linear functions (-{$\smwhtcircle$}), additive pairing (\&), and additive unit ( ). S\textrightarrow -{$\smwhtcircle\&$} enhances the representation of Church's simply typed {$\lambda$}-calculus by enforcing extensionality and by incorporating linear constructs. This approach permits procedures such as unification to retain the efficient head access that characterizes first-order term languages without the overhead of performing {$\eta$}-conversions at run time. Applications lie in proof search, logic programming, and logical frameworks based on linear type theories. It is also related to foundational work on term assignment calculi for presentations of the sequent calculus. We define the spine calculus, give translations of {$\lambda\rightarrow -\smwhtcircle\&$} into S\textrightarrow -{$\smwhtcircle\&$} and vice-versa, prove their soundness and completeness with respect to typing and reductions, and show that the typable fragment of the spine calculus is strongly normalizing and admits unique canonical, i.e. {$\beta\eta$}-normal, forms.},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/CP89LBRX/Cervesato - 2003 - A Linear Spine Calculus.pdf}
+}
+
+@inproceedings{chrzaszcz-98,
+  title = {Polymorphic Subtyping without Distributivity},
+  booktitle = {Proceedings of the 23rd International Symposium on Mathematical Foundations of Computer Science},
+  author = {Chrzaszcz, Jacek},
+  year = {1998},
+  series = {{{MFCS}} '98},
+  pages = {346--355},
+  publisher = {{Springer-Verlag}},
+  address = {{Berlin, Heidelberg}},
+  isbn = {3-540-64827-5},
+  file = {/Users/Henry/Documents/Zotero Library/storage/UUHF8KNF/Chrzaszcz - 1998 - Polymorphic subtyping without distributivity.pdf}
+}
+
+@article{dunfieldBidirectionalTyping2020,
+  title = {Bidirectional {{Typing}}},
+  author = {Dunfield, Jana and Krishnaswami, Neel},
+  year = {2020},
+  month = nov,
+  eprint = {1908.05839},
+  eprinttype = {arxiv},
+  abstract = {Bidirectional typing combines two modes of typing: type checking, which checks that a program satisfies a known type, and type synthesis, which determines a type from the program. Using checking enables bidirectional typing to support features for which inference is undecidable; using synthesis enables bidirectional typing to avoid the large annotation burden of explicitly typed languages. In addition, bidirectional typing improves error locality. We highlight the design principles that underlie bidirectional type systems, survey the development of bidirectional typing from the prehistoric period before Pierce and Turner's local type inference to the present day, and provide guidance for future investigations.},
+  archiveprefix = {arXiv},
+  langid = {english},
+  keywords = {Computer Science - Logic in Computer Science,Computer Science - Programming Languages},
+  file = {/Users/Henry/Documents/Zotero Library/storage/2UNWWAP9/Dunfield and Krishnaswami - 2020 - Bidirectional Typing.pdf}
+}
+
+@inproceedings{dunfieldCompleteEasyBidirectional2013,
+  title = {Complete and Easy Bidirectional Typechecking for Higher-Rank Polymorphism},
+  booktitle = {Proceedings of the 18th {{ACM SIGPLAN}} International Conference on {{Functional}} Programming - {{ICFP}} '13},
+  author = {Dunfield, Jana and Krishnaswami, Neel},
+  year = {2013},
+  pages = {429},
+  publisher = {{ACM Press}},
+  address = {{Boston, Massachusetts, USA}},
+  doi = {10.1145/2500365.2500582},
+  abstract = {Bidirectional typechecking, in which terms either synthesize a type or are checked against a known type, has become popular for its scalability (unlike Damas-Milner type inference, bidirectional typing remains decidable even for very expressive type systems), its error reporting, and its relative ease of implementation. Following design principles from proof theory, bidirectional typing can be applied to many type constructs. The principles underlying a bidirectional approach to polymorphism, however, are less obvious. We give a declarative, bidirectional account of higher-rank polymorphism, grounded in proof theory; this calculus enjoys many properties such as {$\eta$}-reduction and predictability of annotations. We give an algorithm for implementing the declarative system; our algorithm is remarkably simple and well-behaved, despite being both sound and complete.},
+  isbn = {978-1-4503-2326-0},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/N4VT5WYD/Dunfield and Krishnaswami - 2013 - Complete and easy bidirectional typechecking paper.pdf;/Users/Henry/Documents/Zotero Library/storage/WIN2FGLH/Dunfield and Krishnaswami - 2013 - Complete and easy bidirectional typechecking proofs.pdf}
+}
+
+@inproceedings{dunfieldGreedyBidirectionalPolymorphism2009,
+  title = {Greedy Bidirectional Polymorphism},
+  booktitle = {Proceedings of the 2009 {{ACM SIGPLAN}} Workshop on {{ML}} - {{ML}} '09},
+  author = {Dunfield, Jana},
+  year = {2009},
+  pages = {15},
+  publisher = {{ACM Press}},
+  address = {{Edinburgh, Scotland}},
+  doi = {10.1145/1596627.1596631},
+  abstract = {Bidirectional typechecking has become popular in advanced type systems because it works in many situations where inference is undecidable. In this paper, I show how to cleanly handle parametric polymorphism in a bidirectional setting. The key contribution is a bidirectional type system for a subset of ML that supports first-class (higher-rank and even impredicative) polymorphism, and is complete for predicative polymorphism (including ML-style polymorphism and higher-rank polymorphism). The system's power comes from bidirectionality combined with a ``greedy'' method of finding polymorphic instances inspired by Cardelli's early work on System F{$<$}:. This work demonstrates that bidirectionality is a good foundation for traditionally vexing features like first-class polymorphism.},
+  isbn = {978-1-60558-509-3},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/GG6AM24J/Dunfield - 2009 - Greedy bidirectional polymorphism.pdf}
+}
+
+@article{dunfieldTridirectionalTypechecking2004,
+  title = {Tridirectional {{Typechecking}}},
+  author = {Dunfield, Jana and Pfenning, Frank},
+  year = {2004},
+  pages = {12},
+  abstract = {In prior work we introduced a pure type assignment system that encompasses a rich set of property types, including intersections, unions, and universally and existentially quantified dependent types. This system was shown sound with respect to a call-by-value operational semantics with effects, yet is inherently undecidable. In this paper we provide a decidable formulation for this system based on bidirectional checking, combining type synthesis and analysis following logical principles. The presence of unions and existential quantification requires the additional ability to visit subterms in evaluation position before the context in which they occur, leading to a tridirectional type system. While soundness with respect to the type assignment system is immediate, completeness requires the novel concept of contextual type annotations, introducing a notion from the study of principal typings into the source program.},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/KRGFKCZN/Dunﬁeld and Pfenning - Tridirectional Typechecking.pdf}
+}
+
+@article{eggerEnrichedEffectCalculus2014,
+  title = {The Enriched Effect Calculus: Syntax and Semantics},
+  shorttitle = {The Enriched Effect Calculus},
+  author = {Egger, J. and Mogelberg, R. E. and Simpson, A.},
+  year = {2014},
+  month = jun,
+  journal = {Journal of Logic and Computation},
+  volume = {24},
+  number = {3},
+  pages = {615--654},
+  issn = {0955-792X, 1465-363X},
+  doi = {10.1093/logcom/exs025},
+  abstract = {This paper introduces the enriched effect calculus, which extends established type theories for computational effects with primitives from linear logic. The new calculus provides a formalism for expressing linear aspects of computational effects; for example, the linear usage of imperative features such as state and/or continuations.},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/N4QUYXVV/Egger et al. - 2014 - The enriched effect calculus syntax and semantics.pdf}
+}
+
+@incollection{girard-system-f,
+  title = {Une Extension de {{\v{L}Interpretation}} de {{G\"odel}} \`a {{\v{L}Analyse}}, et Son Application \`a {{\v{L}Elimination}} Des Coupures Dans {{\v{L}Analyse}} et La Theorie Des Types},
+  booktitle = {Proceedings of the Second Scandinavian Logic Symposium},
+  author = {Girard, Jean-Yves},
+  editor = {Fenstad, J.E.},
+  year = {1971},
+  series = {Studies in Logic and the Foundations of Mathematics},
+  volume = {63},
+  pages = {63--92},
+  publisher = {{Elsevier}},
+  address = {{North Holland}},
+  issn = {0049-237X},
+  doi = {10.1016/S0049-237X(08)70843-7},
+  file = {/Users/Henry/Documents/Zotero Library/storage/VUW5DUPI/Girard - 1971 - Une Extension De ĽInterpretation De Gödel a ĽAnaly.pdf}
+}
+
+@inproceedings{haskell-fc,
+  title = {System {{F}} with Type Equality Coercions},
+  booktitle = {Proceedings of the 2007 {{ACM SIGPLAN}} International Workshop on Types in Languages Design and Implementation},
+  author = {Sulzmann, Martin and Chakravarty, Manuel M. T. and Jones, Simon Peyton and Donnelly, Kevin},
+  year = {2007},
+  series = {{{TLDI}} '07},
+  pages = {53--66},
+  publisher = {{Association for Computing Machinery}},
+  address = {{New York, NY, USA}},
+  doi = {10.1145/1190315.1190324},
+  abstract = {We introduce System FC, which extends System F with support for non-syntactic type equality. There are two main extensions: (i) explicit witnesses for type equalities, and (ii) open, non-parametric type functions, given meaning by top-level equality axioms. Unlike System F, FC is expressive enough to serve as a target for several different source-language features, including Haskell's newtype, generalised algebraic data types, associated types, functional dependencies, and perhaps more besides.},
+  isbn = {1-59593-393-X},
+  keywords = {advanced type features,typed intermediate language}
+}
+
+@inproceedings{jcr-system-f,
+  title = {Towards a Theory of Type Structure},
+  booktitle = {Programming Symposium},
+  author = {Reynolds, John C},
+  year = {1974},
+  pages = {408--425},
+  publisher = {{Springer}},
+  address = {{Paris, France}},
+  organization = {{Springer}},
+  file = {/Users/Henry/Documents/Zotero Library/storage/4GQG5RDJ/Reynolds - 1974 - Towards a theory of type structure.pdf}
+}
+
+@article{jonesSystemConstructorClasses1995,
+  title = {A System of Constructor Classes: Overloading and Implicit Higher-Order Polymorphism},
+  shorttitle = {A System of Constructor Classes},
+  author = {Jones, Mark P.},
+  year = {1995},
+  month = jan,
+  journal = {Journal of Functional Programming},
+  volume = {5},
+  number = {1},
+  pages = {1--35},
+  issn = {0956-7968, 1469-7653},
+  doi = {10.1017/S0956796800001210},
+  abstract = {This paper describes a flexible type system which combines overloading and higher-order polymorphism in an implicitly typed language using a system of constructor classes \textendash{} a natural generalization of type classes in Haskell.},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/QM7VUE4J/Jones - 1995 - A system of constructor classes overloading and i.pdf}
+}
+
+@techreport{leijenHMFSimpleType2008,
+  title = {{{HMF}}: {{Simple}} Type Inference for First-Class Polymorphism},
+  author = {Leijen, Daan},
+  year = {2008},
+  month = apr,
+  number = {MSR-TR-2008-65},
+  pages = {15},
+  institution = {{Microsoft Research}},
+  abstract = {HMF is a conservative extension of Hindley-Milner type inference with first-class polymorphism and regular System F types. The system distinguishes itself from other proposals with simple type rules and a very simple type inference algorithm that is just a small extension of the usual Damas-Milner algorithm. Given the relative simplicity and expressive power, we feel that HMF can be a very attractive type system in practice. There is a reference implementation of the type system available at: http://research.microsoft. com/users/daan/pubs.html.},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/V3XSMVNE/Leijen - HMF Simple type inference for ﬁrst-class polymorp.pdf}
+}
+
+@techreport{leijenRobustTypeInference2008,
+  title = {Robust Type Inference for First-Class Polymorphism},
+  author = {Leijen, Daan},
+  year = {2008},
+  month = mar,
+  number = {MSR-TR-2008-55},
+  pages = {10},
+  institution = {{Microsoft Research}},
+  abstract = {We present HML, a type inference system that supports full firstclass polymorphism where few annotations are needed: only function parameters with a polymorphic type need to be annotated. HML is a simplification of MLF where only flexibly quantified types are used. This makes the types easier to work with from a programmers perspective, and we found that it simplifies the implementation of the type inference algorithm. Still, HML retains much of the expressiveness of MLF, it is robust with respect to small program transformations, and has a simple specification of the type rules with an effective type inference algorithm that infers principal types. A reference implementation of the type system is available at: http://research.microsoft.com/users/daan/ pubs.html.},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/ZEVTT2CZ/Leijen - Robust type inference for ﬁrst-class polymorphism.pdf}
+}
+
+@article{levyCallbypushvalueDecomposingCallbyvalue2006,
+  title = {Call-by-Push-Value: {{Decomposing}} Call-by-Value and Call-by-Name},
+  shorttitle = {Call-by-Push-Value},
+  author = {Levy, Paul Blain},
+  year = {2006},
+  month = dec,
+  journal = {Higher-Order and Symbolic Computation},
+  volume = {19},
+  number = {4},
+  pages = {377--414},
+  issn = {1388-3690, 1573-0557},
+  doi = {10.1007/s10990-006-0480-6},
+  abstract = {We present the call-by-push-value (CBPV) calculus, which decomposes the typed call-by-value (CBV) and typed call-by-name (CBN) paradigms into fine-grain primitives. On the operational side, we give big-step semantics and a stack machine for CBPV, which leads to a straightforward push/pop reading of CBPV programs. On the denotational side, we model CBPV using cpos and, more generally, using algebras for a strong monad. For storage, we present an O'Hearn-style ``behaviour semantics'' that does not use a monad.},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/NNEFKCTF/Levy - 2006 - Call-by-push-value Decomposing call-by-value and .pdf}
+}
+
+@article{milnerTheoryTypePolymorphism1978,
+  title = {A Theory of Type Polymorphism in Programming},
+  author = {Milner, Robin},
+  year = {1978},
+  month = dec,
+  journal = {Journal of Computer and System Sciences},
+  volume = {17},
+  number = {3},
+  pages = {348--375},
+  issn = {00220000},
+  doi = {10.1016/0022-0000(78)90014-4},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/LVTQSHMS/Milner - 1978 - A theory of type polymorphism in programming.pdf}
+}
+
+@inproceedings{odersky03,
+  title = {Colored Local Type Inference},
+  booktitle = {Proceedings of the 28th {{ACM SIGPLAN-SIGACT}} Symposium on {{Principles}} of Programming Languages  - {{POPL}} '01},
+  author = {Odersky, Martin and Zenger, Christoph and Zenger, Matthias},
+  year = {2001},
+  pages = {41--53},
+  publisher = {{ACM Press}},
+  address = {{London, United Kingdom}},
+  doi = {10.1145/360204.360207},
+  isbn = {978-1-58113-336-3},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/NETF8FNY/Odersky et al. - Colored Local Type Inference.pdf}
+}
+
+@inproceedings{oderskyPuttingTypeAnnotations1996,
+  title = {Putting Type Annotations to Work},
+  booktitle = {Proceedings of the 23rd {{ACM SIGPLAN-SIGACT}} Symposium on {{Principles}} of Programming Languages  - {{POPL}} '96},
+  author = {Odersky, Martin and L{\"a}ufer, Konstantin},
+  year = {1996},
+  pages = {54--67},
+  publisher = {{ACM Press}},
+  address = {{St. Petersburg Beach, Florida, United States}},
+  doi = {10.1145/237721.237729},
+  isbn = {978-0-89791-769-8},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/D8Y9DWQY/Odersky and Läufer - 1996 - Putting type annotations to work.pdf}
+}
+
+@article{peytonjonesPracticalTypeInference2007,
+  title = {Practical Type Inference for Arbitrary-Rank Types},
+  author = {Peyton Jones, Simon and Vytiniotis, Dimitrios and Weirich, Stephanie and Shields, Mark},
+  year = {2007},
+  month = jan,
+  journal = {Journal of Functional Programming},
+  volume = {17},
+  number = {01},
+  pages = {1},
+  issn = {0956-7968, 1469-7653},
+  doi = {10.1017/S0956796806006034},
+  abstract = {Haskell's popularity has driven the need for ever more expressive type system features, most of which threaten the decidability and practicality of Damas-Milner type inference. One such feature is the ability to write functions with higher-rank types \textendash{} that is, functions that take polymorphic functions as their arguments. Complete type inference is known to be undecidable for higher-rank (impredicative) type systems, but in practice programmers are more than willing to add type annotations to guide the type inference engine, and to document their code. However, the choice of just what annotations are required, and what changes are required in the type system and its inference algorithm, has been an ongoing topic of research. We take as our starting point a {$\lambda$}-calculus proposed by Odersky and L\textasciidieresis aufer. Their system supports arbitrary-rank polymorphism through the exploitation of type annotations on {$\lambda$}-bound arguments and arbitrary sub-terms. Though elegant, and more convenient than some other proposals, Odersky and L\textasciidieresis aufer's system requires many annotations. We show how to use local type inference (invented by Pierce and Turner) to greatly reduce the annotation burden, to the point where higher-rank types become eminently usable. Higher-rank types have a very modest impact on type inference. We substantiate this claim in a very concrete way, by presenting a complete type-inference engine, written in Haskell, for a traditional Damas-Milner type system, and then showing how to extend it for higher-rank types. We write the type-inference engine using a monadic framework: it turns out to be a particularly compelling example of monads in action. The paper is long, but is strongly tutorial in style. Although we use Haskell as our example source language, and our implementation language, much of our work is directly applicable to any ML-like functional language.},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/IJD7EFVA/Jones et al. - 2007 - Practical type inference for arbitrary-rank types.pdf}
+}
+
+@article{pierceLocalTypeInference2000,
+  title = {Local {{Type Inference}}},
+  author = {Pierce, Benjamin and Turner, David},
+  year = {2000},
+  month = jan,
+  journal = {ACM Transactions on Programming Languages and Systems},
+  volume = {22},
+  number = {1},
+  pages = {1--44},
+  issn = {0164-0925},
+  doi = {10.1145/345099.345100},
+  abstract = {We study two partial type inference methods for a language combining subtyping and impredicative polymorphism. Both methods are local in the sense that missing annotations are recovered using only information from adjacent nodes in the syntax tree, without long-distance constraints such as unification variables. One method infers type arguments in polymorphic applications using a local constraint solver. The other infers annotations on bound variables in function abstractions by propagating type constraints downward from enclosing application nodes. We motivate our design choices by a statistical analysis of the uses of type inference in a sizable body of existing ML code.},
+  file = {/Users/Henry/Documents/Zotero Library/storage/E44VH9VT/Pierce and Turner - Local Type Inference.pdf}
+}
+
+@inproceedings{Remy08,
+  title = {From {{ML}} to {{MLF}}: Graphic Type Constraints with Efficient Type Inference},
+  booktitle = {{{ICFP}}},
+  author = {R{\'e}my, Didier and Yakobowski, Boris},
+  year = {2008},
+  month = {September},
+  pages = {63--74},
+  publisher = {{ACM}},
+  address = {{Victoria, BC, Canada}}
+}
+
+@inproceedings{reynolds-parametricity,
+  title = {Types, Abstraction and Parametric Polymorphism},
+  booktitle = {{{IFIP}} Congress},
+  author = {Reynolds, John C.},
+  year = {1983},
+  pages = {513--523},
+  publisher = {{North-Holland/IFIP}},
+  address = {{Paris, France}},
+  file = {/Users/Henry/Documents/Zotero Library/storage/TEMGBDUL/Reynolds - 1983 - Types, abstraction and parametric polymorphism.pdf}
+}
+
+@inproceedings{serranoGuardedImpredicativePolymorphism2018,
+  title = {Guarded Impredicative Polymorphism},
+  booktitle = {Proceedings of the 39th {{ACM SIGPLAN Conference}} on {{Programming Language Design}} and {{Implementation}}  - {{PLDI}} 2018},
+  author = {Serrano, Alejandro and Hage, Jurriaan and Vytiniotis, Dimitrios and Peyton Jones, Simon},
+  year = {2018},
+  pages = {783--796},
+  publisher = {{ACM Press}},
+  address = {{Philadelphia, PA, USA}},
+  doi = {10.1145/3192366.3192389},
+  abstract = {The design space for type systems that support impredicative instantiation is extremely complicated. One needs to strike a balance between expressiveness, simplicity for both the end programmer and the type system implementor, and how easily the system can be integrated with other advanced type system concepts. In this paper, we propose a new point in the design space, which we call guarded impredicativity. Its key idea is that impredicative instantiation in an application is allowed for type variables that occur under a type constructor. The resulting type system has a clean declarative specification \textemdash{} making it easy for programmers to predict what will type and what will not \textemdash, allows for a smooth integration with GHC's OutsideIn(X) constraint solving framework, while giving up very little in terms of expressiveness compared to systems like HMF, HML, FPH and MLF. We give a sound and complete inference algorithm, and prove a principal type property for our system.},
+  isbn = {978-1-4503-5698-5},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/KF4KGN8J/Serrano et al. - 2018 - Guarded impredicative polymorphism.pdf}
+}
+
+@article{serranoQuickLookImpredicativity2020,
+  title = {A Quick Look at Impredicativity},
+  author = {Serrano, Alejandro and Hage, Jurriaan and Peyton Jones, Simon and Vytiniotis, Dimitrios},
+  year = {2020},
+  month = aug,
+  journal = {Proceedings of the ACM on Programming Languages},
+  volume = {4},
+  number = {ICFP},
+  pages = {1--29},
+  issn = {2475-1421, 2475-1421},
+  doi = {10.1145/3408971},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/HLINXL6E/Serrano et al. - 2020 - A quick look at impredicativity.pdf}
+}
+
+@unpublished{spiwackDissection2014,
+  title = {A Dissection of {{L}}},
+  author = {Spiwack, Arnaud},
+  year = {2014},
+  file = {/Users/Henry/Documents/Zotero Library/storage/BYX4C54K/A dissection of L.pdf}
+}
+
+@inproceedings{tiuryn-urzczyn-96,
+  title = {The Subtyping Problem for Second-Order Types Is Undecidable},
+  booktitle = {Proceedings of the 11th Annual {{IEEE}} Symposium on Logic in Computer Science},
+  author = {Tiuryn, Jerzy and Urzyczyn, Pawel},
+  year = {1996},
+  series = {{{LICS}} '96},
+  pages = {74},
+  publisher = {{IEEE Computer Society}},
+  address = {{USA}},
+  abstract = {We prove that the subtyping problem induced by Mitchell's containment relation for second-order polymorphic types is undecidable. It follows that type-checking is undecidable for the polymorphic lambda-calculus extended by an appropriate subsumption rule.},
+  isbn = {0-8186-7463-6},
+  keywords = {polymorphic lambda calculus,subsumption,subtyping}
+}
+
+@inproceedings{vytiniotisBoxyTypesInference2006,
+  title = {Boxy {{Types}}: {{Inference}} for {{Higher-Rank Types}} and {{Impredicativity}}},
+  booktitle = {{{ICFP}} '06},
+  author = {Vytiniotis, Dimitrios and Weirich, Stephanie and Peyton Jones, Simon},
+  year = {2006},
+  pages = {251--262},
+  publisher = {{ACM Press}},
+  address = {{Portland, Oregon, USA}},
+  abstract = {Languages with rich type systems are beginning to employ a blend of type inference and type checking, so that the type inference engine is guided by programmer-supplied type annotations. In this paper we show, for the first time, how to combine the virtues of two well-established ideas: unification-based inference, and bidirectional propagation of type annotations. The result is a type system that conservatively extends Hindley-Milner, and yet supports both higher-rank types and impredicativity.},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/5GXMVD7P/Vytiniotis et al. - Boxy Types Inference for Higher-Rank Types and Im.pdf}
+}
+
+@inproceedings{vytiniotisFPHFirstclassPolymorphism2008,
+  title = {{{FPH}}: {{First-class Polymorphism}} for {{Haskell}}},
+  booktitle = {{{ICFP}} '08},
+  author = {Vytiniotis, Dimitrios and Weirich, Stephanie and Peyton Jones, Simon},
+  year = {2008},
+  pages = {295--306},
+  publisher = {{ACM Press}},
+  address = {{Victoria, BC, Canada}},
+  abstract = {Languages supporting polymorphism typically have ad-hoc restrictions on where polymorphic types may occur. Supporting ``firstclass'' polymorphism, by lifting those restrictions, is obviously desirable, but it is hard to achieve this without sacrificing type inference. We present a new type system for higher-rank and impredicative polymorphism that improves on earlier proposals: it is an extension of Damas-Milner; it relies only on System F types; it has a simple, declarative specification; it is robust to program transformations; and it enjoys a complete and decidable type inference algorithm.},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/4NDBEGH8/Vytiniotis et al. - FPH First-class Polymorphism for Haskell.pdf}
+}
+
+@inproceedings{wadler-free-theorems,
+  title = {Theorems for Free!},
+  booktitle = {Proceedings of the Fourth International Conference on {{Functional}} Programming Languages and Computer Architecture  - {{FPCA}} '89},
+  author = {Wadler, Philip},
+  year = {1989},
+  pages = {347--359},
+  publisher = {{ACM Press}},
+  address = {{Imperial College, London, United Kingdom}},
+  doi = {10.1145/99370.99404},
+  abstract = {From the type of a polymorphic function we can derive a theorem that it satisfies. Every function of the same type satisfies the same theorem. This provides a free source of useful theorems, courtesy of Reynolds' abstraction theorem for the polymorphic lambda calculus.},
+  isbn = {978-0-89791-328-7},
+  langid = {english},
+  file = {/Users/Henry/Documents/Zotero Library/storage/WWDZ7GR2/Wadler - 1989 - Theorems for free!.pdf}
+}
+
+@inproceedings{dowek1993:the-undecidability,
+  author    = {Gilles Dowek},
+  editor    = {Marc Bezem and
+               Jan Friso Groote},
+  title     = {The Undecidability of Typability in the Lambda-Pi-Calculus},
+  booktitle = {Typed Lambda Calculi and Applications, International Conference on
+               Typed Lambda Calculi and Applications, {TLCA} '93, Utrecht, The Netherlands,
+               March 16-18, 1993, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {664},
+  pages     = {139--145},
+  publisher = {Springer},
+  year      = {1993},
+  url       = {https://doi.org/10.1007/BFb0037103},
+  doi       = {10.1007/BFb0037103},
+  timestamp = {Tue, 14 May 2019 10:00:41 +0200},
+  biburl    = {https://dblp.org/rec/conf/tlca/Dowek93.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{pedrot2020:the-fire-triangle,
+  author    = {Pierre{-}Marie P{\'{e}}drot and
+               Nicolas Tabareau},
+  title     = {The fire triangle: how to mix substitution, dependent elimination,
+               and effects},
+  journal   = {Proc. {ACM} Program. Lang.},
+  volume    = {4},
+  number    = {{POPL}},
+  pages     = {58:1--58:28},
+  year      = {2020},
+  url       = {https://doi.org/10.1145/3371126},
+  doi       = {10.1145/3371126},
+  timestamp = {Wed, 17 Feb 2021 08:54:00 +0100},
+  biburl    = {https://dblp.org/rec/journals/pacmpl/PedrotT20.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@mastersthesis{mercer2019:system-f,
+    title    = {Sound and Complete Subtyping for Polarised System F},
+    school   = {University of Cambridge},
+    author   = {Henry E. A. Mercer},
+    year     = {2019},
+    type     = {{MSc} dissertation},
+}
+
+@article{fiore2022:formal-metatheory,
+  author    = {Marcelo Fiore and
+               Dmitrij Szamozvancev},
+  title     = {Formal metatheory of second-order abstract syntax},
+  journal   = {Proc. {ACM} Program. Lang.},
+  volume    = {6},
+  number    = {{POPL}},
+  pages     = {1--29},
+  year      = {2022},
+  url       = {https://doi.org/10.1145/3498715},
+  doi       = {10.1145/3498715},
+  timestamp = {Mon, 14 Feb 2022 17:12:43 +0100},
+  biburl    = {https://dblp.org/rec/journals/pacmpl/FioreS22.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{fiore1999:abstract-syntax,
+  author    = {Marcelo P. Fiore and
+               Gordon D. Plotkin and
+               Daniele Turi},
+  title     = {Abstract Syntax and Variable Binding},
+  booktitle = {14th Annual {IEEE} Symposium on Logic in Computer Science, Trento,
+               Italy, July 2-5, 1999},
+  pages     = {193--202},
+  publisher = {{IEEE} Computer Society},
+  year      = {1999},
+  url       = {https://doi.org/10.1109/LICS.1999.782615},
+  doi       = {10.1109/LICS.1999.782615},
+  timestamp = {Wed, 16 Oct 2019 14:14:54 +0200},
+  biburl    = {https://dblp.org/rec/conf/lics/FiorePT99.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{hamana2003:term-rewriting,
+  author    = {Makoto Hamana},
+  title     = {Term rewriting with variable binding: an initial algebra approach},
+  booktitle = {Proceedings of the 5th International {ACM} {SIGPLAN} Conference on
+               Principles and Practice of Declarative Programming, 27-29 August 2003,
+               Uppsala, Sweden},
+  pages     = {148--159},
+  publisher = {{ACM}},
+  year      = {2003},
+  url       = {https://doi.org/10.1145/888251.888266},
+  doi       = {10.1145/888251.888266},
+  timestamp = {Tue, 06 Nov 2018 16:57:24 +0100},
+  biburl    = {https://dblp.org/rec/conf/ppdp/Hamana03.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@phdthesis{lafont-thesis,
+  doi = {10.48550/ARXIV.1910.09162},
+  url = {https://arxiv.org/abs/1910.09162},
+  author = {Lafont, Ambroise},
+  keywords = {Logic in Computer Science (cs.LO), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title = {Signatures and models for syntax and operational semantics in the presence of variable binding},
+  publisher = {arXiv},
+  year = {2019},
+  type = {{PhD} thesis},
+}
+
+@article{lob1976-embedding,
+  author    = {M. H. Lob},
+  title     = {Embedding First Order Predicate Logic in Fragments of Intuitionistic
+               Logic},
+  journal   = {J. Symb. Log.},
+  volume    = {41},
+  number    = {4},
+  pages     = {705--718},
+  year      = {1976},
+  url       = {https://doi.org/10.2307/2272390},
+  doi       = {10.2307/2272390},
+  timestamp = {Sun, 28 May 2017 13:21:51 +0200},
+  biburl    = {https://dblp.org/rec/journals/jsyml/Lob76.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{urzyczyn1997-inhabitation,
+  author    = {Pawel Urzyczyn},
+  editor    = {Philippe de Groote},
+  title     = {Inhabitation in Typed Lambda-Calculi {(A} Syntactic Approach)},
+  booktitle = {Typed Lambda Calculi and Applications, Third International Conference
+               on Typed Lambda Calculi and Applications, {TLCA} '97, Nancy, France,
+               April 2-4, 1997, Proceedings},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {1210},
+  pages     = {373--389},
+  publisher = {Springer},
+  year      = {1997},
+  url       = {https://doi.org/10.1007/3-540-62688-3\_47},
+  doi       = {10.1007/3-540-62688-3\_47},
+  timestamp = {Tue, 14 May 2019 10:00:41 +0200},
+  biburl    = {https://dblp.org/rec/conf/tlca/Urzyczyn97.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@book{matiyasevich1993-hilberts,
+author = {Matiyasevich, Yuri V.},
+title = {Hilbert's Tenth Problem},
+year = {1993},
+isbn = {0262132958},
+publisher = {MIT Press},
+address = {Cambridge, MA, USA}
+}
+
+@article{wells1999-typeability,
+  author    = {J. B. Wells},
+  title     = {Typability and Type Checking in System {F} are Equivalent and Undecidable},
+  journal   = {Ann. Pure Appl. Log.},
+  volume    = {98},
+  number    = {1-3},
+  pages     = {111--156},
+  year      = {1999},
+  url       = {https://doi.org/10.1016/S0168-0072(98)00047-5},
+  doi       = {10.1016/S0168-0072(98)00047-5},
+  timestamp = {Fri, 21 Feb 2020 21:18:20 +0100},
+  biburl    = {https://dblp.org/rec/journals/apal/Wells99.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{kfoury1993-undecidability,
+  author    = {A. J. Kfoury and
+               Jerzy Tiuryn and
+               Pawel Urzyczyn},
+  title     = {The Undecidability of the Semi-unification Problem},
+  journal   = {Inf. Comput.},
+  volume    = {102},
+  number    = {1},
+  pages     = {83--101},
+  year      = {1993},
+  url       = {https://doi.org/10.1006/inco.1993.1003},
+  doi       = {10.1006/inco.1993.1003},
+  timestamp = {Fri, 12 Feb 2021 22:16:38 +0100},
+  biburl    = {https://dblp.org/rec/journals/iandc/KfouryTU93.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@inproceedings{jaber2016-defenitional,
+  author    = {Guilhem Jaber and
+               Gabriel Lewertowski and
+               Pierre{-}Marie P{\'{e}}drot and
+               Matthieu Sozeau and
+               Nicolas Tabareau},
+  editor    = {Martin Grohe and
+               Eric Koskinen and
+               Natarajan Shankar},
+  title     = {The Definitional Side of the Forcing},
+  booktitle = {Proceedings of the 31st Annual {ACM/IEEE} Symposium on Logic in Computer
+               Science, {LICS} '16, New York, NY, USA, July 5-8, 2016},
+  pages     = {367--376},
+  publisher = {{ACM}},
+  year      = {2016},
+  url       = {https://doi.org/10.1145/2933575.2935320},
+  doi       = {10.1145/2933575.2935320},
+  timestamp = {Wed, 11 Aug 2021 11:51:25 +0200},
+  biburl    = {https://dblp.org/rec/conf/lics/JaberLPST16.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+@article{DBLP:journals/pacmpl/Ahman18,
+  author    = {Danel Ahman},
+  title     = {Handling fibred algebraic effects},
+  journal   = {Proc. {ACM} Program. Lang.},
+  volume    = {2},
+  number    = {{POPL}},
+  pages     = {7:1--7:29},
+  year      = {2018},
+  url       = {https://doi.org/10.1145/3158095},
+  doi       = {10.1145/3158095},
+  timestamp = {Wed, 17 Feb 2021 08:54:00 +0100},
+  biburl    = {https://dblp.org/rec/journals/pacmpl/Ahman18.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@article{Vakar2015-framework,
+  author    = {Matthijs V{\'{a}}k{\'{a}}r},
+  title     = {A Framework for Dependent Types and Effects},
+  journal   = {CoRR},
+  volume    = {abs/1512.08009},
+  year      = {2015},
+  url       = {http://arxiv.org/abs/1512.08009},
+  eprinttype = {arXiv},
+  eprint    = {1512.08009},
+  timestamp = {Mon, 13 Aug 2018 16:46:56 +0200},
+  biburl    = {https://dblp.org/rec/journals/corr/Vakar15a.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@phdthesis{vakar-thesis,
+  author    = {Matthijs V{\'{a}}k{\'{a}}r},
+  title     = {In search of effectful dependent types},
+  school    = {University of Oxford, {UK}},
+  year      = {2017},
+  url       = {https://ethos.bl.uk/OrderDetails.do?uin=uk.bl.ethos.729820},
+  timestamp = {Tue, 05 Apr 2022 10:59:10 +0200},
+  biburl    = {https://dblp.org/rec/phd/ethos/Vakar17.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+
+@online{four-coloring-comment,
+  author = {André Henriques},
+  title = {four color proof},
+  year = 2010,
+  HOWPUBLISHED = {MathOverflow},
+  url = {https://mathoverflow.net/questions/41121/four-color-proof#comment96968_41124},
+}
+
+@inproceedings{ziliani2014-towards,
+  title={Towards a better-behaved unification algorithm for Coq},
+  author={Ziliani, Beta and Sozeau, Matthieu},
+  year={2014}
+}
+
+@article{plotkin1970-anote,
+  title={A Note on Inductive Generalization},
+  author={Gordon D. Plotkin},
+  year={1970},
+  journal = {Machine Intelligence},
+  volume = {5},
+  number = {1},
+  pages = {153--163},
+
+}
+
+@inproceedings{reynolds1970-transform,
+  title={Transformational systems and the algebraic structure of atomic formulas.},
+  author={Reynolds J.C.},
+  year={1970},
+  journal = {Machine Intelligence},
+  volume = {5},
+  number = {1},
+  pages = {135--151},
+}

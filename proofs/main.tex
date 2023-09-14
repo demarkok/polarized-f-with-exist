@@ -5,12 +5,10 @@
 \usepackage{hyperref}
 \usepackage{mathpartir}
 
-
 \input{prelude.tex}
 
 
 \input{../_build/_gen/included.tex}
-
 
 
 
@@ -276,16 +274,29 @@ $[[args]]$ is a list of values, which are arguments of a function.
 $[[fv(iP)]]$ and $[[fv(iN)]]$ denote the set of free variables 
 in a type $[[iP]]$ and $[[iN]]$, respectively.
 
-
 \bigskip
 
-\ottgrammartabular{
-  \ottiP\ottinterrule
-  \ottiN\ottinterrule
-}
+% \ottgrammartabular{
+%   \ottiP\ottinterrule
+%   \ottiN\ottinterrule
+% }
+
+\begin{definition}[Declarative Types]
+  \hfill
+  \begin{multicols}{2}
+    \ottgrammartabular{
+      \ottiN\ottinterrule
+    }
+
+    \ottgrammartabular{
+      \ottiP\ottinterrule
+    }
+    \columnbreak
+  \end{multicols}
+\end{definition}
 
 \subsection{Equalities}
-For simplicity, assume alpha-equivalent terms equal. 
+For simplicity, we assume alpha-equivalent terms equal.
 This way, we assume that substitutions do not capture bound variables.
 Besides, we equate
 $[[∀pas.∀pbs.iN]]$ with $[[∀pas,pbs.iN]]$, 
@@ -306,8 +317,24 @@ $[[Γ ⊢ iP]]$ and $[[Γ ⊢ iN]]$ denote that the type is well-formed in the c
 which, in fact, means that each free type variable of the type is contained in $[[Γ]]$
 (it will be shown later in \cref{lemma:wf-soundness,lemma:wf-ctxt-equiv}).
 
-\hfill\\
-\ottdefnsWFT
+Notice that checking the well-formedness of a type
+is an \emph{algorithmic} procedure, in which 
+both the context and the type are considered inputs.
+In other words, it is syntax-directed and mode-correct 
+(according to \cite{dunfieldBidirectionalTyping2020}), 
+which means that 
+
+\begin{algorithm}[Type Well-formedness]
+  \hfill
+  
+  \begin{multicols}{2}
+  \ottdefnWFTNiWF{}
+  \columnbreak
+
+  \ottdefnWFTPiWF{}
+  \end{multicols}
+
+\end{algorithm}
 
 
 \subsection{Substitutions}
@@ -317,20 +344,22 @@ which, in fact, means that each free type variable of the type is contained in $
   are represented by total functions form variables to types, preserving the polarity. 
 \end{definition}
 
-\begin{definition}[Substitution Application]
-  Substitution application (denoted as $[[ [σ]iP ]]$ or $[[ [σ]iN ]]$) 
-  is defined congruently as follows:
-  \begin{itemize}
-    \item $[[ [σ]α⁺ ]] = [[σ]] ([[α⁺]])$;
-    \item $[[ [σ]α⁻ ]] = [[σ]] ([[α⁻]])$;
-    \item $[[ [σ]↓iN ]] = [[↓[σ]iN]]$;
-    \item $[[ [σ]↑iP ]] = [[↑[σ]iP]]$;
-    \item $[[ [σ]∃nas.iQ ]] = [[∃nas.[σ]iQ]]$, 
-    \item $[[ [σ]∀pas.iN ]] = [[∀pas.[σ]iN]]$(here we assume that $[[nas]]$ and $[[pas]]$ are lists of fresh variables, 
-      that is the variable capture never happens);
-    \item $[[ [σ](iP → iN) ]] = [[ [σ]iP → [σ]iN ]]$.
-  \end{itemize}
-\end{definition}
+\begin{algorithm}[Substitution Application]
+  Substitution application is denoted as $[[ [σ]iP ]]$ and $[[ [σ]iN ]]$.
+  It is defined naturally as follows:
+    \begin{multicols}{2}
+      \begin{itemize}
+        \item[] $[[ [σ]α⁺ ]] = [[σ]] ([[α⁺]])$;
+        \item[] $[[ [σ]α⁻ ]] = [[σ]] ([[α⁻]])$;
+        \item[] $[[ [σ]↓iN ]] = [[↓[σ]iN]]$;
+        \item[] $[[ [σ]↑iP ]] = [[↑[σ]iP]]$;
+        \item[] $[[ [σ](iP → iN) ]] = [[ [σ]iP → [σ]iN ]]$.
+        \item[] $[[ [σ]∃nas.iQ ]] = [[∃nas.[σ]iQ]]$, 
+        \item[] $[[ [σ]∀pas.iN ]] = [[∀pas.[σ]iN]]$ (here we assume that $[[nas]]$ and $[[pas]]$ are lists of fresh variables, 
+          that is the variable capture never happens);
+      \end{itemize}
+    \end{multicols}
+\end{algorithm}
 
 \begin{definition}[Substitution Signature]
   The signature $[[Γ' ⊢ σ : Γ]]$ means that
@@ -387,7 +416,7 @@ the corresponding types.
   \begin{itemize}
     \item [$-$]
       Suppose that $[[nas]]$ is a list of negative type variables,
-      and $[[iNs]]$ is a list of negative types of the same length 
+      and $[[iNs]]$ is a list of negative types of the same length.
       Then $[[iNs / nas]]$ denotes a substitution such that 
       \begin{enumerate}
         \item for $[[αi⁺ ∊ {nas}]]$, $[[ [iNs / nas] αi⁺]] = [[iNi]]$;
@@ -401,10 +430,48 @@ the corresponding types.
 
 
 \subsection{Declarative Subtyping}
-\ottdefnsDOne
+Subtyping is one of the key mechanism of our system. 
+It realizes the polymorphism: abstract $[[∀]]$ and 
+$[[∃]]$ types can be used where concrete types are expected,
+exactly because the subtyping relation between them.
 
-\subsection{Declarative Equivalence}
-\ottdefnsEOne
+
+\begin{definition} 
+  \label{def:subDOne}
+  \hfill
+  
+  \begin{multicols}{2}
+    \ottdefnDOneNsub{}
+    \columnbreak\\
+    \ottdefnDOnePsup{}
+  \end{multicols}
+  
+  \begin{multicols}{2}
+    \ottdefnDOneNeq{}
+    \columnbreak\\
+    \ottdefnDOnePeq{}
+  \end{multicols}
+\end{definition}
+
+The following observations about the declarative subtyping are worth noting:
+\begin{itemize}
+  \item \ruleref{\ottdruleDOneNVarLabel} and \ruleref{\ottdruleDOnePVarLabel}
+    make the subtyping reflexive on variables (and further, on any type).
+  \item \ruleref{\ottdruleDOneArrowLabel} is standard: the arrow is covariant on the
+    resulting type and contravariant on the argument type.
+  \item \ruleref{\ottdruleDOneShiftDLabel}  and \ruleref{\ottdruleDOneShiftULabel} are non-standard:
+    the subtyping is \emph{invariant} for shifts. 
+    This way, the subtyping of shifted types in one direction implies the subtyping
+    in the opposite direction.
+    Although this rule restricts the
+    subtyping relation, it makes the system decidable.
+  \item \ruleref{\ottdruleDOneForallLabel} and \ruleref{\ottdruleDOneExistsLabel} are the only
+    non-algorithmic rules: the substitution for the quantified variable is
+    not specified, those, these rules `drive' the subtyping relation.
+\end{itemize}
+
+In the next section, we present the sound and complete algorithm
+checking whether one type is a subtype of another according to \cref{def:subDOne}. 
 
 \section{Algorithmic Type System}
 
@@ -418,53 +485,62 @@ This way, we add two base cases to the grammar of
 positive and negative types, and use highlight to denote that the type
 can potentially contain algorithmic variables.
 
- 
 \begin{definition}[Algorithmic Types]
-  \hfill \\
-\ottgrammartabular{
-  \ottuP\ottinterrule
-  \ottuN\ottinterrule
-}
+  \label{def:algo-types}
+  \hfill\\
+  \begin{multicols}{2}
+    \ottgrammartabular{
+      \ottuN\ottinterrule
+    }
+
+    \ottgrammartabular{
+      \ottuP\ottinterrule
+    }
+    \columnbreak
+  \end{multicols}
 \end{definition}
 
 \subsection{Fresh Variable Selection}
 \label{sec:fresh-selection}
 Both the subtyping and the type inference algorithm
 rely on the ability to select fresh, unused variables.
-In the inference rules, it is indicated as 
-$[[{varset} are fresh]]$. 
+For a set of variables $[[varset]]$, it is indicated as 
+$[[varset are fresh]]$ in the inference rules.
 We assume that the selection subroutine always succeeds and is 
 deterministic. In other words, whenever it is called in 
 an algorithmic inference rule, it returns the same result, 
 uniquely determined by the input of this rule.
 
 \subsection{Variable Algorithmization}
+\label{sec:variable-algorithmization}
 
-In several places of our algorithm, in particular, during anti-unification,
+In several places of our algorithm, in particular, during
+algorithmic subtyping,
 we turn a declarative type into the algorithmic one
 via replacing certain type variables with fresh algorithmic variables.
+We call this procedure \emph{variable algorithmization}, and define it as follows.
 
 \begin{definition}[Variable Algorithmization]
   Suppose that $[[nas]]$ is a list of negative type variables
   and $[[nuas]]$ is a list of negative algorithmic variables of the same length. 
-  Then $[[ nuas/nas ]]$ is a substitution-like procedure turning each $[[αi⁻ ∊ {nas}]]$ 
-  into $[[αî⁻ ∊ {nuas}]]$.
+  Then $[[ nuas/nas ]]$ is a substitution-like procedure replacing each $[[αi⁻ ∊ {nas}]]$
+  in a type for $[[αî⁻ ∊ {nuas}]]$.
 \end{definition}
 
-Conversely, we can turn algorithmic type variables
+Conversely, we have the opposite procedure turning algorithmic type variables
 into declarative type variables via \emph{dealgorithmization}.
 
 \begin{definition}[Variable Dealgorithmization]
   Suppose that $[[nuas]]$ is a list of negative algorithmic variables
   and $[[nas]]$ is a list of negative type variables of the same length. 
-  Then $[[ nas/nuas ]]$ is a substitution-like procedure turning each
-  $[[αî⁻ ∊ {nuas}]]$ into $[[αi⁻ ∊ {nas}]]$.
+  Then $[[ nas/nuas ]]$ is a substitution-like procedure replacing each
+  $[[αî⁻ ∊ {nuas}]]$ in a type for $[[αi⁻ ∊ {nas}]]$.
 \end{definition}
 
 
 \subsection{Contexts and Well-formedness}
 
-\begin{definition}[Algorithmic Type Context]
+\begin{definition}[Algorithmic Type Context $[[Ξ]]$]
   \hfill \\
   Algorithmic type context $[[Ξ]]$ is represented by a set of 
   \emph{algorithmic} type variables ($[[α̂⁺]]$, $[[α̂⁻]]$, $[[β̂⁺]]$, \dots).
@@ -477,8 +553,18 @@ $[[Γ]]$ and $[[Ξ]]$, which means that each algorithmic variable
 of the type is contained in $[[Ξ]]$, and each free declarative type variable
 of the type is contained in $[[Γ]]$.
 
-\hfill\\
-\ottdefnsWFAT
+\begin{algorithm}[Algorithmic Type Well-formedness]
+  \hfill
+  
+  \begin{multicols}{2}
+  \ottdefnWFATNauWF{}
+  \columnbreak
+
+  \ottdefnWFATPauWF{}
+  \end{multicols}
+
+\end{algorithm}
+
 
 Algorithmic Type Context are used in the unification algorithm.
 In the subtyping algorithm, 
@@ -487,7 +573,7 @@ In the subtyping context, each algorithmic variable is associated with a
 context it must be instantiated in 
 (i.e. the context in which the type replacing the variable must be well-formed).
 This association is represented by \emph{algorithmic subtyping context} $[[Θ]]$.
-\begin{definition}[Algorithmic Subtyping Context]
+\begin{definition}[Algorithmic Subtyping Context $[[Θ]]$]
   \hfill \\
   Algorithmic Subtyping Context $[[Θ]]$ is represented by a set of 
   entries of form $[[ α̂⁺[Γ] ]]$ and $[[ α̂⁻[Γ] ]]$,
@@ -498,8 +584,6 @@ This association is represented by \emph{algorithmic subtyping context} $[[Θ]]$
 
   $[[dom(Θ)]]$ denotes the set of variables appearing in $[[Θ]]$:
   $[[dom(Θ)]] = \{ [[α̂±]] \mid [[α̂±[Γ] ]] \in [[Θ]] \}$.
-
-
   If $[[ α̂±[Γ] ]] \in [[Θ]]$, we denote $[[Γ]]$ as $[[Θ(α̂±)]]$.
 \end{definition}
 
@@ -508,7 +592,7 @@ This association is represented by \emph{algorithmic subtyping context} $[[Θ]]$
 
 Substitution that operates on algorithmic type variables is denoted as
 $[[uσ]]$. It is defined as a total function from algorithmic 
-type variables to non-algorithmic types, preserving the polarity.
+type variables to \emph{declarative} types, preserving the polarity.
 
 The signature $[[Θ ⊢ uσ : Ξ]]$ means that
 $[[Ξ ⊆ dom(Θ)]]$ and 
@@ -518,6 +602,7 @@ and for each variable not appearing in $[[dom(Θ)]]$,
 it acts as identity.
 
 \begin{definition}[Signature of Algorithmic Substitution]
+  \label{def:algo-subst-sig}
   \hfill
   \begin{itemize}
     \item $[[Θ ⊢ uσ : Ξ]]$ means that
@@ -535,14 +620,17 @@ it acts as identity.
   \end{itemize}
 \end{definition}
 
-Anti-unification substitution is denoted as $[[aus]]$ and $[[ausr]]$.
+In the anti-unification algorithm, we use another kind of substitution.
 In contrast to algorithmic substitution $[[uσ]]$,
 it allows mapping algorithmic variables to
-\emph{algorithmic} terms.
+\emph{algorithmic} types.
+Additionally, anti-unification substitution is restricted to the
+\emph{negative} segment of the language.
+Anti-unification substitution is denoted as $[[aus]]$ and $[[ausr]]$.a
 
 The pair of contexts $[[Γ]]$ and $[[Ξ]]$,
-in which the results of the anti-unification substitutions 
-are formed, is fixed for the whole substitution.
+in which the results of an anti-unification substitution 
+are formed, is fixed for this substitution.
 This way, $[[Γ; Ξ2 ⊢ aus : Ξ1]]$ means that $[[aus]]$ maps each negative algorithmic
 variable appearing in $[[Ξ1]]$ to a term well-formed in $[[Γ]]$ and $[[Ξ2]]$.
 
@@ -554,25 +642,228 @@ variable appearing in $[[Ξ1]]$ to a term well-formed in $[[Γ]]$ and $[[Ξ2]]$.
   \end{enumerate}
 \end{definition}
 
-\subsection{Normalization}
+\subsection{Equivalence and Normalization}
 
-\subsubsection{Ordering}
-\ottdefnsOrder
+The subtyping-induced equivalence (\cref{def:subDOne}) is non-trivial:
+there are types that are subtypes of each other but not equal. 
+For example, $[[∀α⁺,β⁺.α⁺ → ↑β⁺]]$ is a subtype and a supertype of $[[∀α⁺,β⁺.β⁺ → ↑α⁺]]$
+and of, for example, $[[∀α⁺,β⁺.β⁺ → ↑∃γ⁻.α⁺]]$, 
+although these types are not alpha-equivalent.
+For the subtyping algorithm, it is crucial to be able to check whether
+two types are equivalent, without checking mutual subtyping. 
+For this purpose we define the normalization procedure, 
+which allows us to uniformly choose the representative type of the equivalence class.
+This way, the equivalence checking is reduced to normalization and equality checking. 
 
-\subsubsection{Quantifier Normalization}
-\ottdefnsNrm
+For clarification of the proofs and better understanding of the system, 
+we introduce an intermediate relation---\emph{declarative equivalence}. 
+As will be shown in \cref{lemma:equiv-soundness,lemma:equiv-completeness}, 
+this relation is equivalent to the subtyping-induced equivalence, but does not 
+depend on it. Although this relation is not defined algorithmically, 
+it gives the intuition of what types our system considers equivalent.
+Specifically, in addition to \emph{alpha-equivalence}, 
+our system allows for \emph{reordering of adjacent quantifiers},
+and \emph{introduction/elimination of unused quantifiers}.
 
-We also define normalization of a substitution pointwise:
-\begin{definition}[Substitution Normalization]
-  For a substitution $[[σ]]$, we define $[[nf(σ)]]$
-  as a substitution that maps $[[α±]]$ into $[[nf([σ]α±)]]$.
+The non-trivial rules of the declarative equivalence are
+\ruleref{\ottdruleEOneForallLabel} and \ruleref{\ottdruleEOneExistsLabel}.
+Intuitively, the variable bijection $[[μ]]$ reorders the quantifiers before
+the recursive call on the body of the quantified type. 
+It will be covered formally in \cref{sec:decl-equiv-lemmas}.
+
+\begin{definition}[Declarative Type Equivalence]
+  \hfill
+  
+  \begin{multicols}{2}
+  \ottdefnEOneNeq{}
+  \columnbreak\\
+  \ottdefnEOnePeq{}
+  \end{multicols}
+
 \end{definition}
 
-\subsection{Unification}
-\ottdefnsU
+As the equivalence includes arbitrary reordering of quantified variables,
+the normalization procedure is needed to choose the canonical order.
+For this purpose, we introduce an auxiliary procedure---variable ordering. 
+Intuitively, $[[ord varset in iN]]$ returns a list of variables from $[[varset]]$
+in the order they appear in $[[iN]]$.
 
-\subsection{Algorithmic Subtyping}
-\ottdefnsA
+\begin{algorithm}[Variable Ordering]
+  \label{alg:var-ordering}
+  \hfill
+  
+  \begin{multicols}{2}
+  \ottdefnONVar{}
+  \columnbreak\\
+  \ottdefnOPVar{}
+  \end{multicols}
+
+  Analogously, the variable can be ordered in 
+  an \emph{algorithmic} type ($[[ord varset in uP]]$ and 
+  $[[ord varset in uN]]$). In these cases, we treat the algorithmic variables
+  as if they were declarative variables.
+
+\end{algorithm}
+
+Next, we use the variable ordering in the normalization procedure. 
+Specifically, normalization recursively traverses the type, 
+and for each quantified case reorders the quantified variables in a 
+canonical order dictated by \cref{alg:var-ordering}, removing unused ones.
+
+\begin{algorithm}[Type Normalization]
+  \hfill
+  
+  \begin{multicols}{2}
+  \ottdefnNrmNNorm{}
+  \columnbreak\\
+  \ottdefnNrmPNorm{}
+  \end{multicols}
+
+  Analogously,  we define normalization of algorithmic types 
+  by adding base cases:
+
+  \begin{multicols}{2}
+  \ottdefnNrmuNNorm{}
+  \columnbreak\\
+  \ottdefnNrmuPNorm{}
+  \end{multicols}
+
+\end{algorithm}
+
+\begin{algorithm}[Substitution Normalization]
+  For a substitution $[[σ]]$, we define $[[nf(σ)]]$
+  as a substitution that maps $[[α±]]$ into $[[nf([σ]α±)]]$.
+\end{algorithm}
+
+The rest of this chapter is devoted to the
+central algorithm of the type system---the subtyping algorithm. 
+\Cref{fig:subtyping-algo} shows the dependency graph of the subtyping algorithm.
+The nodes represent the algorithmic procedures, and the edge $A \to B$ means that 
+$A$ uses $B$ as a sub-procedure.
+
+
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    [>=stealth',node distance=2.6cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
+
+
+    % Define nodes
+    \node[] (1) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$\\(\cref{sec:subtyping})};
+    \node[below of=1] (3) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$\\(\cref{sec:subtyping})};
+    \node[left=2cm of 3] (2) {Subtyping Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
+    \node[right=2cm of 3] (5) {Unification\\ $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$\\ $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$\\(\cref{sec:unification})};
+    \node[below of=3] (4) {Upgrade\\$[[upgrade Γ ⊢ iP to Δ = iQ]]$\\(\cref{sec:lub})};
+    \node[below of=2] (6) {Least Upper Bound\\$[[Γ ⊨ iP1 ∨ iP2 = iQ]]$\\(\cref{sec:lub})};
+    \node[below of=6] (7) {Anti-Unification\\$[[Γ ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )]]$\\$[[Γ ⊨ iN1 ≈au iN2 ⫤ ( Ξ , uM , aus1 , aus2 )]]$\\(\cref{sec:antiunification})};
+    \node[below of=5] (8) {Unification Constraint Merge\\$[[Θ ⊢ UC1 & UC2 = UC3]]$\\(\cref{sec:constraint-merge})};
+    
+    % Define edges
+    \draw[->] (1) to (2);
+    \draw[->] (1) to (3);
+    \draw[->] (1) to (5);
+    \draw[->] (2) to (3);
+    \draw[->] (2) to (6);
+    \draw[->] (3) to (4);
+    \draw[->] (3) to (5);
+    \draw[->] (4) to (6);
+    \draw[->] (5) to (8);
+    \draw[->] (6) to (7);
+  \end{tikzpicture}  
+  \caption{Dependency graph of the subtyping algorithm}
+  \label{fig:subtyping-algo}
+\end{figure}
+
+\subsection{Subtyping}
+\label{sec:subtyping}
+
+Now, we present the subtyping algorithm itself.
+Although the algorithm is presented as a single procedure,
+is important for the structure of the proof that the positive subtyping algorithm
+does not invoke the negative one. This way, the correctness of the positive 
+subtyping will be proved independently, and used afterwards to prove the
+correctness of the negative subtyping.
+
+
+\begin{algorithm}[Subtyping]
+  \hfill
+  
+  \begin{multicols}{2}
+  \ottdefnANsub{}
+  \columnbreak\\
+  \ottdefnAPsup{}
+  \end{multicols}
+\end{algorithm}
+
+The inputs of the subtyping algorithm are the declarative context $[[Γ]]$,
+the subtyping context $[[Θ]]$ (it specifies in which contexts the algorithmic variables
+must be instantiated), and the types themselves: $[[uN]]$ and $[[iM]]$ for the negative case,
+and $[[uP]]$ and $[[iQ]]$ for the positive case. 
+As one of the invariants, we require
+$[[iM]]$ and $[[iQ]]$ to be declarative (i.e. not containing algorithmic variables).
+The output of the algorithm is a set of \emph{subtyping constraints} $[[SC]]$,
+which will be discussed in the next section.
+
+Let us overview the inference rules of the subtyping algorithm.
+\begin{itemize}
+  \item \ruleref{\ottdruleANVarLabel} and \ruleref{\ottdruleAPVarLabel} 
+    are the base cases. They copy the corresponding declarative rules and
+    ensure the reflexivity.
+  \item \ruleref{\ottdruleAPUVarLabel} is the only case generating 
+    subtyping constraints. In this case, we must ensure
+    that the resulting constrains guarantees that the instantiation of 
+    $[[â⁺]]$ is a supertype of $[[iP]]$.
+    However, the obvious constraint $[[â⁺ :≥ iP]]$ might be problematic
+    if  $[[iP]]$ is not well-formed in $[[Θ(â⁺)]]$. For this reason,
+    we use the \emph{upgrade} procedure (it will be covered in \cref{sec:lub})
+    to find the minimal supertype of $[[iP]]$, which is well-formed in $[[Θ(â⁺)]]$. 
+
+    Notice that this rule does not have a negative counterpart. This is
+    because one one of the important invariants of the algorithm: 
+    in the negative subtyping, only positive algorithmic variables
+    can occur in the types. 
+    
+  \item \ruleref{\ottdruleAShiftDLabel} and \ruleref{\ottdruleAShiftULabel} are the
+    \emph{shift} rules. According to the declarative system,
+    shifted subtyping requires equivalence. In presence of the algorithmic 
+    variables, it means that the left and the right-hand sides of the subtyping
+    must be unified. Hence, the shift rules invoke the unification algorithm, 
+    which will be discussed in \cref{sec:unification}. The unification 
+    returns the minimal set of constraints $[[UC]]$, which is necessary
+    and sufficient for the subtyping. 
+
+  \item \ruleref{\ottdruleAArrowLabel}.
+    In this case, the algorithm makes two calls:
+    a recursive call to the negative subtyping algorithm for the argument types,
+    and a call to the positive subtyping algorithm for the result types.
+    After that, the resulting constraints are merged using the
+    \emph{subtyping constraint merge} procedure, 
+    which is discussed in \cref{sec:constraint-merge}.
+  \item \ruleref{\ottdruleAForallLabel} and \ruleref{\ottdruleAExistsLabel}
+    are symmetric. These are the only places where 
+    the algorithmic variables are introduced.
+    It is done by algorithmization (\cref{sec:variable-algorithmization}) 
+    of the quantified variables: these variables are replaced by 
+    fresh algorithmic variables in the body of the quantified type,
+    the algorithmic variables are added to the subtyping context $[[Θ]]$,
+    after that the recursive call is made. Notice that the declarative context
+    $[[Γ]]$ is extended by the quantified variables from the right-hand side,
+    which matches the declarative system.
+\end{itemize}
+
+
+Then soundness lemma (\cref{lemma:pos-subt-soundness,lemma:neg-subt-soundness}) 
+and completeness (\cref{lemma:pos-subt-completeness,lemma:neg-subt-completeness})
+of the algorithm together give us the following simplified theorem:
+
+\begin{theorempreview}[Correctness of subtyping algorithm]
+  \hfill
+  \begin{itemize}
+    \item [$-$]  $[[ Γ ; · ⊨ uN ≤ iM ⫤ · ]]$ is equivalent to $[[ Γ ⊢ iN ≤ iM ]]$;
+    \item [$+$] $[[ Γ ; · ⊨ uP ≥ iQ ⫤ · ]]$ is equivalent to $[[ Γ ⊢ iP ≥ iQ ]]$.
+  \end{itemize}
+\end{theorempreview}
 
 
 \subsection{Constraints}
@@ -582,15 +873,17 @@ The constraints are represented by set of constraint entries.
 
 \begin{definition}[Unification Constraint]
   \hfill
-  \begin{itemize}
-    \item Unification entry (denoted as $[[ucE]]$) is an expression of shape 
+  \begin{description}
+    \item[unification entry] (denoted as $[[ucE]]$) is an expression of shape 
       $[[pua :≈ iP]]$ or $[[nua :≈ iN]]$;
-    \item unification constraint (denoted as $[[UC]]$) is a set of 
+    \item[unification constraint] (denoted as $[[UC]]$) is a set of 
       unification constraint entries.
-  \end{itemize}
+      We denote $\{[[α̂±]] \mid [[ucE ∊ UC]] \text{ restricting $[[α̂±]]$ }\}$ 
+      as $[[dom(UC)]]$.
+  \end{description}
 \end{definition}
 
-However, in subtyping we need to consider more general
+However, in the subtyping, we need to consider more general
 kind of constraints. Specifically,
 subtyping constraint entries can restrict a variable
 not only to be equivalent to a certain type, but
@@ -598,20 +891,22 @@ also to be a supertype of a positive type.
 
 \begin{definition}[Subtyping Constraint]
   \hfill
-  \begin{itemize}
-    \item Subtyping entry (denoted as $[[scE]]$) is an expression of shape 
+  \begin{description}
+    \item[subtyping entry] (denoted as $[[scE]]$) is an expression of shape 
       $[[pua :≥ iP]]$, $[[nua :≈ iN]]$, or $[[pua :≈ iP]]$;
-    \item subtyping constraint (denoted as $[[SC]]$) is a set of subtyping constraint entries.
-  \end{itemize}
+    \item[subtyping constraint] (denoted as $[[SC]]$) is a set of subtyping constraint entries.
+      We denote $\{[[α̂±]] \mid [[scE ∊ SC]] \text{ restricting $[[α̂±]]$ }\}$ 
+      as $[[dom(SC)]]$.
+  \end{description}
 \end{definition}
 
 \begin{definition}[Well-formed Constraint Entry]
   We say that a constraint entry is well-formed in a context $[[Γ]]$ if
-  the type it restricts the unification variable to is well-formed in $[[Γ]]$.
+  its associated type is well-formed in $[[Γ]]$.
   \begin{itemize}
-    \item $[[Γ ⊢ pua :≥ iP]]$ iff $[[Γ ⊢ iP]]$;
-    \item $[[Γ ⊢ pua :≈ iP]]$ iff $[[Γ ⊢ iP]]$;
-    \item $[[Γ ⊢ nua :≈ iN]]$ iff $[[Γ ⊢ iN]]$.
+    \item[] $[[Γ ⊢ pua :≥ iP]]$ ~iff~ $[[Γ ⊢ iP]]$;
+    \item[] $[[Γ ⊢ pua :≈ iP]]$ ~iff~ $[[Γ ⊢ iP]]$;
+    \item[] $[[Γ ⊢ nua :≈ iN]]$ ~iff~ $[[Γ ⊢ iN]]$.
   \end{itemize}
 \end{definition}
 
@@ -621,15 +916,65 @@ also to be a supertype of a positive type.
   subtyping context $[[Θ]]$ if all its entries are well-formed in
   the corresponding elements of $[[Θ]]$.
   More formally, 
-  $[[Θ ⊢ UC]]$ iff for every $[[ucE]] \in $ $[[UC]]$,
-  such that $[[ucE]]$ restricts $[[α̂±]]$,
-  there exists $[[ α̂±[Γ] ]] \in [[Θ]]$
-  and $[[Γ ⊢ ucE]]$.
+  $[[Θ ⊢ SC]]$ holds iff for every $[[scE]] \in $ $[[SC]]$,
+  such that $[[scE]]$ restricts $[[α̂±]]$,
+  we have $[[Θ(α̂±) ⊢ scE]]$.
+
+  We write $[[Θ ⊢ SC : Ξ]]$ to denote
+  that $[[Θ ⊢ SC]]$ and $[[dom(SC) = Ξ]]$.
+
+  $[[Θ ⊢ UC]]$ and $[[Θ ⊢ UC : Ξ]]$ are defined analogously.
 \end{definition}
 
-Next, define the least upper bound 
-for two subtyping constraints.
-First, we define the least upper bound for entries,
+
+\subsubsection{Constraint Satisfaction}
+
+A constraint entry restricts a type that can be assigned to a variable.
+We say that a type satisfies a constraint entry if it can be assigned
+to the variable restricted by the entry.
+
+\begin{definition}[Type Satisfying a Constraint Entry]
+  \hfill\\
+  \begin{multicols}{2}
+  \ottdefnSATSCEN{}
+  \columnbreak\\
+  \ottdefnSATSCEP{}
+  \end{multicols}
+\end{definition}
+
+We say that a substitution satisfies a constraint---a set of constraint 
+entries if each entry is satisfied by the type assigned to the variable
+by the substitution. 
+
+\begin{definition}[Substitution Satisfying a Constraint]
+  We write $[[Θ ⊢ uσ : SC]]$ to denote that
+  a substitution $[[uσ]]$ satisfies a constraint $[[SC]]$ in a context $[[Θ]]$.
+  It presumes that $[[Θ ⊢ SC]]$ and 
+   means that for any $[[ucE]] \in [[SC]]$, if $[[ucE]]$ restricts $[[α̂±]]$,
+  then $[[Θ(α̂±) ⊢ [uσ]α̂± : ucE]]$.
+
+
+  Unification constraint satisfaction $[[Θ ⊢ uσ : UC]]$ 
+  is defined analogously as a special case of subtyping constraint satisfaction.
+
+\end{definition}
+
+
+Notice that $[[Θ ⊢ uσ : SC]]$ does not 
+imply the signature $[[Θ ⊢ uσ : dom(SC)]]$, because 
+the latter also specifies $[[uσ]]$ outside of the domain $[[dom(SC)]]$
+(see \cref{def:algo-subst-sig}).
+
+
+\subsubsection{Constraint Merge}
+\label{sec:constraint-merge}
+
+In this section, define the least upper bound 
+for constraints, which we call \emph{merge}.
+Intuitively, the merge of two constraints is the least
+constraint such that any substitution satisfying both constraints
+satisfies the merge as well.
+First, we define the merge of entries,
 and then extend it to the set of entries.
 
 \begin{definition} [Matching Entries]
@@ -640,11 +985,14 @@ and then extend it to the set of entries.
 
 Two matching entries formed in the same context $[[Γ]]$ 
 can be merged in the following way:
-\begin{definition}[Merge of Matching Constraint Entries]
+\begin{algorithm}[Merge of Matching Constraint Entries]
   \label{definition:merge-matching-entries}
-   \hfill \\
+   \hfill 
+
   \ottdefnSCME\\
-\end{definition}
+\end{algorithm}
+
+
 
 Unification constraint entries are a special case of subtyping constraint
 entries. They are merged using the same algorithm 
@@ -680,7 +1028,7 @@ is a unification constraint entry.
 % and hence, equivalence is alpha-equivalence 
 % (\cref{corollary:nf-complete-wrt-subt-equiv,corollary:nf-sound-wrt-subt-equiv}).
 
-\begin{definition}[Merge of Subtyping Constraints]
+\begin{algorithm}[Merge of Subtyping Constraints]
   \label{definition:merge-subtyping-constraints}
   Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.
   Then $[[Θ ⊢ SC1 & SC2 = SC]]$
@@ -692,7 +1040,7 @@ is a unification constraint entry.
       such that $[[ucE1]]$ matches with $[[ucE2]]$ restricting variable
       $[[α̂±]]$. 
   \end{itemize}
-\end{definition}
+\end{algorithm}
 
 Unification constraints can be considered 
 as a special case of subtyping constraints,
@@ -716,13 +1064,60 @@ unification constraints is a unification constraint.
   \emph{unification} constraint entries by \cref{lemma:merge-matching-entries-welldef}.
 \end{proof}
 
-\subsection{Constraint Satisfaction}
-\ottdefnsSATSCE
+\Cref{lemma:merge-soundness,lemma:merge-completeness} 
+show the correctness and initiality of the merge operation,
+which can be expressed in the following simplified theorem:
+\begin{theorempreview}[Correctness of Constraint Merge]
+  A substitution $[[uσ]]$ satisfying both constraints
+  $[[SC1]]$ and $[[SC2]]$ 
+  if and only if it satisfies their merge.
+\end{theorempreview}
+
+The unification constraint merge satisfies the same theorem,
+however, because the merge of unification constraint entries 
+$[[ucE1]]$ and $[[ucE2]]$ always results in one of them, 
+a stronger soundness property holds (see \cref{lemma:unif-merge-soundness}):
+\begin{theorempreview}[Soundness of Unification Constraint Merge]
+  If $[[Θ ⊢ UC1 & UC2 = UC]]$ then $[[UC = UC1 ∪ UC2]]$.
+\end{theorempreview}
+
+\subsection{Unification}
+\label{sec:unification}
+
+The subtyping algorithm calls the following subtask:
+given two algorithmic types, we need to find the most general substitution 
+for the algorithmic variables in these types, such that the resulting 
+types are equivalent. This problem is known as \emph{unification}.
+
+In our case, the unification is restricted in the following way:
+first, before unifying the types, we normalize them, which 
+allows us to reduce (non-trivial) equivalence to (trivial) equality;
+second, we preserve invariants which guarantee that
+one side of the unification is always declarative, which in fact, 
+reduces the unification to the \emph{matching} problem.
+
+The unification procedure
+returns a set of minimal constraints,
+that must be satisfied by a substitution
+unifying the input types.
+
+\begin{algorithm}[Unification]
+  \hfill
+  
+  \begin{multicols}{2}
+  \ottdefnUNUnif{}
+  \columnbreak\\
+  \ottdefnUPUnif{}
+  \end{multicols}
+\end{algorithm}
+
 
 \subsection{Least Upper Bound}
+\label{sec:lub}
 \ottdefnsLUB
 
 \subsection{Antiunification}
+\label{sec:antiunification}
 \ottdefnsAU
 
 
@@ -755,20 +1150,22 @@ unification constraints is a unification constraint.
 \input{../_build/_gen/tex/wf-lemmas.tex}
 
 \subsection{Substitution}
-
 \input{../_build/_gen/tex/subst-lemmas.tex}
 
 \subsection{Declarative Subtyping}
 \input{../_build/_gen/tex/decl-subtyping-lemmas.tex}
 
+\subsection{Equivalence}
+\label{sec:decl-equiv-lemmas}
+\input{../_build/_gen/tex/equiv-lemmas.tex}
+
 \subsection{Variable Ordering}
 \input{../_build/_gen/tex/ord-lemmas.tex}
+
 
 \subsection{Normaliztaion}
 \input{../_build/_gen/tex/norm-lemmas.tex}
 
-\subsection{Equivalence}
-\input{../_build/_gen/tex/equiv-lemmas.tex}
 
 
 \section{Properties of the Algorithmic Type System}
@@ -828,5 +1225,7 @@ unification constraints is a unification constraint.
 
 \subsection{Correctness of the Typing Algorithm}
 \input{../_build/_gen/tex/alg-typing-lemmas.tex}
+
+\printbibliography
 
 \end{document}

@@ -1,7 +1,7 @@
 defns
   SATSCE :: 'SATSCE' ::=
 
-  defn Γ ⊢ iP : scE :: :: SATSCEP :: '' {{ com Positive type satisfies with the subtyping constraint entry }} by
+  defn Γ ⊢ iP : scE :: :: P :: '' {{ com Positive constraint entry satisfaction }} by
 
   Γ ⊢ iP ≥ iQ
   -------------------- :: Sup
@@ -11,7 +11,7 @@ defns
   -------------------- :: PEq
   Γ ⊢ iP : (α̂⁺ :≈ iQ)
 
-  defn Γ ⊢ iN : scE :: :: SATSCEN :: '' {{ com Negative type satisfies with the subtyping constraint entry }} by
+  defn Γ ⊢ iN : scE :: :: N :: '' {{ com Negative constraint entry satisfaction }} by
 
   Γ ⊢ iN ≈ iM
   -------------------- :: NEq

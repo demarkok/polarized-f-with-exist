@@ -1,7 +1,9 @@
 defns
   Order :: 'O' ::=
 
-  defn ord varset in iN = ordVars :: :: NVar :: '' by
+  defn ord varset in iN = ordVars :: :: NVar :: ''
+  {{ com variable ordering in a negative type }}
+   by
 
   na ∊ varset
   ---------------------  :: NVarIn
@@ -26,6 +28,7 @@ defns
 
 
   defn ord varset in iP = ordVars :: :: PVar :: '' by
+  {{ com variable ordering in a positive type }}
 
   pa ∊ varset
   ---------------------  :: PVarIn

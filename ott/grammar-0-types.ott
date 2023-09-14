@@ -73,7 +73,7 @@ s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
 
 scE {{ tex e }} :: 'scE_' ::= {{ com entry of a subtyping constraint }}
    | pua :≈ iP            ::   :: PEq 
-   | nua :≈ iN            ::   :: NEq 
+   | nua :≈ iN            ::   :: NEq
    | pua :≥ iP            ::   :: Sup 
    | ( scE )              :: S :: paren
    | SC ( nua )           :: M :: NSelect
@@ -117,8 +117,8 @@ grammar
 
 aus {{ tex \widehat{\tau} }}, ausr {{ tex \widehat{\rho} }} :: 'aus_' ::= {{ com anti-unification substitution }}
    | ·                    ::   :: Empty
-   | nua :≈ iN            ::   :: NSol  {{ tex [[nua]] :\approx [[iN]] }}
-   | nua :≈ uN            ::   :: NuSol {{ tex [[nua]] :\approx [[uN]] }}
+   | nua ↦ iN            ::   :: NSol  
+   | nua ↦ uN            ::   :: NuSol
    | nas / nuas           ::   :: NegFromUSubs
    | iNs / nuas           ::   :: Neg
    | aus1 ∪ aus2          ::   :: Union
@@ -342,7 +342,7 @@ nubs {{ tex \vv{ \widehat{\beta}^{-} } }}
 
 
 
-uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive algorithmic type (potentially with algorithmic variables) }}
+uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive algorithmic type }}
                                                             {{ tex \ngbox{[[uP]]} }} 
    | pua           ::   :: UnifVar 
    | pa            ::   :: Var 
@@ -355,7 +355,7 @@ uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive alg
    | [ umu ] iP    :: M :: AppAUNSub
    | ( uP )        :: S :: Paren
 
-uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative algorithmic type (potentially with algorithmic variables) }}
+uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative algorithmic type }}
                                                              {{ tex \ngbox{[[uN]]} }}
    | nua            ::   :: UnifVar
    | na             ::   :: Var

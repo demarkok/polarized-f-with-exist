@@ -15,6 +15,10 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{scalerel}
 
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+\usetikzlibrary{shapes.multipart}
+
 
 \usepackage{todonotes}
 
@@ -25,13 +29,23 @@
 \usepackage{braket}
 \usepackage{../quiver}
 
+
+
+
+\setlength{\columnsep}{1cm}
+\let\citename\relax
+\usepackage[natbib=true, abbreviate=false, dateabbrev=true, isbn=true, doi=false, urldate=comp, url=false, maxbibnames=9, maxcitenames=2, backref=false, backend=biber, style=alphabetic, language=american, arxiv=false]{biblatex}
+\addbibresource{../biblio.bib}
+
 \newcommand{\niton}{\not\owns}
 
 \newcommand{\ilyam}[1]{{\color{red} \texttt{Ilya:  #1}}}
 
+\newtheorem{algorithm}{Algorithm}
 \newtheorem{definition}{Definition}
 \newtheorem*{notation*}{Notation}
 \newtheorem{theorem}{Theorem}
+\newtheorem*{theorempreview}{Theorem}
 \newtheorem{lemma}{Lemma}
 \newtheorem{corollary}{Corollary}
 \newtheorem{proposition}{Proposition}
@@ -50,6 +64,7 @@
 
 \newcommand{\UB}[0]{\mathsf{UB}}
 \newcommand{\NFUB}[0]{\mathsf{NFUB}}
+
 
 
 % \newcounter{casenum}

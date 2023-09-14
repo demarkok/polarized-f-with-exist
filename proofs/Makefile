@@ -50,7 +50,7 @@ $(GEN_TEXS): $(TEXS) $(CACHE) $(GEN)/included.tex $(PRELUDE) $(STY) | $(GEN_TEX)
 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
 
 main.pdf: $(GEN_TEXS)
-	rubber --pdf $(GEN)/main.tex
+	rubber --module=biber --pdf $(GEN)/main.tex
 
 continuous:
 	make & fswatch -o .. | xargs -n1 -I{} make

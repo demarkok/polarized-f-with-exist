@@ -19,14 +19,18 @@ defns
   ---------------------------- :: ShiftU
   Γ;Θ ⊨ ↑uP ≤ ↑iQ ⫤ lift UC
 
-  Γ;Θ ⊨ uP ≥ iQ ⫤ SC1    Γ;Θ ⊨ uN ≤ iM ⫤ SC2    Θ ⊢ SC1 & SC2 = SC
-  ----------------------------------------------------------------:: Arrow
-  Γ;Θ ⊨ uP → uN ≤ iQ → iM ⫤ SC 
-
   % *[Γ, pbs]
-  {â⁺*} are fresh    Γ, pbs; Θ, â⁺*[Γ, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ SC
+  {â⁺*} are fresh    
+  Γ, pbs; Θ, â⁺*[Γ, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ SC
   ----------------------------------------------------------------- :: Forall
   Γ;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ SC \ {â⁺*}
+
+
+  Γ;Θ ⊨ uP ≥ iQ ⫤ SC1    Γ;Θ ⊨ uN ≤ iM ⫤ SC2    
+  Θ ⊢ SC1 & SC2 = SC
+  --------------------------------------------- :: Arrow
+  Γ;Θ ⊨ uP → uN ≤ iQ → iM ⫤ SC 
+
 
   defn Γ ; Θ ⊨ uP ≥ iQ ⫤ SC :: :: Psup :: ''
   {{ com Positive supertyping }}
@@ -40,7 +44,8 @@ defns
   Γ;Θ ⊨ ↓uN ≥ ↓iM ⫤ lift UC 
 
   % *[Γ, nbs]
-  {â⁻*} are fresh   Γ, nbs; Θ,â⁻*[Γ, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ SC
+  {â⁻*} are fresh   
+  Γ, nbs; Θ,â⁻*[Γ, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ SC
   ---------------------------------------------------------------- :: Exists
   Γ;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ SC \ {â⁻*}
 
