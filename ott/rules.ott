@@ -35,7 +35,7 @@ grammar
     | nua ∉ Ξ                                ::   :: nua_notin_Xi
     | pua ∊ Ξ                                ::   :: pua_in_Xi
     | pua ∉ Ξ                                ::   :: pua_notin_Xi
-    | otherwise                              ::   :: otherwise {{ tex \text{if any other rule is not applicable} }}
+    | otherwise                              ::   :: otherwise {{ tex \text{if other rules are not applicable} }}
     | ordVars1 = ordVars2                    ::   :: ordVars_eq
     | ucE1 = ucE2                            ::   :: ucE_eq
     | scE1 = scE2                            ::   :: scE_eq

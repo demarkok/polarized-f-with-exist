@@ -115,7 +115,10 @@ us {{ tex \widehat{\sigma} }}, uσ {{ tex \widehat{\sigma} }} :: 'us_' ::= {{ co
 
 grammar
 
-aus {{ tex \widehat{\tau} }}, ausr {{ tex \widehat{\rho} }} :: 'aus_' ::= {{ com anti-unification substitution }}
+aus {{ tex \widehat{\tau} }},
+uτ {{ tex \widehat{\tau} }},
+ausr {{ tex \widehat{\rho} }},
+uρ {{ tex \widehat{\rho} }} :: 'aus_' ::= {{ com anti-unification substitution }}
    | ·                    ::   :: Empty
    | nua ↦ iN            ::   :: NSol  
    | nua ↦ uN            ::   :: NuSol

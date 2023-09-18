@@ -65,7 +65,7 @@
         \begin{enumerate}
             \item $[[Γ ; Ξ ⊢ uQ]]$,
             \item $[[Γ ; · ⊢ ausi : Ξ]]$ for $i \in \{1,2\}$
-            are anti-unification solutions, and
+            are anti-unification substitutions, and
             \item $[[ [ausi] uQ = iPi ]]$ for $i \in \{1,2\}$.
         \end{enumerate}
 
@@ -75,7 +75,7 @@
         \begin{enumerate}
             \item $[[Γ ; Ξ ⊢ uM]]$,
             \item $[[Γ ; · ⊢ ausi : Ξ]]$ for $i \in \{1,2\}$
-            are anti-unification solutions, and
+            are anti-unification substitutions, and
             \item $[[ [ausi] uM = iNi ]]$ for $i \in \{1,2\}$.
         \end{enumerate}
     \end{itemize}
@@ -131,14 +131,14 @@
 
                     \item $[[Γ ; · ⊢ ausi : Ξ]]$ and $[[Γ ; · ⊢ aus'i : Ξ']]$
                         Then $[[Γ ; · ⊢ ausi ∪ aus'i : Ξ ∪ Ξ']]$
-                        are well-defined anti-unification solution.
+                        are well-defined anti-unification substitutions.
                         Let us take an arbitrary $[[β̂⁻]] \in [[Ξ ∪ Ξ']]$.
                         If $[[β̂⁻]] \in [[Ξ]]$.
                         then $[[Γ ; · ⊢ ausi : Ξ]]$ implies that $[[ausi]]$, and hence,
                         $[[ausi ∪ aus'i]]$ contains an entry well-formed in $[[Γ]]$.
                         If $[[β̂⁻]] \in [[Ξ']]$, the reasoning is symmetric.
 
-                        $[[ausi ∪ aus'i]]$ is a well-defined anti-unification solution:
+                        $[[ausi ∪ aus'i]]$ is a well-defined anti-unification substitution:
                         any anti-unification variable occurs 
                         uniquely $[[ausi ∪ aus'i]]$, since by \cref{obs:names-defined-by-mapping},
                         the name of the variable is in one-to-one correspondence with 
@@ -215,7 +215,7 @@
             \begin{enumerate}
                 \item $[[Γ ; Ξ' ⊢ uQ']]$,
                 \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$ 
-                are anti-unification solutions, and
+                are anti-unification substitutions, and
                 \item $[[ [aus'i] uQ' = iPi ]]$ for $i \in \{1,2\}$.
             \end{enumerate}
 
@@ -228,7 +228,7 @@
             \begin{enumerate}
                 \item $[[Γ ; Ξ' ⊢ uM']]$,
                 \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$,
-                are anti-unification solutions, and
+                are anti-unification substitutions, and
                 \item $[[ [aus'i] uM' = iNi ]]$ for $i \in \{1,2\}$.
             \end{enumerate}
 
@@ -301,8 +301,7 @@
             if 
             \begin{enumerate}
                 \item $[[Γ ; Ξ' ⊢ uQ']]$,
-                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$
-                are anti-unification solutions , and
+                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$, and
                 \item $[[ [aus'i] uQ' = iPi ]]$ for $i \in \{1,2\}$
             \end{enumerate}
             then there exists $[[ausr]]$ such that
@@ -318,8 +317,7 @@
             if
             \begin{enumerate}
                 \item $[[Γ ; Ξ' ⊢ uM']]$,
-                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$
-                are anti-unification solutions, and
+                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$, and
                 \item $[[ [aus'i] uM' = iNi ]]$ for $i \in \{1,2\}$
             \end{enumerate}
             then there exists $[[ausr]]$ such that

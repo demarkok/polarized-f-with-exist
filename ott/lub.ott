@@ -2,14 +2,14 @@ defns
   LUB :: 'LUB' ::=
 
   defn Γ ⊨ iP1 ∨ iP2 = iQ  :: :: Nsub :: ''
-  {{ com Least Upper Bound (Least Common Supertype) }} by
+  {{ com Least Upper Bound }} by
 
   
   ---------------- :: Var
   Γ ⊨ pa ∨ pa = pa
 
 
-  Γ,· ⊨ nf(↓iN) ≈au nf(↓iM) ⫤ (Ξ, uP, aus1, aus2)
+  Γ ⊨ nf(↓iN) ≈au nf(↓iM) ⫤ (Ξ, uP, aus1, aus2)
   -------------------------------------------------- :: Shift
   Γ ⊨ ↓iN ∨ ↓iM = ∃nas.[nas / ToList Ξ]uP
 

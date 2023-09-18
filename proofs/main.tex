@@ -167,7 +167,7 @@
 \renewcommand{\ottdruleAUShiftUName}[0]{($\uparrow^{[[≈au]]}$)}
 \renewcommand{\ottdruleAUForallName}[0]{($\forall^{[[≈au]]}$)}
 \renewcommand{\ottdruleAUArrowName}[0]{($\rightarrow^{[[≈au]]}$)}
-\renewcommand{\ottdruleAUAUName}[0]{(AU$_{-}$)}
+\renewcommand{\ottdruleAUAUName}[0]{(AU)}
 
 % Γ ⊢ iN 
 \renewcommand{\ottdruleWFTNVarName}[0]{(Var$_{-}^{\text{WF}}$)}
@@ -643,6 +643,7 @@ variable appearing in $[[Ξ1]]$ to a term well-formed in $[[Γ]]$ and $[[Ξ2]]$.
 \end{definition}
 
 \subsection{Equivalence and Normalization}
+\label{sec:equivalence-normalization}
 
 The subtyping-induced equivalence (\cref{def:subDOne}) is non-trivial:
 there are types that are subtypes of each other but not equal. 
@@ -730,6 +731,19 @@ canonical order dictated by \cref{alg:var-ordering}, removing unused ones.
 
 \end{algorithm}
 
+\Cref{lemma:subt-equiv-algorithmization}
+demonstrates that the equivalence of types is the same
+as the equality of their normal forms.
+\begin{theorempreview}[Correctness of Normalization]
+  Assuming the types are well-formed in $[[Γ]]$, 
+  \begin{itemize}
+    \item [$-$] $[[Γ ⊢ iN ≈ iM]]$ if and only if $[[nf(iN) = nf(iM)]]$;
+    \item [$+$] $[[Γ ⊢ iP ≈ iQ]]$ if and only if $[[nf(iP) = nf(iQ)]]$.
+  \end{itemize}
+\end{theorempreview}
+
+
+
 \begin{algorithm}[Substitution Normalization]
   For a substitution $[[σ]]$, we define $[[nf(σ)]]$
   as a substitution that maps $[[α±]]$ into $[[nf([σ]α±)]]$.
@@ -746,7 +760,7 @@ $A$ uses $B$ as a sub-procedure.
 \begin{figure}[h]
   \centering
   \begin{tikzpicture}
-    [>=stealth',node distance=2.6cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
+    [>={Stealth[scale=2]},node distance=2.6cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
 
 
     % Define nodes
@@ -992,6 +1006,30 @@ can be merged in the following way:
   \ottdefnSCME\\
 \end{algorithm}
 
+\begin{itemize}
+  \item \ruleref{\ottdruleSCMEPEqEqLabel} and \ruleref{\ottdruleSCMENEqEqLabel}
+    are symmetric cases. To merge two matching entries restricting
+    a variable to be equivalent to certain types, we check
+    that these types are equivalent to each other.
+    To do so, it suffices to check for \emph{equality} of their normal forms,
+    as discussed in \cref{sec:equivalence-normalization}. 
+    After that, we return the left-hand entry.
+
+  \item \ruleref{\ottdruleSCMEEqSupLabel} and \ruleref{\ottdruleSCMESupEqLabel}
+    are also symmetric. 
+    In this case,
+    since one of the entries requires the variable to be equal to 
+    a type, the resulting entry must also imply that.
+    However, for the soundness, it is needed to ensure that
+    the equating restriction is stronger than the subtyping restriction.
+    For this purpose, the premise invokes the positive subtyping.
+
+  \item \ruleref{\ottdruleSCMESupSupLabel} 
+    In this case, we find the least upper bound of the types from the input
+    restrictions, 
+    and as the output, restrict the variable to be a supertype of the result.
+    The least upper bound procedure will be discussed in \cref{sec:lub}.
+\end{itemize}
 
 
 Unification constraint entries are a special case of subtyping constraint
@@ -1103,7 +1141,6 @@ unifying the input types.
 
 \begin{algorithm}[Unification]
   \hfill
-  
   \begin{multicols}{2}
   \ottdefnUNUnif{}
   \columnbreak\\
@@ -1112,14 +1149,226 @@ unifying the input types.
 \end{algorithm}
 
 
+\begin{itemize}
+  \item \ruleref{\ottdruleUShiftULabel}, \ruleref{\ottdruleUShiftDLabel}, 
+    \ruleref{\ottdruleUForallLabel}, and \ruleref{\ottdruleUExistsLabel}
+    are defined congruently. In the shift rules, the algorithm
+    removes the outermost constructor. In the
+    $[[∀]]$ and $[[∃]]$ rules, it removes the quantifiers,
+    adding the quantified variables to the context $[[Γ]]$.
+    Notice that $[[Θ]]$, which specifies
+    the contexts in which the algorithmic variables must be instantiated,
+    is not changed.
+  \item \ruleref{\ottdruleUNVarLabel} and \ruleref{\ottdruleUPVarLabel} 
+    are the base cases. 
+    Since the sides are equal and free from algorithmic variables,
+    the unification returns an empty constraint. 
+  \item \ruleref{\ottdruleUNVarLabel} and \ruleref{\ottdruleUPVarLabel}
+    are symmetric cases constructing the constraints. 
+    When an algorithmic variable is unified with a type, 
+    we must check that the type is well-formed in the required context,
+    and if it is, we return a constraint restricting the variable
+    to be equivalent to that type.
+  \item \ruleref{\ottdruleUArrowLabel}.
+    In this case, the algorithm makes two recursive calls:
+    it unifies the arguments and the results of the arrows.
+    After that, the resulting constraints are merged using the
+    \emph{unification constraint merge} procedure, 
+    which is discussed in \cref{sec:constraint-merge}.
+    Notice that $[[UC1]]$ and $[[UC2]]$ are guaranteed to be
+    \emph{unification} constraints, not arbitrary \emph{subtyping} 
+    constraints: it is important for modularizing the proofs, 
+    since the properties of the \emph{unification} constraint merge
+    can be proved independently from the \emph{subtyping} constraint merge.
+\end{itemize}
+
 \subsection{Least Upper Bound}
 \label{sec:lub}
-\ottdefnsLUB
 
-\subsection{Antiunification}
+In this section, we present
+the algorithm finding the least common supertype of two positive types. 
+It is used directly by the constraint merge procedure (\cref{sec:constraint-merge}),
+and indirectly, through the type upgrade by positive subtyping
+(\cref{sec:subtyping}). Perhaps, the least upper bound is the least 
+intuitive part of the algorithm, and its correctness will be covered
+in \cref{sec:alg-upper-bounds-proofs}.
+
+\begin{algorithm}[The Least Upper Bound Algorithm]
+  \hfill\\
+  \ottdefnLUBNsub{}
+\end{algorithm}
+
+\begin{itemize}
+  \item \ruleref{\ottdruleLUBVarLabel}
+    The base case is trivial: 
+    the least upper bound of to equal variables
+    is the variable itself.
+  \item \ruleref{\ottdruleLUBShiftLabel}
+    In case both sides of the least upper bound are shifted,
+    the algorithm needs to find the anti-unifier of them. 
+    Intuitively, this is because in general, the upper bounds of
+    $[[↓iN]]$ are $[[∃nas.iP]]$ such that 
+    $[[nas]]$ can be instantiated with some $[[iMs]]$ so that
+    $[[ Γ ⊢ [iMs/nas]iP ≈ ↓iN ]]$ (see \cref{lemma:shape-of-supertypes}).
+  \item \ruleref{\ottdruleLUBExistsLabel}
+    In this case, we move the quantified variables to the context $[[Γ]]$, 
+    and make a recursive call. 
+    It is important to make sure that $[[nas]]$ and $[[nbs]]$ are disjoint.
+    In this case, it is guaranteed that the resulting 
+    $[[fv(iQ)]]$ will be free of $[[nas]]$ and $[[nbs]]$,
+    and thus, the resulting type will be a supertype of both sides
+    (it will be discussed in \cref{lemma:shape-of-supertypes}).
+\end{itemize}
+
+
+In the positive subtyping algorithm (\cref{sec:subtyping}),
+\ruleref{\ottdruleAPUVarLabel} 
+generates a restriction of a variable $[[α̂⁺]]$.
+On the one hand, this restriction must imply 
+$[[â⁺ :≥ iP]]$ for the subtyping to hold.
+On the other hand, the type used in this restriction 
+must be well-formed in a potentially stronger (smaller) 
+context than $[[iP]]$.
+
+To resolve this problem, we define the \emph{upgrade} procedure,
+which for given $[[Δ]]$, $[[pnas]]$, and $[[Δ, pnas ⊢ iP]]$,
+finds $[[Δ ⊢ iQ]]$---the least supertype of $[[iP]]$ 
+among the types well-formed in $[[Δ]]$.
+
+The trick is to make sure that the `forbidden' variables
+$[[pnas]]$ are not used explicitly in the supertypes
+of $[[iP]]$. For this purpose, we
+construct new types $[[iP1]]$ and $[[iP2]]$,
+in each of them replacing the forbidden variables
+with fresh variables $[[pnbs]]$ and $[[pncs]]$,
+and then find the least upper bound of $[[iP1]]$ and $[[iP2]]$.
+It turns out that this renaming forces the common types of 
+$[[iP1]]$ and $[[iP2]]$ to be agnostic to $[[pnas]]$,
+and thus, the supertypes of $[[iP]]$ well-formed in $[[Δ]]$
+are exactly the common supertypes of $[[iP1]]$ and $[[iP2]]$.
+These properties are considered in more details in \cref{sec:upgrade-lemmas}.
+
+\begin{algorithm}[Type Upgrade]
+  \hfill\\
+  \ottdefnLUBUp{}
+\end{algorithm}
+
+\begin{paragraph}{Note on the Greatest Lower Bound}
+  In contrast to the least upper bound, 
+  the general greatest lower bound does not exist in our system.
+  For instance, consider a positive type $[[iP]]$, 
+  together with its non-equivalent
+  supertypes $[[iP1]]$ and $[[iP2]] \not\simeq [[iP1]]$
+  (for example, $[[iP = ↓↑↓γ⁻]]$, $[[iP1 = ∃α⁻.↓↑↓α⁻]]$, 
+  and $[[iP2 = ∃α⁻.↓α⁻]]$).
+  Then for arbitrary $[[iQ]]$ and $[[iN]]$, 
+  let us consider the common subtypes of 
+  $A = [[iQ → ↓↑iQ → ↓↑iQ → iN]]$ and $B = [[iP → ↓↑iP1 → ↓↑iP2 → iN]]$.
+  It is easy to see that $[[∀α⁺.∀β⁺. α⁺ → ↓↑α⁺ → ↓↑β⁺ → iN]]$ and 
+  $[[∀α⁺.∀β⁺. α⁺ → ↓↑β⁺ → ↓↑α⁺ → iN]]$ are
+  both \emph{maximal} common subtypes of $A$ and $B$,
+  and since they are not equivalent, none of them is 
+  the \emph{greatest} one.
+
+  However, we designed the subtyping system in such a way 
+  that the greatest lower bound is not needed:
+  the negative variables are always `protected'
+  by \emph{invariant} shifts ($[[↑]]$ and $[[↓]]$), 
+  and thus, the algorithm can only require
+  a substitution of a negative variable to be 
+  \emph{equivalent} to some type but never 
+  to be a \emph{subtype}.
+\end{paragraph}
+
+\subsection{Anti-unification}
 \label{sec:antiunification}
-\ottdefnsAU
 
+Next, we define the anti-unification procedure,
+also known as the \emph{most specific generalization}.
+As an input, it takes two declarative types
+(e.g., in the positive case $[[iP1]]$ and $[[iP2]]$)
+and a context $[[Γ]]$.
+and returns a type $[[uQ]]$---the generalizer,
+containing negative placeholders 
+(represented by algorithmic variables) from 
+$[[Ξ]]$ and two substitutions $[[uτ1]]$ and $[[uτ2]]$.
+The substitutions replace the placeholders with 
+declarative types well-formed in $[[Γ]]$,
+such that $[[ [uτ1]uQ = iP1 ]]$ and $[[ [uτ2]uQ = iP2 ]]$.
+Moreover, the algorithm guarantees that 
+$[[uQ]]$ is the most specific type with this property: 
+any other generalizer can be turned into $[[uQ]]$ by some substitution
+$[[uρ]]$.
+
+It is important to note the differences between 
+the standard anti-unification and our version.
+First, we only allow the placeholders at \emph{negative} positions,
+which means, for example, that $[[α⁺]]$ and $[[β⁺]]$ cannot be
+generalized. Second, the generated pair of substitutions 
+$[[uτ1]]$ and $[[uτ2]]$ must replace the placeholders with 
+types well-formed in a specified context $[[Γ]]$.
+
+The anti-unification algorithm assumes that the input types 
+are normalized. This way, anti-unification up-to-equality rather than 
+ anti-unification up-to-equivalence is sufficient.
+
+\begin{algorithm}[Anti-unification]
+  \hfill
+  
+  \ottdefnAUAUP{}
+  \ottdefnAUAUN{}
+
+\end{algorithm}
+
+\begin{itemize}
+  \item \ruleref{\ottdruleAUPVarLabel} and \ruleref{\ottdruleAUNVarLabel}
+    are the base cases. 
+    In this case, since the input types are equal, 
+    the algorithm returns this type as a generalizer,
+    without generating any placeholders.
+
+  \item \ruleref{\ottdruleAUShiftDLabel}, \ruleref{\ottdruleAUShiftULabel},
+    \ruleref{\ottdruleAUForallLabel}, and \ruleref{\ottdruleAUExistsLabel}
+    are defined congruently. In the shift rules, the algorithm
+    removes the outermost constructor. In the
+    $[[∀]]$ and $[[∃]]$ rules, it removes the quantifiers.
+    Notice that the algorithm does not add the removed variables to
+    the context $[[Γ]]$. This is because $[[Γ]]$
+    is used to restrict the resulting anti-unification substitutions, 
+    and is fixed throughout the algorithm.
+
+  \item \ruleref{\ottdruleAUAULabel} is the most important rule, 
+    since it generates the placeholders. 
+    This rule only applies if other negative rules failed.
+    Because of that, the anti-unification procedure is 
+    \emph{not} syntax-directed. 
+
+    The generated placeholder is indexed with a pair of 
+    types it is mapped to. It allows the algorithm to 
+    automatically unite the anti-unification solutions 
+    generated by the different branches of 
+    \ruleref{\ottdruleAUArrowLabel}.
+
+    Notice that this rule does not have a positive counterpart,
+    since we only allow negative placeholders.
+
+  \item \ruleref{\ottdruleAUArrowLabel}
+    makes two recursive calls to the anti-unification procedure,
+    and unites the results. Suppose that
+    $[[uτ1]]$  and $[[uτ2]]$ are the substitutions generated by
+    anti-unification of \emph{argument} types of the arrow,
+    and $[[uτ1']]$ and $[[uτ2']]$ are the substitutions generated by 
+    anti-unification of \emph{result} types of the arrow.
+    It is important that if ($[[uτ1]]$, $[[uτ2]]$)
+    and ($[[uτ1']]$, $[[uτ2']]$) send some variables to the same pair of types,
+    i.e., $[[ [uτ1]α̂⁻ = [uτ1']β̂⁻]]$ and $[[ [uτ2]α̂⁻ = [uτ2']β̂⁻]]$,
+    then these variables are equal, i.e., $[[α̂⁻ = β̂⁻]]$.
+    This property is guaranteed by \ruleref{\ottdruleAUAULabel}:
+    the name of the placeholder is determined by the pair of 
+    types it is mapped to.
+\end{itemize}
+
+\newpage
 
 \section{Declarative Typing}
  
@@ -1192,9 +1441,11 @@ unifying the input types.
 \input{../_build/_gen/tex/au-lemmas.tex}
 
 \subsection{Upper Bounds}
+\label{sec:alg-upper-bounds-proofs}
 \input{../_build/_gen/tex/lub-lemmas.tex}
 
 \subsection{Upgrade}
+\label{sec:upgrade-lemmas}
 \input{../_build/_gen/tex/upgrade-lemmas.tex}
 
 \subsection{Constraint Satisfaction}
