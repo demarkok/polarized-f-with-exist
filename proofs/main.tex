@@ -1371,27 +1371,177 @@ are normalized. This way, anti-unification up-to-equality rather than
 \newpage
 
 \section{Declarative Typing}
- 
+
+In the previous section, we presented the 
+type system together with subtyping specification 
+and the algorithm. In this section, 
+we describe the language under this type system, 
+together with the type inference specification
+and algorithm.  
+
 \subsection{Grammar}
 
-\bigskip
-\ottgrammartabular{
-  \ottv\ottinterrule
-  \ottc\ottinterrule
-}
+First, we define the syntax of the language.
+The language combines System F with call-by-push-value 
+style. 
+\begin{definition}[Language Grammar]
+  \hfill
+  \begin{multicols}{2}
+    \ottgrammartabular{
+      \ottc\ottinterrule
+    }
+
+    \ottgrammartabular{
+      \ottv\ottinterrule
+    }
+  \end{multicols}
+\end{definition}
+Notice that the language does not have
+first-class applications: instead, 
+we use applicative let bindings---
+constructions that bind a result of
+a fully applied function to a (positive) 
+variable.
+In the call-by-push-value paradigm, 
+it corresponds to monadic bind or do-notation. 
+Typewise, these let-binders come in two forms:
+annotated and unannotated. The annotated let-binders
+$[[let x:iP = v(args); c]]$ 
+requires the application to infer the annotated
+$[[iP]]$, whereas the unannotated 
+$[[let x = v(args); c]]$ 
+is used when the inferred type is unique. 
+
+A computation of a polymorphic type is constructed 
+using $[[Λα⁺ . c]]$, however, the elimination of $[[∀]]$
+is implicit. Conversely, the existential types
+are constructed implicitly and eliminated 
+using the standard unpack mechanism:
+$[[let∃ (nas, x) = v; c]]$.
+
+Another dual pair of constructions are 
+$[[return v]]$ and $[[{c}]]$. 
+The former allows us to embed a value in a pure 
+computations. The latter, on the contrary,
+encapsulates a thunk of computation in a value. 
+
+Finally, the language has a number standard constructions:
+lambda-abstractions $[[λx:iP.c]]$,
+standard let-bindings $[[let x = v; c]]$,
+and type annotations that can be added to any value or computation:
+$[[(v:iP)]]$ and $[[(c:iN)]]$.
 
 \subsection{Declarative Type Inference}
-\ottdefnsDT
+
+Next, we define the specification of the type 
+inference for our language.
+The judgement $[[Γ ; Φ ⊢ v : iP]]$
+means that under the type context $[[Γ]]$ and
+the variable context $[[Φ]]$, for the value $[[v]]$,
+type $[[iP]]$ is inferrable. The negative form of the judgement is symmetric.
+The application inference judgement $[[ Γ ; Φ ⊢ iN ● args ⇒> iM ]]$ means that if
+a head of type $[[iN]]$ is applied to list of values $[[args]]$,
+then the resulting computation can be typed as $[[iM]]$.
+
+\begin{definition}[Variable Context]
+  The variable typing context $[[Φ]]$
+  is represented by a set of entries of the form
+  $[[x : iP]]$. 
+\end{definition}
+
+\begin{definition}[Declarative Type Inference]
+  \hfill
+  \begin{multicols}{2}
+  \ottdefnDTNInf{}
+  \ottdefnDTPInf{}
+  \ottdefnDTSpinInf{}
+  \end{multicols}
+\end{definition}
+
+Let us discuss selected rules of the declarative system:
+\begin{itemize}
+  \item \ruleref{\ottdruleDTVarLabel}
+    says that the type of a variable is inferred from the context.
+  \item \ruleref{\ottdruleDTThunkLabel} says
+    that the type of a thunk is inferred by shifting up the type of the 
+    contained computation. Symmetrically, \ruleref{\ottdruleDTReturnLabel}
+    infers the type of a return by shifting down the type of the
+    contained value.
+  \item \ruleref{\ottdruleDTPAnnotLabel} and \ruleref{\ottdruleDTNAnnotLabel} are symmetric.
+    They allow the inferred type to be refined by annotating it with a supertype.
+  \item \ruleref{\ottdruleDTNEquivLabel} and \ruleref{\ottdruleDTPEquivLabel}
+    mean that th declarative system allows to infer any type from the equivalence class.
+  \item \ruleref{\ottdruleDTUnpackLabel} is standard for existential types,
+    and its first premise inferring the existential type of the value being unpacked.
+    It is important however that the inferred existential type is normalized. 
+    This is because there might be multiple equivalent existential types 
+    with different order or even number of quantified variables, 
+    and to bind them, the algorithm needs to fix the canonical one.
+  \item \ruleref{\ottdruleDTAppLetAnnLabel} allows us to accommodate the applications
+    with annotated let-bindings. The first premise infers the type of the head of the application,
+    which must be a thunked computation. Then if after applying it 
+    to tha arguments, the resulting type can be equated to the annotated one,
+    we infer the body of the let-binding in the context extended with the bound variable.
+  \item \ruleref{\ottdruleDTAppLetLabel} is similar to \ruleref{\ottdruleDTAppLetAnnLabel},
+    but it is used when the type of the application is unique, and thus, the annotation
+    is redundant. Here $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ uniq]]$ means that
+    if also $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ']]$ then $[[Γ ⊢ iQ ≈ iQ']]$
+\end{itemize}
+
+Let us discuss the rules of the application inference:
+\begin{itemize}
+  \item \ruleref{\ottdruleDTEmptyAppLabel} 
+    is the base case. If the list of arguments is empty, 
+    the inferred type is the type of the head. 
+    However, we relax this specification by allowing it to 
+    infer any other equivalent type. 
+    The relaxation of this rule is enough to guarantee 
+    this property for the whole judgement:
+    if $[[Γ ; Φ ⊢ iN ● args ⇒> iM]]$ then 
+    $[[Γ ; Φ ⊢ iN ● args ⇒> iM']]$ for any equivalent 
+    $[[iM']]$.
+  \item \ruleref{\ottdruleDTArrowAppLabel}
+    is where the application type is inferred: 
+    if the head has an arrow type $[[iQ → iN]]$,
+     we are allowed to apply it as soon as 
+    as soon as the first argument has a type, which is a subtype of $[[iQ]]$.
+  \item \ruleref{\ottdruleDTForallAppLabel}
+    is the rule ensuring the implicit elimination of the universal quantifiers. 
+    If we are applying a polymorphic computation, 
+    we can instantiate its quantified variables with any types,
+    which is expressed by the substitution $[[Γ ⊢ σ : {pas}]]$.
+\end{itemize}
+
+
 
 
 \section{Algorithmic Typing}
 
 \subsection{Algorithmic Type Inference}
-\ottdefnsAT
+\begin{algorithm}
+  \hfill
+  \begin{multicols}{2}
+  \ottdefnATNInf{}
 
-\subsection{Singularity}
-\ottdefnsSING
+  \columnbreak
+  \ottdefnATPInf{}
+  \ottdefnATSpinInf{}
+  \end{multicols}
+\end{algorithm}
 
+\subsection{Constraint Singularity}
+
+\begin{algorithm}
+  \hfill
+  \begin{multicols}{2}
+    \ottdefnSINGscEN{}
+    
+    \columnbreak
+    \ottdefnSINGscEP{}
+  \end{multicols}
+\end{algorithm}
+
+\newpage
 
 \section{Properties of the Declarative Type System}
 

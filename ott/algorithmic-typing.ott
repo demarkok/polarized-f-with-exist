@@ -2,7 +2,7 @@ defns
   AT :: 'AT' ::=
 
   defn Γ ; Φ ⊨ v : iP :: :: PInf :: ''
-  {{ com Positive type inference }}
+  {{ com Positive typing }}
   {{ tex [[Γ]] ; [[Φ]] \vDash [[v]] \colon [[iP]] }} by 
 
   x : iP ∊ Φ
@@ -18,7 +18,7 @@ defns
   Γ; Φ ⊨ (v : iQ) : nf(iQ)
 
   defn Γ ; Φ ⊨ c : iN :: :: NInf :: ''
-  {{ com Negative type inference }}
+  {{ com Negative typing }}
   {{ tex [[Γ]] ; [[Φ]] \vDash [[c]] \colon [[iN]] }} by
 
   Γ ⊢ iM    Γ ; Φ ⊨ c : iN    Γ ; · ⊨ uN ≤ iM ⫤ ·
@@ -43,15 +43,16 @@ defns
 
 
   Γ ⊢ iP   Γ; Φ ⊨ v : ↓iM   
-  Γ; Φ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC1   Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2   
+  Γ; Φ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC1   
+  Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2   
   Θ ⊢ SC1 & SC2 = SC    Γ; Φ, x:iP ⊨ c : iN
-  -------------------------------------------------------------- :: AppLetAnn
+  ------------------------------------------ :: AppLetAnn
   Γ; Φ ⊨ let x:iP = v(args); c : iN
 
   Γ; Φ ⊨ v : ↓iM   Γ; Φ ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC   
   uv uQ = dom(SC)    SC singular with uσ 
   Γ; Φ, x:[uσ]uQ ⊨ c : iN
-  --------------------------------------------------------------- :: AppLet
+  ----------------------------------------------------- :: AppLet
   Γ; Φ ⊨ let x = v(args); c : iN
 
 
@@ -61,14 +62,15 @@ defns
 
 
 defn Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC :: :: SpinInf :: ''
-{{ com Application type inference }} by
+{{ com Application typing }} by
 
 ---------------------------------- :: EmptyApp
 Γ; Φ; Θ ⊨ uN ● · ⇒> nf(uN) ⫤ Θ; ·
 
-Γ; Φ ⊨ v : iP   Γ; Θ ⊨ uQ ≥ iP ⫤ SC1   Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC2
+Γ; Φ ⊨ v : iP   Γ; Θ ⊨ uQ ≥ iP ⫤ SC1   
+Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC2    
 Θ ⊢ SC1 & SC2 = SC
---------------------------------------------------------------------------- :: ArrowApp
+-------------------------------------------- :: ArrowApp
 Γ; Φ; Θ ⊨ uQ → uN ● v , args ⇒> uM ⫤ Θ'; SC
 
 Γ; Φ; Θ, â⁺*[Γ] ⊨ [â⁺*/pas]uN ● args ⇒> uM ⫤ Θ'; SC
