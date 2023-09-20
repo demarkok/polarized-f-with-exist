@@ -1,7 +1,7 @@
 defns
   SING :: 'SING' ::=
 
-  defn scE1 singular with iP :: :: scEP :: '' by
+  defn scE singular with iP :: :: scEP :: '' by
   
   ------------------------------ :: PEq
   pua :≈ iP singular with nf(iP)
@@ -13,7 +13,7 @@ defns
   ----------------------------------- :: SupShift
   pua :≥ ∃nas.↓iN singular with ∃α⁻.↓α⁻
 
-  defn scE1 singular with iN :: :: scEN :: '' by
+  defn scE singular with iN :: :: scEN :: '' by
 
   ------------------------------ :: NEq
   nua :≈ iN singular with nf(iN)

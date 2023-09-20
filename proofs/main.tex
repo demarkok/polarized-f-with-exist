@@ -325,6 +325,7 @@ In other words, it is syntax-directed and mode-correct
 which means that 
 
 \begin{algorithm}[Type Well-formedness]
+  \label{alg:wf}
   \hfill
   
   \begin{multicols}{2}
@@ -712,6 +713,7 @@ and for each quantified case reorders the quantified variables in a
 canonical order dictated by \cref{alg:var-ordering}, removing unused ones.
 
 \begin{algorithm}[Type Normalization]
+  \label{alg:type-nf}
   \hfill
   
   \begin{multicols}{2}
@@ -801,6 +803,7 @@ correctness of the negative subtyping.
 
 
 \begin{algorithm}[Subtyping]
+  \label{alg:subtyping}
   \hfill
   
   \begin{multicols}{2}
@@ -1434,14 +1437,9 @@ $[[(v:iP)]]$ and $[[(c:iN)]]$.
 \subsection{Declarative Type Inference}
 
 Next, we define the specification of the type 
-inference for our language.
-The judgement $[[Γ ; Φ ⊢ v : iP]]$
-means that under the type context $[[Γ]]$ and
-the variable context $[[Φ]]$, for the value $[[v]]$,
-type $[[iP]]$ is inferrable. The negative form of the judgement is symmetric.
-The application inference judgement $[[ Γ ; Φ ⊢ iN ● args ⇒> iM ]]$ means that if
-a head of type $[[iN]]$ is applied to list of values $[[args]]$,
-then the resulting computation can be typed as $[[iM]]$.
+inference for our language. First, we introduce 
+variable context specifying the types of the variables 
+in the scope of the current rule. 
 
 \begin{definition}[Variable Context]
   The variable typing context $[[Φ]]$
@@ -1449,7 +1447,30 @@ then the resulting computation can be typed as $[[iM]]$.
   $[[x : iP]]$. 
 \end{definition}
 
+The specification is represented by an inference system of
+three mutually recursive judgments:
+positive inference $[[Γ ; Φ ⊢ v : iP]]$,
+negative type inference $[[Γ ; Φ ⊢ c : iN]]$, and
+application type inference $[[Γ ; Φ ⊢ iN ● args ⇒> iM ]]$.
+In the premises, the inference rules also refer to 
+the declarative subtyping (\cref{def:subDOne}),
+type well-formedness (\cref{alg:wf}), 
+and normalization (\cref{alg:alg:type-nf}) judgements.
+\begin{itemize}
+  \item $[[Γ ; Φ ⊢ v : iP]]$ (and symmetrically, $[[Γ ; Φ ⊢ c : iN]]$)
+    means that under the type context $[[Γ]]$ and
+    the variable context $[[Φ]]$, for the value $[[v]]$,
+    type $[[iP]]$ is inferrable. It guarantees that 
+    $[[v]]$ is well-formed in $[[Γ]]$ and $[[Φ]]$ in
+    the standard sense.
+  \item $[[ Γ ; Φ ⊢ iN ● args ⇒> iM ]]$ is the application type inference 
+    judgement. It means that if a head of type $[[iN]]$ 
+    is applied to list of values $[[args]]$, 
+    then the resulting computation can be typed as $[[iM]]$.
+\end{itemize}
+
 \begin{definition}[Declarative Type Inference]
+  \label{def:declarative-typing}
   \hfill
   \begin{multicols}{2}
   \ottdefnDTNInf{}
@@ -1514,10 +1535,42 @@ Let us discuss the rules of the application inference:
 
 
 
-
 \section{Algorithmic Typing}
 
+Next, we present the type inference algorithm, 
+which is sound and complete with respect to the declarative specification
+(\cref{def:declarative-typing}).
+
 \subsection{Algorithmic Type Inference}
+
+Mirroring the declarative typing, 
+the algorithm is represented by an inference system of three mutually recursive
+judgments:
+\begin{itemize}
+  \item $[[Γ ; Φ ⊨ v : iP]]$ and  $[[Γ ; Φ ⊨ c : iN]]$
+    are the algorithmic versions of $[[Γ ; Φ ⊢ v : iP]]$ and $[[Γ ; Φ ⊢ c : iN]]$.
+    In contrast with the declarative counterparts, they are deterministic,
+    and  guarantee that the inferred type is normalized. 
+  \item $[[Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC]]$
+    is the algorithmization of $[[Γ ; Φ ⊢ iN ● args ⇒> iM]]$.
+    Notice that $[[uN]]$ contains algorithmic variables, 
+    which are specified by the context $[[Θ1]]$.
+    Moreover, the inferred type $[[uM]]$ is also algorithmic,
+    and can have several non-equivalent instantiations. To accommodate that, 
+    the algorithm also returns $[[Θ2]]$ and $[[SC]]$ specifying 
+    the variables used in $[[uM]]$: $[[Θ2]]$ defines the contexts
+    in which the variables must be instantiated, and $[[SC]]$
+    imposes restrictions on the variables. 
+\end{itemize}
+As subroutines, the algorithm calls
+subtyping (\cref{alg:subtyping}),
+type well-formedness (\cref{alg:wf}),
+constraint merge (\cref{sec:constraint-merge}),
+normalization (\cref{alg:type-nf}),
+and constraint singularity which will be defined later in \cref{todo}.
+It also relies on basic set operations and the ability to 
+deterministically choose fresh variables.
+
 \begin{algorithm}
   \hfill
   \begin{multicols}{2}
@@ -1529,9 +1582,122 @@ Let us discuss the rules of the application inference:
   \end{multicols}
 \end{algorithm}
 
+Let us discuss the inference rules of the algorithm:
+\begin{itemize}
+  \item \ruleref{\ottdruleATVarLabel} 
+    infers the type of a variable by looking it up in the context
+    and normalizing the result.
+  \item \ruleref{\ottdruleATThunkLabel} and \ruleref{\ottdruleATReturnLabel}
+    are similar to the declarative rules: they make a recursive call
+    to type the body of the thunk or the return expression and
+    put the shift on top of the result.
+  \item \ruleref{\ottdruleATPAnnotLabel} and \ruleref{\ottdruleATNAnnotLabel}
+    are symmetric. They make a recursive call to infer the type of the annotated
+    expression, check that the inferred type is a subtype of the annotation,
+    and return the normalized annotation.
+  \item \ruleref{\ottdruleATtLamLabel} infers the type of a lambda-abstraction.
+    It makes a recursive call to infer the type of the body in the extended context,
+    and returns the corresponding arrow type. Notice that the algorithm also
+    normalizes the result, which is because the annotation type $[[iP]]$
+    is allowed to be non-normalized.
+  \item \ruleref{\ottdruleATTLamLabel} infers the type of a big lambda.
+    Similarly to the previous case, it makes a recursive call to infer the type
+    of the body in the extended \emph{type} context. 
+    After that, it returns the corresponding universal type. 
+    It is also required to normalize the result, because, 
+    for instance, $[[α⁺]]$ might not occur in the body of the lambda,
+    in which case the $[[∀]]$ must be removed. 
+  \item \ruleref{\ottdruleATVarLetLabel} is defined in a standard way:
+    it makes a recursive call to infer the type of the bound value,
+    and then returns the type of the body in the extended context.
+  \item \ruleref{\ottdruleATAppLetAnnLabel}
+    is interpreted as follows.
+    First, it infers the type of the head of the application,
+    ensuring that it is a thunked computation $[[↓iM]]$;
+    after that, it makes a recursive call
+    to the application inference procedure,
+    which returns the algorithmic type, whose
+    instantiation to a declarative type must be associated with the bound variable 
+    $[[x]]$; then premise $[[Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2]]$
+    together with $[[Θ ⊢ SC1 & SC2 = SC]]$
+    check whether the instantiation to the annotated type $[[iP]]$ is possible,
+    and if it is, the algorithm infers the type of the body in the extended context,
+    and returns it as the result. 
+  \item \ruleref{\ottdruleATAppLetAnnLabel}
+    works similarly to \ruleref{\ottdruleATAppLetAnnLabel},
+    However, since there is no annotation, 
+    instead of checking the instantiation to it, 
+    the algorithm checks that the inferred type
+    $[[↑uQ]]$ is unique.
+    It is the case if all the algorithmic variables of 
+    $[[↑uQ]]$ are sufficiently restricted by $[[SC]]$,
+    which is checked by the combination of
+    $[[uv uQ = dom(SC)]]$ and $[[SC singular with uσ]]$.
+    Together, these two premises guarantee that the only 
+    possible instantiation of $[[↑uQ]]$ is $[[ [uσ]uQ ]]$.
+  \item \ruleref{\ottdruleATUnpackLabel}
+    works in the expected way. First, it infers the 
+    existential type $[[∃nas.iP]]$ of the value being unpacked,
+    and since the type is guaranteed to be normalized, binds 
+    the quantified variables with $[[nas]]$.
+    Then it infers the type of the body in the appropriately extended context,
+    and checks that the inferred type does not depend on $[[nas]]$
+    by checking well-formedness $[[Γ ⊢ iN]]$.
+\end{itemize}
+
+Finally, let us discuss the algorithmic rules of the application inference:
+\begin{itemize}
+  \item \ruleref{\ottdruleATEmptyAppLabel}
+    is the base case. If the list of arguments is empty, 
+    the inferred type is the type of the head,
+    and the algorithm returns it after normalizing.
+  \item \ruleref{\ottdruleATArrowAppLabel}
+    is the main rule of the algorithmic application inference.
+    If the head has an arrow type $[[uQ → uN]]$,
+    we find $[[SC1]]$---the minimal constraint ensuring that 
+    $[[uQ]]$ is a supertype of the first argument's type.
+    Then we make a recursive call applying $[[uN]]$ to the rest of the arguments,
+    and merge the resulting constraint with $[[SC1]]$
+  \item \ruleref{\ottdruleATForallAppLabel},
+    analogously to the declarative case,
+    is the rule ensuring the implicit elimination of the universal quantifiers. 
+    This is the place where the algorithmic variables are generated.
+    The algorithm simply replaces the quantified variables 
+    $[[pas]]$ with fresh algorithmic variables $[[puas]]$,
+    and makes a recursive call in the extended context. 
+\end{itemize}
+
+The correctness of the algorithm consists of its soundness and 
+completeness, which is by mutual
+induction in \cref{lemma:typing-soundness,lemma:typing-completeness}.
+The simplified result is the following.
+\begin{theorempreview}
+  \hfill
+  \begin{itemize}
+    \item [$-$] $[[Γ; Φ ⊨ c : iN]]$ implies $[[Γ; Φ ⊢ c : iN]]$, 
+      and $[[Γ; Φ ⊢ c : iN]]$ implies $[[Γ; Φ ⊨ c : nf(iN)]]$;
+    \item [$+$] $[[Γ; Φ ⊨ v : iP]]$ implies $[[Γ; Φ ⊢ v : iP]]$, 
+      and $[[Γ; Φ ⊢ v : iP]]$ implies $[[Γ; Φ ⊨ v : nf(iP)]]$.
+  \end{itemize}
+\end{theorempreview}
+
+
 \subsection{Constraint Singularity}
 
-\begin{algorithm}
+The singularity algorithm used in  \ruleref{\ottdruleATAppLetAnnLabel}
+of the algorithmic typing check wether the constraint $[[SC]]$
+is uniquely defines a substitution satisfying it, and if it does
+returns such a substitution as the result.
+To do that, we define a partial function $[[SC singular with uσ]]$,
+taking a subtyping constraint $[[SC]]$ and returning a substitution 
+$[[uσ]]$---the only possible solution of $[[SC]]$. 
+
+First, we define the notion of singularity on constraint entries. 
+$[[scE singular with iP]]$ and $[[scE singular with iN]]$
+are considered partial functions taking a constraint entry $[[scE]]$
+and returning the type satisfying $[[scE]]$ if such a type is unique. 
+
+\begin{algorithm}[Singular Constraint Entry]
   \hfill
   \begin{multicols}{2}
     \ottdefnSINGscEN{}
@@ -1540,6 +1706,64 @@ Let us discuss the rules of the application inference:
     \ottdefnSINGscEP{}
   \end{multicols}
 \end{algorithm}
+
+\begin{itemize}
+  \item \ruleref{\ottdruleSINGNEqLabel} and \ruleref{\ottdruleSINGPEqLabel} 
+    are symmetric. If the constraint entry says that a variable must be equivalent to 
+    a type $T$, then it is evidently singular, and the only (up-to-equivalence) type
+    instantiating this variable could be $T$. This way, we return its normal form. 
+  \item \ruleref{\ottdruleSINGSupVarLabel}
+    implies that the only (normalized) solution of $[[pua :≥ ∃nas.pa]]$ is 
+    $[[pa]]$ (it will be shown in \cref{lemma:var-subt}).
+  \item \ruleref{\ottdruleSINGSupShiftLabel}
+    is perhaps the least obvious rule.
+    In type $[[∃nas.↓iN]]$, if $[[iN]]$ is anything different (non-equivalent) to 
+    $[[nai ∊ {nas}]]$, there are at least 
+    one proper supertype of $[[∃nas.↓iN]]$, since $[[iN]]$ can be abstracted over
+    by an existential quantifier. Otherwise, any supertype of $[[∃nas.↓nai]]$
+    is equivalent to it, and thus, the solution is unique. 
+\end{itemize}
+
+Next, we extrapolate the singularity function on constraints---sets of constraint entries. 
+We require $[[SC]]$ to be a set of singular constraints, and the resulting substitution
+sends each variable from $[[dom(SC)]]$ to the unique type satisfying the corresponding constraint.
+
+\begin{algorithm}
+  $[[SC singular with uσ]]$
+  means that 
+  \begin{enumerate}
+    \item for any positive $[[scE ∊ SC]]$,
+      there exists $[[iP]]$ such that $[[scE singular with iP]]$, 
+      and for any negative $[[scE ∊ SC]]$,
+      there exists $[[iN]]$ such that $[[scE singular with iN]]$;
+    \item $[[uσ]]$ is defined as follows:
+      $$
+      [[ [uσ]β̂⁺ ]]  = 
+          \begin{cases}
+              [[ iP ]] & \text{if there is } [[scE]] \in [[dom(SC)]] \text{ restricting } [[β̂⁺]] 
+                         \text{ and } [[scE singular with iP]] \\
+              [[ β̂⁺ ]] & \text{otherwise}  \\
+          \end{cases}
+      $$
+      $$
+      [[ [uσ]β̂⁻ ]]  = 
+          \begin{cases}
+              [[ iN ]] & \text{if there is } [[scE]] \in [[dom(SC)]] \text{ restricting } [[β̂⁻]] 
+                         \text{ and } [[scE singular with iN]]\\
+              [[ β̂⁻ ]] & \text{otherwise}  \\
+          \end{cases}
+      $$
+  \end{enumerate} 
+\end{algorithm}
+
+The correctness of the singularity algorithm is formulated as follows:
+\begin{theorempreview}
+  Suppose that $[[SC]]$ is a subtyping constraint.
+  Then $[[SC singular with uσ]]$ holds if and only if 
+  $[[uσ]]$ is the only (up-to-equivalence on $[[dom(SC)]]$) 
+  normalized substitution satisfying $[[SC]]$.
+\end{theorempreview}
+
 
 \newpage
 
@@ -1564,7 +1788,6 @@ Let us discuss the rules of the application inference:
 
 \subsection{Normaliztaion}
 \input{../_build/_gen/tex/norm-lemmas.tex}
-
 
 
 \section{Properties of the Algorithmic Type System}
