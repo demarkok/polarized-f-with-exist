@@ -30,4 +30,6 @@ jobs:
           run: |
             apk add make
             cd proofs
+            opam pin add ott ../patched-ott
+            opam upgrade -w ott
             make
