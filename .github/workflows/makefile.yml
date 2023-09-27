@@ -23,8 +23,6 @@ jobs:
       - name: Add opam to PATH
         run: | 
           eval $(opam env)
-          echo "$PATH"
-          ott
 
       - name: Set up Latex
         uses: xu-cheng/texlive-action/full@v1
@@ -32,4 +30,5 @@ jobs:
       - name: Build Proofs
         run: |
           cd proofs
+          apk add make
           make
