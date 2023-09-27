@@ -1,19 +1,14 @@
 name: Makefile CI
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
+on: [push]
 jobs:
-  build
+  build_latex:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: xu-cheng/texlive-action/full@v1
-      with:
-        run: |
-          apk add make
-          cd ooppsla24
-          make
+      - uses: actions/checkout@v3
+      - uses: xu-cheng/texlive-action/full@v1
+        with:
+          run: |
+            apk add make
+            cd oopsla24
+            make
