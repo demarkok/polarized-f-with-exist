@@ -6,7 +6,6 @@ jobs:
   build_latex:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out 
       - uses: actions/checkout@v3
       - uses: ocaml/setup-ocaml@v2
         with:
