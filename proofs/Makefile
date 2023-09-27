@@ -12,16 +12,13 @@ CACHE := $(BUILD)/ott.cache
 OTT := ../ott
 
 OTTS := $(OTT)/*.ott
-PDFS := defs.pdf main.pdf
+PDFS := main.pdf
 TEXS := main.tex $(wildcard $(TEX)/*.tex)
 GEN_TEXS := $(addprefix $(GEN)/,$(TEXS))
 PRELUDE := prelude.tex
 STY := *.sty
 
 all: $(PDFS)
-
-defs.pdf: $(GEN)/defs.tex $(CACHE) | $(BUILD)
-	latexmk -silent --pdf $(GEN)/defs.tex
 
 $(GEN)/defs.tex: %: $(OTTS) | $(GEN)
 	echo "embed {{ tex-preamble \input{../proofs/$(PRELUDE)} }}" | tee prelude.ott
