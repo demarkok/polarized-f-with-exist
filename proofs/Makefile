@@ -18,11 +18,10 @@ GEN_TEXS := $(addprefix $(GEN)/,$(TEXS))
 PRELUDE := prelude.tex
 STY := *.sty
 
-
 all: $(PDFS)
 
 defs.pdf: $(GEN)/defs.tex $(CACHE) | $(BUILD)
-	rubber --pdf $(GEN)/defs.tex
+	latexmk -silent --pdf $(GEN)/defs.tex
 
 $(GEN)/defs.tex: %: $(OTTS) | $(GEN)
 	echo "embed {{ tex-preamble \input{../proofs/$(PRELUDE)} }}" | tee prelude.ott
@@ -50,7 +49,7 @@ $(GEN_TEXS): $(TEXS) $(CACHE) $(GEN)/included.tex $(PRELUDE) $(STY) | $(GEN_TEX)
 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
 
 main.pdf: $(GEN_TEXS)
-	rubber --module=biber --pdf $(GEN)/main.tex
+	latexmk -silent --pdf $(GEN)/main.tex
 
 continuous:
 	make & fswatch -o .. | xargs -n1 -I{} make
