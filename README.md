@@ -12,7 +12,7 @@ eval $(opam env --switch=default)
 In this project, we use a customized version of ott.
 To install it using `opam`, run the following from the checkout directory:
 ```bash
-git pull https://github.com/demarkok/ott.git patched-ott
+git clone https://github.com/demarkok/ott.git patched-ott
 opam pin add ott patched-ott
 opam upgrade -w ott
 ```
