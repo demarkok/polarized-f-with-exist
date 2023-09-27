@@ -45,7 +45,9 @@
 %% for your publication.
 %%
 %%
-\documentclass[acmsmall,screen,review]{acmart}
+% \documentclass[acmsmall,screen,review]{acmart}
+\documentclass[acmsmall,review,anonymous]{acmart}
+
 
 %%
 %% \BibTeX command to typeset BibTeX logo in the docs
@@ -124,9 +126,9 @@
 \email{nk480@cl.cam.ac.uk}
 \orcid{0000-0003-2838-5865}
 
-\author{Ilia Kaisin}
-\email{ik404@cl.cam.ac.uk}
-\orcid{0000-1111-2222-3333}
+\author{Ilya Kaysin}
+\email{ik404@cam.ac.uk}
+\orcid{0000-0002-6301-152X}
 
 
 %%
@@ -186,7 +188,7 @@
 %%
 %% Keywords. The author(s) should pick words that accurately describe
 %% the work being presented. Separate the keywords with commas.
-\keywords{Type Inference, System F, Call-by-Push-Value, Polarized Typing, Focalisation, Subtypingr}
+\keywords{Type Inference, System F, Call-by-Push-Value, Polarized Typing, Focalisation, Subtyping}
 
 \received{20 February 2007}
 \received[revised]{12 March 2009}
@@ -198,36 +200,26 @@
 \maketitle
 
 \section{Introduction}
-ACM's consolidated article template, introduced in 2017, provides a
-consistent \LaTeX\ style for use across ACM publications, and
-incorporates accessibility and metadata-extraction functionality
-necessary for future Digital Library endeavors. Numerous ACM and
-SIG-specific \LaTeX\ templates have been examined, and their unique
-features incorporated into this single new template.
+\input{tex/01-introduction.tex}
 
-If you are new to publishing with ACM, this document is a valuable
-guide to the process of preparing your work for publication. If you
-have published with ACM before, this document provides insight and
-instruction into more recent changes to the article template.
+\section{Overview}
+\input{tex/02-overview.tex}
 
-The ``\verb|acmart|'' document class can be used to prepare articles
-for any ACM publication --- conference or journal, and for any stage
-of publication, from review to final ``camera-ready'' copy, to the
-author's own version, with {\itshape very} few changes to the source.
+\section{Declarative System}
+\input{tex/03-declarative-system.tex}
 
-\section{Template Overview}
-As noted in the introduction, the ``\verb|acmart|'' document class can
-be used to prepare many different kinds of documentation --- a
-double-blind initial submission of a full-length technical paper, a
-two-page SIGGRAPH Emerging Technologies abstract, a ``camera-ready''
-journal article, a SIGCHI Extended Abstract, and more --- all by
-selecting the appropriate {\itshape template style} and {\itshape
-  template parameters}.
+\section{Algorithm}
+\input{tex/04-algorithm.tex}
 
-This document will explain the major features of the document
-class. For further information, the {\itshape \LaTeX\ User's Guide} is
-available from
-\url{https://www.acm.org/publications/proceedings-template}.
+\section{Proof}
+\input{tex/05-proof.tex}
+
+\section{Extensions}
+\input{tex/06-extensions.tex}
+
+\section{Conclusion}
+\input{tex/07-conclusion.tex}
+
 
 \subsection{Template Styles}
 
@@ -525,7 +517,7 @@ third-party material, you must clearly identify it as such, as shown
 in the example below.
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\linewidth]{sample-franklin}
+  % \includegraphics[width=\linewidth]{sample-franklin}
   \caption{1907 Franklin Model D roadster. Photograph by Harris \&
     Ewing, Inc. [Public domain], via Wikimedia
     Commons. (\url{https://goo.gl/VLCRBB}).}
