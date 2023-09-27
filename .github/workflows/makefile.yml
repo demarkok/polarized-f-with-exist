@@ -6,25 +6,22 @@ jobs:
   build_latex:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: docker://ocaml/opam
-      - uses: xu-cheng/texlive-action/full@v1
-      
+      - name: Check out 
+        uses: actions/checkout@v3
+        
       - name: Set up OCaml environment
-        run: |
-          opam init
-          eval $(opam env --switch=default)
+        uses: ocaml/setup-ocaml@v2
           
       - name: Get patched-ott
         run: |
           git pull https://github.com/demarkok/ott.git patched-ott
           opam pin add ott patched-ott
           opam upgrade -w ott
-          
-      - name: Install make
-        run: apk add make
-          
-      - name: Build LaTeX
+
+      - name: Set up Latex
+        uses: xu-cheng/texlive-action/full@v1
+      
+      - name: Build Proofs
         run: |
           cd proofs
           make
