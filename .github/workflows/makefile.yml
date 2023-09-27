@@ -7,29 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out 
-        uses: actions/checkout@v3
-        
-      - name: Set up OCaml environment
-        uses: ocaml/setup-ocaml@v2
+      - uses: actions/checkout@v3
+      - uses: ocaml/setup-ocaml@v2
         with:
           ocaml-compiler: 5.1
-          
-      - name: Get patched-ott
-        run: |
-          git clone https://github.com/demarkok/ott.git patched-ott
-          opam pin add ott patched-ott
-          opam upgrade -w ott
-      
-      - name: Add opam to PATH
-        run: | 
-          eval $(opam env)
-
-      - name: Build Proofs
-        uses: xu-cheng/texlive-action/full@v1
-        with:
-          run: |
-            apk add make
-            cd proofs
-            opam pin add ott ../patched-ott
-            opam upgrade -w ott
-            make
+      - run: git clone https://github.com/demarkok/ott.git patched-ott
+      - run: opam pin add ott patched-ott
+      - run: opam upgrade -w ott
+      - run: eval $(opam env)
+      - run: cd proofs
+      - run: make
