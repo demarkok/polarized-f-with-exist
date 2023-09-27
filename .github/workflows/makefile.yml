@@ -19,7 +19,9 @@ jobs:
           git clone https://github.com/demarkok/ott.git patched-ott
           opam pin add ott patched-ott
           opam upgrade -w ott
-          eval $(opam env)
+      
+      - name: Add opam to PATH
+        run: eval $(opam env)
 
       - name: Set up Latex
         uses: xu-cheng/texlive-action/full@v1
