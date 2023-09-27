@@ -11,7 +11,7 @@
 
 *.fls
 *.fdb_latexmk
-_build
+**/_gen
 
 
 # OS generated files
