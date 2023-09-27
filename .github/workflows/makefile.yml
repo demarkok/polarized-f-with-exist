@@ -24,11 +24,10 @@ jobs:
         run: | 
           eval $(opam env)
 
-      - name: Set up Latex
-        uses: xu-cheng/texlive-action/full@v1
-      
       - name: Build Proofs
-        run: |
-          cd proofs
-          apk add make
-          make
+        uses: xu-cheng/texlive-action/full@v1
+        with:
+          run: |
+            apk add make
+            cd proofs
+            make
