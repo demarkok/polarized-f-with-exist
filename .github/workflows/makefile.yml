@@ -10,9 +10,10 @@ jobs:
       - uses: ocaml/setup-ocaml@v2
         with:
           ocaml-compiler: 5.1
-      - run: git clone https://github.com/demarkok/ott.git patched-ott
-      - run: opam pin add ott patched-ott
-      - run: opam upgrade -w ott
-      - run: eval $(opam env)
-      - run: cd proofs
-      - run: make
+      - run: |
+          git clone https://github.com/demarkok/ott.git patched-ott
+          opam pin add ott patched-ott
+          opam upgrade -w ott
+          eval $(opam env)
+          cd proofs
+          make
