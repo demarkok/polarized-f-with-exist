@@ -16,7 +16,7 @@ jobs:
           
       - name: Get patched-ott
         run: |
-          git pull https://github.com/demarkok/ott.git patched-ott
+          git clone https://github.com/demarkok/ott.git patched-ott
           opam pin add ott patched-ott
           opam upgrade -w ott
 
