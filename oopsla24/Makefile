@@ -28,8 +28,11 @@ $(GEN) $(GEN_TEX): %:
 	mkdir -p $@
 
 # MAKE OTT DEFITIONS
-$(INCLUDED): $(OTTS) $(CACHE)
+
+$(CACHE): $(OTTS) 
 	make -C $(OTT)
+
+$(INCLUDED): $(OTTS) $(CACHE)
 
 # MAKE PROCESSED TEX FILES
 $(GEN_TEXS): $(TEXS) $(CACHE) $(INCLUDED) | $(GEN_TEX)
