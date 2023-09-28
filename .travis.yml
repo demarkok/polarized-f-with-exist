@@ -1,0 +1,22 @@
+language: generic
+dist: xenial
+
+before_install:
+  - sudo add-apt-repository -y ppa:avsm/ppa
+  - sudo apt-get update
+  - sudo apt-get install -y opam texlive-full
+
+install:
+  - opam init --auto-setup --disable-sandboxing --compiler=4.13
+  - eval $(opam env)
+
+before_script:
+  - git clone https://github.com/demarkok/ott.git patched-ott
+  - opam pin add ott patched-ott
+  - opam upgrade -w ott
+
+script:
+  - cd proofs
+  - make
+
+
