@@ -16,6 +16,5 @@ jobs:
             git clone https://github.com/demarkok/ott.git patched-ott
             opam pin add ott patched-ott
             opam upgrade -w ott
-            eval $(opam env)
             cd proofs
             make
