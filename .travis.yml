@@ -7,12 +7,12 @@ before_install:
   - sudo apt-get install -y opam texlive-full
 
 install:
-  - opam -y init --auto-setup --disable-sandboxing --compiler=4.13.1
+  - opam init --auto-setup --disable-sandboxing --compiler=4.13.1
   - eval $(opam env)
 
 before_script:
-  - opam -y pin add ott patched-ott
-  - opam -y upgrade -w ott
+  - opam pin -y add ott patched-ott
+  - opam upgrade -y -w ott
 
 script:
   - cd proofs
