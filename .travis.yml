@@ -7,7 +7,7 @@ before_install:
   - sudo apt-get install -y opam texlive-full
 
 install:
-  - opam init --auto-setup --disable-sandboxing --compiler=4.13
+  - opam init --auto-setup --disable-sandboxing --compiler=4.13.1
   - eval $(opam env)
 
 before_script:
