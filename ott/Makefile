@@ -12,7 +12,7 @@ $(GEN): %:
 
 
 $(CACHE): %: $(OTTS) | $(GEN)
-	ott -signal_parse_errors true $(addprefix -i , $^) -writesys $@
+	ott -merge true -signal_parse_errors true $(addprefix -i , $^) -writesys $@
 
 $(INCLUDED): $(CACHE)
 	@ott -readsys $(CACHE) \
