@@ -8,7 +8,9 @@
 \input{prelude.tex}
 
 
-\input{../_build/_gen/included.tex}
+\newcommand{\ottDir}{../ott/_gen}
+\newcommand{\genDir}{_gen}
+\input{\ottDir/included.tex}
 
 
 
@@ -1770,74 +1772,74 @@ The correctness of the singularity algorithm is formulated as follows:
 \section{Properties of the Declarative Type System}
 
 \subsection{Type Well-formedness}
-\input{../_build/_gen/tex/wf-lemmas.tex}
+\input{\genDir/tex/wf-lemmas.tex}
 
 \subsection{Substitution}
-\input{../_build/_gen/tex/subst-lemmas.tex}
+\input{\genDir/tex/subst-lemmas.tex}
 
 \subsection{Declarative Subtyping}
-\input{../_build/_gen/tex/decl-subtyping-lemmas.tex}
+\input{\genDir/tex/decl-subtyping-lemmas.tex}
 
 \subsection{Equivalence}
 \label{sec:decl-equiv-lemmas}
-\input{../_build/_gen/tex/equiv-lemmas.tex}
+\input{\genDir/tex/equiv-lemmas.tex}
 
 \subsection{Variable Ordering}
-\input{../_build/_gen/tex/ord-lemmas.tex}
+\input{\genDir/tex/ord-lemmas.tex}
 
 
 \subsection{Normaliztaion}
-\input{../_build/_gen/tex/norm-lemmas.tex}
+\input{\genDir/tex/norm-lemmas.tex}
 
 
 \section{Properties of the Algorithmic Type System}
 
 \subsection{Algorithmic Type Well-formedness}
-\input{../_build/_gen/tex/wf-algo-lemmas.tex}
+\input{\genDir/tex/wf-algo-lemmas.tex}
 
 \subsection{Substitution}
-\input{../_build/_gen/tex/subst-algo-lemmas.tex}
+\input{\genDir/tex/subst-algo-lemmas.tex}
 
 \subsection{Normalization}
-\input{../_build/_gen/tex/norm-alg-lemmas.tex}
+\input{\genDir/tex/norm-alg-lemmas.tex}
 
 \subsection{Equivalence}
-\input{../_build/_gen/tex/equiv-alg-lemmas.tex}
+\input{\genDir/tex/equiv-alg-lemmas.tex}
 
 \subsection{Unification Constraint Merge}
-\input{../_build/_gen/tex/unif-constraint-merge-lemmas.tex}
+\input{\genDir/tex/unif-constraint-merge-lemmas.tex}
 
 \subsection{Unification}
-\input{../_build/_gen/tex/unification-lemmas.tex}\
+\input{\genDir/tex/unification-lemmas.tex}\
 
 \subsection{Anti-unification}
-\input{../_build/_gen/tex/au-lemmas.tex}
+\input{\genDir/tex/au-lemmas.tex}
 
 \subsection{Upper Bounds}
 \label{sec:alg-upper-bounds-proofs}
-\input{../_build/_gen/tex/lub-lemmas.tex}
+\input{\genDir/tex/lub-lemmas.tex}
 
 \subsection{Upgrade}
 \label{sec:upgrade-lemmas}
-\input{../_build/_gen/tex/upgrade-lemmas.tex}
+\input{\genDir/tex/upgrade-lemmas.tex}
 
 \subsection{Constraint Satisfaction}
-\input{../_build/_gen/tex/constraint-sat-lemmas.tex}
+\input{\genDir/tex/constraint-sat-lemmas.tex}
 
 \subsection{Positive Subtyping}
-\input{../_build/_gen/tex/alg-pos-subtyping-lemmas.tex}
+\input{\genDir/tex/alg-pos-subtyping-lemmas.tex}
 
 \subsection{Subtyping Constraint Merge}
-\input{../_build/_gen/tex/constraint-merge-lemmas.tex}
+\input{\genDir/tex/constraint-merge-lemmas.tex}
 
 \subsection{Negative Subtyping}
-\input{../_build/_gen/tex/alg-neg-subtyping-lemmas.tex}
+\input{\genDir/tex/alg-neg-subtyping-lemmas.tex}
 
 
 
 
 \section{Properties of the Declarative Typing}
-\input{../_build/_gen/tex/decl-typing-lemmas.tex}
+\input{\genDir/tex/decl-typing-lemmas.tex}
 
 
 
@@ -1845,10 +1847,10 @@ The correctness of the singularity algorithm is formulated as follows:
 \section{Properties of the Algorithmic Typing}
 
 \subsection{Singularity}
-\input{../_build/_gen/tex/singularity-lemmas.tex}
+\input{\genDir/tex/singularity-lemmas.tex}
 
 \subsection{Correctness of the Typing Algorithm}
-\input{../_build/_gen/tex/alg-typing-lemmas.tex}
+\input{\genDir/tex/alg-typing-lemmas.tex}
 
 \printbibliography
 
