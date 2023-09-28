@@ -41,7 +41,7 @@ $(GEN_TEXS): $(TEXS) $(CACHE) $(INCLUDED) $(STY) | $(GEN_TEX)
 # MAIN
 
 main.pdf: $(GEN_TEXS)
-	latexmk --pdf $(GEN)/main.tex
+	latexmk -f --pdf $(GEN)/main.tex
 
 continuous:
 	make & fswatch -o .. | xargs -n1 -I{} make
