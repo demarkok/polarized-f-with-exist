@@ -41,7 +41,7 @@ $(GEN_TEXS): $(TEXS) $(CACHE) $(INCLUDED) | $(GEN_TEX)
 # MAIN
 
 paper.pdf: $(GEN_TEXS)
-	latexmk -silent --pdf $(GEN)/paper.tex
+	latexmk --interaction=batchmode --pdf $(GEN)/paper.tex
 
 continuous:
 	make & fswatch -o .. | xargs -n1 -I{} make
