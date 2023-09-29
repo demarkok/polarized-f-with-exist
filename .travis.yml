@@ -1,5 +1,4 @@
 language: generic
-dist: xenial
 
 before_install:
   - sudo add-apt-repository -y ppa:avsm/ppa
