@@ -12,6 +12,7 @@ install:
 before_script:
   - opam pin -y add ott patched-ott
   - opam upgrade -y -w ott
+  - eval $(opam env)
 
 script:
   - cd proofs
