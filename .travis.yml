@@ -2,7 +2,8 @@ language: generic
 dist: jammy
 
 before_install:
-  - sudo apt install -y latexmk
+  # - sudo apt install -y latexmk
+  - sudo apt update
   - sudo apt install -y opam texlive-full
 
 install:
