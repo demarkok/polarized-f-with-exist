@@ -1,3 +1,7 @@
+\usepackage{braket}
+\usepackage{hyperref}
+\usepackage{mathpartir}
+
 \usepackage{lscape}
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -15,21 +19,21 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{scalerel}
 
-\usepackage{tikz}
-\usetikzlibrary{shapes,arrows,positioning}
-\usetikzlibrary{shapes.multipart}
-
 
 \usepackage{todonotes}
 
 \usepackage{enumitem}
 \usepackage{xparse}
-\usepackage{casenum}
 
-\usepackage{braket}
+\usepackage{../casenum}
 \usepackage{../quiver}
 
 
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,arrows.meta,positioning}
+\usetikzlibrary{shapes.multipart}
+
+% \usepackage{quiver}
 
 
 \setlength{\columnsep}{1cm}
@@ -64,26 +68,3 @@
 
 \newcommand{\UB}[0]{\mathsf{UB}}
 \newcommand{\NFUB}[0]{\mathsf{NFUB}}
-
-
-
-% \newcounter{casenum}
-
-% \newenvironment{caseof}
-% {%
-%   \par
-%   \setlength{\parskip}{6pt}%
-%   % \setlength{\parindent}{0pt}%
-%   \everypar{\setlength{\hangindent}{17pt}}%
-%   \setcounter{casenum}{0}%
-% }
-% {\par\vskip.5\baselineskip}
-
-% \NewDocumentCommand{\case}{omm}{%
-%   % \vskip.5\baselineskip\par%
-%   \itemindent\parindent
-%   \refstepcounter{casenum}%
-%   {\bfseries Case} {\bfseries \arabic{casenum}}%
-%   \IfNoValueF{#1}{\label{#1}}%
-%   {\bfseries:} #2\\#3 %
-% }

@@ -1,0 +1,70 @@
+\usepackage{braket}
+\usepackage{hyperref}
+\usepackage{mathpartir}
+
+\usepackage{lscape}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{supertabular}
+\usepackage[inline]{enumitem}
+\usepackage{cleveref}
+\usepackage{proof}
+
+\usepackage{stackengine}
+
+\usepackage{mathabx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{scalerel}
+
+
+\usepackage{todonotes}
+
+\usepackage{enumitem}
+\usepackage{xparse}
+
+\usepackage{../casenum}
+\usepackage{../quiver}
+
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,arrows.meta,positioning}
+\usetikzlibrary{shapes.multipart}
+
+% \usepackage{quiver}
+
+
+\setlength{\columnsep}{1cm}
+\let\citename\relax
+\usepackage[bibencoding=utf8, natbib=true, abbreviate=false, dateabbrev=true, isbn=true, doi=false, urldate=comp, url=false, maxbibnames=9, maxcitenames=2, backref=false, backend=biber, style=alphabetic, language=american, arxiv=false]{biblatex}
+\addbibresource{../biblio.bib}
+
+\newcommand{\niton}{\not\owns}
+
+\newcommand{\ilyam}[1]{{\color{red} \texttt{Ilya:  #1}}}
+
+\newtheorem{algorithm}{Algorithm}
+\newtheorem{definition}{Definition}
+\newtheorem*{notation*}{Notation}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorempreview}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{observation}{Observation}
+\newtheorem*{assertion*}{Assertion}
+
+% https://tex.stackexchange.com/questions/85033/colored-symbols/85035#85035
+\newcommand*{\mathcolor}{}
+\def\mathcolor#1#{ \mathcoloraux{#1} }
+\newcommand*{\mathcoloraux}[3]{%
+  \protect\leavevmode
+  \begingroup
+  \color#1{#2}#3%
+  \endgroup
+}
+
+\newcommand{\UB}[0]{\mathsf{UB}}
+\newcommand{\NFUB}[0]{\mathsf{NFUB}}

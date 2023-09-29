@@ -14,12 +14,12 @@ OTT_GEN := $(OTT)/_gen
 # Files
 OTTS := $(OTT)/*.ott
 PDFS := paper.pdf
-TEXS := paper.tex $(wildcard $(TEX)/*.tex)
+TEXS := paper.tex $(wildcard $(TEX)/*.tex) 
 GEN_TEXS := $(addprefix $(GEN)/,$(TEXS))
 
 INCLUDED := $(OTT_GEN)/included.tex
 CACHE := $(OTT_GEN)/ott.cache
-STY := *.sty
+STY := $(ROOT)/*.sty
 
 all: $(PDFS)
 
@@ -35,7 +35,7 @@ $(CACHE): $(OTTS)
 $(INCLUDED): $(OTTS) $(CACHE)
 
 # MAKE PROCESSED TEX FILES
-$(GEN_TEXS): $(TEXS) $(CACHE) $(INCLUDED) | $(GEN_TEX)
+$(GEN_TEXS): $(TEXS) $(CACHE) $(INCLUDED) $(ROOT)/prelude.tex | $(GEN_TEX)
 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
 
 # MAIN
