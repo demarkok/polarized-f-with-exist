@@ -809,7 +809,6 @@
       there exists a bijection $[[μ : {pbs} ∩ fv iM' ↔ {pas} ∩ fv iN']]$ such that  
       $[[Γ,pas ⊢ [Sub μ]iM' ≈ iN']]$. 
       
-  \label{lemma:poly-types-equivalence}
       Notice that the application of bijection $[[μ]]$ to $[[iM']]$ does
       not change its size (which is less than the size of $[[iM]]$), hence the induction hypothesis applies.
       This way, $[[ [Sub μ]iM' ≈ iN']]$ (and by symmetry, $[[iN' ≈ [Sub μ]iM']]$) holds by induction. 
@@ -851,7 +850,7 @@
 \end{proof}
 
 \begin{lemma}[Substitution preserves declarative equivalence]
-  \label{corollary:subst-pres-equiv}
+  \label{corollary:subst-pres-decl-equiv}
   Suppose that $[[σ]]$ is a substitution. Then
     \begin{itemize}
       \item[$+$] $[[iP ≈ iQ]]$ implies $[[ [σ]iP ≈ [σ]iQ ]]$

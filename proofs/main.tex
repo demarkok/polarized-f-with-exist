@@ -1457,7 +1457,7 @@ application type inference $[[Γ ; Φ ⊢ iN ● args ⇒> iM ]]$.
 In the premises, the inference rules also refer to 
 the declarative subtyping (\cref{def:subDOne}),
 type well-formedness (\cref{alg:wf}), 
-and normalization (\cref{alg:alg:type-nf}) judgements.
+and normalization (\cref{alg:type-nf}).
 \begin{itemize}
   \item $[[Γ ; Φ ⊢ v : iP]]$ (and symmetrically, $[[Γ ; Φ ⊢ c : iN]]$)
     means that under the type context $[[Γ]]$ and
@@ -1569,7 +1569,8 @@ subtyping (\cref{alg:subtyping}),
 type well-formedness (\cref{alg:wf}),
 constraint merge (\cref{sec:constraint-merge}),
 normalization (\cref{alg:type-nf}),
-and constraint singularity which will be defined later in \cref{todo}.
+and constraint singularity which will be defined later in 
+\cref{sec:constraint-singularity}.
 It also relies on basic set operations and the ability to 
 deterministically choose fresh variables.
 
@@ -1685,6 +1686,7 @@ The simplified result is the following.
 
 
 \subsection{Constraint Singularity}
+\label{sec:constraint-singularity}
 
 The singularity algorithm used in  \ruleref{\ottdruleATAppLetAnnLabel}
 of the algorithmic typing check wether the constraint $[[SC]]$
