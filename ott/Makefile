@@ -2,10 +2,13 @@ GEN := _gen
 
 OTTS := *.ott
 CACHE := $(GEN)/ott.cache
-INCLUDED := $(GEN)/included.tex
+DEFS := $(GEN)/defs.tex
 
-all: $(INCLUDED)
 
+TEXS := renew-ott.tex 
+GEN_TEXS := $(addprefix $(GEN)/,$(TEXS))
+
+all: $(GEN_TEXS) $(DEFS)
 
 $(GEN): %: 
 	mkdir -p $@
@@ -14,7 +17,7 @@ $(GEN): %:
 $(CACHE): %: $(OTTS) | $(GEN)
 	ott -merge true -signal_parse_errors true $(addprefix -i , $^) -writesys $@
 
-$(INCLUDED): $(CACHE)
+$(DEFS): $(CACHE)
 	@ott -readsys $(CACHE) \
 	    -o $@ \
 	    -tex_wrap false \
@@ -23,5 +26,9 @@ $(INCLUDED): $(CACHE)
      	-tex_show_meta false \
 		-merge true
 
+
+$(GEN_TEXS): $(TEXS) $(CACHE) | $(GEN)
+	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
+
 clean: 
-	rm -f $(CACHE) $(INCLUDED)
+	rm -f $(CACHE) $(GEN_TEXS) 

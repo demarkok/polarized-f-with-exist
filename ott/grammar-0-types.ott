@@ -32,7 +32,7 @@ pa {{ tex \alpha^{+} }},
 pb {{ tex \beta^{+} }},
 pc {{ tex \gamma^{+} }},
 pd {{ tex \delta^{+} }} 
-:: 'pa_' ::= {{ com positive variable }}
+:: 'pa_' ::= {{ com Positive variable }}
    | a ⁺       :: :: Var {{ tex [[a]]^{+} }}
    | a ⁺ : coh :: :: VarCoh {{ tex [[a]]^{+ [[coh]] } }}
    | pnb       :: :: PNVar
@@ -48,7 +48,7 @@ nd {{ tex \delta^{-} }}
 
 pna {{ tex \alpha^{\pm} }},
 pnb {{ tex \beta^{\pm} }}
-:: 'pna_' ::= {{ com positive or negative variable }}
+:: 'pna_' ::= {{ com Positive or negative variable }}
    | a ±       :: :: Var {{ tex [[a]]^{\pm} }}
    | a ± : coh :: :: VarCoh {{ tex [[a]]^{\pm [[coh]] } }}
 
@@ -164,7 +164,7 @@ pnds {{ tex \vv{ \delta^{\pm} } }}
    | </ pnasi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
 
-iP {{ tex P }}, iQ {{ tex Q }}, iR {{ tex R }} :: 'iP_' ::= {{ com positive declarative types }}
+iP {{ tex P }}, iQ {{ tex Q }}, iR {{ tex R }} :: 'iP_' ::= {{ com Positive declarative types }}
    | pa         ::   :: Var
    | ↓ iN       ::   :: Shift
    | ∃ nas . iP ::   :: Exists 
@@ -174,7 +174,7 @@ iP {{ tex P }}, iQ {{ tex Q }}, iR {{ tex R }} :: 'iP_' ::= {{ com positive decl
    | [ mu ] iP  :: M :: AppMoving 
    | ( iP )     :: S :: Paren
 
-iN {{ tex N }}, iM {{ tex M }}, iK {{ tex K }} :: 'iN_' ::= {{ com negative declarative types }}
+iN {{ tex N }}, iM {{ tex M }}, iK {{ tex K }} :: 'iN_' ::= {{ com Negative declarative types }}
    | na          ::   :: Var
    | ↑ iP        ::   :: Shift
    | iP → iN     ::   :: Fun
@@ -345,7 +345,7 @@ nubs {{ tex \vv{ \widehat{\beta}^{-} } }}
 
 
 
-uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive algorithmic type }}
+uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com Positive algorithmic type }}
                                                             {{ tex \ngbox{[[uP]]} }} 
    | pua           ::   :: UnifVar 
    | pa            ::   :: Var 
@@ -358,7 +358,7 @@ uP {{ tex \ngbox{P} }}, uQ {{ tex \ngbox{Q} }}:: 'uP_' ::= {{ com a positive alg
    | [ umu ] iP    :: M :: AppAUNSub
    | ( uP )        :: S :: Paren
 
-uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com a negative algorithmic type }}
+uN {{ tex \ngbox{N} }}, uM {{ tex \ngbox{M} }} :: 'uN_' ::= {{ com Negative algorithmic type }}
                                                              {{ tex \ngbox{[[uN]]} }}
    | nua            ::   :: UnifVar
    | na             ::   :: Var

@@ -1,3 +1,7 @@
+\usepackage[dvipsnames]{xcolor}
+\usepackage{scalerel}
+
+
 \usepackage{braket}
 \usepackage{hyperref}
 \usepackage{mathpartir}
@@ -5,7 +9,6 @@
 \usepackage{lscape}
 \usepackage{amsmath}
 \usepackage{amsthm}
-\usepackage{amssymb}
 \usepackage{booktabs}
 \usepackage{multicol}
 \usepackage{supertabular}
@@ -13,11 +16,13 @@
 \usepackage{cleveref}
 \usepackage{proof}
 
+
+\usepackage{amssymb}
+\usepackage{mathabx}
+
+
 \usepackage{stackengine}
 
-\usepackage{mathabx}
-\usepackage[dvipsnames]{xcolor}
-\usepackage{scalerel}
 
 
 \usepackage{todonotes}
@@ -26,20 +31,17 @@
 \usepackage{xparse}
 
 \usepackage{../casenum}
-\usepackage{../quiver}
+% \usepackage{../quiver}
 
+\usepackage{listings}
 
-\usepackage{tikz}
+% \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,arrows.meta,positioning}
 \usetikzlibrary{shapes.multipart}
 
-% \usepackage{quiver}
 
 
 \setlength{\columnsep}{1cm}
-\let\citename\relax
-\usepackage[bibencoding=utf8, natbib=true, abbreviate=false, dateabbrev=true, isbn=true, doi=false, urldate=comp, url=false, maxbibnames=9, maxcitenames=2, backref=false, backend=biber, style=alphabetic, language=american, arxiv=false]{biblatex}
-\addbibresource{../biblio.bib}
 
 \newcommand{\niton}{\not\owns}
 
@@ -68,3 +70,8 @@
 
 \newcommand{\UB}[0]{\mathsf{UB}}
 \newcommand{\NFUB}[0]{\mathsf{NFUB}}
+
+\newcommand{\depth}[1]{\ensuremath{\mathsf{depth}(#1)}}
+\newcommand{\size}[1]{\ensuremath{\mathsf{size}(#1)}}
+
+\newcommand{\ruleref}[1]{Rule \nameref{#1}}

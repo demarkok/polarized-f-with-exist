@@ -17,9 +17,11 @@ PDFS := paper.pdf
 TEXS := paper.tex $(wildcard $(TEX)/*.tex) 
 GEN_TEXS := $(addprefix $(GEN)/,$(TEXS))
 
-INCLUDED := $(OTT_GEN)/included.tex
 CACHE := $(OTT_GEN)/ott.cache
+DEFS := $(OTT_GEN)/defs.tex
+RENEW_DEFS := $(OTT_GEN)/renew-ott.tex
 STY := $(ROOT)/*.sty
+BIBLIO := $(ROOT)/bibliography.sty $(ROOT)/biblio.bib
 
 all: $(PDFS)
 
@@ -32,16 +34,20 @@ $(GEN) $(GEN_TEX): %:
 $(CACHE): $(OTTS) 
 	make -C $(OTT)
 
-$(INCLUDED): $(OTTS) $(CACHE)
+$(DEFS): $(CACHE)
+	make -C $(OTT)
+
+$(RENEW_DEFS) : $(DEFS) $(OTT)/renew-ott.tex
+	make -C $(OTT)
 
 # MAKE PROCESSED TEX FILES
-$(GEN_TEXS): $(TEXS) $(CACHE) $(INCLUDED) $(ROOT)/prelude.tex | $(GEN_TEX)
+$(GEN_TEXS): $(TEXS) $(CACHE) $(DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
 
 # MAIN
 
-paper.pdf: $(GEN_TEXS)
-	latexmk --interaction=batchmode --pdf $(GEN)/paper.tex
+paper.pdf: $(GEN_TEXS) $(BIBLIO)
+	latexmk --pdf -f $(GEN)/paper.tex
 
 continuous:
 	make & fswatch -o .. | xargs -n1 -I{} make

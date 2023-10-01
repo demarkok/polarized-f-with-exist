@@ -1,0 +1,208 @@
+\renewcommand{\ottrulehead}[3]{#3\ottprodnewline$#1$ & & $#2$ & & & }
+\renewenvironment{ottdefnblock}[3][]{\noindent#3 \\\framebox{\mbox{#2}}\\[0pt]}{}
+
+
+
+% ord varset in uN = varset'
+
+\renewcommand{\ottdruleONVarInName}[0]{(Var$_{-\in}^{\text{Ord}}$)}
+\renewcommand{\ottdruleONVarNInName}[0]{(Var$_{-\notin}^{\text{Ord}}$)}
+\renewcommand{\ottdruleONUVarName}[0]{(UVar$_{-} ^{\text{Ord}}$)}
+\renewcommand{\ottdruleOShiftUName}[0]{($\uparrow^{\text{Ord}}$)}
+\renewcommand{\ottdruleOArrowName}[0]{($\rightarrow^{\text{Ord}}$)}
+\renewcommand{\ottdruleOForallName}[0]{($\forall^{\text{Ord}}$)}
+
+
+% ord varset in uP = varset'
+
+\renewcommand{\ottdruleOPVarInName}[0]{(Var$_{+\in}^{\text{Ord}}$)}
+\renewcommand{\ottdruleOPVarNInName}[0]{(Var$_{+\notin}^{\text{Ord}}$)}
+\renewcommand{\ottdruleOPUVarName}[0]{(UVar$_{+}^{\text{Ord}}$)}
+\renewcommand{\ottdruleOShiftDName}[0]{($\downarrow^{\text{Ord}}$)}
+\renewcommand{\ottdruleOExistsName}[0]{($\exists^{\text{Ord}}$)}
+
+
+% nf(N) = M
+\renewcommand{\ottdruleNrmNVarName}[0]{(Var$_{-}^{\text{nf}}$)}
+\renewcommand{\ottdruleNrmNUVarName}[0]{(UVar$_{-}^{\text{nf}}$)}
+\renewcommand{\ottdruleNrmShiftUName}[0]{($\uparrow^{\text{nf}}$)}
+\renewcommand{\ottdruleNrmArrowName}[0]{($\rightarrow^{\text{nf}}$)}
+\renewcommand{\ottdruleNrmForallName}[0]{($\forall^{\text{nf}}$)}
+
+% nf(P) = Q
+\renewcommand{\ottdruleNrmPVarName}[0]{(Var$_{-}^{\text{nf}}$)}
+\renewcommand{\ottdruleNrmPUVarName}[0]{(UVar$_{-}^{\text{nf}}$)}
+\renewcommand{\ottdruleNrmShiftDName}[0]{($\downarrow^{\text{nf}}$)}
+\renewcommand{\ottdruleNrmExistsName}[0]{($\exists^{\text{nf}}$)}
+
+
+% N ≈ M
+
+\renewcommand{\ottdruleEOneNVarName}[0]{(Var$_-^{\eqEOne}$)}
+\renewcommand{\ottdruleEOneShiftUName}[0]{($\uparrow^{\eqEOne}$)}
+\renewcommand{\ottdruleEOneArrowName}[0]{($\rightarrow^{\eqEOne}$)}
+\renewcommand{\ottdruleEOneForallName}[0]{($\forall^{\eqEOne}$)}
+
+% P ≈ Q
+\renewcommand{\ottdruleEOnePVarName}[0]{(Var$_+^{\eqEOne}$)}
+\renewcommand{\ottdruleEOneShiftDName}[0]{($\downarrow^{\eqEOne}$)}
+\renewcommand{\ottdruleEOneExistsName}[0]{($\exists^{\eqEOne}$)}
+
+
+% G ⊢ N ≤1 M
+
+\renewcommand{\ottdruleDOneNVarName}[0]{(Var$_-^{\subDOne}$)}
+\renewcommand{\ottdruleDOneShiftUName}[0]{($\uparrow^{\subDOne}$)}
+\renewcommand{\ottdruleDOneArrowName}[0]{($\rightarrow^{\subDOne}$)}
+\renewcommand{\ottdruleDOneForallName}[0]{($\forall^{\subDOne}$)}
+
+% G ⊢ P ≥1 Q
+\renewcommand{\ottdruleDOnePVarName}[0]{(Var$_+^{\supDOne}$)}
+\renewcommand{\ottdruleDOneShiftDName}[0]{($\downarrow^{\supDOne}$)}
+\renewcommand{\ottdruleDOneExistsName}[0]{($\exists^{\supDOne}$)}
+
+
+% G ⊢ N ≈1 M
+\renewcommand{\ottdruleDOneNDefName}[0]{($\eqDOne_{-}$)}
+
+% G ⊢ P ≈1 Q
+\renewcommand{\ottdruleDOnePDefName}[0]{($\eqDOne_{+}$)}
+
+
+
+% G ⊨ iP1 ∨ iP2 = iQ
+\renewcommand{\ottdruleLUBVarName}[0]{(Var$^{\vee}$)}
+\renewcommand{\ottdruleLUBShiftName}[0]{($\downarrow^{\vee}$)}
+\renewcommand{\ottdruleLUBExistsName}[0]{($\exists^{\vee}$)}
+\renewcommand{\ottdruleLUBUpgradeName}[0]{(Upg)}
+
+
+% G ; Θ ⊨ uN ≤ iM ⫤ us
+\renewcommand{\ottdruleANVarName}[0]{(Var$_-^{\subA}$)}
+\renewcommand{\ottdruleAShiftUName}[0]{($\uparrow^{\subA}$)}
+\renewcommand{\ottdruleAArrowName}[0]{($\rightarrow^{\subA}$)}
+\renewcommand{\ottdruleAForallName}[0]{($\forall^{\subA}$)}
+
+% G ; Θ ⊨ iP ≥ uQ ⫤ us
+\renewcommand{\ottdruleAPVarName}[0]{(Var$_+^{\supA}$)}
+\renewcommand{\ottdruleAShiftDName}[0]{($\downarrow^{\supA}$)}
+\renewcommand{\ottdruleAExistsName}[0]{($\exists^{\supA}$)}
+\renewcommand{\ottdruleAPUVarName}[0]{(UVar$^{\supA}$)}
+
+
+% Γ ⊢ scE1 & scE2 = scE3 :: :: E :: 'E'
+\renewcommand{\ottdruleSCMESupSupName}[0]{$([[≥]]\&^{+}[[≥]])$}
+\renewcommand{\ottdruleSCMEEqSupName}[0]{$([[≈]]\&^{+}[[≥]])$}
+\renewcommand{\ottdruleSCMESupEqName}[0]{$([[≥]]\&^{+}[[≈]])$}
+\renewcommand{\ottdruleSCMEPEqEqName}[0]{$([[≈]]\&^{+}[[≈]])$}
+\renewcommand{\ottdruleSCMENEqEqName}[0]{$([[≈]]\&^{-}[[≈]])$}
+
+% Γ ; Θ ⊨ uN ≈u iM ⫤ UC 
+\renewcommand{\ottdruleUNVarName}[0]{(Var$_{-}^{[[≈u]]}$)}
+\renewcommand{\ottdruleUShiftUName}[0]{($\uparrow^{[[≈u]]}$)}
+\renewcommand{\ottdruleUArrowName}[0]{($\rightarrow^{[[≈u]]}$)}
+\renewcommand{\ottdruleUForallName}[0]{($\forall^{[[≈u]]}$)}
+\renewcommand{\ottdruleUNUVarName}[0]{(UVar$_{-}^{[[≈u]]}$)}
+
+% Γ ; Θ ⊨ uP ≈u iQ ⫤ UC 
+\renewcommand{\ottdruleUPVarName}[0]{(Var$_{+}^{[[≈u]]}$)}
+\renewcommand{\ottdruleUShiftDName}[0]{($\downarrow^{[[≈u]]}$)}
+\renewcommand{\ottdruleUExistsName}[0]{($\exists^{[[≈u]]}$)}
+\renewcommand{\ottdruleUPUVarName}[0]{(UVar$_{+}^{[[≈u]]}$)}
+
+% G ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )
+\renewcommand{\ottdruleAUPVarName}[0]{(Var$_{+}^{[[≈au]]}$)}
+\renewcommand{\ottdruleAUShiftDName}[0]{($\downarrow^{[[≈au]]}$)}
+\renewcommand{\ottdruleAUExistsName}[0]{($\exists^{[[≈au]]}$)}
+
+% G ⊨ iN1 ≈au iN2 ⫤ ( Ξ , uM , aus1 , aus2 )
+\renewcommand{\ottdruleAUNVarName}[0]{(Var$_{-}^{[[≈au]]}$)}
+\renewcommand{\ottdruleAUShiftUName}[0]{($\uparrow^{[[≈au]]}$)}
+\renewcommand{\ottdruleAUForallName}[0]{($\forall^{[[≈au]]}$)}
+\renewcommand{\ottdruleAUArrowName}[0]{($\rightarrow^{[[≈au]]}$)}
+\renewcommand{\ottdruleAUAUName}[0]{(AU)}
+
+% Γ ⊢ iN 
+\renewcommand{\ottdruleWFTNVarName}[0]{(Var$_{-}^{\text{WF}}$)}
+\renewcommand{\ottdruleWFTShiftUName}[0]{($\uparrow^{\text{WF}}$)}
+\renewcommand{\ottdruleWFTArrowName}[0]{($\rightarrow^{\text{WF}}$)}
+\renewcommand{\ottdruleWFTForallName}[0]{($\forall^{\text{WF}}$)}
+
+% Γ ⊢ iP
+\renewcommand{\ottdruleWFTPVarName}[0]{(Var$_{+}^{\text{WF}}$)}
+\renewcommand{\ottdruleWFTShiftDName}[0]{($\downarrow^{\text{WF}}$)}
+\renewcommand{\ottdruleWFTExistsName}[0]{($\exists^{\text{WF}}$)}
+
+% Γ ; Ξ ⊢ uN
+\renewcommand{\ottdruleWFATNVarName}[0]{(Var$_{-}^{\text{WF}}$)}
+\renewcommand{\ottdruleWFATNUVarName}[0]{(UVar$_{-}^{\text{WF}}$)}
+\renewcommand{\ottdruleWFATShiftUName}[0]{($\uparrow^{\text{WF}}$)}
+\renewcommand{\ottdruleWFATArrowName}[0]{($\rightarrow^{\text{WF}}$)}
+\renewcommand{\ottdruleWFATForallName}[0]{($\forall^{\text{WF}}$)}
+
+% Γ ; Ξ ⊢ uP
+\renewcommand{\ottdruleWFATPVarName}[0]{(Var$_{+}^{\text{WF}}$)}
+\renewcommand{\ottdruleWFATPUVarName}[0]{(UVar$_{+}^{\text{WF}}$)}
+\renewcommand{\ottdruleWFATShiftDName}[0]{($\downarrow^{\text{WF}}$)}
+\renewcommand{\ottdruleWFATExistsName}[0]{($\exists^{\text{WF}}$)}
+
+% Γ ⊢ iP : scE
+\renewcommand{\ottdruleSATSCESupName}[0]{($[[:≥]]_{+}^\text{sat}$)}
+\renewcommand{\ottdruleSATSCEPEqName}[0]{($[[:≈]]_{+}^\text{sat}$)}
+
+% Γ ⊢ iN : scE
+\renewcommand{\ottdruleSATSCENEqName}[0]{($[[:≈]]_{-}^\text{sat}$)}
+
+% Γ ; Φ ⊢ v : iP 
+\renewcommand{\ottdruleDTVarName}[0]{(Var$^{\text{inf}}$)}
+\renewcommand{\ottdruleDTThunkName}[0]{($\{\}^{\text{inf}}$)}
+\renewcommand{\ottdruleDTPAnnotName}[0]{(ann$_+^{\text{inf}}$)}
+\renewcommand{\ottdruleDTPEquivName}[0]{($[[≈]]_+^{\text{inf}}$)}
+
+% Γ ; Φ ⊢ c : iN 
+\renewcommand{\ottdruleDTtLamName}[0]{($\lambda^{\text{inf}}$)}
+\renewcommand{\ottdruleDTTLamName}[0]{($\Lambda^{\text{inf}}$)}
+\renewcommand{\ottdruleDTReturnName}[0]{(ret$^{\text{inf}}$)}
+\renewcommand{\ottdruleDTVarLetName}[0]{(let$^{\text{inf}}$)}
+\renewcommand{\ottdruleDTAppLetName}[0]{(let$_@^{\text{inf}}$)}
+\renewcommand{\ottdruleDTAppLetAnnName}[0]{(let$_{:@}^{\text{inf}}$)}
+\renewcommand{\ottdruleDTUnpackName}[0]{(let$_{\exists}^{\text{inf}}$)}
+\renewcommand{\ottdruleDTNAnnotName}[0]{(ann$_-^{\text{inf}}$)}
+\renewcommand{\ottdruleDTNEquivName}[0]{($[[≈]]_-^{\text{inf}}$)}
+
+% Γ ; Φ ⊢ iN ● args ⇒> iM 
+\renewcommand{\ottdruleDTEmptyAppName}[0]{($\emptyset_{[[●]][[⇒>]]}^{\text{inf}}$)}
+\renewcommand{\ottdruleDTArrowAppName}[0]{($\rightarrow_{[[●]][[⇒>]]}^{\text{inf}}$)}
+\renewcommand{\ottdruleDTForallAppName}[0]{($\forall_{[[●]][[⇒>]]}^{\text{inf}}$)}
+
+
+
+% Γ ; Φ ⊨ v : iP  
+\renewcommand{\ottdruleATVarName}[0]{(Var$^{\text{inf}}$)}
+\renewcommand{\ottdruleATThunkName}[0]{($\{\}^{\text{inf}}$)}
+\renewcommand{\ottdruleATPAnnotName}[0]{(ann$_+^{\text{inf}}$)}
+
+% Γ ; Φ ⊨ c : iN 
+\renewcommand{\ottdruleATtLamName}[0]{($\lambda^{\text{inf}}$)}
+\renewcommand{\ottdruleATTLamName}[0]{($\Lambda^{\text{inf}}$)}
+\renewcommand{\ottdruleATReturnName}[0]{(ret$^{\text{inf}}$)}
+\renewcommand{\ottdruleATVarLetName}[0]{(let$^{\text{inf}}$)}
+\renewcommand{\ottdruleATAppLetName}[0]{(let$_@^{\text{inf}}$)}
+\renewcommand{\ottdruleATAppLetAnnName}[0]{(let$_{:@}^{\text{inf}}$)}
+\renewcommand{\ottdruleATUnpackName}[0]{(let$_{\exists}^{\text{inf}}$)}
+\renewcommand{\ottdruleATNAnnotName}[0]{(ann$_-^{\text{inf}}$)}
+
+% Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC 
+\renewcommand{\ottdruleATEmptyAppName}[0]{($\emptyset_{[[●]][[⇒>]]}^{\text{inf}}$)}
+\renewcommand{\ottdruleATArrowAppName}[0]{($\rightarrow_{[[●]][[⇒>]]}^{\text{inf}}$)}
+\renewcommand{\ottdruleATForallAppName}[0]{($\forall_{[[●]][[⇒>]]}^{\text{inf}}$)}
+
+% scE1 singular with iP
+\renewcommand{\ottdruleSINGPEqName}[0]{($[[≈]]_{+}^{\text{sing}}$)}
+\renewcommand{\ottdruleSINGSupVarName}[0]{($[[:≥]]\alpha^{\text{sing}}$)}
+\renewcommand{\ottdruleSINGSupShiftName}[0]{($[[:≥]][[↓]]^{\text{sing}}$)}
+
+% scE1 singular with iN
+\renewcommand{\ottdruleSINGNEqName}[0]{($[[≈]]_{-}^{\text{sing}}$)}
+
+
