@@ -24,5 +24,5 @@ sudo apt install texlive-full
 ```
 We use `rubber v. 1.6.0` to compile LaTeX.
 ```
-pip3 install rubber
+pip3 install latex-rubber
 ```
