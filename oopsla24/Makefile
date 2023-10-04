@@ -41,13 +41,13 @@ $(RENEW_DEFS) : $(DEFS) $(OTT)/renew-ott.tex
 	make -C $(OTT)
 
 # MAKE PROCESSED TEX FILES
-$(GEN_TEXS): $(TEXS) $(CACHE) $(DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+$(GEN_TEXS): $(TEXS) $(CACHE) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
 
 # MAIN
 
 paper.pdf: $(GEN_TEXS) $(BIBLIO)
-	latexmk --pdf -f $(GEN)/paper.tex
+	rubber --pdf -f $(GEN)/paper.tex
 
 continuous:
 	make & fswatch -o .. | xargs -n1 -I{} make

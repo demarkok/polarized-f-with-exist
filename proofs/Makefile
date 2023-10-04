@@ -46,7 +46,7 @@ $(GEN_TEXS): $(TEXS) $(CACHE) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
 # MAIN
 
 main.pdf: $(GEN_TEXS)
-	latexmk -f --pdf $(GEN)/main.tex
+	rubber --pdf $(GEN)/main.tex
 
 continuous:
 	make & fswatch -o .. | xargs -n1 -I{} make

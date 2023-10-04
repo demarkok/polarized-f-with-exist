@@ -216,31 +216,40 @@
 
 $[[iN = iM]]$
 
-\input{tex/01-introduction.tex}
+\input{\genDir/tex/01-introduction.tex}
 
 \section{Overview}
-\input{tex/02-overview.tex}
+\input{\genDir/tex/02-overview.tex}
 
 \section{Declarative System}
-\input{tex/03-declarative-system.tex}
+\input{\genDir/tex/03-declarative-system.tex}
 
 \section{Algorithm}
-\input{tex/04-algorithm.tex}
+\input{\genDir/tex/04-algorithm.tex}
 
 \section{Proof}
-\input{tex/05-proof.tex}
+\input{\genDir/tex/05-proof.tex}
 
 \section{Extensions}
-\input{tex/06-extensions.tex}
+\input{\genDir/tex/06-extensions.tex}
 
 \section{Conclusion}
-\input{tex/07-conclusion.tex}
+\input{\genDir/tex/07-conclusion.tex}
 
 
 \cite{botlanMLFRaisingML2003}
 \cite{dunfieldBidirectionalTyping2020}
 
+%% Bibliography
+%% \balance %% necessary for two-column formats
 \printbibliography
+
+\lstset{basicstyle=\ttfamily\scriptsize,keywordstyle=\color{black}\bfseries\underbar,tabsize=8,showstringspaces=false,frame=L,label= ,caption= ,captionpos=b,numbers=none}
+
+\clearpage
+\appendix
+% \input{./tex/appendix/recovery.tex}
+% \input{./tex/appendix/drf.tex}
 
 \end{document}
 

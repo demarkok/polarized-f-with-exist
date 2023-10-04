@@ -1,9 +1,12 @@
-\UseRawInputEncoding
+\PassOptionsToPackage{prologue,dvipsnames}{xcolor}
+
+% \UseRawInputEncoding
 % vim: ft=tex
-\documentclass[acmsmall,natbib=false]{article}
-\usepackage[a4paper, total={8in, 10in}]{geometry}
 
+% \documentclass[acmsmall,natbib=false]{article}
+% \usepackage[a4paper, total={8in, 10in}]{geometry}
 
+\documentclass[acmsmall,natbib=false,review,anonymous]{acmart}
 \input{../prelude.tex}
 
 \newcommand{\ottDir}{../ott/_gen}
@@ -12,10 +15,25 @@
 \input{\ottDir/renew-ott.tex}
 
 \usepackage{../bibliography}
+% \usepackage{amssymb}
 
+\usepackage[matha]{mathabx}
 
+% https://tex.stackexchange.com/questions/85033/colored-symbols/85035#85035
+% \newcommand*{\mathcolor}{}
+% \def\mathcolor#1#{ \mathcoloraux{#1} }
+% \newcommand*{\mathcoloraux}[3]{%
+%   \protect\leavevmode
+%   \begingroup
+%   \color#1{#2}#3%
+%   \endgroup
+% }
 
 \begin{document}
+
+\title{The Proofs}
+
+\maketitle
 
 \tableofcontents
 

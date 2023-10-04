@@ -17,8 +17,8 @@
 \usepackage{proof}
 
 
-\usepackage{amssymb}
-\usepackage{mathabx}
+\usepackage{newtxmath}
+% \usepackage{mathabx}
 
 
 \usepackage{stackengine}
@@ -34,6 +34,7 @@
 % \usepackage{../quiver}
 
 \usepackage{listings}
+\usepackage{xspace}
 
 % \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,arrows.meta,positioning}
@@ -58,15 +59,6 @@
 \newtheorem{observation}{Observation}
 \newtheorem*{assertion*}{Assertion}
 
-% https://tex.stackexchange.com/questions/85033/colored-symbols/85035#85035
-\newcommand*{\mathcolor}{}
-\def\mathcolor#1#{ \mathcoloraux{#1} }
-\newcommand*{\mathcoloraux}[3]{%
-  \protect\leavevmode
-  \begingroup
-  \color#1{#2}#3%
-  \endgroup
-}
 
 \newcommand{\UB}[0]{\mathsf{UB}}
 \newcommand{\NFUB}[0]{\mathsf{NFUB}}
@@ -75,3 +67,25 @@
 \newcommand{\size}[1]{\ensuremath{\mathsf{size}(#1)}}
 
 \newcommand{\ruleref}[1]{Rule \nameref{#1}}
+
+\newcommand{\fexists}{F$^\pm_\exists$\xspace }
+\newcommand{\etc}{F$\exists$}
+
+
+
+\newcommand{\ie}{\text{i.e.,} }
+\newcommand{\eg}{\text{e.g.,} }
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\stt}{s.t.\xspace}
+\newcommand{\aka}{a.k.a.\xspace}
+\newcommand{\resp}{resp.\xspace}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\newcommand{\CBPV}{\text{Call-By-Push-Value} }
+
+\newcommand{\coq}{\texttt{Coq} }
+\newcommand{\agda}{\texttt{Agda} }

@@ -1,12 +1,15 @@
 language: generic
 dist: jammy
 
+python:
+  - "3.11"
+
 before_install:
-  # - sudo apt install -y latexmk
   - sudo apt update
-  - sudo apt install -y opam texlive-full
 
 install:
+  - pip3 install rubber
+  - sudo apt install -y opam texlive-full
   - opam init --auto-setup --disable-sandboxing --compiler=4.13.1
 
 before_script:
@@ -16,6 +19,8 @@ before_script:
 
 script:
   - cd proofs
+  - make
+  - cd ../oopsla24
   - make
 
 
