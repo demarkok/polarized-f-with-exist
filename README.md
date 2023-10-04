@@ -18,9 +18,11 @@ opam upgrade -w ott
 eval $(opam env)
 ```
 
-### Latex 
-We use `latexmk v. 4.70b` to compile LaTeX.
+### Latex
 ```
 sudo apt install texlive-full
 ```
-
+We use `rubber v. 1.6.0` to compile LaTeX.
+```
+pip3 install latex-rubber
+```

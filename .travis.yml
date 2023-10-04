@@ -8,7 +8,7 @@ before_install:
   - sudo apt update
 
 install:
-  - pip3 install rubber
+  - pip3 install latex-rubber
   - sudo apt install -y opam texlive-full
   - opam init --auto-setup --disable-sandboxing --compiler=4.13.1
 
