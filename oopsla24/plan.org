@@ -1,0 +1,32 @@
+* Abstract
+* Introduction
+** What is the problem?
+** What Good in Solving it?
+** Contributions
+    *** Type Inference Algorithm
+        Local Type Inference Algorithm for impredicative SystemF with existential types
+        - No ∃pack/∀inst anywhere but λ and some let-bindings are annotated 
+        - Algorithm is fundamentally novel
+            - ∃ brakes the standard invariants that justify using unification
+            - Mix UNIF and ANTIUNIF
+            - Full correctness proof
+            - Exploits CBPV to control 
+                quantifiers/arities
+        - Subtyping permits
+    *** Type Inference Framework
+        We discuss the design alternatives
+        that allow us to apply the same 
+        general scheme of the algorithm 
+        to different type systems. 
+* Overview
+    Informal Explanation of our approach
+    Introduce the language
+    Examples, Key Ideas
+* Declarative System
+    Definition of the declarative system
+    Properties
+    Required Notations
+* The Algorithm
+* The Proof
+* Extensions
+* Conclusion

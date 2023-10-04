@@ -1,8 +1,7 @@
 \subsection{The Language}
 
-
-The type syntax of \fexists is given in \cref{fig:declarative-types}.
-The types of \fexists are stratified into two syntactic 
+The types of \fexists are given in \cref{fig:declarative-types}.
+They are stratified into two syntactic 
 categories (polarities): positive and negative,  
 similarly to the \CBPV system \cite{levy2006:cbpv}.
 The negative types represent computations, and the positive types represent values:
@@ -35,3 +34,13 @@ The negative types represent computations, and the positive types represent valu
   \caption{Declarative Types of \fexists}
   \label{fig:declarative-types}
 \end{figure}
+
+\paragraph{Definitional Equalities}
+For simplicity, we assume alpha-equivalent terms equal.
+This way, we assume that substitutions do not capture bound variables.
+Besides, we equate
+$[[∀pas.∀pbs.iN]]$ with $[[∀pas,pbs.iN]]$, 
+as well as $[[∃nas.∃nbs.iP]]$ with $[[∃nas,nbs.iP]]$,
+and lift these equations transitively and congruently 
+to the whole system.
+
