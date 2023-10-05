@@ -1,7 +1,12 @@
 * Abstract
 * Introduction
 ** What is the problem?
+    - System F is the basis for the types in many languages.
+    - The type inference for Impredicative System F is undecidable:
+      Examples instantiating ∀-s.
+    - Existential Types are useful, but the type inference for ∃ is under-researched.
 ** What Good in Solving it?
+    - As a consequence, the algorithms are ad-hoc and sub-optimal (ML?).
 ** Contributions
     *** Type Inference Algorithm
         Local Type Inference Algorithm for impredicative SystemF with existential types
@@ -18,15 +23,59 @@
         that allow us to apply the same 
         general scheme of the algorithm 
         to different type systems. 
+        - Our work gives a deeper understanding on the inference for impredicative ∃
+        - The algorithm as it presented here, cannot be used in practice without modifications.
 * Overview
-    Informal Explanation of our approach
-    Introduce the language
-    Examples, Key Ideas
+    ** Informal Explanation of our approach
+        - subtyping is the driver of the inference: examples
+        - Where does the complexity come from?: ∀ and ∃ rules
+    ** Introduce the language
+        - ±-stratification of the language
+        - Language of Types
+        - Language of Terms
+    ** Examples, Key Ideas
+        - System = Declarative + Algorithmic Counterparts 
+        *** Types
+            - Non-trivial equivalence
+            - Type normalization 
+            - Algorithmic Variables => Constraints
+            - Merging constraints requires Unification.
+            - Merging constraints require Least Upper Bound, 
+                which is is non-trivial: Anti-Unification
+        *** Terms
+            - Interface to Subtyping: Annotations, Type applications. 
+            - Inference in let bindings: uniqueness
 * Declarative System
-    Definition of the declarative system
-    Properties
-    Required Notations
+    ** Definition of the declarative system
+    ** Properties
+        - Variables do not have proper subtypes and supertypes
+        - Free Variable propagation: N ≤ M => FV(N) ⊆ FV(M)
+        - Subtyping is Reflexive and Transitive, and is preserved by substitution
+        - Characterization of equivalence: variable ordering is sufficient 
+        - Characterization of Supertypes
+    ** Required Notations
 * The Algorithm
-* The Proof
-* Extensions
+    ** Subtyping
+        - Overview (Dependency Graph)
+        *** The Subtyping Algorithm
+        *** Equivalence and normalization
+        *** Constraints 
+        **** Unification
+        **** Least Upper Bound
+        **** Anti-Unification
+    ** Inference
+        - Overview (Dependency Graph)
+        *** The Inference Algorithm
+        *** Constraint Singularity
+* Correctness of the Algorithm 
+* Extensions and Modifications
+    ** Elementary Type Theory
+    ** Explicit type application
+    ** Bounded quantifiers
+    ** Bidirectionalization 
+    ** Relaxing ↑
+* Related Work
+    ** Local Type Inference
+    ** A quick look at impredicativity
+    ** Existential Crisis Resolved
 * Conclusion

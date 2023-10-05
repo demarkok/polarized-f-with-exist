@@ -3,7 +3,7 @@
 
 
 \usepackage{braket}
-\usepackage{hyperref}
+% \usepackage{hyperref}
 \usepackage{mathpartir}
 
 \usepackage{lscape}
@@ -68,7 +68,7 @@
 
 \newcommand{\ruleref}[1]{Rule \nameref{#1}}
 
-\newcommand{\fexists}{F$^\pm_\exists$\xspace }
+\newcommand{\fexists}{F$^\pm\exists$\xspace} 
 \newcommand{\etc}{F$\exists$}
 
 
@@ -89,3 +89,13 @@
 
 \newcommand{\coq}{\texttt{Coq} }
 \newcommand{\agda}{\texttt{Agda} }
+
+% https://tex.stackexchange.com/questions/85033/colored-symbols/85035#85035
+\providecommand*{\mathcolor}{}
+\def\mathcolor#1#{\mathcoloraux{#1}}
+\newcommand*{\mathcoloraux}[3]{%
+  \protect\leavevmode
+  \begingroup
+  \color#1{#2}#3%
+  \endgroup
+}
