@@ -6,7 +6,12 @@
       Examples instantiating ∀-s.
     - Existential Types are useful, but the type inference for ∃ is under-researched.
 ** What Good in Solving it?
-    - As a consequence, the algorithms are ad-hoc and sub-optimal (ML?).
+    - Fundamental duality in logic: forall vs exists 
+    - Useful for data abstraction, modules/components, coinductive type encodings, etc
+    - Reveals new ways of understanding type inference: usual algorithms for forall rely
+      on relationship between specialisation and unification which break in the presence
+      of exists
+      
 ** Contributions
     *** Type Inference Algorithm
         Local Type Inference Algorithm for impredicative SystemF with existential types
@@ -29,6 +34,7 @@
     ** Informal Explanation of our approach
         - subtyping is the driver of the inference: examples
         - Where does the complexity come from?: ∀ and ∃ rules
+    ** Examples: with syntax explained informally, but reasonably close to the real level of annotations
     ** Introduce the language
         - ±-stratification of the language
         - Language of Types
