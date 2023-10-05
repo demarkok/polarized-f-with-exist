@@ -11,6 +11,8 @@ install:
   - pip3 install latex-rubber
   - sudo apt install -y opam texlive-full
   - opam init --auto-setup --disable-sandboxing --compiler=4.13.1
+  - sudo apt upgrade texlive
+  - pdflatex --version
 
 before_script:
   - opam pin -y add ott patched-ott
