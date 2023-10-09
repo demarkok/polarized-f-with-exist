@@ -33,12 +33,9 @@
 * Overview
     ** Informal Explanation of our approach
         - subtyping is the driver of the inference: examples
-<<<<<<< HEAD
         - Where does the complexity come from?: ∀ and ∃ rules (in a simplified way)
-=======
-        - Where does the complexity come from?: ∀ and ∃ rules
-    ** Examples: with syntax explained informally, but reasonably close to the real level of annotations
->>>>>>> refs/remotes/origin/main
+    ** Examples
+        with syntax explained informally, but reasonably close to the real level of annotations
     ** Introduce the language
         - ±-stratification of the language
         - Language of Types
