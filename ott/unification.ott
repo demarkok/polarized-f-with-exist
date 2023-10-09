@@ -1,7 +1,8 @@
 
 embed {{ tex-preamble
 
-\colorlet{colorU}{Purple!90!Black}
+% \colorlet{colorU}{Purple!90!Black}
+\colorlet{colorU}{Black}
 \newcommand{\eqU}{ \mathcolor{colorU}{ [[≈u]] } } 
 % \newcommand{\subEOneA}{ \mathcolor{colorEOneA}{ [[≤]]_0^A } } 
 % \newcomma

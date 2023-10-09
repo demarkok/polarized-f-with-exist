@@ -6,23 +6,24 @@ grammar
 args {{ tex \vv{ v } }} :: 'args_' ::= {{ com list of arguments }}
     | ·                     ::   :: Empty
     | v                     ::   :: Single
-    | </ argsi // , // i /> ::   :: Concat  {{ com concatenate }}
+    | </ argsi // , // i /> ::   :: Concat   {{ com concatenate }}
 
-v, w :: 'v_' ::= {{ com value terms }}
-  | x          ::   :: Var    {{ com variable }}
-  | { c }      ::   :: Thunk  {{ com thunk }}
-  | ( v : iP ) ::   :: PAnnot {{ com annotated value }}
+v, w :: 'v_' ::= {{ com Value Terms }}
+  | x          ::   :: Var    % {{ com variable }}
+  | { c }      ::   :: Thunk  % {{ com thunk }}
+  | ( v : iP ) ::   :: PAnnot % {{ com annotated value }}
   | ( v )      :: M :: Paren
 
-c, d :: 'c_' ::= {{ com computation terms }}
-  | ( c : iN )                    ::   :: NAnnot {{ com annotated computation }}
-  | λ x : iP . c                  ::   :: Lam    {{ com annotated abstraction }}
-  | Λ pa . c                      ::   :: BigLam {{ com annotated type abstraction }}
-  | return v                      ::   :: Return {{ com computation embedding a value}}
-  | let x = v ; c                 ::   :: VarLet {{ com standard let-binding }}
-  | let x : iP = v ( args ) ; c   ::   :: AppLetAnn {{ com annotated applicative let }}
-  | let x     = v ( args ) ; c    ::   :: AppLet    {{ com unannotated applicative let }}
-  | let∃ ( nas , x ) = v    ; c    ::   :: Unpack   {{ com unpack }}
+c, d :: 'c_' ::= {{ com Computation Terms }}
+  | ( c : iN )                    ::   :: NAnnot    % {{ com annotated computation }}
+  | λ x : iP . c                  ::   :: Lam       % {{ com annotated abstraction }}
+                                                    % {{ tex [[λ]] [[x]] : [[iP]] ~.~ [[c]] }}
+  | Λ pa . c                      ::   :: BigLam    % {{ com annotated type abstraction }}
+  | return v                      ::   :: Return    % {{ com computation embedding a value}}
+  | let x = v ; c                 ::   :: VarLet    % {{ com standard let-binding }}
+  | let x : iP = v ( args ) ; c   ::   :: AppLetAnn % {{ com annotated applicative let }}
+  | let x     = v ( args ) ; c    ::   :: AppLet    % {{ com unannotated applicative let }}
+  | let∃ ( nas , x ) = v    ; c    ::   :: Unpack   % {{ com unpack }}
 
 vctx, Φ {{ tex \Phi }} :: 'vctxt_' ::= {{ com variable context }}
   | ·                     ::   :: Empty

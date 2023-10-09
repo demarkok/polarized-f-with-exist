@@ -28,22 +28,21 @@ coh {{ tex n }}, mcoh {{ tex m }} :: 'n_' ::= {{ com cohort index }}
 
 grammar
 
-pa {{ tex \alpha^{+} }},
-pb {{ tex \beta^{+} }},
-pc {{ tex \gamma^{+} }},
-pd {{ tex \delta^{+} }} 
+pa {{ tex \mathcolor{positive}{ \alpha^{+} } }},
+pb {{ tex \mathcolor{positive}{ \beta^{+} } }},
+pc {{ tex \mathcolor{positive}{ \gamma^{+} }  }},
+pd {{ tex \mathcolor{positive}{ \delta^{+} } }} 
 :: 'pa_' ::= {{ com Positive variable }}
-   | a ⁺       :: :: Var {{ tex [[a]]^{+} }}
-   | a ⁺ : coh :: :: VarCoh {{ tex [[a]]^{+ [[coh]] } }}
+   | a ⁺       :: :: Var    {{ tex \mathcolor{positive}{ [[a]]^{+} } }}
    | pnb       :: :: PNVar
 
-na {{ tex \alpha^{-} }},
-nb {{ tex \beta^{-} }},
-nc {{ tex \gamma^{-} }},
-nd {{ tex \delta^{-} }}
+
+na {{ tex \mathcolor{negative}{ \alpha^{-} } }},
+nb {{ tex \mathcolor{negative}{ \beta^{-} } }},
+nc {{ tex \mathcolor{negative}{ \gamma^{-} } }},
+nd {{ tex \mathcolor{negative}{ \delta^{-} } }}
 :: 'na_' ::= {{ com negative variable }}
-   | a ⁻       :: :: Var {{ tex [[a]]^{-} }}
-   | a ⁻ : coh :: :: VarCoh {{ tex [[a]]^{- [[coh]] } }}
+   | a ⁻       :: :: Var {{ tex \mathcolor{negative}{ [[a]]^{-} } }}
    | pna       :: :: PNVar
 
 pna {{ tex \alpha^{\pm} }},
@@ -130,10 +129,10 @@ uρ {{ tex \widehat{\rho} }} :: 'aus_' ::= {{ com anti-unification substitution 
 
 grammar
 
-pas {{ tex \vv{ \alpha^{+} } }},
-pbs {{ tex \vv{ \beta^{+} } }},
-pcs {{ tex \vv{ \gamma^{+} } }},
-pds {{ tex \vv{ \delta^{+} } }}
+pas {{ tex \vv{ \mathcolor{positive}{ \alpha^{+} } } }},
+pbs {{ tex \vv{ \mathcolor{positive}{ \beta^{+} } } }},
+pcs {{ tex \vv{ \mathcolor{positive}{ \gamma^{+} } } }},
+pds {{ tex \vv{ \mathcolor{positive}{ \delta^{+} } } }}
 :: 'pas_' ::= {{ com positive variable list }}
    | ·                    ::   :: empty   {{ com empty list }}
    | pa                   ::   :: Var     {{ com a variable }}
@@ -141,10 +140,10 @@ pds {{ tex \vv{ \delta^{+} } }}
                                           {{ tex \vv{[[pa]]} }}
    | </ pasi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
-nas {{ tex \vv{ \alpha^{-} } }},
-nbs {{ tex \vv{ \beta^{-} } }},
-ncs {{ tex \vv{ \gamma^{-} } }},
-nds {{ tex \vv{ \delta^{-} } }}
+nas {{ tex \vv{ \mathcolor{negative}{ \alpha^{-} } } }},
+nbs {{ tex \vv{ \mathcolor{negative}{ \beta^{-} } } }},
+ncs {{ tex \vv{ \mathcolor{negative}{ \gamma^{-} } } }},
+nds {{ tex \vv{ \mathcolor{negative}{ \delta^{-} } } }}
 :: 'nas_' ::= {{ com negative variables }}
    | ·                    ::   :: empty   {{ com empty list }}
    | na                   ::   :: Var     {{ com a variable }}
@@ -164,7 +163,9 @@ pnds {{ tex \vv{ \delta^{\pm} } }}
    | </ pnasi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
 
-iP {{ tex P }}, iQ {{ tex Q }}, iR {{ tex R }} :: 'iP_' ::= {{ com Positive declarative types }}
+iP {{ tex \mathcolor{positive}{P} }}, 
+iQ {{ tex \mathcolor{positive}{Q} }}, 
+iR {{ tex \mathcolor{positive}{R} }} :: 'iP_' ::= {{ com Positive declarative types }}
    | pa         ::   :: Var
    | ↓ iN       ::   :: Shift
    | ∃ nas . iP ::   :: Exists 
@@ -174,7 +175,10 @@ iP {{ tex P }}, iQ {{ tex Q }}, iR {{ tex R }} :: 'iP_' ::= {{ com Positive decl
    | [ mu ] iP  :: M :: AppMoving 
    | ( iP )     :: S :: Paren
 
-iN {{ tex N }}, iM {{ tex M }}, iK {{ tex K }} :: 'iN_' ::= {{ com Negative declarative types }}
+%   | ⊫  :: :: VDash     {{ tex \mathcolor{\ccolor}{\VDash} }}
+iN {{ tex \mathcolor{negative}{N} }}, 
+iM {{ tex \mathcolor{negative}{M} }}, 
+iK {{ tex \mathcolor{negative}{K} }} :: 'iN_' ::= {{ com Negative declarative types }}
    | na          ::   :: Var
    | ↑ iP        ::   :: Shift
    | iP → iN     ::   :: Fun
@@ -379,6 +383,8 @@ auSol :: 'auSOL_' ::=
 
 terminals :: 'terminals_' ::=
   | ∃  :: :: exists    {{ tex \exists }}
+  | .  :: :: dot       {{ tex .~ }}
+  | ;  :: :: semi      {{ tex ;~ }}
   | ∀  :: :: forall    {{ tex \forall }}
   | ↑  :: :: upShift   {{ tex \mathord{\uparrow} }}
   | ↓  :: :: downShift {{ tex \mathord{\downarrow} }}

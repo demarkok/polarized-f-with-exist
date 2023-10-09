@@ -1,0 +1,94 @@
+
+The declarative system serves as a specification of the
+type inference algorithm. It consists of two main parts:
+the subtyping and the type inference. 
+
+\subsection{Subtyping}
+It is represented by a set of inference rules shown in
+\cref{fig:declarative-subtyping}.
+
+\begin{figure}[h]
+  \begin{multicols}{2}
+    \ottdefnDOneNsub{}
+
+    \ottdefnDOnePsup{}
+  \end{multicols}
+  \hfill\\
+  \begin{multicols}{2}
+    \ottdefnDOneNeq{}
+
+    \ottdefnDOnePeq{}
+  \end{multicols}
+  \caption{Declarative Subtyping}
+  \label{fig:declarative-subtyping}
+\end{figure}
+
+\paragraph{Invariance of Shifts}
+An important restriction that we put on the subtyping system is
+that the subtyping on shifted types requires their equivalence,
+as shown in \ruleref{\ottdruleDOneShiftDLabel} and
+\ruleref{\ottdruleDOneShiftULabel}. Relaxing both of these
+invariants makes the system equivalent to \systemf, 
+and thus, undecidable. 
+However, \ruleref{\ottdruleDOneShiftDLabel} might be
+relaxed to a covariant form, as we will discuss in \cref{todo}.
+
+As discussed in \cref{todo}, 
+the polymorphic rules \ruleref{\ottdruleDOneForallLabel} and 
+\ruleref{\ottdruleDOneExistsLabel} are the only non-algorithmic ones.
+For convenience of representation, we compose the left-hand side rule and
+the right-hand side rule into one, and use substitution $[[σ]]$ to 
+represent instantiation.  
+
+The substitution application is defined 
+in a standard way, avoiding capture of bound variables,
+and preserving the variables that are out of the substitution domain.
+The domain and the range of the substitutions are
+specified by notation $[[Γ2 ⊢ σ : Γ1]]$.
+For instance, the notation $[[Γ, pbs ⊢ σ : {pas}]]$ means that 
+$[[σ]]$ maps the variables from $[[pas]]$ to (positive) types
+well-formed in $[[Γ, pbs]]$.
+
+\subsection{Type Inference}
+
+
+\begin{figure}[h]
+  \ottdefnDTNInf{}
+
+  \hfill
+
+  \begin{multicols}{2}
+  \ottdefnDTPInf{}
+  \\
+  \ottdefnDTSpinInf{}
+  \end{multicols}
+  \hfill
+
+  \caption{Declarative Subtyping}
+  \label{fig:declarative-inference}
+\end{figure}
+
+\subsection{Properties of the Declarative System}
+
+Now, we present selected properties of the declarative system,
+which are important for the correctness of the algorithm.
+
+\begin{lemma}
+  Variables do not have proper subtypes and supertypes
+\end{lemma}
+
+\begin{lemma}
+  Free Variable propagation: $[[Γ ⊢ iN ≤ iM]]$ 
+  implies $[[fv(iN) ⊆ fv(iM)]]$.
+\end{lemma}
+
+\begin{lemma}
+  Subtyping is Reflexive and Transitive, and is preserved by substitution
+\end{lemma}
+
+\begin{lemma}
+  $[[Γ ⊢ iN ≈ iM]]$ is equivalent to $[[nf(iN) ≈ nf(iM)]]$.
+\end{lemma}
+
+\begin{lemma}[Characterization of Supertypes]
+\end{lemma}

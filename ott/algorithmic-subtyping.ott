@@ -1,6 +1,6 @@
 embed {{ tex-preamble
 
-\colorlet{colorA}{Purple}
+\colorlet{colorA}{Black}
 \newcommand{\subA}{ \mathcolor{colorA}{ [[≤]] } } 
 \newcommand{\supA}{ \mathcolor{colorA}{ [[≥]] } } 
 }}

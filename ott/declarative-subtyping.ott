@@ -1,7 +1,10 @@
 embed {{ tex-preamble
 
-\colorlet{colorOne}{Yellow!50!Brown}
+% \colorlet{colorOne}{Yellow!50!Brown}
+\colorlet{colorOne}{black}
 \newcommand{\eqDOne}{ \mathcolor{colorOne}{ [[≈]]^{ \scaleto{[[≤]]}{3.5pt} } } } 
+\newcommand{\eqDOnePos}{ \mathcolor{colorOne}{ [[≈]]^{ \scaleto{[[≤]]}{3.5pt} }_{+} } } 
+\newcommand{\eqDOneNeg}{ \mathcolor{colorOne}{ [[≈]]^{ \scaleto{[[≤]]}{3.5pt} }_{-} } } 
 \newcommand{\subDOne}{ \mathcolor{colorOne}{ [[≤]] } } 
 \newcommand{\supDOne}{ \mathcolor{colorOne}{ [[≥]] } } 
 
@@ -11,7 +14,7 @@ defns
   D1 :: 'D1' ::=
 
   defn Γ ⊢ iN ≈ iM :: :: Neq :: ''
-  {{ com Negative subtyping-induced equivalence }}
+  {{ com Negative equivalence }}
   {{ tex [[Γ]] [[⊢]] [[iN]] \eqDOne [[iM]] }} by
 
   Γ ⊢ iN ≤ iM   Γ ⊢ iM ≤ iN
@@ -19,7 +22,7 @@ defns
   Γ ⊢ iN ≈ iM 
 
   defn Γ ⊢ iP ≈ iQ :: :: Peq :: ''
-  {{ com Positive subtyping-induced equivalence }}
+  {{ com Positive equivalence }}
   {{ tex [[Γ]] [[⊢]] [[iP]] \eqDOne [[iQ]] }} by
 
   Γ ⊢ iP ≥ iQ   Γ ⊢ iQ ≥ iP
@@ -41,7 +44,7 @@ defns
   -------------------------- :: Arrow
   Γ ⊢ iP → iN ≤ iQ → iM
 
-  Γ, pbs ⊢ σ :{pas}    Γ, pbs ⊢ [σ] iN ≤ iM
+  Γ, pbs ⊢ σ : {pas}    Γ, pbs ⊢ [σ] iN ≤ iM
   ---------------------------------------- :: Forall
   Γ ⊢ ∀pas.iN ≤ ∀pbs.iM
 

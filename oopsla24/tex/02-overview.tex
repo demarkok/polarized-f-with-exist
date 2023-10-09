@@ -1,4 +1,7 @@
-\subsection{The Language}
+\subsection{What types do we infer?}
+
+
+\subsection{The Language of Types}
 
 The types of \fexists are given in \cref{fig:declarative-types}.
 They are stratified into two syntactic 
@@ -25,7 +28,6 @@ The negative types represent computations, and the positive types represent valu
     \ottgrammartabular{
       \ottiN\ottinterrule
     }
-
     \ottgrammartabular{
       \ottiP\ottinterrule
     }
@@ -43,3 +45,67 @@ $[[∀pas.∀pbs.iN]]$ with $[[∀pas,pbs.iN]]$,
 as well as $[[∃nas.∃nbs.iP]]$ with $[[∃nas,nbs.iP]]$,
 and lift these equations transitively and congruently 
 to the whole system.
+
+\subsection{The Language of Terms}
+
+In \cref{fig:declarative-terms}, we define the the language of terms of 
+\fexists. The language combines \systemf with the \CBPV approach.
+
+\begin{itemize}
+    \item [$+$] $[[x]]$ denotes a (positive) term variable; 
+        \ilyam{why no negatives?}
+    \item [$+$] $[[{c}]]$ is a value corresponding to a thunked 
+        or suspended computation;
+    \item [$\pm$] $[[(c : iN)]]$ and $[[(v : iP)]]$ allow one to annotate 
+        positive and negative terms;
+    \item [$-$] $[[return v]]$ is a pure computation, returning a value;
+    \item [$-$] $[[λ x : iP . c]]$ and $[[Λ pa . c]]$
+        are standard lambda abstractions. Notice that we require
+        the type annotation for the argument of $[[λ]]$;
+    \item [$-$] $[[ let x = v ; c]]$ is a standard let, binding
+        a value $[[v]]$ to a variable $[[x]]$ in a computation $[[c]]$;
+    \item [$-$] Applicative let forms $[[let x : iP = v ( args ) ; c]]$ and
+        $[[let x = v ( args ) ; c]]$ operate similarly to 
+        the bind of a monad: they take a suspended computation $[[v]]$,
+        apply it to a list of arguments, bind the result 
+        (which is expected to be pure) to a variable $[[x]]$,
+        and continue with a computation $[[c]]$.
+        If the resulting type of the application is unique, 
+        one can omit the type annotation, as in the second form:
+        it will be inferred by the algorithm;
+    \item [$-$] $[[let∃ ( nas , x ) = v ; c]]$
+        is the standard unpack of an existential type:
+        expecting $[[v]]$ to be an existential type,
+        it binds the packed negative types to a list of 
+        variables $[[nas]]$, binds the body of the existential
+        to $[[x]]$, and continues with a computation $[[c]]$.
+\end{itemize}
+
+\paragraph{Missing constructors}
+Notice that the language does not have first-class applications: 
+their role is played by the applicative let forms, binding 
+the result of a \emph{fully applied} function to a variable.
+Also notice that the language does not have a type application 
+(i.e. the eliminator of $[[∀]]$) and dually, 
+it does not have \pack (i.e. the constructor of $[[∃]]$).
+This is because the instantiation of polymorphic and existential 
+types is inferred by the algorithm.  \ilyam{refer to the extension chapter}
+
+\begin{figure}[h]
+  \begin{multicols}{2}
+    \ottgrammartabular{
+      \ottc\ottinterrule
+    }
+
+    \ottgrammartabular{
+      \ottv\ottinterrule
+    }
+  \end{multicols}
+  \caption{Declarative Terms of \fexists}
+  \label{fig:declarative-terms}
+\end{figure}
+
+\subsection{The key ideas of the algorithm}
+
+
+
