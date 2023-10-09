@@ -28,7 +28,7 @@
 * Overview
     ** Informal Explanation of our approach
         - subtyping is the driver of the inference: examples
-        - Where does the complexity come from?: ∀ and ∃ rules
+        - Where does the complexity come from?: ∀ and ∃ rules (in a simplified way)
     ** Introduce the language
         - ±-stratification of the language
         - Language of Types
@@ -47,6 +47,9 @@
             - Inference in let bindings: uniqueness
 * Declarative System
     ** Definition of the declarative system
+        - Explain ∀/∃ Rules
+        - Explain substitution specification notation 
+        - Explain ↑/↓ Rules
     ** Properties
         - Variables do not have proper subtypes and supertypes
         - Free Variable propagation: N ≤ M => FV(N) ⊆ FV(M)

@@ -15,6 +15,7 @@
 \usepackage[inline]{enumitem}
 \usepackage{cleveref}
 \usepackage{proof}
+\usepackage{mathtools}
 
 
 \usepackage{newtxmath}
@@ -66,7 +67,7 @@
 \newcommand{\depth}[1]{\ensuremath{\mathsf{depth}(#1)}}
 \newcommand{\size}[1]{\ensuremath{\mathsf{size}(#1)}}
 
-\newcommand{\ruleref}[1]{Rule \nameref{#1}}
+\newcommand{\ruleref}[1]{\nameref{#1}}
 
 \newcommand{\fexists}{F$^\pm\exists$\xspace} 
 \newcommand{\etc}{F$\exists$}
@@ -90,6 +91,11 @@
 \newcommand{\coq}{\texttt{Coq} }
 \newcommand{\agda}{\texttt{Agda} }
 
+\newcommand{\systemf}{\text{System F} }
+
+\newcommand{\pack}{\texttt{pack} }
+\newcommand{\unpack}{\texttt{unpack} }
+
 % https://tex.stackexchange.com/questions/85033/colored-symbols/85035#85035
 \providecommand*{\mathcolor}{}
 \def\mathcolor#1#{\mathcoloraux{#1}}
@@ -99,3 +105,9 @@
   \color#1{#2}#3%
   \endgroup
 }
+
+\definecolor{positive}{RGB}{200, 50, 50}
+\definecolor{negative}{RGB}{50, 50, 200}
+
+
+\setlength\multicolsep{0pt}
