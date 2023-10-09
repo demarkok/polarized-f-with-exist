@@ -71,8 +71,9 @@ defn Γ ; Φ ⊢ iN ● args ⇒> iM :: :: SpinInf :: ''
 ---------------------- :: EmptyApp
 Γ ; Φ ⊢ iN ● · ⇒> iN' 
 
-Γ ; Φ ⊢ v : iP   Γ ⊢ iQ ≥ iP  Γ ; Φ ⊢ iN ● args ⇒> iM
------------------------------------------------------- :: ArrowApp
+Γ ; Φ ⊢ v : iP   Γ ⊢ iQ ≥ iP  
+Γ ; Φ ⊢ iN ● args ⇒> iM
+-------------------------------- :: ArrowApp
 Γ ; Φ ⊢ iQ → iN ● v , args ⇒> iM
 
 args ≠ ·           pas ≠ ·

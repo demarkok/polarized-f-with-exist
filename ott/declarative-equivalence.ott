@@ -1,6 +1,7 @@
 embed {{ tex-preamble
 
-\colorlet{colorEOne}{Orange!70!Red}
+% \colorlet{colorEOne}{Orange!70!Red}
+\colorlet{colorEOne}{Black}
 \newcommand{\eqEOne}{ \mathcolor{colorEOne}{ [[≈]]^{D} } } 
 
 }}
