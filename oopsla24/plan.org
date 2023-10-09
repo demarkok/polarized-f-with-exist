@@ -11,6 +11,7 @@
     - Reveals new ways of understanding type inference: usual algorithms for forall rely
       on relationship between specialisation and unification which break in the presence
       of exists
+    - As a consequence, the algorithms are ad-hoc and sub-optimal (ML?).
       
 ** Contributions
     *** Type Inference Algorithm
@@ -34,7 +35,7 @@
     ** Informal Explanation of our approach
         - subtyping is the driver of the inference: examples
         - Where does the complexity come from?: ∀ and ∃ rules (in a simplified way)
-    ** Examples
+    ** Examples: 
         with syntax explained informally, but reasonably close to the real level of annotations
     ** Introduce the language
         - ±-stratification of the language
