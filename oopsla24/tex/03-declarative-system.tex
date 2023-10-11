@@ -23,24 +23,14 @@ It is represented by a set of inference rules shown in
   \label{fig:declarative-subtyping}
 \end{figure}
 
-\paragraph{Invariance of Shifts}
-An important restriction that we put on the subtyping system is
-that the subtyping on shifted types requires their equivalence,
-as shown in \ruleref{\ottdruleDOneShiftDLabel} and
-\ruleref{\ottdruleDOneShiftULabel}. Relaxing both of these
-invariants makes the system equivalent to \systemf, 
-and thus, undecidable. 
-However, \ruleref{\ottdruleDOneShiftDLabel} might be
-relaxed to a covariant form, as we will discuss in \cref{todo}.
-
-As discussed in \cref{todo}, 
+\paragraph{Quantifiers} As discussed in \cref{todo}, 
 the polymorphic rules \ruleref{\ottdruleDOneForallLabel} and 
 \ruleref{\ottdruleDOneExistsLabel} are the only non-algorithmic ones.
 For convenience of representation, we compose the left-hand side rule and
 the right-hand side rule into one, and use substitution $[[σ]]$ to 
 represent instantiation.  
 
-The substitution application is defined 
+\paragraph{Substitutions} The substitution application is defined 
 in a standard way, avoiding capture of bound variables,
 and preserving the variables that are out of the substitution domain.
 The domain and the range of the substitutions are
@@ -49,8 +39,31 @@ For instance, the notation $[[Γ, pbs ⊢ σ : {pas}]]$ means that
 $[[σ]]$ maps the variables from $[[pas]]$ to (positive) types
 well-formed in $[[Γ, pbs]]$.
 
+\paragraph{Invariance of the Shifts}
+An important restriction that we put on the subtyping system is
+that the subtyping on shifted types requires their equivalence,
+as shown in \ruleref{\ottdruleDOneShiftDLabel} and
+\ruleref{\ottdruleDOneShiftULabel}. Relaxing both of these
+invariants make the system equivalent to \systemf, 
+and thus, undecidable. 
+However, \ruleref{\ottdruleDOneShiftDLabel} might be
+relaxed to a covariant form, as we will discuss in \cref{todo}.
+
 \subsection{Type Inference}
 
+The declarative type inference system is shown in \cref{fig:declarative-inference}.
+The positive typing judgment $[[Γ ; Φ ⊢ v : iP]]$ is read as 
+``under the type context $[[Γ]]$ and variable context $[[Φ]]$,
+the term $[[v]]$ is allowed to have the type $[[iP]]$'',
+where $[[Φ]]$---the variable context---is defined standardly as
+a set of pairs of the form $[[x : iP]]$. 
+The negative typing judgment is read similarly.
+To infer the resulting type of an application, the
+applicative let rules refer to the \emph{Application typing} judgment.
+It has form of $[[Γ ; Φ ⊢ iN ● args ⇒> iM]]$, 
+which is read as ``under the type context $[[Γ]]$ and variable context $[[Φ]]$,
+the application of a function of type $[[iN]]$ to the list of arguments $[[args]]$
+is allowed to have the type $[[iM]]$''.
 
 \begin{figure}[h]
   \ottdefnDTNInf{}
@@ -68,27 +81,99 @@ well-formed in $[[Γ, pbs]]$.
   \label{fig:declarative-inference}
 \end{figure}
 
+\paragraph{Non-bidirectionality}
+  Notice that all the rules in our system are inferring.
+
+\paragraph{Typing up to equivalence}
+  As discussed in \cref{todo}, the subtyping, as a preorder, 
+  induces a non-trivial equivalence relation on types. 
+  The system must not distinguish between equivalent types,
+  and thus, type inference must be defined up to equivalence. 
+  For this purpose, we use rules \ruleref{\ottdruleDTPEquivLabel}  
+  and \ruleref{\ottdruleDTNEquivLabel}.
+  The application typing is defined up to equivalence as well,
+  although it has no special rules for that.
+
+\paragraph{Unpack}
+  Rule \ruleref{\ottdruleDTUnpackLabel} types elimination of $[[∃]]$.
+  First, it infers the normalized type of the existential package.
+  The normalization is required to fix the order of the quantifying variables
+  to bind them. After the bind, the rule infers the type of the body 
+  and checks that it does not use the bound variables so that they do not 
+  escape the scope.
+
+\paragraph{Applicative Let Binders}
+  Rules \ruleref{\ottdruleDTAppLetLabel} and \ruleref{\ottdruleDTAppLetAnnLabel}
+  infer the type of the applicative let binders.
+  Both of them infer the type of the head $[[v]]$ 
+  and invoke the application typing to infer the type of the application 
+  before recursing on the body of the let binder.
+  The difference is that the former rule is for the 
+  \emph{unannotated} let binder, and thus
+  it requires the resulting type of application to be unique
+  (up to equivalence), so that the type of the bound variable $[[x]]$
+  is known before it is put into the context.
+  The latter rule is for the \emph{annotated} binder,
+  and thus, the type of the bound $[[x]]$ is given, 
+  however, the rule must check that this type is a
+  a supertype of the inferred type of the application. 
+  This check is done by invoking the subtyping judgment
+  $[[Γ ⊢ ↑iQ ≤ ↑iP]]$.
+  This judgment is more restrictive than checking bare 
+  $[[Γ ⊢ iP ≥ iQ]]$, however, it is necessary
+  to make the algorithm complete as it allows us to preserve
+  certain invariants (see \cref{todo}).
+  In \cref{todo} we discuss how this restriction can be relaxed
+  together with invariant shift subtyping.
+
+\paragraph{Application of a polymorphic type $[[∀]]$}
+  The complexity of the system is hidden in the rules, 
+  whose output type is not immediately defined by their input
+  and the output of their premises 
+  (\aka not mode-correct \cite{dunfield2020:bidirectional}).
+  In our typing system, such rule is \ruleref{\ottdruleDTForallAppLabel}: 
+  the instantiation of the quantifying variables is
+  taken out of thin air. The algorithm we present in \cref{todo} 
+  delays this instantiation until more information about it 
+  (in particular, typing constraints) is collected.
+
+\paragraph{Application of an Arrow Type}
+  Another important application rule is \ruleref{\ottdruleDTArrowAppLabel}.
+  This is where the subtyping is used to check that the type of the argument
+  is convertible to (a subtype of) the type of the function parameter.
+  In the algorithm (\cref{todo}), this subtyping check will provide the constraints
+  we need to resolve the delayed instantiations of the quantifying variables.
+
+\paragraph{Annotations}
+  Subtyping is also used by the annotation rules \ruleref{\ottdruleDTNAnnotLabel}
+  and \ruleref{\ottdruleDTPAnnotLabel}. The annotation is only valid if the
+  inferred type is a subtype of the annotation type.
+
+
 \subsection{Properties of the Declarative System}
 
-Now, we present selected properties of the declarative system,
+Now we present selected properties of the declarative system,
 which are important for the correctness of the algorithm.
 
-\begin{lemma}
-  Variables do not have proper subtypes and supertypes
-\end{lemma}
+As we discussed in \cref{todo}, the equivalence induced by the subtyping is 
+not trivial. To deal with it without modifying standard operations such as unification, 
+we use normalization. This way, it is important for the normalization to be 
+sound and complete \wrt the equivalence:
 
-\begin{lemma}
-  Free Variable propagation: $[[Γ ⊢ iN ≤ iM]]$ 
-  implies $[[fv(iN) ⊆ fv(iM)]]$.
-\end{lemma}
+\begin{property}[Correctness of normalization]
+  For $[[iN]]$ and $[[iM]]$ well-formed in $[[Γ]]$,
+  $[[Γ ⊢ iN ≈ iM]]$ is equivalent to $[[nf(iN) = nf(iM)]]$.
+\end{property}
 
-\begin{lemma}
-  Subtyping is Reflexive and Transitive, and is preserved by substitution
-\end{lemma}
+Another property that we extensively use is that the subtyping is reflexive and transitive. 
+Moreover, any two \emph{positive} types have the least upper bound, which makes the positive subtyping a semilattice.
 
-\begin{lemma}
-  $[[Γ ⊢ iN ≈ iM]]$ is equivalent to $[[nf(iN) ≈ nf(iM)]]$.
-\end{lemma}
+\begin{property}[Subtyping is well-defined]
+  The subtyping is a preorder and is preserved under substitutions. 
+\end{property}
 
-\begin{lemma}[Characterization of Supertypes]
-\end{lemma}
+However, the greatest lower bound of two positive types is not always defined.
+Let us consider a positive type $[[iP]]$,
+and two different supertypes $[[iP1]]$ and $[[iP2]]$
+(\ie  $[[· ⊢ iP1 ≥ iP]]$, $[[· ⊢ iP2 ≥ iP]]$, and $[[nf(iP1) ≠ nf(iP2)]]$.
+Let us also consider an arbitrary negative type $[[iN]]$.

@@ -54,26 +54,55 @@
             - Interface to Subtyping: Annotations, Type applications. 
             - Inference in let bindings: uniqueness
 * Declarative System
-    ** Definition of the declarative system
+    ** Subtyping 
         - Explain ∀/∃ Rules
         - Explain substitution specification notation 
         - Explain ↑/↓ Rules
+    ** Typing
+        - explain the meaning 
+        - Variable Context Φ
+        - All the rules are inferring
+        - up-to-equivalence class
+        - Non-Algorithmic rules: ∀-app
+        - unpack: requires normalization, checks the wf of the resulting types
+        - applicative lets
+        - - both invoke application typing
+        - - unannotated let: checks uniqueness
+        - - annotated let: requires equivalence of the types, which can be relaxed (see extensions)
+        - application typing:
+        - - non-algorithmic ∀-inf rule
+        - where subtyping is invoked: annotations, application typing. 
     ** Properties
         - Variables do not have proper subtypes and supertypes
         - Free Variable propagation: N ≤ M => FV(N) ⊆ FV(M)
-        - Subtyping is Reflexive and Transitive, and is preserved by substitution
         - Characterization of equivalence: variable ordering is sufficient 
         - Characterization of Supertypes
-    ** Required Notations
+        - Subtyping is Reflexive and Transitive, and is preserved by substitution
+        - Subtyping forms a partial order, and positive subtyping forms a semi-lattice
+            (with the least-common-supertype operation)
+        - However, greatest common negative subtype is not defined (examples?),
+            and thus, the subtyping algorithm cannot be simply reduced to meet/join.
 * The Algorithm
-    ** Subtyping
-        - Overview (Dependency Graph)
-        *** The Subtyping Algorithm
-        *** Equivalence and normalization
-        *** Constraints 
-        **** Unification
-        **** Least Upper Bound
-        **** Anti-Unification
+    [Goal: people can implement it]
+    ** Overview
+        - Justify Adding α̂± 
+        - algorithmic type contexts Ξ and environment Θ
+        - Describe how wf, nf,... are changed
+        - Constraints -- important part of the algorithm
+        - Dependency Graph
+    ** Subtyping algorithm
+        - fig
+        - it takes ... and returns constraint
+        - explain the rules
+        - - ↑/↓ invoke unification up-to-equivalence, 
+            which is implemented by unification of the normal forms up-to-equality.
+        - - → makes two recursive calls, and thus, it merges the resulting constraints
+        - - ∀/∃ introduce new variables as discussed
+        - - the base case calls the upgrade
+    ** Unification
+    ** Constraint Merge
+    ** Upgrade and LUB 
+    ** Anti-Unification
     ** Inference
         - Overview (Dependency Graph)
         *** The Inference Algorithm
