@@ -1,0 +1,41 @@
+% How we should frame this: 
+
+\begin{itemize}
+\item There has been very little work on type inference for existentials. 
+\item The state of the art in languages like Ocaml and Haskell is the
+  Odersky-L\"{a}ufer algorithm, which makes existentials a
+  second-class construct tied to datatypes.
+\item More recently, there's the existential crisis paper, which
+  showed how to extend ML-style inference with some support for
+  existentials. However, it is (a) predicative-only, (b) restricted
+  for $\forall\exists$ types, and (c) does not have a declarative
+  specification. (In fact, the authors comment on the need for such.)
+\item In this paper, we lift all of these restrictions. We give a
+  local type inference algorithm which supports first-class
+  existentials, for impredicative types, with no restrictions on
+  nested quantifers, and we have declarative specification we prove
+  our algorithm sound and complete with respect to.
+\item Developing the algorithm required us to break some of the
+  fundamental invariants of HM-style typin, and as a result, our
+  algorithm needs to mix unification and anti-unification, and works
+  over a call-by-push-value metalanguage to control how quantifiers
+  are instantiated and things like function arities.
+\item Unfortunately, local type inference does not infer types anywhere
+  nearly as comprehensively as full Damas-Milner type inference. We
+  do guarantee that all type applications (for $\forall$-elimination) 
+  and all packs (for $\exists$-introdution) are inferred, but functions
+  and some let-bindings still need annotations on their arguments.
+\item The original local type inference paper combined local type inference
+  with bidirectional typechecking to minimize the number of needed
+  annotations, but we show how existential types complicate the integration
+  of bidirectionality with local type inference, and we explore the design space
+  to show how the same scheme could be applied to work with different
+  type systems. 
+\end{itemize}
+
+
+\nk{We need to explain what local type inference is, and how it is and isn't
+  related to bidirectional typechecking.}
+
+
+
