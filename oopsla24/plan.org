@@ -73,12 +73,12 @@
         - - non-algorithmic ∀-inf rule
         - where subtyping is invoked: annotations, application typing. 
     ** Properties
-        - Variables do not have proper subtypes and supertypes
-        - Free Variable propagation: N ≤ M => FV(N) ⊆ FV(M)
+        # - Variables do not have proper subtypes and supertypes
+        # - Free Variable propagation: N ≤ M => FV(N) ⊆ FV(M)
         - Characterization of equivalence: variable ordering is sufficient 
-        - Characterization of Supertypes
+        # - Characterization of Supertypes
         - Subtyping is Reflexive and Transitive, and is preserved by substitution
-        - Subtyping forms a partial order, and positive subtyping forms a semi-lattice
+        - Subtyping forms a preorder, and positive subtyping forms a semi-lattice
             (with the least-common-supertype operation)
         - However, greatest common negative subtype is not defined (examples?),
             and thus, the subtyping algorithm cannot be simply reduced to meet/join.
@@ -86,7 +86,7 @@
     [Goal: people can implement it]
     ** Overview
         - Justify Adding α̂± 
-        - algorithmic type contexts Ξ and environment Θ
+        - algorithmic type contexts Ξ and constraint context Θ
         - Describe how wf, nf,... are changed
         - Constraints -- important part of the algorithm
         - Dependency Graph

@@ -23,31 +23,87 @@ It is represented by a set of inference rules shown in
   \label{fig:declarative-subtyping}
 \end{figure}
 
-\paragraph{Quantifiers} As discussed in \cref{todo}, 
-the polymorphic rules \ruleref{\ottdruleDOneForallLabel} and 
-\ruleref{\ottdruleDOneExistsLabel} are the only non-algorithmic ones.
-For convenience of representation, we compose the left-hand side rule and
-the right-hand side rule into one, and use substitution $[[σ]]$ to 
-represent instantiation.  
-
-\paragraph{Substitutions} The substitution application is defined 
-in a standard way, avoiding capture of bound variables,
-and preserving the variables that are out of the substitution domain.
-The domain and the range of the substitutions are
-specified by notation $[[Γ2 ⊢ σ : Γ1]]$.
-For instance, the notation $[[Γ, pbs ⊢ σ : {pas}]]$ means that 
+\paragraph{Quantifiers}  
+Symmetric rules \ruleref{\ottdruleDOneForallLabel} and 
+\ruleref{\ottdruleDOneExistsLabel} specify 
+the subtyping between top-level quantified types.
+Usually, the polymorphic subtyping is represented by two rules
+introducing quantifiers to the left and to the right-hand side of the subtyping.
+For conciseness of representation, we compose these rules into one.
+First, our rule extends context $[[Γ]]$ with the quantified variables 
+from the right-hand side ($[[pbs]]$ or $[[nbs]]$), 
+as these variables must remain abstract.
+Second, it verifies that the left-hand side quantifiers
+($[[pas]]$ or $[[nas]]$) can be instantiated to continue subtyping recursively. 
+The instantiation is modeled by substitution $[[σ]]$.
+The notation $[[Γ2 ⊢ σ : Γ1]]$ specifies its domain and range.
+For instance, $[[Γ, pbs ⊢ σ : {pas}]]$ means that 
 $[[σ]]$ maps the variables from $[[pas]]$ to (positive) types
 well-formed in $[[Γ, pbs]]$.
+This way, application $[[ [σ]iN ]]$ instantiates (replaces) every
+$[[αi⁻]]$ in $[[iN]]$ with $[[σ]]([[αi⁻]])$.
 
-\paragraph{Invariance of the Shifts}
+\paragraph{Invariant Shifts}
 An important restriction that we put on the subtyping system is
 that the subtyping on shifted types requires their equivalence,
 as shown in \ruleref{\ottdruleDOneShiftDLabel} and
 \ruleref{\ottdruleDOneShiftULabel}. Relaxing both of these
 invariants make the system equivalent to \systemf, 
 and thus, undecidable. 
-However, \ruleref{\ottdruleDOneShiftDLabel} might be
-relaxed to a covariant form, as we will discuss in \cref{todo}.
+However, after certain changes 
+\ruleref{\ottdruleDOneShiftDLabel} can be relaxed to the covariant form,
+ as we will discuss in \cref{todo}.
+
+\paragraph{Functions}
+Standardly, the subtyping of function types is covariant in the return type
+and contravariant in the argument type.
+
+\paragraph{Variables}
+The subtyping of variables is defined reflexively,
+which is enough to ensure the reflexivity of subtyping in general.
+The algorithm will use the fact that the subtypes of a variable 
+coincide with its supertypes, which however is not true for an
+arbitrary type.
+
+
+A property that we extensively use is that the subtyping is reflexive and transitive. 
+Moreover, any two \emph{positive} types have the least upper bound, which makes the positive subtyping a semilattice.
+
+\begin{property}[Subtyping is well-defined]
+  The subtyping forms a preorder and is preserved under substitutions. 
+\end{property}
+
+
+\subsection{Equivalence and Normalization}
+
+The subtyping relation forms a preorder on types,
+and thus, it induces an equivalence relation \aka \emph{bicoercibility}.
+The declarative specification of subtyping must be defined up to this equivalence.
+Moreover, the algorithms we use must withstand changes in input types within the equivalence class.
+To deal with this, we use normalization---a function that uniformly selects a representative of the equivalence class.
+
+Using normalization gives us two benefits:
+\begin{enumerate*}
+  \item [(i)] we do not need to modify significantly standard operations such as unification to withstand non-trivial equivalence, and
+  \item [(ii)] once the subtyping (and thus, the equivalence) changes, we only need to modify the normalization function, 
+    while the rest of the algorithm remains the same.
+\end{enumerate*}
+
+
+\begin{figure}[h]
+  \label{alg:type-nf}
+  \hfill
+  
+  \begin{multicols}{2}
+  \ottdefnNrmNNorm{}
+  \columnbreak\\
+  \ottdefnNrmPNorm{}
+  \end{multicols}
+  \caption{Type Normalization}
+  \label{fig:type-nf}
+\end{figure}
+
+
 
 \subsection{Type Inference}
 
@@ -163,13 +219,6 @@ sound and complete \wrt the equivalence:
 \begin{property}[Correctness of normalization]
   For $[[iN]]$ and $[[iM]]$ well-formed in $[[Γ]]$,
   $[[Γ ⊢ iN ≈ iM]]$ is equivalent to $[[nf(iN) = nf(iM)]]$.
-\end{property}
-
-Another property that we extensively use is that the subtyping is reflexive and transitive. 
-Moreover, any two \emph{positive} types have the least upper bound, which makes the positive subtyping a semilattice.
-
-\begin{property}[Subtyping is well-defined]
-  The subtyping is a preorder and is preserved under substitutions. 
 \end{property}
 
 However, the greatest lower bound of two positive types is not always defined.
