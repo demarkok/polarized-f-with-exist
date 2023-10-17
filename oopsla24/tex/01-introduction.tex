@@ -1,4 +1,17 @@
-% How we should frame this: 
+% How we should frame this:
+
+Over the last half-century, there has been considerable work on developing type inference algorithms for programming languages,  mostly aimed at solving the problem of \emph{type polymorphism}.
+
+That is, in pure polymorphic lambda calculus (system F), the polymorphic type $\forall a.\,A$ has a big lambda $\Lambda a.\,e$ as an introduction form, and an explicit type application $e\,[A]$ as an elimination form. This is an extremely simple and compact type system, whose rules fit on a single page, but whose semantics are sophisticated enough to model things like parametricity and representation independence. However, System F by itself is unwieldy as a programming language. The fact that the universal type $\forall a.\,A$ has explicit eliminations means that programs written using polymorphic types will need to be stuffed to the gills with type annotations explaining how and when to instantiate the quantifiers.
+
+Therefore, most work on type inference has been aimed at handling type instantiations implicitly -- we want to be able to use a polymorphic function like $\mathsf{len} : \forall a.\, \mathsf{List}\,a \to \mathsf{int}$ at any concrete list type without explicitly instantiating the quantifier in $\mathsf{len}$'s type. That is, we want to write $\mathsf{len}\,[1,2,3]$ instead of writing $\mathsf{len}\,[\mathsf{int}]\,[1,2,3]$. 
+
+The most famous of the algorithms for solving these constraints is the Damas-Hindley-Milner algorithm. The idea is that type instantiation induces a subtype ordering: the type $\forall a.\,A$ is a subtype of all of its instantiations. So we wish to be free to use the same function $\mathsf{len}$ at many different types such as
+$\mathsf{List}\,\mathsf{int} \to \mathsf{int}$,
+$\mathsf{List}\,\mathsf{bool} \to \mathsf{int}$,
+$\mathsf{List}\,(\mathsf{int \times bool}) \to \mathsf{int}$, and so on. However, the subtype relation is nondeterministic: it tells us that whenever we see a polymorphic type $\forall a.\, A$, we know it is a subtype of \emph{any} of its instantiations. To turn this into an algorithm, we have to actually make some choices, and DHM works by using \emph{unification}. Whenever we would have had to introduce a particular concrete type in the specification, the DHM algorithm introduces a unification variable, and incrementally instantiates this variable as more and more type constraints are observed.
+
+However, the universal quantifier is not the only quantifier! Dual to the universal quantifer $\forall$ is the existential quantifier $\exists$. Even though existential types have an equal logical status to universal types, they have been studied much less frequently in the literature. The most widely-used algorithm for handling existentials is the algorithm of Odersky and Laufer. This algorithm treats existentials in a second-class fashion: they are not explicit connectives of the logic, but rather are tied to datatype declarations. As a result, packing and unpacking existential types is tied to constructor introductions and constructor eliminations in pattern matches. 
 
 \begin{itemize}
 \item There has been very little work on type inference for existentials. 
