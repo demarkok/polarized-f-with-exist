@@ -40,13 +40,13 @@ $(RENEW_DEFS) : $(DEFS) $(OTT)/renew-ott.tex
 	make -C $(OTT)
 
 # MAKE PROCESSED TEX FILES
-$(GEN_TEXS): $(TEXS) $(CACHE) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+$(GEN_TEXS): $(TEXS) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
 
 # MAIN
 
 main.pdf: $(GEN_TEXS)
-	rubber --pdf $(GEN)/main.tex
+	rubber --force --pdf $(GEN)/main.tex
 
 continuous:
 	make & fswatch -o .. | xargs -n1 -I{} make
@@ -55,6 +55,7 @@ continuous:
 clean:
 	rm -f *.aux *.lof *.log *.lot *.out *.toc *.nav *.snm *.bcf *.bbl *.blg *.xml *.tdo *.dvi
 	rm -f *~ \#*\# *.spl *.fls *.fdb_latexmk *.bcf
+	rm -f *.rubbercache 
 
 distclean: clean
 	rm $(PDFS)

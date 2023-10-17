@@ -37,7 +37,7 @@ defns
   WFAT :: 'WFAT' ::=
 
 
-  defn Γ ; Ξ ⊢ uN  :: :: NauWF :: '' {{ com Negative algorithmic type well-formedness }} by
+  defn Γ ; Ξ ⊢ uN  :: :: NauWF :: '' {{ com Negative type well-formedness }} by
 
     α⁻ ∊ Γ
     --------- :: NVar
@@ -59,7 +59,7 @@ defns
     ------------ :: Forall
     Γ; Ξ ⊢ ∀pas.uN
 
-  defn Γ ; Ξ ⊢ uP  :: :: PauWF :: '' {{ com Positive algorithmic type well-formedness }} by
+  defn Γ ; Ξ ⊢ uP  :: :: PauWF :: '' {{ com Positive type well-formedness }} by
 
     α⁺ ∊ Γ
     --------- :: PVar

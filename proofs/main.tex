@@ -131,14 +131,13 @@ which means that
   It is defined naturally as follows:
     \begin{multicols}{2}
       \begin{itemize}
-        \item[] $[[ [σ]α⁺ ]] = [[σ]] ([[α⁺]])$;
-        \item[] $[[ [σ]α⁻ ]] = [[σ]] ([[α⁻]])$;
-        \item[] $[[ [σ]↓iN ]] = [[↓[σ]iN]]$;
-        \item[] $[[ [σ]↑iP ]] = [[↑[σ]iP]]$;
-        \item[] $[[ [σ](iP → iN) ]] = [[ [σ]iP → [σ]iN ]]$.
-        \item[] $[[ [σ]∃nas.iQ ]] = [[∃nas.[σ]iQ]]$, 
-        \item[] $[[ [σ]∀pas.iN ]] = [[∀pas.[σ]iN]]$ (here we assume that $[[nas]]$ and $[[pas]]$ are lists of fresh variables, 
-          that is the variable capture never happens);
+        \item[] $[[ [σ]α⁺ ]] = [[σ]] ([[α⁺]])$
+        \item[] $[[ [σ]α⁻ ]] = [[σ]] ([[α⁻]])$
+        \item[] $[[ [σ]↓iN ]] = [[↓[σ]iN]]$
+        \item[] $[[ [σ]↑iP ]] = [[↑[σ]iP]]$
+        \item[] $[[ [σ](iP → iN) ]] = [[ [σ]iP → [σ]iN ]]$
+        \item[] $[[ [σ]∃nas.iQ ]] = [[∃nas.[σ]iQ]]$ 
+        \item[] $[[ [σ]∀pas.iN ]] = [[∀pas.[σ]iN]]$ (assuming the variable capture never happens)
       \end{itemize}
     \end{multicols}
 \end{algorithm}
@@ -264,7 +263,7 @@ by adding positive and negative \emph{algorithmic variables}
 ($[[α̂⁺]]$, $[[β̂⁺]]$, $[[γ̂⁺]]$, etc. and $[[α̂⁻]]$, $[[β̂⁻]]$, $[[γ̂⁻]]$, etc.).
 They represent the unknown types, which will be inferred by the algorithm.
 This way, we add two base cases to the grammar of 
-positive and negative types, and use highlight to denote that the type
+positive and negative types and use highlight to denote that the type
 can potentially contain algorithmic variables.
 
 \begin{definition}[Algorithmic Types]
@@ -298,7 +297,7 @@ uniquely determined by the input of this rule.
 
 In several places of our algorithm, in particular, during
 algorithmic subtyping,
-we turn a declarative type into the algorithmic one
+we turn a declarative type into an algorithmic one
 via replacing certain type variables with fresh algorithmic variables.
 We call this procedure \emph{variable algorithmization}, and define it as follows.
 
@@ -475,11 +474,8 @@ in the order they appear in $[[iN]]$.
   \label{alg:var-ordering}
   \hfill
   
-  \begin{multicols}{2}
   \ottdefnONVar{}
-  \columnbreak\\
   \ottdefnOPVar{}
-  \end{multicols}
 
   Analogously, the variable can be ordered in 
   an \emph{algorithmic} type ($[[ord varset in uP]]$ and 
@@ -542,14 +538,14 @@ $A$ uses $B$ as a sub-procedure.
 \begin{figure}[h]
   \centering
   \begin{tikzpicture}
-    [>={Stealth[scale=2]},node distance=2.6cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
+    [>={Stealth[scale=2]},node distance=2.4cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
 
 
     % Define nodes
     \node[] (1) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$\\(\cref{sec:subtyping})};
     \node[below of=1] (3) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$\\(\cref{sec:subtyping})};
-    \node[left=2cm of 3] (2) {Subtyping Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
-    \node[right=2cm of 3] (5) {Unification\\ $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$\\ $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$\\(\cref{sec:unification})};
+    \node[left=1cm of 3] (2) {Subtyping Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
+    \node[right=1.4cm of 3] (5) {Unification\\ $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$\\ $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$\\(\cref{sec:unification})};
     \node[below of=3] (4) {Upgrade\\$[[upgrade Γ ⊢ iP to Δ = iQ]]$\\(\cref{sec:lub})};
     \node[below of=2] (6) {Least Upper Bound\\$[[Γ ⊨ iP1 ∨ iP2 = iQ]]$\\(\cref{sec:lub})};
     \node[below of=6] (7) {Anti-Unification\\$[[Γ ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )]]$\\$[[Γ ⊨ iN1 ≈au iN2 ⫤ ( Ξ , uM , aus1 , aus2 )]]$\\(\cref{sec:antiunification})};
@@ -578,19 +574,15 @@ Now, we present the subtyping algorithm itself.
 Although the algorithm is presented as a single procedure,
 is important for the structure of the proof that the positive subtyping algorithm
 does not invoke the negative one. This way, the correctness of the positive 
-subtyping will be proved independently, and used afterwards to prove the
+subtyping will be proved independently and used afterwards to prove the
 correctness of the negative subtyping.
 
 
 \begin{algorithm}[Subtyping]
   \label{alg:subtyping}
-  \hfill
-  
-  \begin{multicols}{2}
+  \hfill\\
   \ottdefnANsub{}
-  \columnbreak\\
   \ottdefnAPsup{}
-  \end{multicols}
 \end{algorithm}
 
 The inputs of the subtyping algorithm are the declarative context $[[Γ]]$,
@@ -1204,11 +1196,11 @@ $[[let∃ (nas, x) = v; c]]$.
 
 Another dual pair of constructions are 
 $[[return v]]$ and $[[{c}]]$. 
-The former allows us to embed a value in a pure 
+The former allows us to embed a value in pure 
 computations. The latter, on the contrary,
 encapsulates a thunk of computation in a value. 
 
-Finally, the language has a number standard constructions:
+Finally, the language has several standard constructions:
 lambda-abstractions $[[λx:iP.c]]$,
 standard let-bindings $[[let x = v; c]]$,
 and type annotations that can be added to any value or computation:
@@ -1218,7 +1210,7 @@ $[[(v:iP)]]$ and $[[(c:iN)]]$.
 
 Next, we define the specification of the type 
 inference for our language. First, we introduce 
-variable context specifying the types of the variables 
+variable context specifying the types of variables 
 in the scope of the current rule. 
 
 \begin{definition}[Variable Context]
@@ -1244,7 +1236,7 @@ and normalization (\cref{alg:type-nf}).
     $[[v]]$ is well-formed in $[[Γ]]$ and $[[Φ]]$ in
     the standard sense.
   \item $[[ Γ ; Φ ⊢ iN ● args ⇒> iM ]]$ is the application type inference 
-    judgement. It means that if a head of type $[[iN]]$ 
+    judgment. It means that if a head of type $[[iN]]$ 
     is applied to list of values $[[args]]$, 
     then the resulting computation can be typed as $[[iM]]$.
 \end{itemize}
@@ -1281,7 +1273,7 @@ Let us discuss selected rules of the declarative system:
   \item \ruleref{\ottdruleDTAppLetAnnLabel} allows us to accommodate the applications
     with annotated let-bindings. The first premise infers the type of the head of the application,
     which must be a thunked computation. Then if after applying it 
-    to tha arguments, the resulting type can be equated to the annotated one,
+    to the arguments, the resulting type can be equated to the annotated one,
     we infer the body of the let-binding in the context extended with the bound variable.
   \item \ruleref{\ottdruleDTAppLetLabel} is similar to \ruleref{\ottdruleDTAppLetAnnLabel},
     but it is used when the type of the application is unique, and thus, the annotation
@@ -1330,7 +1322,7 @@ judgments:
   \item $[[Γ ; Φ ⊨ v : iP]]$ and  $[[Γ ; Φ ⊨ c : iN]]$
     are the algorithmic versions of $[[Γ ; Φ ⊢ v : iP]]$ and $[[Γ ; Φ ⊢ c : iN]]$.
     In contrast with the declarative counterparts, they are deterministic,
-    and  guarantee that the inferred type is normalized. 
+    and guarantee that the inferred type is normalized. 
   \item $[[Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC]]$
     is the algorithmization of $[[Γ ; Φ ⊢ iN ● args ⇒> iM]]$.
     Notice that $[[uN]]$ contains algorithmic variables, 
@@ -1353,14 +1345,10 @@ It also relies on basic set operations and the ability to
 deterministically choose fresh variables.
 
 \begin{algorithm}
-  \hfill
-  \begin{multicols}{2}
+  \hfill\\
   \ottdefnATNInf{}
-
-  \columnbreak
   \ottdefnATPInf{}
   \ottdefnATSpinInf{}
-  \end{multicols}
 \end{algorithm}
 
 Let us discuss the inference rules of the algorithm:
@@ -1467,7 +1455,7 @@ The simplified result is the following.
 \label{sec:constraint-singularity}
 
 The singularity algorithm used in  \ruleref{\ottdruleATAppLetAnnLabel}
-of the algorithmic typing check wether the constraint $[[SC]]$
+of the algorithmic typing check whether the constraint $[[SC]]$
 is uniquely defines a substitution satisfying it, and if it does
 returns such a substitution as the result.
 To do that, we define a partial function $[[SC singular with uσ]]$,
@@ -1480,13 +1468,9 @@ are considered partial functions taking a constraint entry $[[scE]]$
 and returning the type satisfying $[[scE]]$ if such a type is unique. 
 
 \begin{algorithm}[Singular Constraint Entry]
-  \hfill
-  \begin{multicols}{2}
-    \ottdefnSINGscEN{}
-    
-    \columnbreak
-    \ottdefnSINGscEP{}
-  \end{multicols}
+  \hfill\\
+  \ottdefnSINGscEP{}
+  \ottdefnSINGscEN{}
 \end{algorithm}
 
 \begin{itemize}

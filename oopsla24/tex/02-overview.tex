@@ -15,19 +15,19 @@ The negative types represent computations, and the positive types represent valu
   a list of positive type variables 
   $[[pas]]$. The polarities are chosen to follow the definition of functions.
 \item [$-$] a shift $[[↑iP]]$ allows a value to be used as a computation, 
-  which at the term-level corresponds to a pure computation $[[return v]]$.
+  which at the term level corresponds to a pure computation $[[return v]]$.
 \item [$+$] $[[pa]]$ is a positive type variable, taken from a context or introduced by $[[∀]]$.
 \item [$+$] $[[∃nas.iP]]$, symmetrically to $[[∀]]$, 
   binds negative variables in a positive type $[[iP]]$. 
 \item [$+$] a shift $[[↓iN]]$, symmetrically to the up-shift, 
-  thunks a computation, which at the term-level corresponds to $[[ {c} ]]$.
+  thunks a computation, which at the term level corresponds to $[[ {c} ]]$.
 \end{itemize}
 
 \begin{figure}[h]
   \begin{multicols}{2}
     \ottgrammartabular{
       \ottiN\ottinterrule
-    }
+    }\\
     \ottgrammartabular{
       \ottiP\ottinterrule
     }
@@ -38,7 +38,7 @@ The negative types represent computations, and the positive types represent valu
 \end{figure}
 
 \paragraph{Definitional Equalities}
-For simplicity, we assume alpha-equivalent terms equal.
+For simplicity, we assume that alpha-equivalent terms are equal.
 This way, we assume that substitutions do not capture bound variables.
 Besides, we equate
 $[[∀pas.∀pbs.iN]]$ with $[[∀pas,pbs.iN]]$, 
@@ -48,12 +48,12 @@ to the whole system.
 
 \subsection{The Language of Terms}
 
-In \cref{fig:declarative-terms}, we define the the language of terms of 
+In \cref{fig:declarative-terms}, we define the language of terms of 
 \fexists. The language combines \systemf with the \CBPV approach.
 
 \begin{itemize}
     \item [$+$] $[[x]]$ denotes a (positive) term variable; 
-        \ilyam{why no negatives?}
+        \ilyam{why no negatives? Following CBPV}
     \item [$+$] $[[{c}]]$ is a value corresponding to a thunked 
         or suspended computation;
     \item [$\pm$] $[[(c : iN)]]$ and $[[(v : iP)]]$ allow one to annotate 

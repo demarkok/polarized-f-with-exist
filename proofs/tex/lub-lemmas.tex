@@ -78,8 +78,7 @@
       $
       \begin{aligned}[t]
         [[↓iM' ≈ ↓iM]] &\Rightarrow [[G ⊢ ↓iM' ≈ ↓iM]]
-                       && \text{by \cref{lemma:equiv-soundness}, since
-                          $[[G ⊢ ↓iM']]$ by \cref{lemma:wf-equiv} }\\
+                       && \text{by \cref{lemma:equiv-soundness,lemma:wf-equiv}}\\
                        &\Rightarrow [[G ⊢ ↓iM' ≥ ↓iM]]
                        && \text{by inversion}
       \end{aligned}
@@ -95,11 +94,11 @@
         that $[[nbs]]$ is not empty).
 
         In the other direction,
+
         $
         \begin{aligned}[t]
           [[ [iNs/nbs]↓iM' ≈ ↓iM]] &\Rightarrow [[G ⊢ [iNs/nbs] ↓iM' ≈ ↓iM]]
-          && \text{by \cref{lemma:equiv-soundness}, since
-             $[[G ⊢ [iNs/nbs] ↓iM']]$ by \cref{lemma:wf-equiv} }\\
+          && \text{by \cref{lemma:equiv-soundness,lemma:wf-equiv}}\\
                                   &\Rightarrow [[G ⊢ [iNs/nbs]↓iM' ≥ ↓iM]]
          && \text{by inversion}\\
                                   &\Rightarrow [[G ⊢ ∃nbs.↓iM' ≥ ↓iM]] 
@@ -147,14 +146,15 @@
   \item $[[iP = ∃nbs.iP']]$\\
     $
     \begin{aligned}[t]
-      \NFUB([[Γ ⊢ ∃nbs.iP']]) &= \NFUB([[Γ, nbs ⊢ iP']]) \text{ not using $[[nbs]]$}\\
+      & \NFUB([[Γ ⊢ ∃nbs.iP']]) \\
+                              &= \NFUB([[Γ, nbs ⊢ iP']]) \text{ not using $[[nbs]]$}\\
                               &= \{ [[nf(iQ)]] \mid [[Γ, nbs ⊢ iQ ≥ iP']]  \}
                                 \text{ not using $[[nbs]]$}
                               && \text{by the induction hypothesis}\\
                               &= \{ [[nf(iQ)]] \mid [[Γ, nbs ⊢ iQ ≥ iP']]
                                 \text{ s.t. $[[fv iQ]] \cap [[nbs]] = \emptyset$}
                                 \}
-                             && \text{because $[[fv nf(iQ)]] = [[fv iQ]]$ by \cref{lemma:fv-nf}}\\
+                             && \text{$[[fv nf(iQ)]] = [[fv iQ]]$ by \cref{lemma:fv-nf}}\\
                               &= \{ [[nf(iQ)]] \mid [[iQ]] \in \UB([[Γ, nbs ⊢ iP']]) \text{ s.t. $[[fv iQ]] \cap [[nbs]] = \emptyset$}
                                 \}
                             && \text{by \cref{lemma:shape-of-supertypes}}\\
@@ -223,7 +223,7 @@
       Then it must have shape $[[∃nas0.↓iM0]]$ for some $[[nas0]]$, $[[iM0]]$,
       and $[[Γ ⊢ σ0 :{nas0}]]$ such that 
       $[[ ord {nas0} in iM0 = nas0 ]]$ and $[[ [σ0] ↓iM0 = ↓iM ]]$.
-      It is suffices to show that 
+      It suffices to show that 
       \begin{enumerate*}
         \item $[[∃nas0.↓iM0]]$ is normalized itself, and 
         \item $[[Γ ⊢ ∃nas0.↓iM0 ≥ ↓iM]]$.

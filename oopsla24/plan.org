@@ -58,6 +58,16 @@
         - Explain ∀/∃ Rules
         - Explain substitution specification notation 
         - Explain ↑/↓ Rules
+    *** Subtyping Properties
+        - Subtyping is Reflexive and Transitive, and is preserved by substitution
+        - Subtyping forms a preorder, and positive subtyping forms a semi-lattice
+            (with the least-common-supertype operation)
+        - However, greatest common negative subtype is not defined (examples?),
+            and thus, the subtyping algorithm cannot be simply reduced to meet/join.
+    ** Equivalence and Normalization
+        - informal Explanation
+        - formal definition 
+        - properties: correctness
     ** Typing
         - explain the meaning 
         - Variable Context Φ
@@ -72,16 +82,8 @@
         - application typing:
         - - non-algorithmic ∀-inf rule
         - where subtyping is invoked: annotations, application typing. 
-    ** Properties
-        # - Variables do not have proper subtypes and supertypes
-        # - Free Variable propagation: N ≤ M => FV(N) ⊆ FV(M)
-        - Characterization of equivalence: variable ordering is sufficient 
-        # - Characterization of Supertypes
-        - Subtyping is Reflexive and Transitive, and is preserved by substitution
-        - Subtyping forms a preorder, and positive subtyping forms a semi-lattice
-            (with the least-common-supertype operation)
-        - However, greatest common negative subtype is not defined (examples?),
-            and thus, the subtyping algorithm cannot be simply reduced to meet/join.
+    *** Typing Properties
+        - defined up-to-equivalence
 * The Algorithm
     [Goal: people can implement it]
     ** Overview

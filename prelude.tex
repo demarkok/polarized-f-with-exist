@@ -17,6 +17,7 @@
 \usepackage{proof}
 \usepackage{mathtools}
 
+\usepackage{showframe}
 
 \usepackage{newtxmath}
 % \usepackage{mathabx}
@@ -36,10 +37,24 @@
 
 \usepackage{listings}
 \usepackage{xspace}
+\usepackage{subcaption}
 
 % \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,arrows.meta,positioning}
 \usetikzlibrary{shapes.multipart}
+
+% ⫤
+\usepackage{graphicx}
+\makeatletter
+\providecommand*{\Dashv}{%
+  \mathrel{%
+    \mathpalette\@Dashv\vDash
+  }%
+}
+\newcommand*{\@Dashv}[2]{%
+  \reflectbox{$\m@th#1#2$}%
+}
+\makeatother
 
 
 

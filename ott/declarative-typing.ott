@@ -41,17 +41,20 @@ defns
   ------------------------------------- :: VarLet
   Γ; Φ ⊢ let x = v; c : iN
 
-  Γ ; Φ ⊢ v : ↓iM   Γ ; Φ ⊢ iM ● args ⇒> ↑iQ uniq   
+  Γ ; Φ ⊢ v : ↓iM   
+  Γ ; Φ ⊢ iM ● args ⇒> ↑iQ uniq   
   Γ; Φ, x:iQ ⊢ c : iN
   -------------------------------------------------- :: AppLet
   Γ ; Φ ⊢ let x = v(args); c : iN
 
-  Γ ⊢ iP   Γ ; Φ ⊢ v : ↓iM   Γ ; Φ ⊢ iM ● args ⇒> ↑iQ   
+  Γ ⊢ iP   Γ ; Φ ⊢ v : ↓iM   
+  Γ ; Φ ⊢ iM ● args ⇒> ↑iQ   
   Γ ⊢ ↑iQ ≤ ↑iP   Γ; Φ, x:iP ⊢ c : iN
   ----------------------------------------------------- :: AppLetAnn
   Γ ; Φ ⊢ let x:iP = v(args); c : iN
 
-  Γ ; Φ ⊢ v : ∃nas.iP     nf(∃nas.iP) = ∃nas.iP
+  Γ ; Φ ⊢ v : ∃nas.iP     
+  nf(∃nas.iP) = ∃nas.iP
   Γ, nas ; Φ, x:iP ⊢ c : iN   Γ ⊢ iN
   ---------------------------------------------- :: Unpack
   Γ ; Φ ⊢ let∃ (nas, x) = v; c : iN
@@ -76,7 +79,7 @@ defn Γ ; Φ ⊢ iN ● args ⇒> iM :: :: SpinInf :: ''
 -------------------------------- :: ArrowApp
 Γ ; Φ ⊢ iQ → iN ● v , args ⇒> iM
 
-args ≠ ·           pas ≠ ·
-Γ ⊢ σ : {pas}      Γ ; Φ ⊢ [σ]iN ● args ⇒> iM
+args ≠ ·           pas ≠ ·   Γ ⊢ σ : {pas}      
+Γ ; Φ ⊢ [σ]iN ● args ⇒> iM
 ------------------------------------------------ :: ForallApp
 Γ ; Φ ⊢ ∀pas.iN ● args ⇒> iM

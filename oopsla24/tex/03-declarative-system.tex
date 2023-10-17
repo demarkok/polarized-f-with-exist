@@ -1,3 +1,4 @@
+\label{sec:declarative-system}
 
 The declarative system serves as a specification of the
 type inference algorithm. It consists of two main parts:
@@ -35,7 +36,8 @@ from the right-hand side ($[[pbs]]$ or $[[nbs]]$),
 as these variables must remain abstract.
 Second, it verifies that the left-hand side quantifiers
 ($[[pas]]$ or $[[nas]]$) can be instantiated to continue subtyping recursively. 
-The instantiation is modeled by substitution $[[σ]]$.
+
+The instantiation of quantifiers is modeled by substitution $[[σ]]$.
 The notation $[[Γ2 ⊢ σ : Γ1]]$ specifies its domain and range.
 For instance, $[[Γ, pbs ⊢ σ : {pas}]]$ means that 
 $[[σ]]$ maps the variables from $[[pas]]$ to (positive) types
@@ -51,7 +53,7 @@ as shown in \ruleref{\ottdruleDOneShiftDLabel} and
 invariants make the system equivalent to \systemf, 
 and thus, undecidable. 
 However, after certain changes 
-\ruleref{\ottdruleDOneShiftDLabel} can be relaxed to the covariant form,
+\ruleref{\ottdruleDOneShiftULabel} can be relaxed to the covariant form,
  as we will discuss in \cref{todo}.
 
 \paragraph{Functions}
@@ -65,30 +67,113 @@ The algorithm will use the fact that the subtypes of a variable
 coincide with its supertypes, which however is not true for an
 arbitrary type.
 
+\subsubsection{Properties of the Declarative Subtyping}
+A property that we extensively use is that the subtyping is reflexive and transitive,
+and agrees with substitution.
 
-A property that we extensively use is that the subtyping is reflexive and transitive. 
-Moreover, any two \emph{positive} types have the least upper bound, which makes the positive subtyping a semilattice.
-
-\begin{property}[Subtyping is well-defined]
-  The subtyping forms a preorder and is preserved under substitutions. 
+\begin{property}[Subtyping forms a preorder]
+  Let us say that two types $[[iN1]]$ and $[[iN2]]$ are in the subtyping relation if there 
+  exists a context $[[Γ]]$ such that $[[Γ ⊢ iN1 ≤ iN2]]$;
+  symmetrically, two types $[[iP1]]$ and $[[iP2]]$ are in the subtyping relation
+  if there exists $[[Γ]]$ such that $[[G ⊢ iP2 ≥ iP1]]$.
+  Then the subtyping relation defined this way is reflexive and transitive.
 \end{property}
+
+\begin{property}[Subtyping agrees with substitution]
+  Suppose that  $[[σ]]$ is a substitution such that $[[Γ2 ⊢ σ : Γ1]]$. 
+  Then
+  \begin{enumerate}
+    \item [$-$] $[[Γ1 ⊢ iN ≤ iM]]$ implies $[[Γ2 ⊢ [σ]iN ≤ [σ]iM]]$, and
+    \item [$+$] $[[Γ1 ⊢ iP ≥ iQ]]$ implies $[[Γ2 ⊢ [σ]iP ≥ [σ]iQ]]$.
+  \end{enumerate}
+\end{property}
+
+Moreover, any two \emph{positive} types have the least upper bound, which makes
+the positive subtyping semilattice.
+The positive least upper bound can be found algorithmically,
+which we will discuss in the next section.
+
+\begin{property}[Positive Least Upper Bound exists]
+  Suppose that $[[iP1]]$ and $[[iP2]]$ are positive types
+  well-formed in $[[Γ]]$.
+  Then there exists the least common supertype--- a type $[[iP]]$ such that
+  \begin{itemize}
+    \item $[[Γ ⊢ iP ≥ iP1]]$ and $[[Γ ⊢ iP ≥ iP2]]$, and 
+    \item for any $[[iQ]]$ such that $[[Γ ⊢ iQ ≥ iP1]]$ and $[[Γ ⊢ iQ ≥ iP2]]$,
+      $[[Γ ⊢ iQ ≥ iP]]$.
+  \end{itemize}
+\end{property}
+
+\paragraph{Negative Greatest Lower Bound does not exist}
+However, the symmetric construction---the greatest lower bound of two negative types
+does not always exist. Let us consider the following counterexample.
+Let us consider the following types: 
+\begin{itemize}
+  \item $[[iN]]$ and $[[iQ]]$ are arbitrary closed types, 
+  \item $[[iP]]$, $[[iP1]]$, and $[[iP2]]$ are non-equivalent closed types 
+    such that $[[· ⊢ iP1 ≥ iP]]$ and $[[· ⊢ iP2 ≥ iP]]$, and 
+    none of the types is equivalent to $[[iQ]]$.
+\end{itemize}
+What is the greatest common subtype of  
+$[[iQ → ↓↑iQ → ↓↑iQ → iN]]$ and $[[iP → ↓↑iP1 → ↓↑iP2 → iN]]$?
+One of the common subtypes is $[[∀α⁺,β⁺,γ⁺. α⁺ → ↓↑β⁺ → ↓↑γ⁺ → iN]]$,
+which, however is not the greatest one.  
+
+One can find two greater candidates:
+$[[iM1 = ∀α⁺,β⁺. α⁺ → ↓↑α⁺ → ↓↑β⁺ → iN]]$ and $[[iM2 = ∀α⁺,β⁺. β⁺ → ↓↑α⁺ → ↓↑β⁺ → iN]]$.
+Instantiating $[[α⁺]]$ and $[[β⁺]]$ with $[[iQ]]$ ensures 
+that both of these types are subtypes of $[[iQ → ↓↑iQ → ↓↑iQ → iN]]$;
+instantiating $[[α⁺]]$ with $[[iP1]]$ and $[[β⁺]]$ with $[[iP2]]$
+demonstrates the subtyping with $[[iP → ↓↑iP1 → ↓↑iP2 → iN]]$,
+as $[[iP]]$ is a subtype of both $[[iP1]]$ and $[[iP2]]$.
+
+By analyzing the inference rules, we can prove that
+both $[[iM1]]$ and $[[iM2]]$ are maximal common subtypes.
+Since $[[iM1]]$ and $[[iM2]]$ are not equivalent,
+it means that none of them is the greatest.
 
 
 \subsection{Equivalence and Normalization}
+\label{sec:decl-equivalence}
 
 The subtyping relation forms a preorder on types,
-and thus, it induces an equivalence relation \aka \emph{bicoercibility}.
+and thus, it induces an equivalence relation \aka bicoercibility 
+\cite{tiuryn1995:bicoercibility}.
 The declarative specification of subtyping must be defined up to this equivalence.
 Moreover, the algorithms we use must withstand changes in input types within the equivalence class.
-To deal with this, we use normalization---a function that uniformly selects a representative of the equivalence class.
+To deal with non-trivial equivalence, 
+we use normalization---a function that uniformly selects a representative of the equivalence class.
 
 Using normalization gives us two benefits:
 \begin{enumerate*}
   \item [(i)] we do not need to modify significantly standard operations such as unification to withstand non-trivial equivalence, and
-  \item [(ii)] once the subtyping (and thus, the equivalence) changes, we only need to modify the normalization function, 
+  \item [(ii)] if the subtyping (and thus, the equivalence) changes, we only need to modify the normalization function, 
     while the rest of the algorithm remains the same.
 \end{enumerate*}
 
+In our system, equivalence is reacher than equality. Specifically,
+\begin{enumerate}
+  \item[(ii)] one can introduce redundant quantifiers. For example, $[[∀α⁺,β⁺.↑α⁺]]$ is equivalent
+  but not equal to $[[∀α⁺.↑α⁺]]$;
+  \item[(i)] one can reorder quantifiers. For example, $[[∀α⁺,β⁺.α⁺ → β⁺ → γ⁻]]$ is equivalent but not equal to
+  $[[∀α⁺,β⁺.β⁺ → α⁺ → γ⁻]]$; 
+  \item[(iii)] the transformations (i) and (ii) can happen at any
+    position in the type.
+\end{enumerate}
+
+It turns out that the transformations (i-iii) are complete, 
+in the sense that they generate the whole equivalence class.
+This way, to normalize the type, one must
+\begin{enumerate}
+  \item [(i)] remove the redundant quantifiers,
+  \item [(ii)] reorder the quantifiers to the canonical order,
+  \item [(iii)] do the procedures (i) and (ii) recursively on the subterms.
+\end{enumerate}
+
+The normalization algorithm is shown in \cref{fig:type-nf}.
+The steps (i-ii) are implemented by the ordering function, which takes a set of variables $[[varset]]$
+and a type and returns a list of variables from $[[varset]]$ that occur in the type in the order of their
+first occurrence. Its formal definition can be found in \cref{todo}.
 
 \begin{figure}[h]
   \label{alg:type-nf}
@@ -96,39 +181,59 @@ Using normalization gives us two benefits:
   
   \begin{multicols}{2}
   \ottdefnNrmNNorm{}
+  \\
+  $[[ord varset in iN]]$ returns a list of variables
+  $[[varset ∩ fv(iN)]]$ in the order of their first occurrence in $[[iN]]$
   \columnbreak\\
   \ottdefnNrmPNorm{}
+  \\
+  $[[ord varset in iP]]$ returns a list of variables
+  $[[varset ∩ fv(iP)]]$ in the order of their first occurrence in $[[iP]]$
   \end{multicols}
-  \caption{Type Normalization}
+
+
+  \caption{Type Normalization Procedure} 
   \label{fig:type-nf}
 \end{figure}
 
 
+For the normalization procedure, 
+we prove soundness and completeness \wrt the equivalence relation.
+\begin{property}[Correctness of normalization]
+  \hfill \\
+  \begin{itemize}
+    \item[$-$] For $[[iN]]$ and $[[iM]]$ well-formed in $[[Γ]]$,
+  $[[Γ ⊢ iN ≈ iM]]$ is equivalent to $[[nf(iN) = nf(iM)]]$;
+    \item[$+$] analogously, for $[[iP]]$ and $[[iQ]]$ well-formed in $[[Γ]]$,
+  $[[Γ ⊢ iP ≈ iQ]]$ is equivalent to $[[nf(iP) = nf(iQ)]]$.
+  \end{itemize}
+\end{property}
+
 
 \subsection{Type Inference}
 
-The declarative type inference system is shown in \cref{fig:declarative-inference}.
+The declarative specification of the type inference is shown in 
+\cref{fig:declarative-inference}.
 The positive typing judgment $[[Γ ; Φ ⊢ v : iP]]$ is read as 
 ``under the type context $[[Γ]]$ and variable context $[[Φ]]$,
 the term $[[v]]$ is allowed to have the type $[[iP]]$'',
 where $[[Φ]]$---the variable context---is defined standardly as
 a set of pairs of the form $[[x : iP]]$. 
 The negative typing judgment is read similarly.
-To infer the resulting type of an application, the
-applicative let rules refer to the \emph{Application typing} judgment.
+
+The \emph{Application typing} judgment
+infers the type of the application of a function to a list of arguments.
 It has form of $[[Γ ; Φ ⊢ iN ● args ⇒> iM]]$, 
-which is read as ``under the type context $[[Γ]]$ and variable context $[[Φ]]$,
+which reads ``under the type context $[[Γ]]$ and variable context $[[Φ]]$,
 the application of a function of type $[[iN]]$ to the list of arguments $[[args]]$
 is allowed to have the type $[[iM]]$''.
 
 \begin{figure}[h]
-  \ottdefnDTNInf{}
-
-  \hfill
 
   \begin{multicols}{2}
+  \ottdefnDTNInf{}
+  \columnbreak\\
   \ottdefnDTPInf{}
-  \\
   \ottdefnDTSpinInf{}
   \end{multicols}
   \hfill
@@ -137,18 +242,39 @@ is allowed to have the type $[[iM]]$''.
   \label{fig:declarative-inference}
 \end{figure}
 
-\paragraph{Non-bidirectionality}
-  Notice that all the rules in our system are inferring.
+Let us discuss the rules of the declarative system in more detail.
 
-\paragraph{Typing up to equivalence}
-  As discussed in \cref{todo}, the subtyping, as a preorder, 
-  induces a non-trivial equivalence relation on types. 
-  The system must not distinguish between equivalent types,
-  and thus, type inference must be defined up to equivalence. 
-  For this purpose, we use rules \ruleref{\ottdruleDTPEquivLabel}  
-  and \ruleref{\ottdruleDTNEquivLabel}.
-  The application typing is defined up to equivalence as well,
-  although it has no special rules for that.
+\paragraph{Variables}
+  Rule \ruleref{\ottdruleDTVarLabel} allows to infer
+  the type of a variable from the context. 
+  In literature can be found another version of this rule,
+  that enables inferring a type \emph{equivalent}
+  to the type from the context. 
+  In our case, the inference of equivalent types
+  is admissible in general case by \ruleref{\ottdruleDTPEquivLabel}.
+
+\paragraph{Annotations}
+  Subtyping is also used by the annotation rules \ruleref{\ottdruleDTNAnnotLabel}
+  and \ruleref{\ottdruleDTPAnnotLabel}. The annotation is only valid if the
+  inferred type is a subtype of the annotation type.
+
+
+\paragraph{Abstractions}
+  The typing of lambda abstraction is standard. 
+  Rule \ruleref{\ottdruleDTtLamLabel} first checks
+  that the given type annotating the argument is well-formed,
+  and then infers the type of the body in the extended context.
+  As a result, it returns an arrow type of function from the
+  annotated type of the argument to the type of the body.
+  Rule \ruleref{\ottdruleDTTLamLabel} infers polymorphic $[[∀]]$-type. 
+  It extends the type context with the quantifying variable $[[pa]]$ and 
+  infers the type of the body. As a result, it returns a polymorphic type
+  quantifying the abstracted variable $[[pa]]$ over the type of the body.
+
+\paragraph{Return and Thunk}
+  Rules \ruleref{\ottdruleDTReturnLabel} 
+  and \ruleref{\ottdruleDTThunkLabel}
+  add the corresponding shifts to the type of the body.
 
 \paragraph{Unpack}
   Rule \ruleref{\ottdruleDTUnpackLabel} types elimination of $[[∃]]$.
@@ -182,16 +308,41 @@ is allowed to have the type $[[iM]]$''.
   In \cref{todo} we discuss how this restriction can be relaxed
   together with invariant shift subtyping.
 
-\paragraph{Application of a polymorphic type $[[∀]]$}
+\paragraph{Typing up to Equivalence}
+  As discussed in \cref{sec:decl-equivalence}, the subtyping, as a preorder, 
+  induces a non-trivial equivalence relation on types. 
+  The system must not distinguish between equivalent types,
+  and thus, type inference must be defined up to equivalence. 
+  For this purpose, we use rules \ruleref{\ottdruleDTPEquivLabel}  
+  and \ruleref{\ottdruleDTNEquivLabel}.
+  They allow one to replace the inferred type with an equivalent one.  
+
+\paragraph{Application to an Empty List of Arguments}
+  The base case of the application type inference is 
+  represented by rule \ruleref{\ottdruleDTEmptyAppLabel}.
+  If the head of the type $[[iN]]$ is applied to no arguments, 
+  the type of the result is allowed to be $[[iN]]$ or any 
+  equivalent type. We need to relax this rule up to equivalence
+  to ensure the corresponding property globally:
+  the inferred application type can be replaced with an equivalent one.
+  Alternatively, we could have added a separate rule similar to 
+  \ruleref{\ottdruleDTPEquivLabel}, however, 
+  the local relaxation is sufficient to prove the global property.
+
+\paragraph{Application of a Polymorphic Type $[[∀]]$}
   The complexity of the system is hidden in the rules, 
   whose output type is not immediately defined by their input
   and the output of their premises 
   (\aka not mode-correct \cite{dunfield2020:bidirectional}).
   In our typing system, such rule is \ruleref{\ottdruleDTForallAppLabel}: 
   the instantiation of the quantifying variables is
-  taken out of thin air. The algorithm we present in \cref{todo} 
+  not known a priori. The algorithm we present in \cref{todo} 
   delays this instantiation until more information about it 
   (in particular, typing constraints) is collected.
+
+  To ensure the priority of application between this rule and 
+  \ruleref{\ottdruleDTEmptyAppLabel}, we also check that 
+  the list of arguments is not empty.
 
 \paragraph{Application of an Arrow Type}
   Another important application rule is \ruleref{\ottdruleDTArrowAppLabel}.
@@ -200,29 +351,25 @@ is allowed to have the type $[[iM]]$''.
   In the algorithm (\cref{todo}), this subtyping check will provide the constraints
   we need to resolve the delayed instantiations of the quantifying variables.
 
-\paragraph{Annotations}
-  Subtyping is also used by the annotation rules \ruleref{\ottdruleDTNAnnotLabel}
-  and \ruleref{\ottdruleDTPAnnotLabel}. The annotation is only valid if the
-  inferred type is a subtype of the annotation type.
+\subsubsection{Declarative Typing Properties}
+  An important property that the declarative system has is
+  that the declarative specification is correctly defined for
+  equivalence classes.
 
-
-\subsection{Properties of the Declarative System}
-
-Now we present selected properties of the declarative system,
-which are important for the correctness of the algorithm.
-
-As we discussed in \cref{todo}, the equivalence induced by the subtyping is 
-not trivial. To deal with it without modifying standard operations such as unification, 
-we use normalization. This way, it is important for the normalization to be 
-sound and complete \wrt the equivalence:
-
-\begin{property}[Correctness of normalization]
-  For $[[iN]]$ and $[[iM]]$ well-formed in $[[Γ]]$,
-  $[[Γ ⊢ iN ≈ iM]]$ is equivalent to $[[nf(iN) = nf(iM)]]$.
+\begin{property}[Declarative Typing is Defined up to Equivalence]
+  Let us assume that $[[Γ ⊢ Φ1 ≈ Φ2]]$, \ie  
+  the corresponding types assigned by $[[Φ1]]$ and
+  $[[Φ2]]$ are equivalent in $[[Γ]]$.
+  Also, let us assume that 
+  $[[Γ ⊢ iN1 ≈ iN2]]$, $[[Γ ⊢ iP1 ≈ iP2]]$,
+  and $[[Γ ⊢ iM1 ≈ iM2]]$. Then
+  \begin{itemize}
+    \item [$-$] $[[Γ ; Φ1 ⊢ c : iN1]]$ holds if and only if $[[Γ ; Φ2 ⊢ c : iN2]]$,
+    \item [$+$] $[[Γ ; Φ1 ⊢ v : iP1]]$ holds if and only if $[[Γ ; Φ2 ⊢ v : iP2]]$, and
+    \item [$\bullet$] $[[Γ; Φ1 ⊢ iN1 ● args ⇒> iM1]]$ holds if and only if $[[Γ; Φ2 ⊢ iN2 ● args ⇒> iM2]]$.
+  \end{itemize}
 \end{property}
 
-However, the greatest lower bound of two positive types is not always defined.
-Let us consider a positive type $[[iP]]$,
-and two different supertypes $[[iP1]]$ and $[[iP2]]$
-(\ie  $[[· ⊢ iP1 ≥ iP]]$, $[[· ⊢ iP2 ≥ iP]]$, and $[[nf(iP1) ≠ nf(iP2)]]$.
-Let us also consider an arbitrary negative type $[[iN]]$.
+\ilyam{Other properties?}
+
+

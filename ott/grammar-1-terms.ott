@@ -30,3 +30,7 @@ vctx, Φ {{ tex \Phi }} :: 'vctxt_' ::= {{ com variable context }}
   | x : iP                ::   :: Single
   | </ Φi // , // i />    ::   :: Concat  {{ com concatenate contexts }}
 
+
+funs TERMF ::=
+
+fun Φ ( x ) :: iP :: phiLookupN  by
