@@ -598,10 +598,10 @@ Let us overview the inference rules of the subtyping algorithm.
 \begin{itemize}
   \item \ruleref{\ottdruleANVarLabel} and \ruleref{\ottdruleAPVarLabel} 
     are the base cases. They copy the corresponding declarative rules and
-    ensure the reflexivity.
+    ensure reflexivity.
   \item \ruleref{\ottdruleAPUVarLabel} is the only case generating 
     subtyping constraints. In this case, we must ensure
-    that the resulting constrains guarantees that the instantiation of 
+    that the resulting constraints guarantee that the instantiation of 
     $[[â⁺]]$ is a supertype of $[[iP]]$.
     However, the obvious constraint $[[â⁺ :≥ iP]]$ might be problematic
     if  $[[iP]]$ is not well-formed in $[[Θ(â⁺)]]$. For this reason,
@@ -609,13 +609,13 @@ Let us overview the inference rules of the subtyping algorithm.
     to find the minimal supertype of $[[iP]]$, which is well-formed in $[[Θ(â⁺)]]$. 
 
     Notice that this rule does not have a negative counterpart. This is
-    because one one of the important invariants of the algorithm: 
+    because one of the important invariants of the algorithm: 
     in the negative subtyping, only positive algorithmic variables
     can occur in the types. 
     
   \item \ruleref{\ottdruleAShiftDLabel} and \ruleref{\ottdruleAShiftULabel} are the
     \emph{shift} rules. According to the declarative system,
-    shifted subtyping requires equivalence. In presence of the algorithmic 
+    shifted subtyping requires equivalence. In the presence of the algorithmic 
     variables, it means that the left and the right-hand sides of the subtyping
     must be unified. Hence, the shift rules invoke the unification algorithm, 
     which will be discussed in \cref{sec:unification}. The unification 
@@ -636,7 +636,7 @@ Let us overview the inference rules of the subtyping algorithm.
     of the quantified variables: these variables are replaced by 
     fresh algorithmic variables in the body of the quantified type,
     the algorithmic variables are added to the subtyping context $[[Θ]]$,
-    after that the recursive call is made. Notice that the declarative context
+    after that, the recursive call is made. Notice that the declarative context
     $[[Γ]]$ is extended by the quantified variables from the right-hand side,
     which matches the declarative system.
 \end{itemize}
@@ -657,8 +657,8 @@ of the algorithm together give us the following simplified theorem:
 
 \subsection{Constraints}
 
-Unification and subtyping algorithms are based on the constraint generation.
-The constraints are represented by set of constraint entries.
+Unification and subtyping algorithms are based on constraint generation.
+The constraints are represented by a set of constraint entries.
 
 \begin{definition}[Unification Constraint]
   \hfill
@@ -843,15 +843,14 @@ is a unification constraint entry.
 
 \begin{algorithm}[Merge of Subtyping Constraints]
   \label{definition:merge-subtyping-constraints}
-  Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.
+  Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.\\
   Then $[[Θ ⊢ SC1 & SC2 = SC]]$
-  defines a set such that $[[ucE]] \in [[SC]]$ iff either
+  defines a set of constraints $[[SC]]$ such that $[[scE]] \in [[SC]]$ iff either:
   \begin{itemize}
-    \item $[[ucE]] \in [[SC1]]$ and there is no matching $[[ucE']] \in [[SC2]]$; or
-    \item $[[ucE]] \in [[SC2]]$ and there is no matching $[[ucE']] \in [[SC1]]$; or
-    \item $[[Θ(α̂±) ⊢ ucE1 & ucE2 = ucE]]$ for some $[[ucE1]] \in [[SC1]]$ and $[[ucE2]] \in [[SC2]]$
-      such that $[[ucE1]]$ matches with $[[ucE2]]$ restricting variable
-      $[[α̂±]]$. 
+    \item $[[scE]] \in [[SC1]]$ and there is no matching $[[scE']] \in [[SC2]]$; or
+    \item $[[scE]] \in [[SC2]]$ and there is no matching $[[scE']] \in [[SC1]]$; or
+    \item $[[Θ(α̂±) ⊢ scE1 & scE2 = scE]]$ for some $[[scE1]] \in [[SC1]]$ and $[[scE2]] \in [[SC2]]$
+      such that $[[scE1]]$ and $[[scE2]]$ both restrict variable $[[α̂±]]$. 
   \end{itemize}
 \end{algorithm}
 

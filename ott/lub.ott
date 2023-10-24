@@ -4,6 +4,10 @@ defns
   defn Γ ⊨ iP1 ∨ iP2 = iQ  :: :: Nsub :: ''
   {{ com Least Upper Bound }} by
 
+  % {nas} ∩ fv iP2 = ∅    {nbs} ∩ fv iP1 = ∅
+  Γ, {nas}, {nbs} ⊨ iP1 ∨ iP2 = iQ
+  --------------------------------------- :: Exists
+  Γ ⊨ ∃nas.iP1 ∨ ∃nbs.iP2 = iQ
   
   ---------------- :: Var
   Γ ⊨ pa ∨ pa = pa
@@ -15,16 +19,14 @@ defns
 
   % Γ ⊨ ↓iN ∨ ↓iM = ∃ nas . [nas/ToList Ξ] uP
 
-  % {nas} ∩ fv iP2 = ∅    {nbs} ∩ fv iP1 = ∅
-  Γ, {nas}, {nbs} ⊨ iP1 ∨ iP2 = iQ
-  --------------------------------------- :: Exists
-  Γ ⊨ ∃nas.iP1 ∨ ∃nbs.iP2 = iQ
 
 
 
-  defn upgrade Γ ⊢ iP to Δ = iQ :: :: Up :: '' by
+  defn upgrade Γ ⊢ iP to Δ = iQ :: :: Up :: '' 
+  {{ com Type Upgrade }} by
 
-  Γ = Δ, pnas   {pnbs} are fresh    {pncs} are fresh 
+  Γ = Δ, pnas   
+  {pnbs} are fresh    {pncs} are fresh 
   Δ, pnbs, pncs ⊨ [pnbs/pnas]iP ∨ [pncs/pnas]iP = iQ
   --------------------------------------------------- :: Upgrade
   upgrade Γ ⊢ iP to Δ = iQ 

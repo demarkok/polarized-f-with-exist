@@ -70,14 +70,14 @@ s {{ tex \sigma }}, σ {{ tex \sigma }}  :: 's_' ::= {{ com substitution }}
    | ( σ )                :: S :: paren
    | </ si // , // i />   ::   :: concat  {{ com concatenate }}
 
-scE {{ tex e }} :: 'scE_' ::= {{ com entry of a subtyping constraint }}
+scE {{ tex e }} :: 'scE_' ::= {{ com Constraint Entry }}
    | pua :≈ iP            ::   :: PEq 
    | nua :≈ iN            ::   :: NEq
    | pua :≥ iP            ::   :: Sup 
    | ( scE )              :: S :: paren
    | SC ( nua )           :: M :: NSelect
 
-ucE  {{ tex e }} :: 'ucE_' ::= {{ com entry of a unification constraint }}
+ucE  {{ tex ue }} :: 'ucE_' ::= {{ com Unification Constraint Entry }}
    | pua :≈ iP            ::   :: PEq 
    | nua :≈ iN            ::   :: NEq 
    | ( ucE )              :: S :: paren
@@ -92,7 +92,7 @@ UC :: 'UC_' ::= {{ com unification constraint }}
    | </ UCi // , // i /> ::   :: concat  {{ com concatenate }}
    | ( UC )              :: S :: paren
 
-SC :: 'SC_' ::= {{ com subtyping constraint }}
+SC {{ tex C }} :: 'SC_' ::= {{ com subtyping constraint }}
    | ·                   ::   :: Empty
    | scE                 ::   :: Entry
    | SC \ varset         ::   :: Exclude
@@ -384,7 +384,7 @@ auSol :: 'auSOL_' ::=
 terminals :: 'terminals_' ::=
   | ∃  :: :: exists    {{ tex \exists }}
   | .  :: :: dot       {{ tex .~ }}
-  | ;  :: :: semi      {{ tex ;~ }}
+  | ;  :: :: semi      {{ tex \mathbin{;} }}
   | ∀  :: :: forall    {{ tex \forall }}
   | ↑  :: :: upShift   {{ tex \mathord{\uparrow} }}
   | ↓  :: :: downShift {{ tex \mathord{\downarrow} }}
@@ -417,14 +417,15 @@ terminals :: 'terminals_' ::=
   | ≡n  :: :: equivn   {{ tex \equiv_{n} }}
   | ∨  :: :: LUB       {{ tex \vee }}
   | ⇓ :: :: norm       {{ tex \Downarrow }}
-  | :≥ :: :: solGeq    {{ tex :\geqslant }}
-  | :≈ :: :: solEq     {{ tex :\simeq }}
+  | :≥ :: :: solGeq    {{ tex \mathbin{:\geqslant} }}
+  | :≈ :: :: solEq     {{ tex \mathbin{:\simeq} }}
   | Λ    :: :: bigLam    {{ tex \Lambda }}
   | λ    :: :: lam       {{ tex \lambda }}
   | let∃ :: :: letExists {{ tex \ottkw{let}^{\exists} }}
   | ●    :: :: bullet    {{ tex \bullet }}
   | ⇒>   :: :: spinInf   {{ tex \Rightarrow \hspace{-3pt} > }}
   | <=<  :: :: compM     {{ tex \mathord{< \hspace{-5.3pt} = \hspace{-4.2pt} <} }}
+  | &    :: :: ampersand {{ tex \mathbin{\&} }}
 
 
 

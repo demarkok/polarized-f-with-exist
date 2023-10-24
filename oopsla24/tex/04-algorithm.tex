@@ -11,6 +11,9 @@
 In this section, we present the algorithmization of the system described before
 Shadowing the declarative system, the algorithm has two main parts: 
 the subtyping and the type inference, which we discuss in this section one after another. 
+
+\subsection{Algorithmic Syntax}
+
 First, let us discuss the syntax of the algorithmic system.
 
 \begin{description}
@@ -18,7 +21,8 @@ First, let us discuss the syntax of the algorithmic system.
         \item[Negative Algorithmic Variables] $[[α̂⁻]]$, $[[β̂⁻]]$, $[[γ̂⁻]]$, \dots
         \item[Positive Algorithmic Types] $[[uP]] = \dots \mid [[α̂⁺]]$  
         \item[Negative Algorithmic Types] $[[uN]] = \dots \mid [[α̂⁻]]$
-        \item[Algorithmic Type Context] $[[Ξ]] = \text{set of Algorithmic Variables}$
+        \item[Algorithmic Type Context] $[[Ξ]] = \{[[α1̂±]], \dots, [[αn̂±]]\}$
+        where $[[α1̂±]], \dots, [[αn̂±]]$ are pairwise distinct 
 \end{description}
 
 \paragraph{Algorithmic Variables}
@@ -26,14 +30,14 @@ Both subtyping and the inference algorithms are represented by sets of inference
 to simplify the soundness and completeness proofs \wrt the declarative specification. 
 The terms these rules manipulate we call \emph{algorithmic}. They extend the 
 previously defined declarative terms and types by adding \emph{algorithmic type variables}
-(\aka existential variables). The algorithmic variables represent unknown types, 
+(\aka unification variables). The algorithmic variables represent unknown types, 
 which cannot be inferred immediately but are promised to be instantiated
 as the algorithm proceeds.
 
 We denote algorithmic variables as $[[α̂⁺]]$, $[[β̂⁻]]$, \dots to distinguish them from
 normal variables $[[α]]$, $[[β]]$, \dots and also to smooth out the transition
 from the declarative to the algorithmic system, when we replace the quantified variables $[[pas]]$ 
-that we are not able to instantiate with their algorithmic counterpart $[[puas]]$.
+with their algorithmic counterpart $[[puas]]$.
 The procedure of replacing declarative variables with algorithmic ones we call 
 \emph{algorithmization} and denote as $[[ nuas/nas ]]$ and $[[ puas/pas ]]$.
 
@@ -45,13 +49,126 @@ Notice that these variables cannot be abstracted by the quantifiers $[[∀]]$ an
 We denote the algorithmic types 
 
 \paragraph{Algorithmic Contexts and Well-formedness}
-To specify well-formedness, we define algorithmic contexts $[[Ξ]]$ as sets of algorithmic variables.
+To specify when algorithmic types are well-formed, 
+we define algorithmic contexts $[[Ξ]]$ as sets of algorithmic variables.
 Then $[[Γ ; Ξ ⊢ uP]]$ and $[[Γ ; Ξ ⊢ uN]]$ represent the well-formedness
 judgment of algorithmic terms defined as expected: in addition to the declarative definition
 \cref{todo}, we also check that each algorithmic variable is in the context $[[Ξ]]$.
+\begin{figure}[h]
+\begin{multicols}{2}
+  $\vcenter{\hbox{\vdots}}$\\
+  \ottusedrule{\ottdruleWFATPUVar{}}
+  \columnbreak\\
+  $\vcenter{\hbox{\vdots}}$\\
+  \ottusedrule{\ottdruleWFATNUVar{}}
+\end{multicols}
+\label{fig:algo-wf}
+\caption{Well-formedness of Algorithmic Types}
+\end{figure}
 
-\paragraph
+\paragraph{Algorithmic Normalization}
+Similarly to well-formedness, the normalization of algorithmic types is defined
+by extending the declarative definition trivially with the algorithmic variables.
 
+\begin{figure}[h]
+\begin{multicols}{2}
+  $\vcenter{\hbox{\vdots}}$\\
+  \ottusedrule{\ottdruleNrmPUVar{}}
+  \columnbreak\\
+  $\vcenter{\hbox{\vdots}}$\\
+  \ottusedrule{\ottdruleNrmNUVar{}}
+\end{multicols}
+\label{fig:algo-nf}
+\caption{Normalization of Algorithmic Types}
+\end{figure}
+
+\subsection{Type Constraints}
+As the algorithm proceeds, it accumulates the information 
+about the algorithmic type variables in the form of \emph{constraints}.
+In our system, the constraints can be of two kinds: 
+\emph{subtyping constraints} and \emph{unification constraints}.
+The subtyping constraint can only have a positive shape $[[α̂⁺ :≥ iP]]$, \ie it 
+restricts a positive algorithmic variable to be a 
+supertype of a certain declarative type---this is one of the invariants that we 
+preserve in the algorithm.
+The unification constraint can have either a positive form $[[α̂⁺ :≈ iP]]$ or
+a negative form $[[α̂⁻ :≈ iN]]$, however, the right-hand side of the constraint
+cannot contain algorithmic type variables.
+The set of constraints is denoted as $[[SC]]$. 
+We assume that the constraints in $[[SC]]$ restrict distinct variables.
+
+We separately define $[[UC]]$ as a set consisting of unification constraints only.
+This is done to simplify the representation of the algorithm. 
+The unification, which we use as a subroutine of the subtyping algorithm,
+can only produce unification constraints.
+A set of unification constraints can be resolved in a simpler way than
+a general constraint set. This way, 
+the separation of the unification constraint resolution into a separate
+procedure allows us to better decompose the structure of the algorithm,
+and thus, simplify the inductive proofs.
+
+
+  \begin{figure}[h]
+    \begin{multicols}{2}
+      \ottgrammartabular { 
+      \ottscE 
+      \ottinterrule
+      \ottruleheadOneLine
+        {[[SC]]}{::=} {\ottcom{Constraint Set}}
+        {\{[[scE1]], \dots, [[scEn]]\}}\ottprodnewline
+      }
+
+    \columnbreak
+
+      \ottgrammartabular { 
+      \ottucE 
+      \ottprodnewline
+      \ottinterrule
+      \ottruleheadOneLine
+        {[[UC]]}{::=} {\ottcom{Unification Constraint Set}}
+        {\{[[ucE1]], \dots, [[ucEn]]\}}\ottprodnewline
+      }
+    \end{multicols}
+
+    \label{fig:syntax-e-sc}
+    \caption{Constraint Entries and Sets}
+  \end{figure}
+
+\paragraph{Constraint Contexts}
+When one instantiates an algorithmic variable, 
+they may only use type variables available in its scope.
+As such, each algorithmic variable must remember the context at the moment when 
+it was introduced. In our algorithm, this information is represented by
+a \emph{constraint context} $[[Θ]]$---a set of pairs associating 
+algorithmic variables and declarative contexts.
+
+  \begin{figure}[h]
+    \begin{center}
+      $[[Θ]] ::= \{[[ α1̂±[Γ1] ]], \dots, [[ αn̂±[Γn] ]]\}$
+    \end{center}
+    \label{fig:constraint-context}
+    \caption{Constraint Contexts}
+  \end{figure}
+
+\paragraph{Auxiliary Functions}
+We define $[[dom(SC)]]$---a domain of a constraint set $[[SC]]$ as a set of algorithmic variables
+that it restricts. Similarly, we define $[[dom(Θ)]]$---a domain of constraint context
+as a set of algorithmic variables that $[[Θ]]$ associates with their contexts.
+We write $[[Θ(α̂±)]]$ to denote the context associated with $[[α̂±]]$ in $[[Θ]]$.
+
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+\subsection{Subtyping Algorithm}
+  
+  For convenience and scalability, 
+  we decompose the subtyping algorithm 
+  into several procedures. \Cref{fig:alg-subtyping-graph}
+  shows these procedures and the dependencies between them:
+  arrows denote the invocation of one procedure from another.
+  The label <<$\ottkw{nf}$>> annotating arrows means that the calling
+  procedure normalizes the input before passing it to the callee.
 
 \begin{figure}[h]
   \centering
@@ -62,8 +179,8 @@ judgment of algorithmic terms defined as expected: in addition to the declarativ
     % Define nodes
     \node[] (1) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$\\(\cref{sec:subtyping})};
     \node[below of=1] (3) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$\\(\cref{sec:subtyping})};
-    \node[left=1cm of 3] (2) {Subtyping Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
-    \node[right=1.4cm of 3] (5) {Unification\\ $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$\\ $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$\\(\cref{sec:unification})};
+    \node[left=1.5cm of 3] (2) {Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
+    \node[right=1.5cm of 3] (5) {Unification\\ $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$\\ $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$\\(\cref{sec:unification})};
     \node[below of=3] (4) {Upgrade\\$[[upgrade Γ ⊢ iP to Δ = iQ]]$\\(\cref{sec:lub})};
     \node[below of=2] (6) {Least Upper Bound\\$[[Γ ⊨ iP1 ∨ iP2 = iQ]]$\\(\cref{sec:lub})};
     \node[below of=6] (7) {Anti-Unification\\$[[Γ ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )]]$\\$[[Γ ⊨ iN1 ≈au iN2 ⫤ ( Ξ , uM , aus1 , aus2 )]]$\\(\cref{sec:antiunification})};
@@ -72,46 +189,155 @@ judgment of algorithmic terms defined as expected: in addition to the declarativ
     % Define edges
     \draw[->] (1) to (2);
     \draw[->] (1) to (3);
-    \draw[->] (1) to (5);
+    \draw[->] (1) to node[above, draw=none]{$\ottkw{nf}$} (5);
     \draw[->] (2) to (3);
     \draw[->] (2) to (6);
     \draw[->] (3) to (4);
-    \draw[->] (3) to (5);
+    \draw[->] (3) to node[above, draw=none]{$\ottkw{nf}$} (5);
     \draw[->] (4) to (6);
     \draw[->] (5) to (8);
-    \draw[->] (6) to (7);
+    \draw[->] (6) to node[left, draw=none]{$\ottkw{nf}$} (7);
   \end{tikzpicture}  
   \caption{Dependency graph of the subtyping algorithm}
-  \label{fig:subtyping-algo}
+  \label{fig:alg-subtyping-graph}
 \end{figure}
 
+In the remainder of this section, we will delve into each of these procedures in
+detail, following the top-down order of the dependency graph. First, 
+we present the subtyping algorithm itself.
 
-%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%
-\subsection{Subtyping Algorithm}
-Hello Subtyping
-        % - fig
-        % - it takes ... and returns constraint
-        % - explain the rules
-        % - - ↑/↓ invoke unification up-to-equivalence, 
-        %     which is implemented by unification of the normal forms up-to-equality.
-        % - - → makes two recursive calls, and thus, it merges the resulting constraints
-        % - - ∀/∃ introduce new variables as discussed
-        % - - the base case calls the upgrade
+As an input, the subtyping algorithm takes
+a type context $[[Γ]]$, a constraint context $[[Θ]]$,
+and two types of the corresponding polarity:
+$[[uN]]$ and  $[[iM]]$ for the negative subtyping, and
+$[[uP]]$ and  $[[iQ]]$ for the positive subtyping.
+We assume the second type ($[[iM]]$ and $[[iQ]]$) to be 
+declarative (with no algorithmic variables) and well-formed in $[[Γ]]$,
+but the first type ($[[uN]]$ and $[[uP]]$) may contain algorithmic variables,
+whose instantiation contexts are specified by $[[Θ]]$.
 
-    \begin{figure}[h]
-        \hfill\\
-        \ottdefnANsub{}
-        \ottdefnAPsup{}
-        \caption{Subtyping Algorithm}
-        \label{fig:alg-subtyping}
-    \end{figure}
+Notice that the shape of the input types uniquely determines the
+applied subtyping rule.  If the subtyping is successful, it returns
+a set of constraints $[[SC]]$ restricting the algorithmic 
+variables of the first type. If the subtyping does not hold, 
+there will be no inference tree with such inputs. 
+
+\begin{figure}[h]
+  \hfill\\
+  \begin{multicols}{2}
+    \ottdefnANsub{}
+    \columnbreak\\
+    \ottdefnAPsup{}
+  \end{multicols}
+  \caption{Subtyping Algorithm}
+  \label{fig:alg-subtyping}
+\end{figure}
+
+The rules of the subtyping algorithm bijectively correspond to the rules of the declarative
+system. Let us discuss them in detail.
+
+\paragraph{Variables} Rules \ruleref{\ottdruleANVarLabel} and \ruleref{\ottdruleAPVarLabel}
+say that if both of the input types are equal declarative variables,
+they are subtypes of each other, with no constraints (as there are no algorithmic variables).
+
+\paragraph{Shifts} Rules \ruleref{\ottdruleAShiftDLabel} and
+\ruleref{\ottdruleAShiftULabel} cover the downshift and the upshift cases,
+respectively. If the input types are constructed by shifts, then the subtyping
+can only hold if they are equivalent. This way, the algorithm must find the
+instantiations of the algorithmic variables on the left-hand side, which make it
+equivalent to the right-hand side. For this purpose, the algorithm invokes the
+unification procedure \cref{todo} preceded by normalization of the input types.
+It returns the resulting constraints given by the unification algorithm. 
+
+\paragraph{Quantifiers}  
+Rules \ruleref{\ottdruleAForallLabel} and 
+\ruleref{\ottdruleAExistsLabel} are symmetric. 
+According to the declarative specification, 
+the quantified variables on the left-hand side must be instantiated 
+with types, which, however, are not known in advance.
+We deal with it by algorithmization (\cref{todo})
+of the quantified variables:
+we introduce fresh algorithmic variables
+$[[puas]]$ or $[[nuas]]$,
+put them into the constraint context $[[Θ]]$
+(specifying that they must be instantiated in the extended context
+$[[Γ, pbs]]$ or $[[Γ, nbs]]$) and substitute the quantified variables
+for them in the input type. 
+
+After that, the algorithm proceeds with the recursive call, returning
+constraints $[[SC]]$. As the output, the algorithm removes the freshly
+introduced algorithmic variables from the constraint context, This operation is
+sound: it is guaranteed that $[[SC]]$ always has a solution, but the specific
+instantiation of the freshly introduced algorithmic variables is not important,
+as they do not occur in the input types.
+
+\paragraph{Functions}
+To infer the subtyping of the function types, the algorithm
+makes two calls: 
+\begin{enumerate*}
+  \item[(i)] a recursive call ensuring the subtyping of the result types, and
+  \item[(ii)] a call to positive subtyping (or rather super-typing) on the argument types.
+\end{enumerate*}
+The resulting constraints are merged (using a special procedure defined later in \cref{todo})
+and returned as the output.
+
+\paragraph{Algorithmic Variable}
+If one of the sides of the subtyping is a unification variable,
+the algorithm must create a new restriction. 
+Because the right-hand side of the subtyping is always declarative,
+it is only the left-hand side that can be a unification variable.
+Moreover, another invariant we preserve prevents the negative
+algorithmic variables from occurring in types during the
+ negative subtyping algorithm. It means
+that the only possible form of the subtyping here is $[[α̂⁺]] [[≥]] [[iP]]$,
+which is covered by \ruleref{\ottdruleAPUVarLabel}.
+
+The potential problem here is that the type $[[iP]]$
+might be not well-formed in the context required for $[[α̂⁺]]$ by $[[Θ]]$, 
+because this context might be smaller than the current context $[[Γ]]$.
+As we wish the resulting constraint set to be sound \wrt $[[Θ]]$,
+we cannot simply put $[[α̂⁺ :≥ iP]]$ into the output. 
+Prior to that, we update the type $[[iP]]$ to its lowest supertype $[[iQ]]$
+well-formed in $[[Θ(α̂⁺)]]$. It is done by the \emph{upgrade} procedure,
+which we discuss in detail in \cref{todo}.
+
+\vspace{\baselineskip}
+% \indent
+To summarize, the subtyping algorithm uses the following additional subroutines:
+\begin{enumerate*}[noitemsep]
+  \item[(i)] rules \ruleref{\ottdruleAShiftDLabel} and
+    \ruleref{\ottdruleAShiftULabel} invoke the \emph{unification} algorithm
+    to equate the input types;
+  \item[(ii)] rule \ruleref{\ottdruleAArrowLabel} \emph{merges} the constraints
+    produced by the recursive calls on the result and the argument types; and
+  \item[(iii)] rule \ruleref{\ottdruleAPUVarLabel} \emph{upgrades} the input type
+    to its least supertype well-formed in the context required by the
+    algorithmic variable.
+\end{enumerate*}
+The following sections discuss these additional procedures in detail.
 
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Unification}
 
-Hello Unification
+As an input the unification context 
+takes a type context $[[Γ]]$, a constraint context $[[Θ]]$,
+and two types of the required polarity:
+$[[uN]]$ and  $[[iM]]$ for the negative unification, and
+$[[uP]]$ and  $[[iQ]]$ for the positive unification.
+It is assumed that only the left-hand side type may contain algorithmic variables,
+this way, the left-hand side is well-formed as an algorithmic type in $[[Γ]]$ and 
+$[[Θ]]$, whereas the right-hand side is well-formed declaratively in $[[Γ]]$.
+
+Since only the left-hand side may contain algorithmic variables,
+that the unification instantiates, we could have called this procedure \emph{matching}.
+However, in \cref{todo} we will discuss several modifications of the 
+type system, where this invariant is not preserved, and thus, this procedure
+becomes a genuine first-order pattern unification \cite{miller1991:unification}.
+
+As the output, the unification algorithm returns the weakest
+set of unification constraints $[[UC]]$ such that any instantiation 
+satisfying these constraints unifies the input types.
 
 \begin{figure}[h]
   \hfill
@@ -124,83 +350,227 @@ Hello Unification
   \label{fig:unification}
 \end{figure}
 
+The algorithm works as one might expect:
+if both sides are formed by constructors, 
+it is required that the constructors are the same, and the
+types unify recursively. If one of the sides
+is a unification variable (in our case it can only be the left-hand side),
+we create a new unification constraint restricting it to be equal to the other side.
+Let us discuss the rules that implement this strategy. 
+
+\paragraph{Variables}
+  The variable rules \ruleref{\ottdruleUNVarLabel} and \ruleref{\ottdruleUPVarLabel}
+  are trivial: as the input types do not have algorithmic variables, and are already equal, 
+  the unification returns no constraints.
+
+\paragraph{Shifts}
+  The shift rules \ruleref{\ottdruleUShiftDLabel} and \ruleref{\ottdruleUShiftULabel}
+  require the input types to be formed by the same shift constructor. 
+  They remove this constructor, unify the types recursively, and return the resulting
+  set of constraints.
+
+\paragraph{Quantifiers} 
+  Similarly, the quantifier rules \ruleref{\ottdruleUForallLabel} and \ruleref{\ottdruleUExistsLabel}
+  require the quantifier variables on the left-hand side and the right-hand side to be the same.
+  This requirement is complete because we assume the input types of the unification 
+  to be normalized, and thus, the equivalence implies alpha-equivalence. 
+  In the implementation of this rule, an alpha-renaming might be needed to ensure 
+  that the quantified variables are the same, however, we omit it for brevity.
+
+\paragraph{Functions}
+  Rule \ruleref{\ottdruleUArrowLabel} unifies two functional types. 
+  First, it unifies the argument types and their result types recursively
+  Then it merges the resulting constraints using the constraint merge procedure (\cref{todo}).
+
+  Notice that the resulting constraints can only have \emph{unification} entries.
+  It means that they can be merged in a simpler way than general constraints.
+  In particular, the merging procedure does not call any of the subroutines discussed here,
+  but rather simply checks the matching constraint entries for equality.
+
+\paragraph{Algorithmic Variable}
+  Finally, if the left-hand side of the unification is an algorithmic variable,
+  \ruleref{\ottdruleUNVarLabel} or \ruleref{\ottdruleUPVarLabel} is applied. 
+  It simply checks that the right-hand side type is well-formed in the required
+  constraint context, and returns a newly created constraint restricting the variable
+  to be equal to the right-hand side type.
+
+\vspace{\baselineskip}
+As one can see, the unification procedure is standard, 
+except that it makes sure that the resulting instantiations agree with the input
+constraint context $[[Θ]]$.  As a subroutine, the unification algorithm only uses the (unification) 
+constraint merge procedure and the well-formedness checking.
+
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Constraint Merge}
 
-\begin{definition} [Matching Entries]
-  We call two unification constraint entries 
-  or two subtyping constraint entries matching 
-  if they are restricting the same unification variable.
-\end{definition}
+The merge procedure that we discuss in this section, allows one to 
+combine two constraint sets into one. It might seem that 
+just taking the union of the two sets would be enough, however,
+we require the constraint sets to have a certain structure,
+in particular not to have two entries restricting the same algorithmic
+ variable---we call such entries \emph{matching}.
+The matching entries must be combined into one constraint entry, that 
+would represent their conjunction. 
+This way, to merge two constraint sets, we unite the entries of two
+sets, and then merge the matching pairs.
 
-Two matching entries formed in the same context $[[Γ]]$ 
-can be merged in the following way:
+\paragraph{Merging Matching Constraint Entreies}
+Two \emph{matching} entries formed in the same context $[[Γ]]$ 
+can be merged as shown in \cref{fig:merge-entries}.
+Suppose that $[[scE1]]$ and $[[scE2]]$ are input entries. 
+The result of the merge $[[scE1 & scE2]]$ must be the 
+weakest entry which implies both  $[[scE1]]$ and $[[scE2]]$.
 
 \begin{figure}[h]
   \ottdefnSCME\\
-
+  \caption{Merge of Matching Constraint Entries}
   \label{fig:merge-entries}
-  \caption{Merge Matching Constraint Entries}
 \end{figure}
 
+Suppose that one of the input entries, say $[[scE1]]$, is a unification 
+constraint entry. Then the resulting entry $[[scE1]]$ must coincide with it 
+(up-to-equivalence), and thus, it is only required to check that $[[scE2]]$ 
+is implied by $[[scE1]]$.
 \begin{itemize}
-  \item \ruleref{\ottdruleSCMEPEqEqLabel} and \ruleref{\ottdruleSCMENEqEqLabel}
-    are symmetric cases. To merge two matching entries restricting
-    a variable to be equivalent to certain types, we check
-    that these types are equivalent to each other.
-    To do so, it suffices to check for \emph{equality} of their normal forms,
-    as discussed in \cref{sec:equivalence-normalization}. 
-    After that, we return the left-hand entry.
-
-  \item \ruleref{\ottdruleSCMEEqSupLabel} and \ruleref{\ottdruleSCMESupEqLabel}
-    are also symmetric. 
-    In this case,
-    since one of the entries requires the variable to be equal to 
-    a type, the resulting entry must also imply that.
-    However, for the soundness, it is needed to ensure that
-    the equating restriction is stronger than the subtyping restriction.
-    For this purpose, the premise invokes the positive subtyping.
-
-  \item \ruleref{\ottdruleSCMESupSupLabel} 
-    In this case, we find the least upper bound of the types from the input
-    restrictions, 
-    and as the output, restrict the variable to be a supertype of the result.
-    The least upper bound procedure will be discussed in \cref{sec:lub}.
+  \item If $[[scE2]]$ is also a restricting entry, then the types on the right-hand side
+    of $[[scE1]]$ and $[[scE2]]$ must be equivalent,
+    as given by rules \ruleref{\ottdruleSCMEPEqEqLabel} and \ruleref{\ottdruleSCMENEqEqLabel}.
+  \item If $[[scE2]]$ is a supertype restriction $[[α̂⁺ :≥ iP]]$,
+    the algorithm must check that the type assigned by $[[scE1]]$ is a supertype of $[[iP]]$.
+    The corresponding symmetric rules are \ruleref{\ottdruleSCMESupEqLabel} and \ruleref{\ottdruleSCMEEqSupLabel}.
 \end{itemize}
 
+If both input entries are supertype restrictions: $[[α̂⁺ :≥ iP]]$ and $[[α̂⁺ :≥ iQ]]$,
+then their conjunction is $[[α̂⁺ :≥ iP ∨ iQ]]$, as given by \ruleref{\ottdruleSCMESupSupLabel}.
+The least upper bound---$[[iP ∨ iQ]]$ is the least supertype of both $[[iP]]$ and $[[iQ]]$,
+and this way, $[[α̂⁺ :≥ iP ∨ iQ]]$ is the weakest constraint entry that implies
+$[[α̂⁺ :≥ iP]]$ and $[[α̂⁺ :≥ iQ]]$. The algorithm for finding the least upper bound
+is discussed in \cref{todo}.
+
+\paragraph{Merging Constraint Sets}
+  The algorithm for merging constraint sets is shown in \cref{fig:merge-subtyping-constraints}.
+  As discussed, the result of merge $[[SC1]]$ and $[[SC2]]$ consists of three parts: 
+  \begin{enumerate*}
+    \item[(i)] the entries of $[[SC1]]$ that do not match any entry of $[[SC2]]$;
+    \item[(ii)] the entries of $[[SC2]]$ that do not match any entry of $[[SC1]]$; and
+    \item[(iii)] the merge (\cref{fig:merge-entries}) of matching entries.
+  \end{enumerate*}
+
+
 \begin{figure}[h]
-  Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.
+  Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.\\
   Then $[[Θ ⊢ SC1 & SC2 = SC]]$
-  defines a set such that $[[ucE]] \in [[SC]]$ iff either
+  defines a set of constraints $[[SC]]$ such that $[[scE]] \in [[SC]]$ iff either:
   \begin{itemize}
-    \item $[[ucE]] \in [[SC1]]$ and there is no matching $[[ucE']] \in [[SC2]]$; or
-    \item $[[ucE]] \in [[SC2]]$ and there is no matching $[[ucE']] \in [[SC1]]$; or
-    \item $[[Θ(α̂±) ⊢ ucE1 & ucE2 = ucE]]$ for some $[[ucE1]] \in [[SC1]]$ and $[[ucE2]] \in [[SC2]]$
-      such that $[[ucE1]]$ matches with $[[ucE2]]$ restricting variable
-      $[[α̂±]]$. 
+    \item $[[scE]] \in [[SC1]]$ and there is no matching $[[scE']] \in [[SC2]]$; or
+    \item $[[scE]] \in [[SC2]]$ and there is no matching $[[scE']] \in [[SC1]]$; or
+    \item $[[Θ(α̂±) ⊢ scE1 & scE2 = scE]]$ for some $[[scE1]] \in [[SC1]]$ and $[[scE2]] \in [[SC2]]$
+      such that $[[scE1]]$ and $[[scE2]]$ both restrict variable $[[α̂±]]$. 
   \end{itemize}
 
-  \label{fig:merge-subtyping-constraints}
   \caption{Constraint Merge}
+  \label{fig:merge-subtyping-constraints}
 \end{figure}
+
+As shown in \cref{fig:merge-entries}, the merging procedure relies 
+substantially on the least upper bound algorithm.
+In the next section, we discuss this algorithm in detail,
+together with the upgrade procedure, selecting the least supertype 
+ell-formed in a given context.
 
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Type Upgrade and the Least Upper Bounds}
 
-\begin{figure}[h]
-  \ottdefnLUBNsub{}
-  \caption{Least Upper Bound Algorithm}
-  \label{fig:lub}
-\end{figure}
+Both type upgrade and the least upper bound algorithms are used
+to find a minimal supertype under certain conditions. 
+For a given type $[[iP]]$ well-formed in $[[Γ]]$, the \emph{upgrade} operation 
+finds the least among those supertypes of $[[iP]]$ that are well-formed
+in a smaller context $[[Δ ⊆ Γ]]$.
+For given two types $[[iP1]]$ and $[[iP2]]$ well-formed in $[[Γ]]$,
+the \emph{least upper bound} operation finds the least among
+common supertypes of $[[iP1]]$ and $[[iP2]]$ well-formed in $[[Γ]]$.
+These algorithms are shown in \cref{fig:type-upgrade}.
 
 \begin{figure}[h]
-    \hfill\\
+  \begin{multicols}{2}
     \ottdefnLUBUp{}
-    \caption{Type Upgrade Algorithm}
-    \label{fig:type-upgrade}
+    \columnbreak\\
+    \ottdefnLUBNsub{}
+  \end{multicols}
+  \caption{Type Upgrade and Leas Upper Bound Algorithms}
+  \label{fig:type-upgrade}
 \end{figure}
+
+\paragraph{The Type Upgarde}
+The type upgrade algorithm uses the least upper bound algorithm as a subroutine.
+It exploits the idea that the free variables of a positive type $[[iQ]]$
+cannot disappear in its subtypes. It means that if 
+a type $[[iP]]$ has free variables not occurring 
+in $[[iP']]$, then any common supertype of $[[iP]]$
+and $[[iP']]$ must not contain these variables either.
+This way, any supertype of $[[iP]]$
+not containing certain variables $[[pnas]]$ must also be 
+a supertype of $[[iP' = [pnbs/pnas]iP ]]$, where $[[pnbs]]$ are fresh;
+and vice versa: any common supertype of $[[iP]]$ and $[[iP']]$
+does not contain $[[pnas]]$ nor $[[pnbs]]$.
+
+This way, to find the least supertype of $[[iP]]$ well-formed in $[[Δ]] = [[Γ \ {pnas}]]$
+(\ie not containing $[[pnas]]$), we can do the following.
+First, construct a new type $[[iP']]$ by renaming $[[pnas]]$ in $[[iP]]$ to fresh $[[pnbs]]$,
+and second, find \emph{the least upper bound} of $[[iP]]$ and $[[iP']]$ in the appropriate
+context. However, for reasons of symmetry, in rule
+\ruleref{\ottdruleLUBUpgradeLabel} we employ a different but equivalent approach:
+we create \emph{two} types $[[iP1]]$ and $[[iP2]]$ constructed by renaming $[[pnas]]$ in $[[iP]]$
+to fresh disjoint variables $[[pnbs]]$ and $[[pncs]]$ respectively, and then 
+find the least upper bound of $[[iP1]]$ and $[[iP2]]$.
+
+\paragraph{The Least Upper Bound}
+The Least Upper Bound algorithm we use operates on \emph{positive}
+types. This way, the inference rules of the algorithm
+analyze the three possible shapes of the input types:
+a variable type, an existential type, and a shifted computation.
+
+ Rule \ruleref{\ottdruleLUBExistsLabel} covers the case when 
+ at least one of the input types is an existential type.
+ In this case, we can simply move the existential quantifiers
+ from both sides to the context, and make a tail-recursive call.
+ However, it is important to make sure that 
+ the quantified variables $[[nas]]$ and $[[nbs]]$ are disjoint
+ (\ie alpha-renaming might be required in the implementation).
+  
+ Rule \ruleref{\ottdruleLUBVarLabel} applies when 
+ both sides are variables. In this case,
+ the common supertype only exists if these variables are 
+ the same. And if they are, the common supertypes
+ must be equivalent to this variable.
+
+Rule \ruleref{\ottdruleLUBShiftLabel} is the most 
+interesting. If both sides are not quantified, and one of the sides is 
+a shift, so must be the other side. 
+However, the set of common upper bounds is not trivial in this case.
+For example, $[[↓(β⁺ → γ1⁻)]]$ and $[[↓(β⁺ → γ2⁻)]]$ have
+two non-equivalent common supertypes: 
+$[[∃α⁻.↓α⁻]]$ 
+(by instantiating $[[α⁻]]$ with $[[β⁺ → γ1⁻]]$ and $[[β⁺ → γ2⁻]]$ respectively)
+and 
+$[[∃α⁻.↓(β⁺ → α⁻)]]$ 
+(by instantiating $[[α⁻]]$ with $[[γ1⁻]]$ and $[[γ2⁻]]$ respectively).
+As one can see, the second supertype $[[∃α⁻.↓(β⁺ → α⁻)]]$ is the least among them
+because it abstracts over a `deeper' negative subexpression.
+
+In general, we must 
+\begin{itemize*}
+  \item[(i)] find the most detailed pattern (a type with `holes' at negative positions) 
+    that matches both sides, and 
+  \item[(ii)] abstract over the `holes' by existential quantifiers.
+\end{itemize*}
+The algorithm that finds the most detailed common pattern is called \emph{anti-unification}.
+As output, it returns $[[(Ξ, uP, aus1, aus2)]]$, where important for us is
+$[[uP]]$---the pattern and $[[Ξ]]$---the set of `holes' represented by negative algorithmic variables.
+We discuss the anti-unification algorithm in detail in the following section.
+
 
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
@@ -208,9 +578,11 @@ can be merged in the following way:
 
 \begin{figure}[h]
     \ottdefnAUAUP{}
-    \ottdefnAUAUN{}
 
-    \caption{Anti-unification Algorithm}
+    \vspace{\baselineskip} 
+
+    \ottdefnAUAUN{}
+    \caption{Anti-Unification Algorithm}
     \label{fig:anti-unification}
 \end{figure}
 
@@ -223,22 +595,20 @@ can be merged in the following way:
         % *** Constraint Singularity
 
 \begin{figure}
-    \centering
-    \begin{subfigure}[b]{0.3\textwidth}
-        \centering
-        \ottdefnATNInf{}
-    \end{subfigure}
+  \ottdefnATNInf{}
+  \caption{Algorithmic Negative Type Inferences}
+  \label{fig:type-inference}
+\end{figure}
 
-    \begin{subfigure}[b]{0.3\textwidth}
-        \centering
-        \ottdefnATPInf{}
-    \end{subfigure}
+\begin{figure}
+  \ottdefnATPInf{}
+  \caption{Algorithmic Positive Type Inferences}
+  \label{fig:type-inference-pos}
+\end{figure}
 
-    \begin{subfigure}[b]{0.3\textwidth}
-        \centering
-        \ottdefnATSpinInf{}
-    \end{subfigure}
-    \caption{Algorithmic Type Inferences}
-    \label{fig:type-inference}
+\begin{figure}
+  \ottdefnATSpinInf{}
+  \caption{Algorithmic Application Type Inferences}
+  \label{fig:type-inference-app}
 \end{figure}
 

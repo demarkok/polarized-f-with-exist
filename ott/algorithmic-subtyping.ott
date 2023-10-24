@@ -26,28 +26,29 @@ defns
   Γ;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ SC \ {â⁺*}
 
 
-  Γ;Θ ⊨ uP ≥ iQ ⫤ SC1    Γ;Θ ⊨ uN ≤ iM ⫤ SC2    
+  Γ;Θ ⊨ uP ≥ iQ ⫤ SC1  Γ;Θ ⊨ uN ≤ iM ⫤ SC2    
   Θ ⊢ SC1 & SC2 = SC
   --------------------------------------------- :: Arrow
   Γ;Θ ⊨ uP → uN ≤ iQ → iM ⫤ SC 
 
 
   defn Γ ; Θ ⊨ uP ≥ iQ ⫤ SC :: :: Psup :: ''
-  {{ com Positive supertyping }}
+  {{ com Positive subtyping }}
   {{ tex [[Γ]] ;\, [[Θ]] [[⊨]] [[uP]] \supA [[iQ]] [[⫤]] [[SC]] }} by
 
   ---------------- :: PVar
   Γ;Θ ⊨ a⁺ ≥ a⁺ ⫤ ·
-
-  Γ;Θ ⊨ nf(uN) ≈u nf(iM) ⫤ UC
-  --------------------------- :: ShiftD
-  Γ;Θ ⊨ ↓uN ≥ ↓iM ⫤ lift UC 
 
   % *[Γ, nbs]
   {â⁻*} are fresh   
   Γ, nbs; Θ,â⁻*[Γ, nbs] ⊨ [â⁻*/nas] uP ≥ iQ ⫤ SC
   ---------------------------------------------------------------- :: Exists
   Γ;Θ ⊨ ∃nas.uP ≥ ∃nbs.iQ ⫤ SC \ {â⁻*}
+
+  Γ;Θ ⊨ nf(uN) ≈u nf(iM) ⫤ UC
+  --------------------------- :: ShiftD
+  Γ;Θ ⊨ ↓uN ≥ ↓iM ⫤ lift UC 
+
 
     
   upgrade Γ ⊢ iP to Θ(â⁺) = iQ

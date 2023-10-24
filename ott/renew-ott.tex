@@ -1,4 +1,15 @@
+
+\renewcommand{\ottdefnAPsup}[1]{\begin{ottdefnblock}[#1]{$ \Gamma  ;\,  \Theta   \vDash   \ngbox{ \mathcolor{positive}{P} }  \supA  \mathcolor{positive}{Q}   \Dashv   C $}{\ottcom{Positive supertyping}}
+\ottusedrule{\ottdruleAPVar{}}
+\ottusedrule{\hspace{-1cm}\ottdruleAExists{}}
+\ottusedrule{\ottdruleAShiftD{}}
+\ottusedrule{\ottdruleAPUVar{}}
+\end{ottdefnblock}}
+
+
+
 \renewcommand{\ottrulehead}[3]{\multicolumn{4}{l}{#3}\ottprodnewline$#1$ & & $#2$ & & }
+\newcommand{\ottruleheadOneLine}[4]{\multicolumn{4}{l}{#3}\ottprodnewline$#1$ & & $#2$ & $#4$ & }
 % \renewenvironment{ottdefnblock}[3][]{\noindent#3 \\\framebox{\mbox{#2}}\\[0pt]}{}
 \renewcommand{\ottusedrule}[1]{\[#1\]\smallskip}
 

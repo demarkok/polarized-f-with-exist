@@ -91,8 +91,8 @@
         - algorithmic type contexts Ξ and constraint context Θ
         - Describe how wf, nf,... are changed
         - Constraints -- important part of the algorithm
-        - Dependency Graph
     ** Subtyping algorithm
+        - Dependency Graph
         - fig
         - it takes ... and returns constraint
         - explain the rules

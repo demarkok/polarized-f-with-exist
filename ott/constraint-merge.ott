@@ -3,7 +3,6 @@ defns
 
   defn Γ ⊢ scE1 & scE2 = scE3 :: :: E :: 'E'
   {{ com Subtyping Constraint Entry Merge }}
-  {{ tex [[Γ]] \vdash [[ scE1 ]] ~ \& ~ [[ scE2 ]] = [[scE3]] }}
   by
 
   Γ ⊨ iP1 ∨ iP2 = iQ
@@ -31,7 +30,9 @@ defns
 
 defns 
   UCM :: 'UCM' ::=
-  defn Γ ⊢ ucE1 & ucE2 = ucE3 :: :: E :: 'E' by
+
+  defn Γ ⊢ ucE1 & ucE2 = ucE3 :: :: E :: 'E'
+  by
 
   nf(iP) = nf(iP')
   --------------------------------------------------- :: PEqEq
@@ -43,4 +44,5 @@ defns
 
 
   defn Θ ⊢ UC1 & UC2 = UC3 :: :: UC :: ''
-  {{com Merge of unification constraints }} by
+  {{com Merge of unification constraints }} 
+  by
