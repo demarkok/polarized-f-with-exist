@@ -20,8 +20,6 @@ defns
   % Γ ⊨ ↓iN ∨ ↓iM = ∃ nas . [nas/ToList Ξ] uP
 
 
-
-
   defn upgrade Γ ⊢ iP to Δ = iQ :: :: Up :: '' 
   {{ com Type Upgrade }} by
 
@@ -30,3 +28,4 @@ defns
   Δ, pnbs, pncs ⊨ [pnbs/pnas]iP ∨ [pncs/pnas]iP = iQ
   --------------------------------------------------- :: Upgrade
   upgrade Γ ⊢ iP to Δ = iQ 
+

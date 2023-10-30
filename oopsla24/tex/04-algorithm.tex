@@ -225,9 +225,9 @@ there will be no inference tree with such inputs.
 \begin{figure}[h]
   \hfill\\
   \begin{multicols}{2}
-    \ottdefnANsub{}
+    \ottdefnANsubLabeled{}
     \columnbreak\\
-    \ottdefnAPsup{}
+    \ottdefnAPsupLabeled{}
   \end{multicols}
   \caption{Subtyping Algorithm}
   \label{fig:alg-subtyping}
@@ -342,9 +342,9 @@ satisfying these constraints unifies the input types.
 \begin{figure}[h]
   \hfill
   \begin{multicols}{2}
-  \ottdefnUNUnif{}
+  \ottdefnUNUnifLabeled{}
   \columnbreak\\
-  \ottdefnUPUnif{}
+  \ottdefnUPUnifLabeled{}
   \end{multicols}
   \caption{Unification Algorithm}
   \label{fig:unification}
@@ -423,7 +423,7 @@ The result of the merge $[[scE1 & scE2]]$ must be the
 weakest entry which implies both  $[[scE1]]$ and $[[scE2]]$.
 
 \begin{figure}[h]
-  \ottdefnSCME\\
+  \ottdefnSCMELabeled\\
   \caption{Merge of Matching Constraint Entries}
   \label{fig:merge-entries}
 \end{figure}
@@ -495,9 +495,9 @@ These algorithms are shown in \cref{fig:type-upgrade}.
 
 \begin{figure}[h]
   \begin{multicols}{2}
-    \ottdefnLUBUp{}
+    \ottdefnLUBUpLabeled{}
     \columnbreak\\
-    \ottdefnLUBNsub{}
+    \ottdefnLUBNsubLabeled{}
   \end{multicols}
   \caption{Type Upgrade and Leas Upper Bound Algorithms}
   \label{fig:type-upgrade}
@@ -576,39 +576,342 @@ We discuss the anti-unification algorithm in detail in the following section.
 %%%%%%%%%%%%%%%%%
 \subsection{Anti-Unification}
 
+The anti-unification algorithm \cite{todo}, 
+is a procedure dual to unification
+For two given (potentially different) expressions, 
+it finds the most specific generalizer---the most detailed pattern that 
+matches both of the input expressions. As evidence, it can also return 
+two substitutions that instantiate the `holes' of the pattern to the input expressions.
+
+In our case, we have to be more demanding on the anti-unification algorithm.
+Since we use it to construct an existential type, whose (negative) quantified variables
+can only be instantiated with negative types, we must make sure that the pattern 
+has `holes' only at negative positions. Moreover, we must make sure that
+the resulting substitutions for the `holes' are well-formed in the initial contest, 
+and do not contain variables bound later. For example, 
+the anti-unification of $[[iN1 = ∀β⁺.α1⁺ → ↑β⁺]]$ and
+$[[iN2 = ∀β⁺.α2⁺ → ↑β⁺]]$
+must result in a `hole', which we model as an algorithmic type variable $[[γ̂⁻]]$, 
+with a pair of substitutions $[[γ̂⁻ ↦ iN1]]$ and $[[γ̂⁻ ↦ iN2]]$.
+But it cannot be more specific such as
+$[[∀β⁺.γ̂⁺ → ↑β⁺]]$ (since the hole cannot be positive)
+or $[[∀β⁺.γ̂⁻]]$ 
+(since the instantiation cannot capture the bound variable $[[β⁺]]$).
+
+The algorithm that finds the most specific generalizer of two types
+under required conditions is given in \cref{fig:anti-unification}.
+It consists of two mutually recursive procedures:
+the positive and the negative anti-unification. 
+As the positive and the negative anti-unification procedures
+are symmetric in their interface, let us discuss how to read
+the positive judgment. 
+
+The positive anti-unification judgment has form
+$[[Γ ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )]]$.
+As an input, it takes a context $[[Γ]]$, in which the `holes'
+instantiations must be well-formed, 
+and two positive types: $[[iP1]]$ and $[[iP2]]$;
+it returns a tuple of four components:
+$[[Ξ]]$---a set of `holes' represented by negative algorithmic variables,
+$[[uQ]]$---a pattern represented as a positive algorithmic type,
+whose algorithmic variables are in $[[Ξ]]$,
+and two substitutions $[[aus1]]$ and $[[aus2]]$
+instantiating the variables from $[[Ξ]]$ such that
+$[[ [aus1]uQ = iP1 ]]$ and $[[ [aus2]uQ = iP2 ]]$. 
+
 \begin{figure}[h]
-    \ottdefnAUAUP{}
-
-    \vspace{\baselineskip} 
-
-    \ottdefnAUAUN{}
+    \ottdefnAUAUPLabeled{}
+    \hfill\\
+    \hfill\\
+    \ottdefnAUAUNLabeled{}
     \caption{Anti-Unification Algorithm}
     \label{fig:anti-unification}
 \end{figure}
+
+At the high level, the algorithm scheme follows
+the standard approach \cite{todo} consisting of two principles:
+\begin{enumerate}
+  \item[(i)] if the input terms start with the same constructor,
+    we anti-unify the corresponding parts recursively and 
+    unite the results. This principle is followed by 
+    all the rules except \ruleref{\ottdruleAUAULabel},
+    which works as follows:
+  \item[(ii)] if the first principle does not apply to the input terms $[[iN]]$
+    and $[[iM]]$ (for instance, if they have different outer constructors), the
+    anti-unification algorithm returns a `hole' such that one substitution maps
+    it to $[[iN]]$ and the other maps it to $[[iM]]$. The name of this `hole'
+    should have a name uniquely defined by the pair $([[iN]], [[iM]])$, so
+    that it automatically merges with other `holes' mapped to the same
+    pair of types, and thus, the initiality of the generalizer is ensured. 
+\end{enumerate}
+
+Let us discuss the specific rules of the algorithm in detail.
+
+\paragraph{Variables} 
+  Rules \ruleref{\ottdruleAUPVarLabel} and
+  \ruleref{\ottdruleAUNVarLabel} generalize two equal variables.
+  In this case, the resulting pattern is the variable itself,
+  and no `holes' are needed.
+
+\paragraph{Shifts} 
+  Rules \ruleref{\ottdruleAUShiftDLabel} and
+  \ruleref{\ottdruleAUShiftULabel} operate by congruence:
+  they anti-unify the bodies of the shifts recursively and add
+  the shift constructor back to the resulting pattern.
+
+\paragraph{Quantifiers}
+  Rules \ruleref{\ottdruleAUForallLabel} and
+  \ruleref{\ottdruleAUExistsLabel} are symmetric. 
+  They generalize two quantified types congruently, 
+  similarly to the shift rules. 
+  However, we also require that the quantified variables
+  are fresh, and that the left-hand side variables are 
+  equal to the corresponding variables on the right-hand side.
+  To ensure it, alpha-renaming might be required in the
+  implementation.
+
+  Notice that the context $[[Γ]]$ is \emph{not} extended with 
+  the quantified variables. In this algorithm, $[[Γ]]$ 
+  does not play the role of a current typing context, but rather
+  a snapshot of a context at the moment of calling the anti-unification,
+  \ie the context in which the instantiations of the `holes' 
+  must be well-formed.
+
+\paragraph{Functions}
+  Rule \ruleref{\ottdruleAUArrowLabel} congruently generalizes two function types. 
+  An arrow type is the only binary constructor, 
+  and thus, it is the only rule where the union of the anti-unification results is substantial.
+  The interesting is the case when the resulting generalization of the 
+  input types and the resulting generalization of the output types 
+  have `holes' mapped to the same pair of types. 
+  In this case, the algorithm must merge the `holes' into one.
+  For example, the anti-unification of 
+  $[[↓α⁻ → α⁻]]$ and $[[↓β⁻ → β⁻]]$
+  must result in $[[↓γ̂⁻ → γ̂⁻]]$,
+  rather than $[[↓γ1̂⁻ → γ2̂⁻]]$.
+
+  In our representation of the anti-unification algorithm, this `merge' happens
+  automatically:
+  following the rule \ruleref{\ottdruleAUAULabel},
+  the name of the `hole' is uniquely defined by the pair of types it is mapped to.  
+  Specifically, when anti-unifying $[[↓α⁻ → α⁻]]$ and $[[↓β⁻ → β⁻]]$ our algorithm returns 
+  $[[↓α̂⁻_{α⁻, β⁻} → α̂⁻_{α⁻, β⁻}]]$, that is a renaming of $[[↓γ̂⁻ → γ̂⁻]]$.
+
+  This way, as the output the rule returns the following tuple:
+  \begin{itemize}
+    \item $[[Ξ1 ∪ Ξ2]]$---a simple union of the sets of `holes' 
+      returned from by the recursive calls, 
+    \item $[[uQ → uM]]$---the resulting pattern 
+      constructed from the patterns returned recursively.
+    \item $[[aus1 ∪ aus1']]$ and $[[aus2 ∪ aus'2]]$
+      --- a union (in a relational sense)
+      of the substitutions returned by the recursive calls. 
+      It is worth noting that the union is well-defined because
+      the result of the substation on a `hole' is determined by the 
+      name of the `hole'.
+  \end{itemize}
+
+\paragraph{The Anti-Unification Rule}
+  Rule \ruleref{\ottdruleAUAULabel} is the base case of the anti-unification
+  algorithm. If the congruent rules are not applicable, 
+  it means that the input types have a substantially different structure,
+  and thus, the only option is to create a `hole'. 
+  There are three important aspects of this rule that we would like to discuss.
+
+  First, as mentioned earlier, the freshly created `hole' has a name
+  that is uniquely defined by the pair of input types.
+  It is ensured by the following invariant:
+  all the `holes' in the algorithm have name $[[α̂⁻]]$ 
+  indexed by the pair of negative types it is mapped to.
+  This way, the returning set of `holes' is a singleton set
+  $\{ [[ â⁻_{iN, iM} ]]\}$; the resulting 
+  pattern is the `hole' $[[â⁻_{iN, iM}]]$,
+  and the mappings simply send it to the corresponding types:
+  $[[â⁻_{iN, iM} ↦ iN]]$ and $[[â⁻_{iN, iM} ↦ iM]]$.
+
+  Second, this rule is only applicable to negative types, 
+  moreover, the input types are checked to be well-formed 
+  in the outer context $[[Γ]]$. This is required by the 
+  usage of anti-unification: we 
+  call it to build an existential type that would be 
+  an upper bound of two input types via abstracting
+  some of their subexpressions under existential quantifiers.
+  The existentials quantify over \emph{negative} variables,
+  and they must be instantiated in the context
+  available at that moment.
+
+  Third, the rule is only applicable if all other rules fail. 
+  Notice that it could happen even when the input types have matching constructors. 
+  For example, the generalizer of $[[↑α⁺]]$ and
+  $[[↑β⁺]]$ is $[[γ̂⁻]]$ (with mappings $[[γ̂⁻ ↦ ↑α⁺]]$ and $[[γ̂⁻ ↦ ↑β⁺]]$),
+  rather than $[[↑γ̂⁺]]$. This way, the algorithm must try to 
+  apply the congruent rules first, and only if they fail,
+  apply \ruleref{\ottdruleAUAULabel}.
+  This principle makes the inference system not syntax-directed:
+  it is not known a priori (before the recursive call) 
+  whether the corresponding congruent rule or rule \ruleref{\ottdruleAUAULabel} 
+  will be applied.
 
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Type Inference}
 
-        % - Overview (Dependency Graph)
-        % *** The Inference Algorithm
-        % *** Constraint Singularity
+Finally, we present the type inference algorithm. 
+Similarly to the subtyping algorithm, it structurally corresponds to the declarative
+inference specification, meaning that most of the algorithmic rules have
+declarative counterparts, with respect to which they are sound and complete.
+
+This way, the inference algorithm also consists of three mutually recursive procedures: 
+the positive type inference, the negative type inference, and the
+application type inference. 
+
+The positive and the negative type inference judgments have symmetric forms:
+$[[Γ; Φ ⊨ v : iP]]$ and $[[Γ; Φ ⊨ c : iN]]$. Both of these algorithms
+take as an input typing context $[[Γ]]$, a variable context $[[Φ]]$, and 
+a term (a value or a computation) taking its type variables from $[[Γ]]$, 
+and term variables from $[[Φ]]$. As an output, they return a type
+of the given term, which we guarantee to be normalized. 
+
+The application type inference judgment has form 
+$[[Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC]]$.
+As an input, it takes three contexts: typing context $[[Γ]]$, a variable context $[[Φ]]$,
+and a constraint context $[[Θ1]]$. It also takes a head type $[[uN]]$ and 
+a list of arguments (terms) $[[args]]$ the head is applied to.
+The head may contain algorithmic variables specified by $[[Θ1]]$, 
+in other words, $[[Γ; dom(Θ1) ⊢ uN]]$.
+As a result, the application inference judgment returns 
+$[[uM]]$---a normalized type of the result of the application.
+Type $[[uM]]$ may contain new algorithmic variables, and thus, 
+the judgment also returns $[[Θ2]]$---an updated constraint context
+and $[[SC]]$---a set of subtyping constraints.
+Together $[[Θ2]]$  and $[[SC]]$ specify how the algorithmic variables 
+must be instantiated.
+
 
 \begin{figure}
-  \ottdefnATNInf{}
-  \caption{Algorithmic Negative Type Inferences}
+  \ottdefnATPInfLabeled{}
+  \hfill \\
+  \ottdefnATNInfLabeled{}
+  \hfill \\
+  \ottdefnATSpinInfLabeled{}
+  \caption{Algorithmic Type Inference}
   \label{fig:type-inference}
 \end{figure}
 
-\begin{figure}
-  \ottdefnATPInf{}
-  \caption{Algorithmic Positive Type Inferences}
-  \label{fig:type-inference-pos}
-\end{figure}
 
-\begin{figure}
-  \ottdefnATSpinInf{}
-  \caption{Algorithmic Application Type Inferences}
-  \label{fig:type-inference-app}
-\end{figure}
+The inference rules are shown in
+\cref{fig:type-inference}.
+Next, we discuss them in detail.
 
+\paragraph{Variables}
+  Rule \ruleref{\ottdruleATVarLabel} 
+  infers the type of a positive variable by looking it up in the 
+  term variable context and normalizing the result.
+
+\paragraph{Annotations}
+  Rules \ruleref{\ottdruleATPAnnotLabel} and \ruleref{\ottdruleATNAnnotLabel}
+  are symmetric.
+  First, they check that the annotated type is well-formed in the 
+  given context $[[Γ]]$. Then they make a recursive call to infer the 
+  type of annotated expression, check that the inferred type is a subtype of 
+  the annotation, and return the normalized annotation.
+
+\paragraph{Abstractions}
+  Rule \ruleref{\ottdruleATtLamLabel} infers the type of a lambda abstraction.
+  It checks the well-formedness of the annotation $[[iP]]$,
+  makes a recursive call to infer the type of the body in the extended context, 
+  and returns the corresponding arrow type.
+  Since the annotation $[[iP]]$ is allowed to be non-normalized,
+  the rule also normalizes the resulting type.
+
+  Rule \ruleref{\ottdruleATTLamLabel} infers the type of a big lambda.
+  Similarly to the previous case, it makes a recursive call to infer the type
+  of the body in the extended \emph{type} context. 
+  After that, it returns the corresponding universal type. 
+  It is also required to normalize the result.  
+  For instance, if $[[α⁺]]$ does not occur in the body of the lambda,
+  the corresponding $[[∀]]$ will be removed.
+
+\paragraph{Return and Thunk}
+  Rules \ruleref{\ottdruleATThunkLabel} and \ruleref{\ottdruleATReturnLabel}
+  are similar to the declarative rules: they make a recursive call
+  to type the body of the thunk or the return expression and
+  put the shift on top of the result.
+
+\paragraph{Unpack}
+  Rule \ruleref{\ottdruleATUnpackLabel}
+  allows one to unpack an existential type.
+  First, it infers the existential type $[[∃nas.iP]]$ of the value being unpacked,
+  and since the type is guaranteed to be normalized, binds 
+  the quantified variables with $[[nas]]$.
+  Then it infers the type of the body in the appropriately extended context
+  and checks that the inferred type does not depend on $[[nas]]$
+  by checking well-formedness $[[Γ ⊢ iN]]$.
+
+\paragraph{Let Binders}
+  Rule \ruleref{\ottdruleATVarLetLabel}
+  represents the type inference of a standard let binder.
+  It infers the type of the bound value $[[v]]$, and
+  makes a recursive call to infer the type of the body in the extended context.
+
+  Rule \ruleref{\ottdruleATAppLetAnnLabel}
+  infers a type of \emph{annotated} applicative let binder.
+  First, it infers the type of the head of the application,
+  ensuring that it is a \emph{thunked computation} $[[↓iM]]$.
+  After that, it makes a recursive call
+  to the application inference procedure,
+  returning an algorithmic type $[[↑uQ]]$, 
+  that must be instantiated to a subtype of 
+  the annotation $[[↑uP]]$.
+  Then premise $[[Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2]]$
+  together with $[[Θ ⊢ SC1 & SC2 = SC]]$
+  check whether the instantiation to the annotated type $[[↑iP]]$ is possible,
+  and if it is, the algorithm infers the type of the body in the extended context,
+  and returns it as the result. 
+
+  Rule \ruleref{\ottdruleATAppLetAnnLabel}
+  works similarly to \ruleref{\ottdruleATAppLetAnnLabel},
+  However, since there is no annotation, 
+  instead of checking
+  that the inferred type $[[↑uQ]]$ 
+  can be a subtype of the annotation,
+  the algorithm checks that $[[↑uQ]]$ is unique. 
+  As we prove, uniqueness means that all the algorithmic variables of 
+  $[[↑uQ]]$ are sufficiently restricted by $[[SC]]$.
+  This way, uniqueness is checked by the combination of
+  $[[uv uQ = dom(SC)]]$ and $[[SC singular with uσ]]$.
+  Together, these two premises guarantee that the only 
+  possible instantiation of $[[uQ]]$ is $[[ [uσ]uQ ]]$.
+
+\paragraph{Application to an Empty List of Arguments}
+  Rule \ruleref{\ottdruleATEmptyAppLabel}
+  is the base case of application inference. 
+  If the list of applied arguments is empty, 
+  the inferred type is the type of the head,
+  and the algorithm returns it after normalizing.
+
+\paragraph{Application of a Polymorphic Type $[[∀]]$}
+  Rule \ruleref{\ottdruleATForallAppLabel},
+  analogously to the declarative case,
+  is the rule ensuring the implicit elimination of the universal quantifiers. 
+  This is the place where the algorithmic variables are introduced.
+  The algorithm simply replaces the quantified variables 
+  $[[pas]]$ with fresh algorithmic variables $[[puas]]$,
+  and makes a recursive call in the extended context.
+
+  To ensure that this step does not cause infinite recursion, 
+  we also check that the head type has at least one 
+  $[[∀]]$-quantifier. Also, to force the algorithm to
+  apply rule \ruleref{\ottdruleATEmptyAppLabel} when  
+  there are no arguments, we require $[[args ≠ ·]]$.
+
+\paragraph{Application of an Arrow Type}
+  Rule \ruleref{\ottdruleATArrowAppLabel}
+  is the main rule of algorithmic application inference.
+  It is applied when the head has an arrow type $[[uQ → uN]]$.
+  First, it infers the type of the first argument $[[v]]$,
+  and then, calling the algorithmic subtyping,
+  finds $[[SC1]]$---the minimal constraint ensuring that 
+  $[[uQ]]$ is a supertype of the type of $[[v]]$.
+  Then it makes a recursive call applying $[[uN]]$ to the rest of the arguments 
+  and merges the resulting constraint with $[[SC1]]$.

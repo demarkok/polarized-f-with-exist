@@ -10,15 +10,15 @@ It is represented by a set of inference rules shown in
 
 \begin{figure}[h]
   \begin{multicols}{2}
-    \ottdefnDOneNsub{}
+    \ottdefnDOneNsubLabeled{}
 
-    \ottdefnDOnePsup{}
+    \ottdefnDOnePsupLabeled{}
   \end{multicols}
   \hfill\\
   \begin{multicols}{2}
-    \ottdefnDOneNeq{}
+    \ottdefnDOneNeqLabeled{}
 
-    \ottdefnDOnePeq{}
+    \ottdefnDOnePeqLabeled{}
   \end{multicols}
   \caption{Declarative Subtyping}
   \label{fig:declarative-subtyping}
@@ -176,16 +176,14 @@ and a type and returns a list of variables from $[[varset]]$ that occur in the t
 first occurrence. Its formal definition can be found in \cref{todo}.
 
 \begin{figure}[h]
-  \label{alg:type-nf}
-  \hfill
   
   \begin{multicols}{2}
-  \ottdefnNrmNNorm{}
+  \ottdefnNrmNNormLabeled{}
   \\
   $[[ord varset in iN]]$ returns a list of variables
   $[[varset ∩ fv(iN)]]$ in the order of their first occurrence in $[[iN]]$
   \columnbreak\\
-  \ottdefnNrmPNorm{}
+  \ottdefnNrmPNormLabeled{}
   \\
   $[[ord varset in iP]]$ returns a list of variables
   $[[varset ∩ fv(iP)]]$ in the order of their first occurrence in $[[iP]]$
@@ -229,15 +227,7 @@ the application of a function of type $[[iN]]$ to the list of arguments $[[args]
 is allowed to have the type $[[iM]]$''.
 
 \begin{figure}[h]
-
-  \begin{multicols}{2}
-  \ottdefnDTNInf{}
-  \columnbreak\\
-  \ottdefnDTPInf{}
-  \ottdefnDTSpinInf{}
-  \end{multicols}
-  \hfill
-
+  \ottdefnsDTLabeled
   \caption{Declarative Inference}
   \label{fig:declarative-inference}
 \end{figure}

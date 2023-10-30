@@ -1,11 +1,142 @@
-
-\renewcommand{\ottdefnAPsup}[1]{\begin{ottdefnblock}[#1]{$ \Gamma  ;\,  \Theta   \vDash   \ngbox{ \mathcolor{positive}{P} }  \supA  \mathcolor{positive}{Q}   \Dashv   C $}{\ottcom{Positive supertyping}}
-\ottusedrule{\ottdruleAPVar{}}
-\ottusedrule{\hspace{-1cm}\ottdruleAExists{}}
-\ottusedrule{\ottdruleAShiftD{}}
-\ottusedrule{\ottdruleAPUVar{}}
+\renewcommand{\ottdefnATNInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATNInf}{\ottcom{Negative typing}}
+    \begin{multicols}{2}
+        \ottusedrule{\ottdruleATNAnnotLabeled{}}
+        \ottusedrule{\ottdruleATtLamLabeled{}}
+        \ottusedrule{\ottdruleATTLamLabeled{}}
+        \ottusedrule{\ottdruleATReturnLabeled{}}
+        \ottusedrule{\ottdruleATVarLetLabeled{}}
+    \ottusedrule{\ottdruleATUnpackLabeled{}}
+    \end{multicols}
+    \ottusedrule{\ottdruleATAppLetAnnLabeled{}}
+    \ottusedrule{\ottdruleATAppLetLabeled{}}
 \end{ottdefnblock}}
 
+
+\renewcommand{\ottdefnATPInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATPInf}{\ottcom{Positive typing}}
+    \begin{multicols}{3}
+        \ottusedrule{\ottdruleATVarLabeled{}}
+        \columnbreak\\
+        \ottusedrule{\ottdruleATPAnnotLabeled{}}
+        \columnbreak\\
+        \ottusedrule{\ottdruleATThunkLabeled{}}
+    \end{multicols}
+\end{ottdefnblock}}
+
+\renewcommand{\ottdefnATSpinInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATSpinInf}{\ottcom{Application typing}}
+    \begin{multicols}{2}
+        \ottusedrule{\ottdruleATEmptyAppLabeled{}}
+        \columnbreak\\
+        \ottusedrule{\hspace{-.5cm}\ottdruleATArrowAppLabeled{}}
+    \end{multicols}
+    \ottusedrule{\ottdruleATForallAppLabeled{}}
+\end{ottdefnblock}}
+
+% \begin{figure}
+%   \ottdefnATNInfLabeled{}
+%   \caption{Algorithmic Negative Type Inferences}
+%   \label{fig:type-inference}
+% \end{figure}
+
+% \begin{figure}
+%   \ottdefnATPInfLabeled{}
+%   \caption{Algorithmic Positive Type Inferences}
+%   \label{fig:type-inference-pos}
+% \end{figure}
+
+% \begin{figure}
+%   \ottdefnATSpinInfLabeled{}
+%   \caption{Algorithmic Application Type Inferences}
+%   \label{fig:type-inference-app}
+% \end{figure}
+
+
+\renewcommand{\ottdefnDTNInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderDTNInf}{\ottcom{Negative typing}}
+    \begin{multicols}{2}
+        \ottusedrule{\ottdruleDTtLamLabeled{}}
+        \ottusedrule{\ottdruleDTTLamLabeled{}}
+        \ottusedrule{\ottdruleDTReturnLabeled{}}
+        \ottusedrule{\ottdruleDTVarLetLabeled{}}
+        \ottusedrule{\ottdruleDTAppLetLabeled{}}
+        \ottusedrule{\ottdruleDTAppLetAnnLabeled{}}
+        \ottusedrule{\ottdruleDTUnpackLabeled{}}
+        \ottusedrule{\hspace{-.5cm}\ottdruleDTNAnnotLabeled{}}
+        \ottusedrule{\ottdruleDTNEquivLabeled{}}
+    \end{multicols}
+\end{ottdefnblock}}
+
+\renewcommand{\ottdefnDTSpinInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderDTSpinInf}{\ottcom{Application typing}}
+    \begin{multicols}{2}
+        \ottusedrule{\ottdruleDTEmptyAppLabeled{}}
+        \ottusedrule{\ottdruleDTArrowAppLabeled{}}
+        \ottusedrule{\ottdruleDTForallAppLabeled{}}
+    \end{multicols}
+\end{ottdefnblock}}
+
+\renewcommand{\ottdefnDTPInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderDTPInf}{\ottcom{Positive typing}}
+    \begin{multicols}{2}
+        \ottusedrule{\ottdruleDTVarLabeled{}}
+        \ottusedrule{\ottdruleDTThunkLabeled{}}
+        \ottusedrule{\ottdruleDTPAnnotLabeled{}}
+        \ottusedrule{\ottdruleDTPEquivLabeled{}}
+    \end{multicols}
+\end{ottdefnblock}}
+
+
+\renewcommand{\ottdefnATPInf}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATPInf}{\ottcom{Positive typing}}
+    \begin{multicols}{2}
+        \ottusedrule{\ottdruleATVar{}}
+        \columnbreak\\
+        \ottusedrule{\ottdruleATThunk{}}
+    \end{multicols}
+    \ottusedrule{\ottdruleATPAnnot{}}
+\end{ottdefnblock}}
+
+
+\newcommand{\ottdefnsDTLabeled}{
+    \ottdefnDTNInfLabeled{}
+    \hfill\\
+    \ottdefnDTPInfLabeled{}
+    \hfill\\
+    \ottdefnDTSpinInfLabeled{}
+}
+
+
+% \renewcommand{\ottdefnATSpinInf}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATSpinInf}{\ottcom{Application typing}}
+% \begin{multicols}{2}
+%     \ottusedrule{\ottdruleATEmptyApp{}}
+%     \columnbreak\\
+%     \ottusedrule{\ottdruleATArrowApp{}}
+% \end{multicols}
+% \ottusedrule{\ottdruleATForallApp{}}
+% \end{ottdefnblock}}
+
+
+\renewcommand{\ottdefnAPsupLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderAPsup}{\ottcom{Positive supertyping}}
+\ottusedrule{\ottdruleAPVarLabeled{}}
+\ottusedrule{\hspace{-1cm}\ottdruleAExists{}}
+\ottusedrule{\ottdruleAShiftDLabeled{}}
+\ottusedrule{\ottdruleAPUVarLabeled{}}
+\end{ottdefnblock}}
+
+\renewcommand{\ottdefnAUAUN}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderAUAUN}{}
+    \begin{multicols}{2}
+        \ottusedrule{\ottdruleAUNVar{}}
+        \columnbreak\\
+        \ottusedrule{\ottdruleAUShiftU{}}
+    \end{multicols}
+    \ottusedrule{\ottdruleAUForall{}}
+    \ottusedrule{\ottdruleAUArrow{}}
+    \ottusedrule{\ottdruleAUAU{}}
+\end{ottdefnblock}}
+
+\renewcommand{\ottdefnAUAUP}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderAUAUP}{}
+    \begin{multicols}{2}
+        \ottusedrule{\ottdruleAUPVar{}}
+        \columnbreak\\
+        \ottusedrule{\ottdruleAUShiftD{}}
+    \end{multicols}
+    \ottusedrule{\ottdruleAUExists{}}
+\end{ottdefnblock}}
 
 
 \renewcommand{\ottrulehead}[3]{\multicolumn{4}{l}{#3}\ottprodnewline$#1$ & & $#2$ & & }
