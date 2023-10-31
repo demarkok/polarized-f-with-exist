@@ -1,3 +1,25 @@
+\newcommand{\ottuGrammarExt}[4]{\ottgrammartabular{
+    \multicolumn{5}{l}{#1}\ottprodnewline$#2$ & $#3$ & $\cdots$ & $\mid$ & $#4$\ottinterrule}}
+
+\newcommand{\ottuNShort}[0]
+    {\ottuGrammarExt{\ottcom{Negative Algorithmic Types}}
+                   {\ngbox{ \mathcolor{negative}{N} }  ,\ \ngbox{ \mathcolor{negative}{M} }}
+                   {::=}
+                   {\widehat{ \mathcolor{negative}{\alpha} }^{-}}}
+
+\newcommand{\ottuPShort}[0]
+    {\ottuGrammarExt{\ottcom{Positive Algorithmic Types}}
+                   {\ngbox{ \mathcolor{positive}{P} }  ,\ \ngbox{ \mathcolor{positive}{Q} }}
+                   {::=}
+                   {\widehat{ \mathcolor{positive}{\alpha} }^{+}}}
+
+% \ottrulehead{}{::=}{\ottcom{Negative algorithmic type}}
+% \ottprodnewline 
+% \ottfirstprodline{|}{\widehat{ \mathcolor{negative}{\alpha} }^{-}}{}{}{}{}}
+
+
+\renewcommand{\ottrulehead}[3]{\multicolumn{4}{l}{#3}\ottprodnewline$#1$ & & $#2$ & & }
+
 \renewcommand{\ottdefnATNInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATNInf}{\ottcom{Negative typing}}
     \begin{multicols}{2}
         \ottusedrule{\ottdruleATNAnnotLabeled{}}
