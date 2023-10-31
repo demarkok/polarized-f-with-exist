@@ -68,7 +68,24 @@ coincide with its supertypes, which however is not true for an
 arbitrary type.
 
 \subsubsection{Properties of the Declarative Subtyping}
-A property that we extensively use is that the subtyping is reflexive and transitive,
+\label{sec:decl-subtyping-properties}
+
+A property that is important for the subtyping algorithm, 
+in particular for the type \emph{upgrade} procedure (\cref{todo}),
+is the preservation of free variables by subtyping.
+Informally, it says that the free variables
+of a positive type cannot disappear in its subtypes,
+and the free variables of a negative type
+cannot disappear in its supertypes.
+
+\begin{property}[Subtyping Preserves Free Variables]
+  \label{prop:subtyping-preserves-fv}
+  Let us assume that all the mentioned types are well-formed in $[[Γ]]$. Then
+  $[[Γ ⊢ iN1 ≤ iN2]]$ implies $[[fv(iN1) ⊆ fv(iN2)]]$,
+  and $[[Γ ⊢ iP1 ≥ iP2]]$ implies $[[fv(iP1) ⊆ fv(iP2)]]$.
+\end{property}
+
+Another property that we extensively use is that the subtyping is reflexive and transitive,
 and agrees with substitution.
 
 \begin{property}[Subtyping forms a preorder]

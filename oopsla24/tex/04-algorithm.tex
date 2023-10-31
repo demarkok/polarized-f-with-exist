@@ -1,66 +1,84 @@
-        % - Justify Adding α̂± 
-        % - algorithmic type contexts Ξ and constraint context Θ
-        % - Describe how wf, nf,... are changed
-        % - Constraints -- important part of the algorithm
+In this section, we present the algorithmization of the declarative system described above.
+The algorithmic system follows the structure of the declarative specification closely.
+First, it is also given by a set of inference rules, which, however,
+must be mode-correct (\cite{dunfield2020:bidirectional}), \ie
+the output of each rule is always uniquely defined by its input.
+And second, most of the declarative rules 
+(except for the rules \ruleref{\ottdruleDTPEquivLabel} and \ruleref{\ottdruleDTNEquivLabel})
+have a unique algorithmic counterpart, 
+which simplifies reasoning about the algorithm and its correctness proofs.
 
-
-
-        % - Dependency Graph
-
-
-In this section, we present the algorithmization of the system described before
-Shadowing the declarative system, the algorithm has two main parts: 
-the subtyping and the type inference, which we discuss in this section one after another. 
 
 \subsection{Algorithmic Syntax}
 
-First, let us discuss the syntax of the algorithmic system.
+First, let us discuss the syntax of the algorithmic system. 
 
-\begin{description}
-        \item[Positive Algorithmic Variables] $[[α̂⁺]]$, $[[β̂⁺]]$, $[[γ̂⁺]]$, \dots 
-        \item[Negative Algorithmic Variables] $[[α̂⁻]]$, $[[β̂⁻]]$, $[[γ̂⁻]]$, \dots
-        \item[Positive Algorithmic Types] $[[uP]] = \dots \mid [[α̂⁺]]$  
-        \item[Negative Algorithmic Types] $[[uN]] = \dots \mid [[α̂⁻]]$
-        \item[Algorithmic Type Context] $[[Ξ]] = \{[[α1̂±]], \dots, [[αn̂±]]\}$
-        where $[[α1̂±]], \dots, [[αn̂±]]$ are pairwise distinct 
-\end{description}
+\begin{figure}[h]
+  \begin{multicols}{2}
+      Negative Algorithmic Variables\\
+      $[[α̂⁻]]$, $[[β̂⁻]]$, $[[γ̂⁻]]$, \dots\\
+      \columnbreak
+      Positive Algorithmic Variables\\
+      $[[α̂⁺]]$, $[[β̂⁺]]$, $[[γ̂⁺]]$, \dots\\
+  \end{multicols}
+  \hfill\\
+  \begin{multicols}{2}
+      \ottuNShort
+      \columnbreak
+      \ottuPShort
+  \end{multicols}
+  \hfill\\
+  Algorithmic Type Context\\
+   $[[Ξ]] = \{[[α1̂±]], \dots, [[αn̂±]]\}$ where $[[α1̂±]], \dots, [[αn̂±]]$ are pairwise distinct \\
+  \hfill\\
+  Constraint Type Context\\
+   $[[Θ]] ::= \{[[ α1̂±[Γ1] ]], \dots, [[ αn̂±[Γn] ]]\}$ where $[[α1̂±]], \dots, [[αn̂±]]$ are pairwise distinct \\
+  \caption{Algorithmic Syntax}
+  \label{fig:algo-syntax}
+\end{figure}
 
 \paragraph{Algorithmic Variables}
-Both subtyping and the inference algorithms are represented by sets of inference rules, 
-to simplify the soundness and completeness proofs \wrt the declarative specification. 
-The terms these rules manipulate we call \emph{algorithmic}. They extend the 
-previously defined declarative terms and types by adding \emph{algorithmic type variables}
-(\aka unification variables). The algorithmic variables represent unknown types, 
+To design a mode-correct inference system, we slightly modify the language we operate on.
+The entities (terms, types, contexts) that the algorithm manipulates we call \emph{algorithmic}. 
+They extend the previously defined declarative terms and types by adding 
+\emph{algorithmic type variables} (\aka unification variables). 
+The algorithmic variables represent unknown types, 
 which cannot be inferred immediately but are promised to be instantiated
 as the algorithm proceeds.
 
 We denote algorithmic variables as $[[α̂⁺]]$, $[[β̂⁻]]$, \dots to distinguish them from
-normal variables $[[α]]$, $[[β]]$, \dots and also to smooth out the transition
-from the declarative to the algorithmic system, when we replace the quantified variables $[[pas]]$ 
+normal variables $[[α⁺]]$, $[[β⁻]]$.
+In a few places, we replace the quantified variables $[[pas]]$ 
 with their algorithmic counterpart $[[puas]]$.
 The procedure of replacing declarative variables with algorithmic ones we call 
 \emph{algorithmization} and denote as $[[ nuas/nas ]]$ and $[[ puas/pas ]]$.
 
 \paragraph{Algorithmic Types}
-The syntax of  algorithmic types is the syntax of declarative types extended
-with algorithmic type variables: we add positive algorithmic variables $[[α̂⁺]]$ 
-to the positive types, and negative algorithmic variables $[[α̂⁻]]$ to the negative types.
-Notice that these variables cannot be abstracted by the quantifiers $[[∀]]$ and $[[∃]]$.
-We denote the algorithmic types 
+The syntax of algorithmic types extends the declarative syntax by adding
+algorithmic variables as new terminals. We add positive algorithmic variables $[[α̂⁺]]$ 
+to the syntax of positive types, and negative algorithmic variables $[[α̂⁻]]$ to the 
+syntax of negative types. All the constructors of the system can be applied 
+to \emph{algorithmic} types, however, algorithmic variables cannot be abstracted by the
+quantifiers $[[∀]]$ and $[[∃]]$.
 
 \paragraph{Algorithmic Contexts and Well-formedness}
 To specify when algorithmic types are well-formed, 
 we define algorithmic contexts $[[Ξ]]$ as sets of algorithmic variables.
 Then $[[Γ ; Ξ ⊢ uP]]$ and $[[Γ ; Ξ ⊢ uN]]$ represent the well-formedness
-judgment of algorithmic terms defined as expected: in addition to the declarative definition
-\cref{todo}, we also check that each algorithmic variable is in the context $[[Ξ]]$.
+judgment of algorithmic terms defined as expected. 
+Informally, they check that all free declarative variables are in $[[Γ]]$, 
+and all free algorithmic variables are in $[[Ξ]]$.
+In addition to the rules repeating the declarative definition \cref{todo}, 
+we have two base cases for the algorithmic variables:
+ \ruleref{\ottdruleWFATPUVarLabel} and \ruleref{\ottdruleWFATNUVarLabel} (see \cref{fig:algo-wf})
+
 \begin{figure}[h]
 \begin{multicols}{2}
   $\vcenter{\hbox{\vdots}}$\\
-  \ottusedrule{\ottdruleWFATPUVar{}}
+  \ottusedrule{\ottdruleWFATPUVarLabeled{}}
   \columnbreak\\
   $\vcenter{\hbox{\vdots}}$\\
-  \ottusedrule{\ottdruleWFATNUVar{}}
+  \ottusedrule{\ottdruleWFATNUVarLabeled{}}
 \end{multicols}
 \label{fig:algo-wf}
 \caption{Well-formedness of Algorithmic Types}
@@ -68,7 +86,9 @@ judgment of algorithmic terms defined as expected: in addition to the declarativ
 
 \paragraph{Algorithmic Normalization}
 Similarly to well-formedness, the normalization of algorithmic types is defined
-by extending the declarative definition trivially with the algorithmic variables.
+by extending the declarative definition with the algorithmic variables.
+To the rules repeating the declarative normalization, we add
+rules saying that normalization is trivial on algorithmic variables (see \cref{fig:algo-nf}).
 
 \begin{figure}[h]
 \begin{multicols}{2}
@@ -95,11 +115,11 @@ The unification constraint can have either a positive form $[[α̂⁺ :≈ iP]]$
 a negative form $[[α̂⁻ :≈ iN]]$, however, the right-hand side of the constraint
 cannot contain algorithmic type variables.
 The set of constraints is denoted as $[[SC]]$. 
-We assume that the constraints in $[[SC]]$ restrict distinct variables.
+We assume that each algorithmic variable can be restricted by at most one constraint.
 
 We separately define $[[UC]]$ as a set consisting of unification constraints only.
 This is done to simplify the representation of the algorithm. 
-The unification, which we use as a subroutine of the subtyping algorithm,
+The unification algorithm, which we use as a subroutine of the subtyping algorithm,
 can only produce unification constraints.
 A set of unification constraints can be resolved in a simpler way than
 a general constraint set. This way, 
@@ -141,14 +161,6 @@ As such, each algorithmic variable must remember the context at the moment when
 it was introduced. In our algorithm, this information is represented by
 a \emph{constraint context} $[[Θ]]$---a set of pairs associating 
 algorithmic variables and declarative contexts.
-
-  \begin{figure}[h]
-    \begin{center}
-      $[[Θ]] ::= \{[[ α1̂±[Γ1] ]], \dots, [[ αn̂±[Γn] ]]\}$
-    \end{center}
-    \label{fig:constraint-context}
-    \caption{Constraint Contexts}
-  \end{figure}
 
 \paragraph{Auxiliary Functions}
 We define $[[dom(SC)]]$---a domain of a constraint set $[[SC]]$ as a set of algorithmic variables
@@ -252,19 +264,19 @@ It returns the resulting constraints given by the unification algorithm.
 \paragraph{Quantifiers}  
 Rules \ruleref{\ottdruleAForallLabel} and 
 \ruleref{\ottdruleAExistsLabel} are symmetric. 
-According to the declarative specification, 
-the quantified variables on the left-hand side must be instantiated 
-with types, which, however, are not known in advance.
-We deal with it by algorithmization (\cref{todo})
-of the quantified variables:
-we introduce fresh algorithmic variables
+Declaratively, the quantified variables on the left-hand side must 
+be instantiated with types, which are not known beforehand.
+We address this problem by algorithmization (\cref{todo})
+of the quantified variables.
+The rule introduces fresh algorithmic variables
 $[[puas]]$ or $[[nuas]]$,
-put them into the constraint context $[[Θ]]$
+puts them into the constraint context $[[Θ]]$
 (specifying that they must be instantiated in the extended context
 $[[Γ, pbs]]$ or $[[Γ, nbs]]$) and substitute the quantified variables
 for them in the input type. 
 
-After that, the algorithm proceeds with the recursive call, returning
+After algorithmization of the quantified variables, 
+the algorithm proceeds with the recursive call, returning
 constraints $[[SC]]$. As the output, the algorithm removes the freshly
 introduced algorithmic variables from the constraint context, This operation is
 sound: it is guaranteed that $[[SC]]$ always has a solution, but the specific
@@ -283,7 +295,7 @@ and returned as the output.
 
 \paragraph{Algorithmic Variable}
 If one of the sides of the subtyping is a unification variable,
-the algorithm must create a new restriction. 
+the algorithm must create a new constraint. 
 Because the right-hand side of the subtyping is always declarative,
 it is only the left-hand side that can be a unification variable.
 Moreover, another invariant we preserve prevents the negative
@@ -404,13 +416,12 @@ constraint merge procedure and the well-formedness checking.
 %%%%%%%%%%%%%%%%%
 \subsection{Constraint Merge}
 
-The merge procedure that we discuss in this section, allows one to 
-combine two constraint sets into one. It might seem that 
-just taking the union of the two sets would be enough, however,
-we require the constraint sets to have a certain structure,
-in particular not to have two entries restricting the same algorithmic
- variable---we call such entries \emph{matching}.
-The matching entries must be combined into one constraint entry, that 
+In this section, we discuss the constraint merging procedure.
+It allows one to combine two constraint sets into one. 
+A simple union of two constraint sets is not sufficient, 
+since the resulting set must not contain two entries restricting the 
+same algorithmic variable---we call such entries \emph{matching}.
+The matching entries must be combined into \emph{one} constraint entry, that 
 would represent their conjunction. 
 This way, to merge two constraint sets, we unite the entries of two
 sets, and then merge the matching pairs.
@@ -436,12 +447,12 @@ is implied by $[[scE1]]$.
   \item If $[[scE2]]$ is also a restricting entry, then the types on the right-hand side
     of $[[scE1]]$ and $[[scE2]]$ must be equivalent,
     as given by rules \ruleref{\ottdruleSCMEPEqEqLabel} and \ruleref{\ottdruleSCMENEqEqLabel}.
-  \item If $[[scE2]]$ is a supertype restriction $[[α̂⁺ :≥ iP]]$,
+  \item If $[[scE2]]$ is a supertype constraint $[[α̂⁺ :≥ iP]]$,
     the algorithm must check that the type assigned by $[[scE1]]$ is a supertype of $[[iP]]$.
     The corresponding symmetric rules are \ruleref{\ottdruleSCMESupEqLabel} and \ruleref{\ottdruleSCMEEqSupLabel}.
 \end{itemize}
 
-If both input entries are supertype restrictions: $[[α̂⁺ :≥ iP]]$ and $[[α̂⁺ :≥ iQ]]$,
+If both input entries are supertype constraints: $[[α̂⁺ :≥ iP]]$ and $[[α̂⁺ :≥ iQ]]$,
 then their conjunction is $[[α̂⁺ :≥ iP ∨ iQ]]$, as given by \ruleref{\ottdruleSCMESupSupLabel}.
 The least upper bound---$[[iP ∨ iQ]]$ is the least supertype of both $[[iP]]$ and $[[iQ]]$,
 and this way, $[[α̂⁺ :≥ iP ∨ iQ]]$ is the weakest constraint entry that implies
@@ -506,7 +517,8 @@ These algorithms are shown in \cref{fig:type-upgrade}.
 \paragraph{The Type Upgarde}
 The type upgrade algorithm uses the least upper bound algorithm as a subroutine.
 It exploits the idea that the free variables of a positive type $[[iQ]]$
-cannot disappear in its subtypes. It means that if 
+cannot disappear in its subtypes (see \cref{prop:subtyping-preserves-fv}). 
+It means that if 
 a type $[[iP]]$ has free variables not occurring 
 in $[[iP']]$, then any common supertype of $[[iP]]$
 and $[[iP']]$ must not contain these variables either.
