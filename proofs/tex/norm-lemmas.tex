@@ -133,20 +133,20 @@
       Similar to \cref{case:norm-subst-distr-var}.
    \item If the type is formed by $[[→]]$, $[[↑]]$, or $[[↓]]$, 
      the required equality follows from the congruence of the normalization and
-     substitution, and the induction hypothesis.
+     substitution and the induction hypothesis.
      For example, if $[[iN]] = [[iP → iM]]$ then \\
      $\begin{aligned}[t]
         [[nf([σ] iN)]] &= [[ nf([σ] (iP → iM)) ]] \\
                         &= [[ nf([σ]iP → [σ]iM) ]]
-                        && \text{By the congruence of substitution} \\
+                        && \text{By congruence of substitution} \\
                         &= [[ nf([σ]iP) → nf([σ]iM) ]]
-                        && \text{By the congruence of normalization, i.e. \ruleref{\ottdruleNrmArrowLabel}} \\
+                        && \text{By congruence of normalization} \\
                         &= [[ [nf(σ)]nf(iP) → [nf(σ)]nf(iM) ]]
-                        && \text{By the induction hypothesis} \\
+                        && \text{By induction hypothesis} \\
                         &= [[ [nf(σ)](nf(iP) → nf(iM)) ]]
-                        && \text{By the congruence of substitution} \\
+                        && \text{By congruence of substitution} \\
                         &= [[ [nf(σ)]nf(iP → iM) ]]
-                        && \text{By the congruence of normalization} \\
+                        && \text{By congruence of normalization} \\
                         &= [[ [nf(σ)]nf(iN) ]]
       \end{aligned}$ \\
     \item $[[iN]] = [[∀ pas.iM]]$ \label{case:norm-subst-commute} \\
@@ -154,8 +154,9 @@
           [[ [nf(σ)] nf(iN) ]] &= [[ [nf(σ)] nf(∀pas.iM)]] \\
                             &= [[ [nf(σ)] ∀pas'.nf(iM) ]]
                             && \text {Where $[[pas']] = [[ ord {pas} in nf(iM)]]
-                               = [[ord {pas} in iM]]$
-                               (the latter is by
+                               = [[ord {pas} in iM]]$}\\
+                           & && 
+                               \text{(the latter is by
                                \cref{corollary:normalization-ord})}\\
         \end{aligned}$ \\
 
@@ -166,10 +167,12 @@
                              and $[[{pas} ∩ Γ2]] = \emptyset$}\\
                           &= [[ ∀pbs.nf([σ]iM) ]]
                           && \text {Where $[[pbs]] = [[ord {pas} in nf([σ]iM)]]
-                             = [[ord {pas} in [σ]iM]]$ (the latter is by
-                             \cref{corollary:normalization-ord})}\\
+                             = [[ord {pas} in [σ]iM]]$}\\
+                          & && 
+                             \text{(the latter is by \cref{corollary:normalization-ord})}\\
                           &= [[ ∀pas'.nf([σ]iM) ]]
-                          && \text{By \cref{lemma:ord-sigma}, $[[pbs]] = [[pas']]$
+                          && \text{By \cref{lemma:ord-sigma},}\\
+                          & && \text{$[[pbs]] = [[pas']]$
                              since $[[{pas}]]$ is disjoint with $[[Γ1]]$ and
                              $[[Γ2]]$}\\
                           &= [[ ∀pas'.[nf(σ)]nf(iM) ]]
@@ -225,17 +228,17 @@
                                                   &= [[ [mu] ord ({pbs} ∩ fv iM) in nf(iM) ]]
                                                   && \text{from \cref{lemma:fv-nf,corollary:ord-weakening} } \\
                                                   &= [[ ord [mu] ({pbs} ∩ fv iM) in [mu] nf(iM) ]]
-                                                  && \text{by \cref{lemma:distr-mu-ord}, because
-                                                     $[[{pas} ∩ fv iN]] \cap [[fv nf(iM)]] \subseteq [[{pas} ∩ fv iM ]]
+                                                  && \text{by \cref{lemma:distr-mu-ord}, because}\\
+                                                  & && \text{$[[{pas} ∩ fv iN]] \cap [[fv nf(iM)]] \subseteq [[{pas} ∩ fv iM ]]
                                                      = \emptyset$}\\
                                                   &
-                                                  && \text{and $[[{pas} ∩ fv iN]] \cap [[({pbs} ∩ fv iM)]] \subseteq
+                                                  && \text{$[[{pas} ∩ fv iN]] \cap [[({pbs} ∩ fv iM)]] \subseteq
                                                      [[{pas} ∩ fv iM]] = \emptyset$} \\
                                                   &= [[ ord [mu] ({pbs} ∩ fv iM) in nf(iN) ]]
                                                   && \text{since $[[ [mu] nf(iM) ]] = [[nf(iN)]]$ is proved } \\
                                                   &= [[ ord ({pas} ∩ fv iN) in nf(iN) ]]
-                                                  && \text{because $\mu$ is a bijection between
-                                                     $[[{pas} ∩ fv iN]]$ and $[[{pbs} ∩ fv iM]]$} \\
+                                                  && \text{because $\mu$ is a bijection between}\\
+                                                  & && \text{$[[{pas} ∩ fv iN]]$ and $[[{pbs} ∩ fv iM]]$} \\
                                                   &= [[ ord {pas} in nf(iN) ]]
                                                   && \text{from \cref{lemma:fv-nf,corollary:ord-weakening} } \\
                                                   &= [[ pas' ]]
@@ -288,7 +291,7 @@
     $
     \begin{aligned}[t]
       [[ [σ](iP → iM) ]] \text{ is normal} &\iff [[ [σ]iP → [σ]iM ]] \text{ is normal}
-                                           && \text{by the substitution
+                                           && \text{by substitution
                                               congruence} \\
                                            &\iff
                                              \begin{cases}
@@ -320,7 +323,8 @@
   \item $[[iN]] = [[∀pas.iM]]$\\
     $
     \begin{aligned}[t]
-      [[ [σ](∀pas.iM) ]] \text{ is normal} &\iff [[ (∀pas.[σ]iM) ]] \text{ is normal}
+      &[[ [σ](∀pas.iM) ]] \text{ is normal} \\
+       &\iff [[ (∀pas.[σ]iM) ]] \text{ is normal}
                                            && \text{assuming $[[pas]] \cap [[Γ1]] = \emptyset$ and
                                               $[[pas]] \cap [[Γ2]] = \emptyset$} \\
                                            &\iff

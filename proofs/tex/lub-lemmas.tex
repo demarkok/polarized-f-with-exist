@@ -179,14 +179,15 @@
       \begin{enumerate}
         \item By definition, 
           $[[nf(∃nas0.↓iM0) = ∃nas1.↓iM1]]$, 
-          where $[[iM1 = nf(iM0)]]$ and $[[ord {nas0} in iM1 = nas1]]$.
+          where $[[iM1 = nf(iM0)]]$ and \\
+          $[[ord {nas0} in iM1 = nas1]]$.
           First, notice that by 
           \cref{lemma:ord-completeness,lemma:normalization-soundness}, 
           $[[ord {nas0} in iM1]] = [[ord {nas0} in iM0]] = [[nas0]]$. 
           This way, $[[nf(∃nas0.↓iM0) = ∃nas0.↓nf(iM0)]]$.
           Second, $[[iM0]]$ is normalized by \cref{lemma:normal-after-subst}, 
           since $[[ [σ0] ↓iM0 = ↓iM ]]$ is normal. 
-          As such, $[[nf(∃nas0.↓iM0) = ∃nas0.↓iM0]]$, 
+          As such,\\ $[[nf(∃nas0.↓iM0) = ∃nas0.↓iM0]]$, 
           in other words, $[[∃nas0.↓iM0]]$ is normalized.
         \item $[[Γ ⊢ ∃nas0.↓iM0 ≥ ↓iM]]$ holds immediately by 
           \ruleref{\ottdruleDOneExistsLabel} with the substitution 
@@ -292,23 +293,19 @@
      $[[fv(iQ) ∩ (Γ, {nas}, {nbs})]] = [[fv(iQ) ∩ Γ]]$ (and then apply \cref{lemma:wf-ctxt-equiv}).
      The inclusion right-to-left is self-evident. To show
      $[[fv(iQ) ∩ (Γ, {nas}, {nbs})]] \subseteq [[fv(iQ) ∩ Γ]]$, we prove that 
-     $[[fv(iQ)]] \subseteq [[Γ]]$
+     $[[fv(iQ)]] \subseteq [[Γ]]$.
 
      $
      \begin{aligned}[t]
        [[fv(iQ)]] &\subseteq [[fv iP1 ∩ fv iP2]]
-                  && \text{by \cref{lemma:fv-propagation}}\\
+                    && \text{by \cref{lemma:fv-propagation}}\\
                   &\subseteq [[((Γ, nas) \ {nbs}) ∩ ((Γ, nbs) \ {nas})]]
-                  &&
-                  \begin{array}{l}
-                  \text{since $[[Γ ⊢ ∃nas.iP1]]$,~ $[[fv(iP1)]]
-                  \subseteq [[(Γ, nas)]] = [[(Γ, nas)
-                  \ {nbs}]]$}\\
-                  \text{(the latter is because by the Barendregt's
-                  convention,}\\
-                    \text{$[[(Γ, nas) ∩ {nbs} = ∅]]$);
-                    similarly, $[[fv(iP2)]] \subseteq [[(Γ, nbs) \ {nas}]]$}\\
-                  \end{array}\\
+                    && \text{since } [[Γ ⊢ ∃nas.iP1]],~ [[fv(iP1)]]
+                        \subseteq [[(Γ, nas)]] = \\ 
+                  & && [[(Γ, nas) \ {nbs}]]
+                        \text{(the latter is because by the}\\ 
+                  & && \text{Barendregt's convention, $[[(Γ, nas) ∩ {nbs} = ∅]]$)}\\
+                  & && \text{similarly, $[[fv(iP2)]] \subseteq [[(Γ, nbs) \ {nas}]]$}\\
                   &\subseteq [[Γ]]
      \end{aligned}
      $
@@ -385,22 +382,21 @@
       $[[nbs1]]$ or $[[nbs2]]$ is not empty\\
       \label{case:ub-completeness-exists}
 
-      Then
+      Then\\
       $
       \begin{aligned}[t]
         [[iQ]] &\in         \UB([[Γ ⊢ ∃nbs1.iQ1]]) \cap \UB([[Γ ⊢ ∃nbs2.iQ2]]) \\
               & \subseteq  \UB([[Γ, nbs1 ⊢ iQ1]]) \cap \UB([[Γ, nbs2 ⊢ iQ2]])
-              && \text{from the definition of $\UB{}$}\\
+              && \text{definition of $\UB{}$}\\
               & =  \UB([[Γ, {nbs1}, {nbs2} ⊢ iQ1]]) \cap \UB([[Γ, {nbs1}, {nbs2} ⊢ iQ2]])
-              && \text{by \cref{observation:ub-context-irrelevant}, weakening and
-                  exchange}\\
+              && \text{by \cref{observation:ub-context-irrelevant}}\\
               & = \{[[iQ']]\ \mid \ [[Γ, {nbs1}, {nbs2}  ⊢ iQ' ≥ iQ1]] \} \cap
                   \{[[iQ']]\ \mid \ [[Γ, {nbs1}, {nbs2}  ⊢ iQ' ≥ iQ2]] \}
-              && \text{by \cref{lemma:shape-of-supertypes},}\\
+              && \text{by \cref{lemma:shape-of-supertypes}}\\
       \end{aligned}
       $\\
-      meaning that $[[Γ, {nbs1}, {nbs2} ⊢ iQ ≥ iQ1]]$ and $[[Γ, {nbs1}, {nbs2} ⊢ iQ ≥
-      iQ2]]$. Then the next step of the algorithm---the recursive call 
+      It means that $[[Γ, {nbs1}, {nbs2} ⊢ iQ ≥ iQ1]]$ and $[[Γ, {nbs1}, {nbs2} ⊢ iQ ≥ iQ2]]$. 
+      Then the next step of the algorithm---the recursive call 
       $[[Γ, {nbs1}, {nbs2} ⊨ iQ1 ∨ iQ2 = iQ']]$
       terminates by the induction hypothesis, 
       and moreover, $[[ Γ, {nbs1}, {nbs2} ⊢ iQ ≥ iQ' ]]$.
@@ -484,9 +480,8 @@
                                               \text{for $[[nas]]$, $[[iM']]$,
                                               $[[iNs1]]$ and $[[iNs2]]$ s.t. $[[ord {nas} in iM' = nas]]$,}\\
                                               \text{$[[G ⊢ iNs1]]$, $[[G ⊢ iNs2]]$, $[[G,nas ⊢ iM']]$,
-                                              $[[ [iNs1/nas] ↓iM' = ↓nf(iM1)]]$, and
-                                              $[[ [iNs2/nas] ↓iM' = ↓nf(iM2)]]$
-                                              }
+                                              $[[ [iNs1/nas] ↓iM' = ↓nf(iM1)]]$}\\
+                                              \text{, and $[[ [iNs2/nas] ↓iM' = ↓nf(iM2)]]$ }
                                             \end{array}}\\
       \end{aligned}
       $\\
@@ -501,7 +496,7 @@
       For each negative variable $[[α⁻]]$ from $[[nas]]$, let us choose a
       fresh negative anti-unification variable $[[α̂⁻]]$, and denote the
       list of these variables as $[[nuas]]$.
-      Let us show that $([[nuas]],~ [[ [nuas/nas]↓iM' ]],~ [[iNs1/nuas]],~ [[iNs2/nuas]])$ is a
+      Let us show that\\ $([[nuas]],~ [[ [nuas/nas]↓iM' ]],~ [[iNs1/nuas]],~ [[iNs2/nuas]])$ is a
       sound anti-unifier of $[[nf(↓iM1)]]$ and $[[nf(↓iM2)]]$ in context $[[Γ]]$:
 
       \begin{itemize}

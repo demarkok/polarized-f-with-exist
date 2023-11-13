@@ -78,15 +78,15 @@
       $X = [[ord varset in iP]]$ and
       $Y = [[ord varset in iN]]$.
 
-      Let us show that that $A = B$ and $X = Y$, so the results are equal. 
+      Let us show that $A = B$ and $X = Y$, so the results are equal. 
       By the induction hypothesis and set properties,
       $[[ ord (varset ∩ (fv iP ∪ fv iN)) in iP ]] = 
        [[ ord (varset ∩ (fv iP ∪ fv iN)) ∩ fv(iP) in iP ]] = 
        [[ ord varset ∩ fv(iP) in iP ]] = 
        [[ ord varset in iP ]]$.
       Analogously, 
-      $[[ ord (varset ∩ (fv iP ∪ fv iN)) in iN ]] = 
-       [[ ord varset in iN ]]$.
+      $[[ ord (varset ∩ (fv iP ∪ fv iN)) in iN ]]$ $=$
+      \\ $[[ ord varset in iN ]]$.
     \item If the term has shape $[[∀pas.iN]]$,
       we can assume that $[[pas]]$ is disjoint
       from $[[varset]]$,
@@ -124,7 +124,7 @@ distributes over intersection of $P$ and $Q$.
 
 \begin{definition} [Collision-free bijection]
   We say that a bijection $\mu : A \leftrightarrow B$ between sets of
-  variables is \textbf{collision free on sets} $P$ and $Q$ if and only if
+  variables is \textbf{collision-free on sets} $P$ and $Q$ if and only if
   \begin{enumerate}
     \item $\mu(P \cap A) \cap Q = \emptyset$
     \item $\mu(Q \cap A) \cap P = \emptyset$
@@ -133,7 +133,7 @@ distributes over intersection of $P$ and $Q$.
 
 \begin{observation}
   Suppose that $\mu : A \leftrightarrow B$ is a bijection between two sets of variables,
-  and $\mu$ is collision free on $P$ and $Q$.
+  and $\mu$ is collision-free on $P$ and $Q$.
   Then $\mu(P \cap Q) = \mu(P) \cap \mu(Q)$.
 \end{observation}
   
@@ -145,12 +145,13 @@ distributes over intersection of $P$ and $Q$.
     let us consider four cases:
     \begin{caseof}
     \item $[[na]] \in A$ and $[[na]] \in [[varset]]$\\ Then
+    \\
       $
       \begin{aligned}[t] [[ [mu] (ord varset in iN) ]] &= [[ [mu] (ord varset in na)]] \\
                                                              &= [[ [mu] na ]]
                                                              && \text{by \ruleref{\ottdruleOPVarInLabel}}\\
                                                              &= [[nb]]
-                                                             && \text{for some $[[nb]] \in B$ (notice that $[[nb]] \in [[ [mu]varset ]]$)} \\
+                                                             && \text{for some $[[nb]] \in B$ (notice $[[nb]] \in [[ [mu]varset ]]$)} \\
                                                              &= [[ ord [mu]varset in nb ]]
                                                              && \text{by \ruleref{\ottdruleOPVarInLabel},
                                                                 because $[[nb]] \in [[ [mu]varset ]]$} \\
@@ -164,13 +165,13 @@ distributes over intersection of $P$ and $Q$.
        On the other hand, $[[ ord [mu] varset in [mu] na = ord [mu] varset
        in na ]] = [[·]]$ The latter equality is from
        \ruleref{\ottdruleOPVarNInLabel}, because
-       $[[mu]]$ is collision free on $[[varset]]$ and $[[fv iN]]$, so
+       $[[mu]]$ is collision-free on $[[varset]]$ and $[[fv iN]]$, so
        $[[fv iN]] \ni [[na]] \notin [[mu]](A \cap [[varset]]) \cup
        [[varset]] \supseteq [[ [mu] varset ]]$.
      \item $[[na]] \in A$ but $[[na]] \notin [[varset]]$\\ Then
        $[[ [mu] (ord varset in iN) ]] = [[ [mu] (ord varset in na)]] = [[·]]$
        by \ruleref{\ottdruleOPVarNInLabel}.
-       To prove that $[[ ord [mu] varset in [mu] na ]] = [[·]]$, we apply
+       To prove that\\ $[[ ord [mu] varset in [mu] na ]] = [[·]]$, we apply
        \ruleref{\ottdruleOPVarNInLabel}. Let us show that
        $[[ [mu] na ]] \notin [[ [mu] varset ]]$.
        Since $[[ [mu] na ]] = [[mu]]([[na]])$ and
@@ -184,7 +185,7 @@ distributes over intersection of $P$ and $Q$.
          $[[mu]]$, which contradicts with $[[na]] \notin [[varset]]$. This way, 
          $[[mu]]([[na]]) \notin [[mu]](A \cap [[varset]])$.
        \item[(ii)]
-         Since $[[mu]]$ is collision free on $[[varset]]$ and $[[fv iN]]$,
+         Since $[[mu]]$ is collision-free on $[[varset]]$ and $[[fv iN]]$,
          $[[mu]] (A \cap [[fv iN]]) \ni [[mu]]([[na]]) \notin [[varset]]$.
        \end{enumerate}
 
@@ -211,30 +212,33 @@ distributes over intersection of $P$ and $Q$.
           
    \item $[[iN]] = [[iP → iM]]$  \\
      $\begin{aligned}[t]
-        [[ [mu] (ord varset in iN) ]] &= [[ [mu] (ord varset in iP → iM) ]] \\
-                                      &= [[ [mu] (ordVars1, (ordVars2 \ {ordVars1})) ]]
-                                      && \text{where } [[ord varset in iP = ordVars1]] \text{ and } [[ord varset in iM = ordVars2]] \\
-                                      &= [[ [mu] ordVars1, [mu](ordVars2 \ {ordVars1}) ]] \\
-                                      &= [[ [mu] ordVars1, ([mu]ordVars2 \ [mu]{ordVars1}) ]]
-                                      && \text{by induction on $[[ordVars2]]$;
-                                         the inductive step is similar to \cref{case:distr-mu-ord:var}.
-                                         Notice that $[[mu]]$ is} \\
-                                      & && \text{collision free on $[[{ordVars1}]]$ and $[[{ordVars2}]]$
-                                           since
-                                           $[[{ordVars1}]] \subseteq [[varset]]$ and
-                                           $[[{ordVars2}]] \subseteq [[fv iN]]$ }\\
-                                      &= [[ [mu] ordVars1, ([mu]ordVars2 \ {[mu]ordVars1}) ]]
+        & [[ [mu] (ord varset in iN) ]] \\ 
+        &= [[ [mu] (ord varset in iP → iM) ]] \\
+        &= [[ [mu] (ordVars1, (ordVars2 \ {ordVars1})) ]]
+          && \text{where } [[ord varset in iP = ordVars1]] \text{ and } [[ord varset in iM = ordVars2]] \\
+        &= [[ [mu] ordVars1, [mu](ordVars2 \ {ordVars1}) ]] \\
+        &= [[ [mu] ordVars1, ([mu]ordVars2 \ [mu]{ordVars1}) ]]
+          && \text{by induction on $[[ordVars2]]$;
+                  the inductive step is similar to 
+                  \cref{case:distr-mu-ord:var}.}\\
+        & && \text{Notice that $[[mu]]$ is collision free on $[[{ordVars1}]]$ and $[[{ordVars2}]]$} \\
+        & && \text{since
+          $[[{ordVars1}]] \subseteq [[varset]]$ and
+          $[[{ordVars2}]] \subseteq [[fv iN]]$ }\\
+          &= [[ [mu] ordVars1, ([mu]ordVars2 \ {[mu]ordVars1}) ]]
       \end{aligned}$ \\
+      \hfill\\
+      On the other hand, \\
     $\begin{aligned}[t]
-       [[  (ord [mu] varset in [mu]iN) ]] &= [[ (ord [mu] varset in [mu]iP → [mu]iM) ]] \\
-                                     &= [[ (ordVarsb1, (ordVarsb2 \ {ordVarsb1})) ]]
-                                     && \text{where } [[ord [mu] varset in [mu] iP = ordVarsb1]] \text{ and } [[ord [mu] varset in [mu] iM = ordVarsb2]] \\
-                                          & && \text{then by the induction
-                                               hypothesis,
-                                               $[[ordVarsb1]] = [[ [mu] ordVars1 ]]$,
-                                               $[[ordVarsb2]] = [[ [mu] ordVars2 ]]$,
-                                               }\\
-                                     &= [[ [mu] ordVars1, ([mu]ordVars2 \ {[mu]ordVars1}) ]]
+       & [[  ord [mu] varset in [mu]iN ]] \\ 
+       &= [[ ord [mu] varset in [mu]iP → [mu]iM ]] \\
+       &= [[ ordVarsb1, (ordVarsb2 \ {ordVarsb1}) ]]
+       && \text{where } [[ord [mu] varset in [mu] iP = ordVarsb1]] \text{ and }  \\
+       & && [[ord [mu] varset in [mu] iM = ordVarsb2]]; 
+            \text{ then by the induction}\\
+       & && \text{hypothesis, $[[ordVarsb1]] = [[ [mu] ordVars1 ]]$,
+                   $[[ordVarsb2]] = [[ [mu] ordVars2 ]]$}\\
+       &= [[ [mu] ordVars1, ([mu]ordVars2 \ {[mu]ordVars1}) ]]
      \end{aligned}$
    
    \item $[[iN]] = [[∀ pas.iM]]$ \\

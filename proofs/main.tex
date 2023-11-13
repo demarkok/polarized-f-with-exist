@@ -1340,9 +1340,11 @@ It also relies on basic set operations and the ability to
 deterministically choose fresh variables.
 
 \begin{algorithm}
-  \hfill\\
-  \ottdefnATNInfLabeled{}
+  \hfill \\
   \ottdefnATPInfLabeled{}
+  \hfill \\
+  \ottdefnATNInfLabeled{}
+  \hfill \\
   \ottdefnATSpinInfLabeled{}
 \end{algorithm}
 
@@ -1458,7 +1460,7 @@ taking a subtyping constraint $[[SC]]$ and returning a substitution
 $[[uσ]]$---the only possible solution of $[[SC]]$. 
 
 First, we define the notion of singularity on constraint entries. 
-$[[scE singular with iP]]$ and $[[scE singular with iN]]$
+$[[scE singular with iP]]$ and its negative counterpart 
 are considered partial functions taking a constraint entry $[[scE]]$
 and returning the type satisfying $[[scE]]$ if such a type is unique. 
 

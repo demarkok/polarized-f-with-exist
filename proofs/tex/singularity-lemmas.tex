@@ -37,17 +37,19 @@
             Let us show that it implies $[[Γ ⊢ iP' ≈ ∃α⁻.↓α⁻]]$.
 
             $
-            \begin{aligned}[h]
-            [[Γ ⊢ iP' ≥ ∃nbs.↓iN1]] &\Rightarrow [[Γ ⊢ nf(iP') ≥ ∃nbs'.↓nf(iN1)]] \text{ where } [[ord {nbs} in iN' = nbs']] 
-                                   && \text{by \cref{corollary:nf-pres-subt}} \\
-                                   &\Rightarrow [[Γ ⊢ nf(iP') ≥ ∃nbs'.↓nf(nbj)]]  
-                                   && \text{by \cref{lemma:normalization-completeness}}\\
-                                   &\Rightarrow [[Γ ⊢ nf(iP') ≥ ∃nbs'.↓nbn]]  
-                                   && \text{by definition of normalization}\\
-                                   &\Rightarrow [[Γ ⊢ nf(iP') ≥ ∃nbj.↓nbj]]  
-                                   && \text{since $[[ord {nbs} in nf(iN1)]] = [[nbj]]$}\\
-                                   &\Rightarrow [[Γ, nbj ⊢ nf(iP') ≥ ↓nbj]] \text { and } [[nbj ∉ fv(nf(iP'))]]
-                                   && \text{by \cref{lemma:shape-supertypes-norm}}\\
+            \begin{aligned}
+            [[Γ ⊢ iP' ≥ ∃nbs.↓iN1]] &\Rightarrow [[Γ ⊢ nf(iP') ≥ ∃nbs'.↓nf(iN1)]]\\
+                                    &\phantom{\Rightarrow} \text{(where $[[ord {nbs} in iN' = nbs']]$)}
+                                    && \text{by \cref{corollary:nf-pres-subt}} \\
+                                    &\Rightarrow [[Γ ⊢ nf(iP') ≥ ∃nbs'.↓nf(nbj)]]  
+                                    && \text{by \cref{lemma:normalization-completeness}}\\
+                                    &\Rightarrow [[Γ ⊢ nf(iP') ≥ ∃nbs'.↓nbn]]  
+                                    && \text{by definition of normalization}\\
+                                    &\Rightarrow [[Γ ⊢ nf(iP') ≥ ∃nbj.↓nbj]]  
+                                    && \text{since $[[ord {nbs} in nf(iN1)]] = [[nbj]]$}\\
+                                    &\Rightarrow [[Γ, nbj ⊢ nf(iP') ≥ ↓nbj]] \\ 
+                                    &\phantom{\Rightarrow} \text { and } [[nbj ∉ fv(nf(iP'))]]
+                                    && \text{by \cref{lemma:shape-supertypes-norm}}\\
             \end{aligned}
             $
 
@@ -114,7 +116,7 @@
 
                             Then $[[scE singular with β⁺]]$, which holds by
                             \ruleref{\ottdruleSINGSupVarLabel},
-                            can be rewritten as $[[scE singular with nf(iP)]]$.
+                            can be rewritten as\\ $[[scE singular with nf(iP)]]$.
 
                         \item $[[iQ]] = [[∃nbs.↓iN]]$ (for potentially empty $[[nbs]]$).
                             Notice that $[[Γ ⊢ ∃γ⁻.↓γ⁻ ≥ ∃nbs.↓iN]]$ 
