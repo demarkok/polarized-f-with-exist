@@ -25,7 +25,7 @@ c, d :: 'c_' ::= {{ com Computation Terms }}
   | let x     = v ( args ) ; c    ::   :: AppLet    % {{ com unannotated applicative let }}
   | let∃ ( nas , x ) = v    ; c    ::   :: Unpack   % {{ com unpack }}
 
-vctx, Φ {{ tex \Phi }} :: 'vctxt_' ::= {{ com variable context }}
+vctx, Φ {{ tex \Gamma }} :: 'vctxt_' ::= {{ com variable context }}
   | ·                     ::   :: Empty
   | x : iP                ::   :: Single
   | </ Φi // , // i />    ::   :: Concat  {{ com concatenate contexts }}

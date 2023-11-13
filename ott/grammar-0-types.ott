@@ -211,7 +211,7 @@ iMs {{ tex \vv{ M } }}
 
 grammar
 
-G {{ tex \Gamma }}, Δ {{ tex \Delta }}, Γ {{ tex \Gamma }} :: DT_Ctxt ::= {{ com declarative type context }}
+G {{ tex T }}, Δ {{ tex \Theta }}, Γ {{ tex T }} :: DT_Ctxt ::= {{ com declarative type context }}
     | ·                  ::   :: empty   {{ com empty context }}
     | { pas }            ::   :: PList   {{ com list of variables }}
                                          {{ tex [[pas]] }}
@@ -228,7 +228,7 @@ G {{ tex \Gamma }}, Δ {{ tex \Delta }}, Γ {{ tex \Gamma }} :: DT_Ctxt ::= {{ c
 
 grammar
 
-T {{ tex \Theta }}, Θ {{ tex \Theta }}:: U_Ctxt ::= {{ com algorithmic variable context }}
+T {{ tex \Sigma }}, Θ {{ tex \Sigma }}:: U_Ctxt ::= {{ com algorithmic variable context }}
     | ·                  ::   :: empty     {{ com empty context }}
     | ordVars [ Δ ]      ::   :: FromVList {{ com from an ordered list of variables }}
                                            {{ tex [[ordVars]] \{[[Δ]]\} }}
@@ -241,7 +241,7 @@ T {{ tex \Theta }}, Θ {{ tex \Theta }}:: U_Ctxt ::= {{ com algorithmic variable
     | Θ1 ∪ Θ2            ::   :: union
 grammar
 
-Xi {{ tex \Xi }}, Ξ {{ tex \Xi }} :: AU_Ctxt ::= {{ com anti-unification type variable context }}
+Xi {{ tex \Upsilon }}, Ξ {{ tex \Upsilon }} :: AU_Ctxt ::= {{ com anti-unification type variable context }}
     | ·                  ::   :: empty   {{ com empty context }}
     | { puas }           ::   :: PAUList {{ com list of positive variables }}
                                          {{ tex [[puas]] }}

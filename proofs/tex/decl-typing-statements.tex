@@ -1,0 +1,21 @@
+\begin{restatable}{lemma}{lemmaAppInfEquStable}
+    \label{lemma:app-inf-equ-stable}
+    If $[[Γ; Φ ⊢ iN1 ● args ⇒> iM]]$ and $[[Γ ⊢ iN1 ≈ iN2]]$ 
+    then $[[Γ; Φ ⊢ iN2 ● args ⇒> iM]]$.
+\end{restatable}
+
+\begin{restatable}[Declarative typing is preserved under context equivalence]{lemma}{lemmaDeclTypingContextEquiv}
+    \label{lemma:decl-typing-context-equiv}
+    Assuming $[[Γ ⊢ Φ1]]$, $[[Γ ⊢ Φ2]]$, and $[[Γ ⊢ Φ1 ≈ Φ2]]$:
+    \begin{itemize}
+        \item [$+$] 
+            for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ v : iP]]$, 
+            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ v : iP]]$.
+        \item [$-$] 
+            for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ c : iN]]$, 
+            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ c : iN]]$.
+        \item [$\bullet$] 
+            for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ iN ● args ⇒> iM]]$, 
+            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ iN ● args ⇒> iM]]$.
+    \end{itemize}
+\end{restatable}

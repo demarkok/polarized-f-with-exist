@@ -1,0 +1,115 @@
+\begin{restatable}[Substitution strengthening]{lemma}{lemmaSubstRestrFv}
+    \label{lemma:subst-restr-fv}
+    Restricting the substitution to the free variables of the
+    substitution subject does not affect the result.
+    Suppose that $[[σ]]$ is a substitution,
+    $[[iP]]$ and $[[iN]]$ are types. Then
+    \begin{itemize}
+        \item[$+$] $[[ [σ]iP ]] = [[ [σ|fv iP]iP ]]$,
+        \item[$-$] $[[ [σ]iN ]] = [[ [σ|fv iN]iN ]]$
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Signature of a restricted substitution]{lemma}{lemmaSubstRestrSig}
+    \label{lemma:subst-restr-sig}
+    If $[[Γ2 ⊢ σ : Γ1]]$ then $[[Γ2 ⊢ σ|varset :  Γ1 ∩ varset]]$.
+\end{restatable}
+
+\begin{restatable}{lemma}{lemmaSubstDisjoint}
+    \label{lemma:subst-disjoint}
+    Suppose that $[[σ]]$ is a substitution with signature $[[Γ2 ⊢ σ : Γ1]]$. 
+    Then if $[[varset]]$ is disjoint from $[[Γ1]]$, 
+    then $[[ σ|varset]] = [[ id ]]$. 
+\end{restatable}
+
+\begin{restatable}[Application of a disjoint substitution]{corollary}{corollarySubstDisj}
+    \label{corollary:subst-disj}
+    Suppose that $[[σ]]$ is a substitution with signature $[[Γ2 ⊢ σ : Γ1]]$. Then
+    \begin{itemize}
+        \item [$+$] if $[[Γ1 ∩ fv(iQ) = ∅]]$ then $[[ [σ] iQ = iQ]]$;
+        \item [$-$] if $[[Γ1 ∩ fv(iN) = ∅]]$ then $[[ [σ] iN = iN]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Substitution range weakening]{lemma}{lemmaSubstRangeWeak}
+    \label{lemma:subst-range-weakening}
+    Suppose that $[[Γ2 ⊆ Γ'2]]$ are contexts and 
+    $[[σ]]$ is a substitution.
+    Then $[[Γ2 ⊢ σ : Γ1]]$ implies $[[Γ'2 ⊢ σ : Γ1]]$.
+\end{restatable}
+
+\begin{restatable}[Subsitutions Equivalent on Free Variables]{lemma}{lemmaSubstEquiv}
+    \label{lemma:subst-equiv}
+    Suppose that $[[Γ' ⊆ Γ]]$,
+    $[[σ1]]$ and $[[σ2]]$ are substitutions of signature $[[Γ ⊢ σi : Γ']]$.
+    Then 
+    \begin{enumerate}
+        \item [$+$] for a type $[[Γ ⊢ iP]]$, if $[[Γ ⊢ [σ1]iP ≈ [σ2]iP]]$ then 
+        $[[Γ ⊢ σ1 ≈ σ2 : fv iP ∩ Γ']]$;
+        \item [$-$] for a type $[[Γ ⊢ iN]]$, if $[[Γ ⊢ [σ1]iN ≈ [σ2]iN]]$ then
+        $[[Γ ⊢ σ1 ≈ σ2 : fv iN ∩ Γ']]$.
+    \end{enumerate}
+\end{restatable}
+
+\begin{restatable}[Substitution composition well-formedness]{lemma}{lemmaSubstCompWell}
+    \label{lemma:subst-comp-well}
+    If $[[Γ'1 ⊢ σ1 : Γ1]]$ and $[[Γ'2 ⊢ σ2 : Γ2]]$,
+    then $[[Γ'1, Γ'2 ⊢ σ2 ○ σ1 : Γ1, Γ2]]$.
+\end{restatable}
+
+
+\begin{restatable}[Substitution monadic composition well-formedness]{lemma}{lemmaSubstMonadCompWell}
+    \label{lemma:subst-monad-composition-wf}
+    If $[[Γ'1 ⊢ σ1 : Γ1]]$ and $[[Γ'2 ⊢ σ2 : Γ2]]$,
+    then $[[Γ'2 ⊢ σ2 <=< σ1 : Γ1]]$.
+\end{restatable}
+
+
+\begin{restatable}[Substitution composition]{lemma}{lemmaSubstComp}
+    \label{lemma:subst-composition}
+        If $[[Γ'1 ⊢ σ1 : Γ1]]$, $[[Γ'2 ⊢ σ2 : Γ2]]$, 
+        $[[Γ1 ∩ Γ'2 = ∅ ]]$ and $[[ Γ1 ∩ Γ2 = ∅ ]]$ then 
+        $[[ σ2 ○ σ1 ]] = [[ (σ2 <=< σ1) ○ σ2 ]]$.
+\end{restatable}
+
+
+\begin{restatable}[Substitution composition commutativity]{corollary}{corollarySubstCompCumm}
+    \label{corollary:subst-composition-commutativity}
+    If $[[Γ'1 ⊢ σ1 : Γ1]]$, $[[Γ'2 ⊢ σ2 : Γ2]]$, and
+    $[[ Γ1 ∩ Γ2 = ∅ ]]$, 
+    $[[ Γ1 ∩ Γ'2 = ∅ ]]$, and
+    $[[ Γ'1 ∩ Γ2 = ∅ ]]$ then 
+    $[[ σ2 ○ σ1 ]] = [[ σ1 ○ σ2 ]]$.
+\end{restatable}
+
+
+\begin{restatable}[Substitution domain weakening]{lemma}{lemmaSubstDomWeak}
+    \label{lemma:subst-domain-weakening}
+    If $[[Γ2 ⊢ σ : Γ1]]$ then $[[Γ2, Γ' ⊢ σ : Γ1, Γ']]$
+\end{restatable}
+
+
+\begin{restatable}[Free variables after substitution]{lemma}{lemmaSubstFv}
+    \label{lemma:subst-fv}
+    Suppose that $[[Γ2 ⊢ σ : Γ1]]$, then
+    \begin{enumerate}
+        \item [$+$] for a type $[[iP]]$,
+            the free variables of $[[ [σ]iP ]]$ are bounded in the following way:
+         $[[fv(iP) \ Γ1 ⊆ fv([σ]iP) ⊆ (fv(iP) \ Γ1) ∪ Γ2]]$;
+        \item [$-$] for a type $[[iN]]$, 
+            the free variables of $[[ [σ]iP ]]$ are bounded in the following way:
+            $[[fv(iN) \ Γ1 ⊆ fv([σ]iN) ⊆ (fv(iN) \ Γ1) ∪ Γ2]]$.
+    \end{enumerate}
+\end{restatable}
+
+
+\begin{restatable}[Free variables of a variable image]{lemma}{lemmaSubstFvImage}
+    \label{lemma:subst-fv-image}
+    Suppose that $[[σ]]$ is an arbitrary substitution, 
+    Then 
+    \begin{itemize}
+        \item [$+$] if $[[α± ∊ fv(iP)]]$ then $[[ fv([σ]α±) ⊆ fv([σ]iP) ]]$,
+        \item [$-$] if $[[α± ∊ fv(iN)]]$ then $[[ fv([σ]α±) ⊆ fv([σ]iN) ]]$.
+    \end{itemize}
+\end{restatable}

@@ -1,0 +1,49 @@
+\begin{restatable}[Soundness of type well-formedness]{lemmaRes}{lemmaWfSoundness}
+    \label{lemma:wf-soundness}
+        \hfill
+        \begin{itemize}
+            \item[$+$] If $[[Γ ⊢ iP]]$ then $[[fv(iP) ⊆ Γ]]$,
+            \item[$-$] if $[[Γ ⊢ iN]]$ then $[[fv(iN) ⊆ Γ]]$.
+        \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Completeness of type well-formedness]{lemmaRes}{lemmaWfCompleteness}
+    \label{lemma:wf-ctxt-equiv}
+
+    In the well-formedness judgment, only used variables matter:
+    \begin{itemize}
+        \item[$+$] if $[[Γ1 ∩ fv iP]] = [[Γ2 ∩ fv iP]]$ then
+        $[[Γ1 ⊢ iP]] \iff [[Γ2 ⊢ iP]]$,
+        \item[$-$] if $[[Γ1 ∩ fv iN]] = [[Γ2 ∩ fv iN]]$ then
+        $[[Γ1 ⊢ iN]] \iff [[Γ2 ⊢ iN]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Context Strengthening]{corollary}{corollaryWfCtxtStrengthening}
+    \label{corollary:wf-ctxt-strengthening}
+    \hfill
+    
+    \begin{itemize}
+      \item [$+$] If $[[Γ ⊢ iP]]$ then $[[fv(iP) ⊢ iP]]$;
+      \item [$-$] If $[[Γ ⊢ iN]]$ then $[[fv(iN) ⊢ iN]]$.
+    \end{itemize}
+\end{restatable}
+
+
+ \begin{restatable}[Well-formedness Context Weakening]{corollary}{lemmaWfWeakening}
+    \label{lemma:wf-weakening}
+    Suppose that $[[Γ1 ⊆ Γ2]]$, then
+    \begin{itemize}
+      \item[$+$] if $[[Γ1 ⊢ iP]]$ then $[[Γ2 ⊢ iP]]$,
+      \item[$-$] if $[[Γ1 ⊢ iN]]$ then $[[Γ2 ⊢ iN]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Well-formedness agrees with substitution]{lemma}{lemmaWfSubst}
+    \label{lemma:wf-subst}
+    Suppose that $[[Γ2 ⊢ σ : Γ1]]$. Then
+    \begin{itemize}
+    \item[$+$] $[[Γ, Γ1 ⊢ iP]]$ implies $[[Γ, Γ2 ⊢ [σ]iP]]$, and
+    \item[$-$] $[[Γ, Γ1 ⊢ iN]]$ implies $[[Γ, Γ2 ⊢ [σ]iN]]$.
+    \end{itemize}
+\end{restatable}

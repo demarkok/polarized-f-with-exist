@@ -1,0 +1,31 @@
+\begin{restatable}[Upgrade determinism]{observation}{obsUpgradeDeterminism}
+    \label{obs:upgrade-deterministic}
+    Assuming $[[iP]]$ is well-formed in $[[Γ ⊆ Δ]],$\\
+    if $[[upgrade Γ ⊢ iP to Δ = iQ]]$ and $[[upgrade Γ ⊢ iP to Δ = iQ']]$ are defined 
+    then $[[iQ = iQ']]$.
+\end{restatable}
+
+\begin{restatable}[Soundness of Upgrade]{lemma}{lemmaUpgradeSoundness}
+    \label{lemma:upgrade-soundness}
+    Assuming $[[iP]]$ is well-formed in $[[Γ = Δ, pnas]]$,
+    if $[[upgrade Γ ⊢ iP to Δ = iQ]]$
+    then
+    \begin{enumerate}
+        \item $[[Δ ⊢ iQ]]$
+        \item $[[Γ ⊢ iQ ≥ iP]]$
+    \end{enumerate}
+\end{restatable}
+
+\begin{restatable}[Completeness and Initiality of Upgrade]{lemma}{lemmaUpgradeCompleteness}
+    \label{lemma:upgrade-completeness}
+    The upgrade returns the least $[[Γ]]$-supertype of $[[iP]]$ well-formed in $[[Δ]]$.
+    Assuming $[[iP]]$ is well-formed in $[[Γ = Δ, pnas]],$\\
+    For any $[[iQ']]$ such that 
+    \begin{enumerate}
+        \item $[[Δ ⊢ iQ']]$ and
+        \item $[[Γ ⊢ iQ' ≥ iP]]$,
+    \end{enumerate}
+
+    The result of the upgrade algorithm $[[iQ]]$ exists
+    ($[[upgrade Γ ⊢ iP to Δ = iQ]]$) and satisfies $[[Δ ⊢ iQ' ≥ iQ]]$.
+\end{restatable}

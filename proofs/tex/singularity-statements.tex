@@ -1,0 +1,57 @@
+\begin{restatable}[Soundness of Entry Singularity]{lemma}{lemEntrySingularitySoundness}
+    \label{lemma:entry-singularity-soundness}
+    \hfill
+    \begin{itemize}
+        \item [$+$] Suppose $[[scE singular with iP]]$ for $[[iP]]$ well-formed in $[[Γ]]$.
+            Then $[[ Γ ⊢ iP : scE ]]$
+            and for any $[[ Γ ⊢ iP']]$ such that $[[Γ ⊢ iP' : scE]]$, $[[Γ ⊢ iP' ≈ iP]]$;
+        \item [$-$] Suppose $[[scE singular with iN]]$ for $[[iN]]$ well-formed in $[[Γ]]$.
+            Then $[[ Γ ⊢ iN : scE ]]$
+            and for any $[[ Γ ⊢ iN']]$ such that $[[Γ ⊢ iN' : scE]]$, $[[Γ ⊢ iN' ≈ iN]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Completeness of Entry Singularity]{lemma}{lemEntrySingularityCompleteness}
+    \label{lemma:entry-singularity-completeness}
+    \hfill
+    \begin{itemize}
+        \item [$-$] Suppose that there exists $[[iN]]$ well-formed in $[[Γ]]$ 
+            such that for any $[[iN']]$ well-formed in $[[Γ]]$,
+            $[[Γ ⊢ iN' : scE]]$ implies $[[Γ ⊢ iN' ≈ iN]]$. 
+            Then $[[scE singular with nf(iN)]]$.
+        \item [$+$] Suppose that there exists $[[iP]]$ well-formed in $[[Γ]]$ 
+            such that for any $[[iP']]$ well-formed in $[[Γ]]$,
+            $[[Γ ⊢ iP' : scE]]$ implies $[[Γ ⊢ iP' ≈ iP]]$. 
+            Then $[[scE singular with nf(iP)]]$ .
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Soundness of Singularity]{lemma}{lemSingularitySoundness}
+    \label{lemma:singularity-soundness}
+    Suppose $[[Θ ⊢ SC : Ξ]]$, and $[[SC singular with uσ]]$. 
+    Then $[[ Θ ⊢ uσ : Ξ ]]$,
+     $[[ Θ ⊢ uσ : SC ]]$ and for any 
+    $[[uσ']]$ such that $[[Θ ⊢ uσ : SC]]$,
+    $[[Θ ⊢ uσ' ≈ uσ : Ξ]]$.
+\end{restatable}
+
+\begin{restatable}[Singularity is Deterministic]{observation}{obsSingularityDeterministic}
+    For a fixed $[[SC]]$ such that $[[Θ ⊢ SC : Ξ]]$,
+    if $[[SC singular with uσ]]$ and $[[SC singular with uσ']]$,
+    then $[[uσ = uσ']]$.
+\end{restatable}
+
+\begin{restatable}[Completeness of Singularity]{lemma}{lemSingularityCompleteness}
+    \label{lemma:singularity-completeness}
+    For a given $[[Θ ⊢ SC]]$,
+    suppose that all the substitutions satisfying $[[SC]]$ are equivalent
+    on $[[Ξ]] \supseteq [[dom(SC)]]$.
+    In other words, suppose that there exists $[[Θ ⊢ uσ1 : Ξ]]$ such that
+    for any $[[Θ ⊢ uσ : Ξ]]$, $[[Θ ⊢ uσ : SC]]$ implies 
+    $[[Θ ⊢ uσ ≈ uσ1 : Ξ]]$.
+    Then 
+    \begin{itemize}
+        \item $[[SC singular with uσ0]]$ for some $[[uσ0]]$ and
+        \item $[[Ξ]] = [[dom(SC)]]$.
+    \end{itemize} 
+\end{restatable}

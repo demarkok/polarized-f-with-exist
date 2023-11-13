@@ -1,17 +1,8 @@
-\begin{observation}[Unification is deterministic]
-    \label{obs:unif-deterministic}
-    \hfill
-    \begin{itemize}
-        \item [$+$] If $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$
-            and $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC']]$ then $[[UC = UC']]$.
-        \item [$-$] If $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$
-            and $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC']]$ then $[[UC = UC']]$.
-    \end{itemize}
-\end{observation}
+\obsUnifDet*
 \begin{proof}
     We prove it by mutual structural induction on 
     $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$ and $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC']]$.
-    Let us consider the positive case, since the negative case is symmetric.
+    Let us consider the positive case only since the negative case is symmetric.
 
     First, notice that the rule applied the last is uniquely determined by the
     shape of $[[uP]]$ and $[[iQ]]$.
@@ -20,22 +11,7 @@
     hypothesis or by \cref{obs:unif-merge-deterministic}.
 \end{proof}
 
-\begin{lemma}[Soundness of Unification] \label{lemma:unification-soundness}
-    \hfill
-    \begin{itemize}
-        \item [$+$] For normalized $[[uP]]$ and $[[iQ]]$ such that 
-        $[[Γ ; dom(Θ) ⊢ uP]]$ and $[[Γ ⊢ iQ]]$,\\ 
-        if $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$ then 
-        $[[Θ ⊢ UC : uv uP]]$ and for any normalized $[[uσ]]$ 
-        such that $[[ Θ ⊢ uσ : lift UC ]]$, $[[ [uσ]uP = iQ ]]$.
-
-        \item [$-$] For normalized $[[uN]]$ and $[[iM]]$ such that
-        $[[Γ ; dom(Θ) ⊢ uN]]$ and $[[Γ ⊢ iM]]$,\\
-        if $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$ then 
-        $[[Θ ⊢ UC : uv uN]]$ and for any normalized $[[uσ]]$ such that
-        $[[ Θ   ⊢ uσ : lift UC ]]$, $[[ [uσ]uN = iM ]]$.
-    \end{itemize}
-\end{lemma}
+\lemmaUnificationSoundness*
 \begin{proof}
     We prove by induction on the derivation of 
     $[[ Γ ; Θ ⊨ uN ≈u iM ⫤ UC ]]$ and mutually $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$.
@@ -114,20 +90,7 @@
     \end{caseof}
 \end{proof}
 
-\begin{lemma}[Completeness of Unification] \label{lemma:unification-completeness}
-    \hfill
-    \begin{itemize}
-        \item [$+$] For normalized $[[uP]]$ and $[[iQ]]$ such that
-        $[[Γ ; dom(Θ) ⊢ uP]]$ and $[[Γ ⊢ iQ]]$, 
-        suppose that there exists $[[Θ ⊢ uσ : uv(uP)]]$ such that $[[ [uσ]uP = iQ ]]$,
-        then $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$ for some $[[UC]]$.
-        
-        \item [$-$] For normalized $[[uN]]$ and $[[iM]]$ such that
-        $[[Γ ; dom(Θ) ⊢  uN]]$ and $[[Γ ⊢ iM]]$,
-        suppose that there exists $[[Θ ⊢ uσ : uv(uN)]]$ such that $[[ [uσ]uN = iM ]]$,
-        then $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$ for some $[[UC]]$.
-   \end{itemize}
-\end{lemma}
+\lemmaUnificationCompleteness*
 \begin{proof}
     We prove it by induction on the structure of $[[uP]]$ and mutually, $[[uN]]$.
     \begin{caseof}

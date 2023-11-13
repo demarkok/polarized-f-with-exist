@@ -110,6 +110,131 @@
         *** The Inference Algorithm
         *** Constraint Singularity
 * Correctness of the Algorithm 
+    ** Type Well-formedness
+        WF = fv are in the context
+        weakening, strengthening, agrees with substitution 
+    ** Substitution
+        Strengthening, range and domain weakening
+        normal and monadic composition and its properties: commutativity.
+        interaction with free variables: equivalence. 
+    ** Declarative Subtyping
+        - FV propagate left-to-right
+        - Type equivalence agrees with WF
+        - The quantifier rules can be decomposed into sequential 
+          application of the Right and the Left rule
+        - subtyping is not affected by redundant quantifiers
+        - sub/supertype of a variable is equivalent to the variable.
+        - subtyping is not affected by context as long as the types are well-formed in it
+        subtyping preserves substitution, 
+        - reflexivity, transitivity 
+    ** Declarative Equivalence
+        - Equivalence is stable under renaming. 
+        - Declarative equivalence is transitive. 
+        - Type well-formedness is preserved under equivalence.
+        - (Soundness) Equivalence implies mutual subtyping
+        - Substitution cannot induce proper subtypes or supertypes
+        - [σ1]P ≥ Q and [σ2]Q ≥ P implies that σ1 and σ2 are mutually inverse bijections. 
+        - Equivalence of top-level polymorphic types implies one step of normalization (ordering).
+        - (Completeness) mutual subtyping implies equivalence
+        - Algoirhmization = soundness + completeness
+    ** Variable Ordering
+        - Soundness: ord vars in iN returns a list of variables form vars ∩ fv(iN)
+        - Completeness: Ordering is an invariant of an equivalence class
+    ** Normalization 
+        - Determinicity 
+        - Soundness wrt declarative normalization: normalization preserves the equivalence class 
+        - Completeness wrt declarative normalization: equivalent types have equal normal forms
+        - Soundness and Completeness wrt mutual subtyping = Algorithmization of mutual subtyping:
+            mutual subtyping means equality of normal forms. 
+    ** Declarative Typing
+        - Type Application inference is invariant under equivalence
+        - All typing judtements are invariant under equivalent context replacement. 
+    ** Algorithmic well-formedness
+        - WF = fv are in the context (declarative or algorithmic)
+    ** Algorithmic Substitution
+        Interaction with algorithmic variables. 
+    ** Algorithmic Equivalence
+        - preserves algorithmic type well-formedness
+        - Substitution equivalence
+    ** Unification Constraint Merge
+        - Soundness: normalized constraint merge is a union.
+        - Completeness: an instantiation
+          satisfying constraints UC1, UC2, 
+          must satisfy their merge.
+    ** Unification
+        - Deterministic
+        - Soundness and Completeness: 
+            The unification gives a 
+            set of constraints on the unification variable,
+            so that it is necessarry and sufficient for an
+            instantiation to satisfy this set to 
+            make the given types equal. 
+    ** Anti-unnification     
+        - Determinism 
+        - Soundness. For normalized types, 
+            the AU algorithm returns a pattern and two substitutions
+            that instantiate the pattern into the given types.
+        - Completeness. 
+            If it is possible to anti-unify two types, 
+            then the AU algorithm succeeds.
+        - Initiality
+         AU returns the most specific pattern.
+    ** Upper Bounds
+        - What positive normalized supertypes look like?
+            For β+ the only supertype is β+ itself.
+            For ∃β⁺.P the supertypes are the supertypes of 
+                P free of β.
+            For ↓M, any supertype 
+            must have form ∃α⁺...↓M' such that
+            it is possible to instantiate α⁺ in M' to make it equal to M.
+        - Soundness of LUB: 
+            LUB returns an upper bound, 
+        - Completeness and initiality:
+            if upper bound U exists, LUB succeeds
+            and returns an upper bound not greater than U.
+    ** Upgrade
+        - Determinism
+        - Soundness and Completeness:
+            The upgrade algorithm returns 
+            the least Γ-well-typed upper bound of a given type.
+    ** Constraint Satisfaction
+    ** Positive Subtyping
+        - Determinism
+        - Soundness and Completeness:
+            The subtyping returns a set of constraints
+            such that it is necessary and sufficient
+            for an instantiation to satisfy them
+            in order to ensure the given subtyping declaratively.
+    ** Subtyping Constraint Merge
+        - Determinism
+        -  Soundness and Completeness:
+            The merge of C1 and C2 
+            is the weakest Constraint implying both
+            C1 and C2
+    ** Negative Subtyping
+        - Determinism
+        - Soundness and Completeness:
+            same as for positive. 
+            Negative subt. requires no negative 
+            algorithmic variables.
+    ** Singularity 
+        - Determinism
+        - Soundness:
+            C singular with σ
+            returns σ that satisfies C and
+            any other σ' satisfying C is equivalent to σ
+            on the domain of C.
+        - Completeness:
+            if all substitutions satisfying C
+            are equivalent on Ξ - superset of dom(C)
+            then C singular with σ succeeds and 
+            Ξ = dom(C)
+    ** Typing 
+        - Determinicity
+        - Soundness
+        - Completeness
+
+
 * Extensions and Modifications
     ** Elementary Type Theory
     ** Explicit type application
@@ -121,3 +246,7 @@
     ** A quick look at impredicativity
     ** Existential Crisis Resolved
 * Conclusion
+
+
+
+

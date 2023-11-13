@@ -1,7 +1,44 @@
-\begin{lemma} \label{lemma:app-inf-equ-stable}
-    If $[[Γ; Φ ⊢ iN1 ● args ⇒> iM]]$ and $[[Γ ⊢ iN1 ≈ iN2]]$ 
-    then $[[Γ; Φ ⊢ iN2 ● args ⇒> iM]]$.
-\end{lemma}
+\begin{definition}[Number of prenex quantifiers]
+    Let us define $\npq{[[iN]]}$ and $\npq{[[iP]]}$ as the number of prenex quantifiers in these types, i.e.
+    \begin{itemize}
+        \item [$+$] $\npq{[[∃nas.iP]]} = |[[nas]]|$, if $[[iP ≠ ∃nbs.iP']]$,
+        \item [$-$] $\npq{[[∀pas.iN]]} = |[[pas]]|$, if $[[iN ≠ ∀pbs.iN']]$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Size of a Declarative Judgement]
+    \label{def:decl-typing-size}
+    For a declarative typing judgment $J$
+    let us define a metrics $\size{J}$ as a pair of numbers 
+    in the following way:
+    \begin{itemize}
+        \item [$+$] $\size{[[Γ ; Φ ⊢ v : iP]]} = (\size{[[v]]}, 0)$;
+        \item [$-$] $\size{[[Γ ; Φ ⊢ c : iN]]} = (\size{[[c]]}, 0)$;
+        \item [$\bullet$] $\size{[[Γ ; Φ ⊢ iN ● args ⇒> iM]]} = 
+            (\size{[[args]]}, \npq{[[iN]]})$)
+    \end{itemize}
+    where $\size{[[v]]}$ or $\size{[[c]]}$ is the size of the 
+    syntax tree of the term $[[v]]$ or $[[c]]$
+    and $\size{[[args]]}$ is the sum of sizes of the terms in $[[args]]$.
+\end{definition}
+
+\begin{definition}[Number of Equivalence Nodes]
+    For a tree $T$ inferring
+    a declarative typing judgment,
+    let us a function $\eqNodes{T}$
+    as the number of nodes in $T$ labeled with \ruleref{\ottdruleDTPEquivLabel} or 
+    \ruleref{\ottdruleDTNEquivLabel}.
+\end{definition}
+
+\begin{definition}[Metric]
+    \label{def:decl-typing-metric}
+    For a tree $T$ inferring
+    a declarative typing judgment $J$,
+    let us define a metric $\metric{T}$
+    as a pair $(\size{J}, \eqNodes{T})$.
+\end{definition}
+
+\lemmaAppInfEquStable*
 \begin{proof}
     By \cref{lemma:equiv-completeness}, 
     $[[Γ ⊢ iN1 ≈ iN2]]$ implies $[[iN1 ≈ iN2]]$.
@@ -89,67 +126,7 @@
     \end{caseof}
 \end{proof}
 
-\newcommand{\pureSize}[1]{\ensuremath{\mathsf{pure\_size}(#1)}}
-\newcommand{\metric}[1]{\ensuremath{\mathsf{metric}(#1)}}
-\newcommand{\eqNodes}[1]{\ensuremath{\mathsf{eq\_nodes}(#1)}}
-\newcommand{\npq}[1]{\ensuremath{\mathsf{npq}(#1)}}
-
-\begin{definition}[Number of prenex quantifiers]
-    Let us define $\npq{[[iN]]}$ and $\npq{[[iP]]}$ as the number of prenex quantifiers in these types, i.e.
-    \begin{itemize}
-        \item [$+$] $\npq{[[∃nas.iP]]} = |nas|$, if $[[iP ≠ ∃nbs.iP']]$,
-        \item [$-$] $\npq{[[∀pas.iN]]} = |pas|$, if $[[iN ≠ ∀pbs.iN']]$.
-    \end{itemize}
-\end{definition}
-
-\begin{definition}[Size of a Declarative Judgement]
-    \label{def:decl-typing-size}
-    For a declarative typing judgement $J$
-    let us define a metrics $\size{J}$ as a pair of numbers 
-    in the following way:
-    \begin{itemize}
-        \item [$+$] $\size{[[Γ ; Φ ⊢ v : iP]]} = (\size{[[v]]}, 0)$;
-        \item [$-$] $\size{[[Γ ; Φ ⊢ c : iN]]} = (\size{[[c]]}, 0)$;
-        \item [$\bullet$] $\size{[[Γ ; Φ ⊢ iN ● args ⇒> iM]]} = 
-            (\size{[[args]]}, \npq{[[iN]]})$)
-    \end{itemize}
-    where $\size{[[v]]}$ or $\size{[[c]]}$ is the size of the 
-    syntax tree of the term $[[v]]$ or $[[c]]$
-    and $\size{[[args]]}$ is the sum of sizes of the terms in $[[args]]$.
-\end{definition}
-
-
-\begin{definition}[Number of Equivalence Nodes]
-    For a tree $T$ inferring
-    a declarative typing judgement,
-    let us a function $\eqNodes{T}$
-    as the number of nodes in $T$ labeled with \ruleref{\ottdruleDTPEquivLabel} or 
-    \ruleref{\ottdruleDTNEquivLabel}.
-\end{definition}
-
-\begin{definition}[Metric]
-    \label{def:decl-typing-metric}
-    For a tree $T$ inferring
-    a declarative typing judgement $J$,
-    let us define a metric $\metric{T}$
-    as a pair $(\size{J}, \eqNodes{T})$.
-\end{definition}
-
-\begin{lemma}[Declarative typing is preserved under context equivalence]
-    \label{lemma:decl-typing-context-equiv}
-    Assuming $[[Γ ⊢ Φ1]]$, $[[Γ ⊢ Φ2]]$, and $[[Γ ⊢ Φ1 ≈ Φ2]]$:
-    \begin{itemize}
-        \item [$+$] 
-            for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ v : iP]]$, 
-            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ v : iP]]$.
-        \item [$-$] 
-            for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ c : iN]]$, 
-            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ c : iN]]$.
-        \item [$\bullet$] 
-            for any tree $T_1$ inferring $[[Γ ; Φ1 ⊢ iN ● args ⇒> iM]]$, 
-            there exists a tree $T_2$ inferring $[[Γ ; Φ2 ⊢ iN ● args ⇒> iM]]$.
-    \end{itemize}
-\end{lemma}
+\lemmaDeclTypingContextEquiv*
 \begin{proof}
     Let us prove it by induction on the $\metric{T_1}$.
     Let us consider the last rule applied in $T_1$ (i.e., its root node).

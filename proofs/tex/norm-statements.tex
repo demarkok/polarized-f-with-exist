@@ -1,0 +1,191 @@
+\begin{restatable}[Normalization is deterministic]{observation}{obsNormDeterministic}
+    \label{obs:norm-deterministic}
+    If $[[nf(iN) = iM]]$ and $[[nf(iN) = iM']]$ then $[[iM = iM']]$.
+    If $[[nf(iP) = iQ]]$ and $[[nf(iP) = iQ']]$ then $[[iQ = iQ']]$.
+    This way, we can use normalization as a function.
+\end{restatable}
+
+
+\begin{restatable}{lemma}{lemmaFvNf}
+    \label{lemma:fv-nf}
+    Free variables are not changed by the normalization
+    \begin{itemize}
+    \item[$-$] $[[fv iN = fv nf(iN)]]$
+    \item[$+$] $[[fv iP = fv nf(iP)]]$
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Soundness of normalization]{lemma}{lemmaNormSoundness}
+    \label{lemma:normalization-soundness}
+    \hfill
+    \begin{itemize}
+        \item[$-$] $[[iN ≈ nf(iN)]]$
+        \item[$+$] $[[iP ≈ nf(iP)]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Normalization preserves well-formedness]{corollary}{corollaryWfNf}
+    \label{corollary:wf-nf}
+    \hfill
+    \begin{itemize}
+    \item[$+$] $[[Γ ⊢ iP]] \iff [[Γ ⊢ nf(iP)]]$,
+    \item[$-$] $[[Γ ⊢ iN]] \iff [[Γ ⊢ nf(iN)]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Normalization preserves well-formedness of substitution]{corollary}{corollaryWfSNf}
+    \label{corollary:wf-s-nf}
+    \hfill \\
+     $[[Γ2 ⊢ σ : Γ1]] \iff [[Γ2 ⊢ nf(σ) : Γ1]]$
+\end{restatable}
+
+\begin{restatable}[Normalization preserves substitution signature]{lemma}{lemmaNormSubstSig}
+    \label{lemma:norm-subst-sig}
+    Suppose that $[[σ]]$ is a substitution, $[[Γ1]]$ and $[[Γ2]]$ are contexts.
+    Then $[[Γ2 ⊢ σ : Γ1]]$ implies $[[Γ2 ⊢ nf(σ) : Γ1]]$.
+\end{restatable}
+
+
+\begin{restatable}[Normalization is sound w.r.t. subtyping-induced equivalence]{corollary}{corollaryNfSoundWrtSubtEquiv}
+    \label{corollary:nf-sound-wrt-subt-equiv}
+    \hfill
+    \begin{itemize}
+        \item [$+$] if $[[Γ ⊢ iP]]$ then $[[Γ ⊢ iP ≈ nf(iP)]]$,
+        \item [$-$] if $[[Γ ⊢ iN]]$ then $[[Γ ⊢ iN ≈ nf(iN)]]$.
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Normalization preserves subtyping]{corollary}{corollaryNfPresSubt}
+    \label{corollary:nf-pres-subt}
+    Assuming all the types are well-formed in context $[[Γ]]$,
+    \begin{itemize}
+        \item [$+$] $[[Γ ⊢ iP ≥ iQ]] \iff [[Γ ⊢ nf(iP) ≥ nf(iQ)]]$,
+        \item [$-$] $[[Γ ⊢ iN ≤ iM]] \iff [[Γ ⊢ nf(iN) ≤ nf(iM)]]$.
+    \end{itemize}
+\end{restatable}
+
+
+
+\begin{restatable}[Normalization preserves ordering]{corollary}{corollaryNormPreservesOrdering}
+    \label{corollary:normalization-ord}
+    For any $[[varset]]$,
+    \begin{itemize}
+    \item[$-$] $[[ord varset in nf(iN)]] = [[ord varset in iM]]$
+    \item[$+$] $[[ord varset in nf(iP)]] = [[ord varset in iQ]]$
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Distributivity of normalization over substitution]{lemma}{lemmaNormSubstDistr}
+    \label{lemma:norm-subst-distr} 
+    Normalization of a term distributes over substitution.
+    Suppose that $[[σ]]$ is a substitution, $[[iN]]$ and $[[iP]]$ are types. Then
+        \begin{itemize}
+            \item[$-$] $[[nf([σ]iN)]] = [[ [nf(σ)] nf(iN) ]]$
+            \item[$+$] $[[nf([σ]iP)]] = [[ [nf(σ)] nf(iP) ]]$
+    \end{itemize}
+    where $[[nf(σ)]]$ means pointwise normalization: $[[ [nf(σ)] α⁻]] = [[nf([σ]α⁻)]]$.
+\end{restatable}
+
+\begin{restatable}[Commutativity of normalization and renaming]{corollary}{lemmaNormSubstCommute}
+    \label{lemma:norm-subst-commute} 
+    Normalization of a term commutes with renaming.
+    Suppose that $\mu$ is a bijection between two sets of variables
+    $\mu : A \leftrightarrow B$. Then
+    \begin{itemize}
+        \item[$-$] $[[nf([mu]iN)]] = [[ [mu] nf(iN) ]]$
+        \item[$+$] $[[nf([mu]iP)]] = [[ [mu] nf(iP) ]]$
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Completeness of Normalization \wrt Declarative Equivalence]{lemma}{lemmaNormalizationCompleteness}
+    \label{lemma:normalization-completeness}
+    Normalization returns the same representative for equivalent types.
+
+    \begin{itemize}
+        \item[$-$] If $[[iN ≈ iM]]$ then $[[nf(iN)]] = [[nf(iM)]]$,
+        \item[$+$] if $[[iP ≈ iQ]]$ then $[[nf(iP)]] = [[nf(iQ)]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Algorithmization of Declarative Equivalence]{lemma}{lemmaDeclEquivAlg}
+    \label{lemma:decl-equiv-algorithmization}
+    Declarative equivalence is the equality of normal forms. 
+    \begin{itemize}
+        \item[$+$] $[[iP ≈ iQ]] \iff [[nf(iP) = nf(iQ)]]$,
+        \item[$-$] $[[iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Completeness of Normalization \wrt Subtyping-Induced Equivalence]{corollary}{corollaryNfCompleteWrtSubtEquiv}
+    \label{corollary:nf-complete-wrt-subt-equiv}
+    Assuming all the types below are well-formed in $[[Γ]]$:
+    \begin{itemize}
+        \item [$+$] if $[[Γ ⊢ iP ≈ iQ]]$ then $[[nf(iP) = nf(iQ)]]$,
+        \item [$-$] if $[[Γ ⊢ iN ≈ iM]]$ then $[[nf(iN) = nf(iM)]]$.
+    \end{itemize}
+\end{restatable}  
+
+
+
+
+
+
+\begin{restatable}[Idempotence of normalization]{lemma}{lemmaNormIdemp}
+    \label{lemma:norm-idemp}
+    Normalization is idempotent
+    \begin{itemize}
+    \item[$-$] $[[nf(nf(iN))]] = [[nf(iN)]]$
+    \item[$+$] $[[nf(nf(iP))]] = [[nf(iP)]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}{lemma}{lemmaNormalAfterSubst}
+    \label{lemma:normal-after-subst}
+    The result of a substitution is normalized if and only if the initial type and
+    the substitution are normalized.
+
+    Suppose that $[[σ]]$ is a substitution  $[[Γ2 ⊢ σ : Γ1]]$,
+    $[[iP]]$ is a positive type ($[[Γ1 ⊢ iP]]$),
+    $[[iN]]$ is a negative type ($[[Γ1 ⊢ iN]]$). Then
+    \begin{itemize}
+    \item[$+$]
+        $[[ [σ]iP  ]] \text{ is normal} \iff
+        \begin{cases}
+            [[σ|fv(iP)]] &\text{is normal}\\
+            [[iP]]       &\text{is normal}\\
+        \end{cases} $
+    \item[$-$]
+        $[[ [σ]iN  ]] \text{is normal} \iff
+        \begin{cases}
+            [[σ|fv(iN)]] &\text{is normal}\\
+            [[iN]]       &\text{is normal}\\
+        \end{cases} $
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Algorithmization of subtyping-induced equivalence]{lemma}{lemmaSubtInducedEquivAlg}
+    \label{lemma:subt-equiv-algorithmization}
+    Mutual subtyping is the equality of normal forms.
+ Assuming all the types below are well-formed in $[[Γ]]$:
+    \begin{itemize}
+        \item [$+$] $[[Γ ⊢ iP ≈ iQ]] \iff [[nf(iP) = nf(iQ)]]$,
+        \item [$-$] $[[Γ ⊢ iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$.
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Substitution preserves declarative equivalence]{corollary}{corSubstPresDeclEquiv}
+    \label{corollary:subst-pres-decl-equiv}
+    Suppose that $[[σ]]$ is a substitution. Then
+        \begin{itemize}
+            \item[$+$] $[[iP ≈ iQ]]$ implies $[[ [σ]iP ≈ [σ]iQ ]]$
+            \item[$-$] $[[iN ≈ iM]]$ implies $[[ [σ]iN ≈ [σ]iM ]]$
+        \end{itemize}
+\end{restatable}
+
+

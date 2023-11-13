@@ -1,0 +1,34 @@
+\begin{restatable}[Algorithmic type well-formedness is invariant under equivalence]{lemma}{lemmaWfEquivAlgo}
+    \label{lemma:wf-equiv-algo}
+    Mutual subtyping implies declarative equivalence.
+    \begin{itemize}
+    \item[$+$] if $[[uP ≈ uQ]]$ then $[[Γ; Ξ ⊢ uP]] \iff [[Γ; Ξ ⊢ uQ]]$,
+    \item[$-$] if $[[uN ≈ uM]]$ then $[[Γ; Ξ ⊢ uN]] \iff [[Γ; Ξ ⊢ uM]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Normalization preserves well-formedness of algorithmic types]{corollary}{corollaryWfNfAlgo}
+    \label{corollary:wf-nf-algo}
+    \hfill\\
+    \begin{itemize}
+        \item[$+$] $[[Γ; Ξ ⊢ uP]] \iff [[Γ; Ξ ⊢ nf(uP)]]$,
+        \item[$-$] $[[Γ; Ξ ⊢ uN]] \iff [[Γ; Ξ ⊢ nf(uN)]]$
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Normalization preserves the signature of the algorithmic substitution]{corollary}{corollaryNormSubstSigAlgo}
+    \label{corollary:norm-subst-sig-algo}
+    \hfill\\
+    $[[Θ ⊢ uσ : Ξ]] \iff [[Θ ⊢ nf(uσ) : Ξ]]$,
+    $[[Γ ⊢ uσ : Ξ]] \iff [[Γ ⊢ nf(uσ) : Ξ]]$.
+\end{restatable}
+
+
+\begin{restatable}[Algorithmic substitution equivalence becomes equality after normalization]{corollary}{corollarySubstSubtEquivAlg}
+    \label{corollary:subst-subt-equiv-algorithmization}
+    Suppose that $[[Θ ⊢ uσ1 : Ξ']]$ and $[[Θ ⊢ uσ2 : Ξ']]$ are algorithmic substitutions
+    and $[[Ξ ⊆ Ξ']]$. 
+    Then $[[Θ ⊢ uσ1 ≈ uσ2 : Ξ]] \iff [[nf(uσ1)|Ξ = nf(uσ2)|Ξ]]$.
+\end{restatable}
+

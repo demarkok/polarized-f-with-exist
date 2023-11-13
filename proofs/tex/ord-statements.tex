@@ -1,0 +1,87 @@
+\begin{restatable}[Ordering is deterministic]{observation}{obsOrdDeterministic}
+    \label{obs:ord-deterministic}
+    If $[[ord varset in iN = ordVars1]]$ and $[[ord varset in iN = ordVars2]]$ then $[[ordVars1 = ordVars2]]$.
+    If $[[ord varset in iP = ordVars1]]$ and $[[ord varset in iP = ordVars2]]$ then $[[ordVars1 = ordVars2]]$.
+    This way, we can use $[[ord varset in iN]]$ and as a function on $[[iN]]$,
+    and $[[ord varset in iP]]$ as a function on $[[iP]]$.
+\end{restatable}
+
+\begin{restatable}[Soundness of variable ordering]{lemma}{lemOrdSoundness}
+  \label{lemma:ord-soundness}
+  Variable ordering extracts used free variables.
+  \begin{itemize}
+    \item[$-$] $[[ {ord varset in iN} ]] = [[varset ∩ fv iN]]$ (as sets)
+    \item[$+$] $[[ {ord varset in iP} ]] = [[varset ∩ fv iP]]$ (as sets)
+  \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Additivity of ordering]{corollary}{corOrdAdditivity}
+  \label{corollary:ord-additivity}
+  Variable ordering is additive (in terms of set union) with respect to its first argument.
+  \begin{itemize}
+    \item[$-$] $[[ {ord (varset1 ∪ varset2) in iN} 
+                = 
+                {ord varset1 in iN} ∪ {ord varset2 in iN}]]$ (as sets)
+    \item[$+$] $[[{ord (varset1 ∪ varset2) in iP}
+                =
+                {ord varset1 in iP} ∪ {ord varset2 in iP}]]$ (as sets)
+
+  \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Weakening of ordering]{lemma}{lemOrdWeakening}
+  \label{corollary:ord-weakening}
+  Only used variables matter in the first argument of the ordering,
+  \begin{itemize}
+    \item[$-$] $[[ ord (varset ∩ fv iN) in iN ]] = [[ ord varset in iN ]]$
+    \item[$+$] $[[ ord (varset ∩ fv iP) in iP ]] = [[ ord varset in iP ]]$
+  \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Idempotency of ordering]{corollary}{corOrdIdemp}
+  \label{corollary:ord-idemp}
+  \hfill
+  \begin{itemize}
+    \item[$-$] If $[[ ord varset in iN = ordVars ]]$ then 
+      $[[ ord {ordVars} in iN = ordVars ]]$,
+    \item[$+$] If $[[ ord varset in iP = ordVars ]]$ then 
+      $[[ ord {ordVars} in iP = ordVars ]]$;
+  \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Distributivity of renaming over variable ordering]{lemma}{lemDistrMuOrd}
+  \label{lemma:distr-mu-ord}
+  Suppose that $\mu$ is a bijection between two sets of variables
+  $\mu : A \leftrightarrow B$.
+  
+  \begin{itemize}
+  \item[$-$]
+    If $[[mu]]$ is collision-free on $[[varset]]$ and $[[fv iN]]$ then
+    $[[ [mu] (ord varset in iN) ]] = [[ord ([mu] varset) in [mu] iN ]]$
+  \item[$+$]
+    If $[[mu]]$ is collision-free on $[[varset]]$ and $[[fv iP]]$ then
+    $[[ [mu] (ord varset in iP) ]] = [[ord ([mu] varset) in [mu] iP ]]$
+  \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Ordering is not affected by independent substitutions]{lemma}{lemOrdSigma}
+    \label{lemma:ord-sigma}
+    Suppose that $[[Γ2 ⊢ σ : Γ1]]$, i.e. $[[σ]]$ maps variables from $[[Γ1]]$ into types
+    taking free variables from $[[Γ2]]$, and $[[varset]]$ is a set of variables
+    disjoint with both $[[Γ1]]$ and $[[Γ2]]$, 
+    $[[iN]]$ and $[[iP]]$ are types. Then
+        \begin{itemize}
+    \item[$-$] $[[ ord varset in [σ]iN ]] = [[ord varset in iN ]]$
+    \item[$+$] $[[ ord varset in [σ]iP ]] = [[ord varset in iP ]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Completeness of variable ordering]{lemma}{lemOrdCompleteness}
+    \label{lemma:ord-completeness}
+    Variable ordering is invariant under equivalence. For arbitrary $[[varset]]$,
+     \begin{itemize}
+    \item[$-$] If $[[iN ≈ iM]]$ then $[[ord varset in iN]] = [[ord varset in iM]]$ (as lists)
+    \item[$+$] If $[[iP ≈ iQ]]$ then $[[ord varset in iP]] = [[ord varset in iQ]]$ (as lists)
+    \end{itemize}
+\end{restatable}

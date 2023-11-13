@@ -1,11 +1,4 @@
-\begin{lemma}[Free Variable Propagation] \label{lemma:fv-propagation}
-  In the judgments of negative subtyping or positive supertyping,
-  free variables propagate left-to-right. For a context $[[Γ]]$,
-  \begin{itemize}
-    \item $-$ if $[[Γ ⊢ iN ≤ iM]]$ then $[[fv(iN)]] \subseteq [[fv(iM)]]$
-    \item $+$ if $[[Γ ⊢ iP ≥ iQ]]$ then $[[fv(iP)]] \subseteq [[fv(iQ)]]$
-  \end{itemize}
-\end{lemma}
+\lemmaFvPropagation*
 \begin{proof}
   Mutual induction on $[[Γ ⊢ iN ≤ iM]]$ and $[[Γ ⊢ iP ≥ iQ]]$.
   \begin{caseof}
@@ -38,28 +31,15 @@
   \end{caseof}
 \end{proof}
 
-\begin{corollary}[Free Variables of mutual subtypes] \label{corollary:fv-mut-sub}
-  \hfill
-  \begin{itemize}
-    \item [$-$] If $[[Γ ⊢ iN ≈ iM]]$ then $[[fv iN]] = [[fv iM]]$, 
-    \item [$+$] If $[[Γ ⊢ iP ≈ iQ]]$ then $[[fv iP]] = [[fv iQ]]$
-  \end{itemize}
-\end{corollary}
+\corollaryFvMutSub*
 
-\begin{lemma}[Decomposition of quantifier rules]
-  \label{lemma:quant-rule-decomposition}
-  Assuming that $[[pas]]$, $[[pbs]]$, $[[nas]]$, and $[[nas]]$ are disjoint from $[[Γ]]$,
-  \begin{itemize}
-    \item [$-_{R}$] $[[Γ ⊢ iN ≤ ∀pbs.iM]]$ holds if and only if $[[Γ, pbs ⊢ iN ≤ iM]]$;
-    \item [$+_{R}$] $[[Γ ⊢ iP ≥ ∃nbs.iQ]]$ holds if and only if $[[Γ, nbs ⊢ iP ≥ iQ]]$;
-    \item [$-_{L}$] suppose $[[iM]] \neq [[∀]]\dots$
-      then $[[Γ ⊢ ∀pas.iN ≤ iM]]$ holds if and only if $[[Γ ⊢ [iPs/pas]iN ≤ iM]]$
-      for some $[[Γ ⊢ iPs]]$;
-    \item [$+_{L}$] suppose $[[iQ]] \neq [[∃]]\dots$
-      then $[[Γ ⊢ ∃nas.iP ≥ iQ]]$ holds if and only if $[[Γ ⊢ [iNs/nas]iP ≥ iQ]]$
-      for some $[[Γ ⊢ iNs]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaMutSubTypesWfEquiv*
+\begin{proof}
+  From \cref{lemma:wf-ctxt-equiv,corollary:fv-mut-sub}.
+\end{proof}
+
+
+\lemmaQuantRuleDecomposition*
 \begin{proof}
   \hfill
   \begin{itemize}
@@ -120,20 +100,7 @@
   \end{itemize}
 \end{proof}
 
-\begin{corollary}[Redundant quantifier elimination]
-  \label{corollary:red-quant-elim}
-  \hfill
-  \begin{itemize}
-    \item [$-_{L}$] Suppose that $[[ {pas} ∩ fv(iN) = ∅]]$ then 
-      $[[Γ ⊢ ∀pas.iN ≤ iM]]$ holds if and only if $[[Γ ⊢ iN ≤ iM]]$;
-    \item [$-_{R}$] Suppose that $[[ {pas} ∩ fv(iM) = ∅]]$ then 
-      $[[Γ ⊢ iN ≤ ∀pas.iM]]$ holds if and only if $[[Γ ⊢ iN ≤ iM]]$;
-    \item [$+_{L}$] Suppose that $[[ {nas} ∩ fv(iP) = ∅]]$ then
-      $[[Γ ⊢ ∃nas.iP ≥ iQ]]$ holds if and only if $[[Γ ⊢ iP ≥ iQ]]$.
-    \item [$+_{R}$] Suppose that $[[ {nas} ∩ fv(iQ) = ∅]]$ then 
-      $[[Γ ⊢ iP ≥ ∃nas.iQ]]$ holds if and only if $[[Γ ⊢ iP ≥ iQ]]$.
-  \end{itemize}
-\end{corollary}
+\corollaryRedQuantElim*
 \begin{proof}
   \begin{itemize}
     \item [$-_{R}$] Suppose that $[[ {pas} ∩ fv(iM) = ∅]]$ then 
@@ -161,14 +128,7 @@
   \end{itemize}
 \end{proof}
 
-\begin{lemma}[Subtypes and supertypes of a variable]
-  \label{lemma:var-subt}
-  Assuming $[[Γ ⊢  α⁻]]$, $[[Γ ⊢ α⁺]]$, $[[Γ ⊢ iN]]$, and $[[Γ ⊢ iP]]$,
-  \begin{itemize}
-  \item[$+$] if $[[Γ ⊢ iP ≥ ∃nas.α⁺]]$ or $[[Γ ⊢ ∃nas.α⁺ ≥ iP ]]$ then $[[iP]] = [[∃nbs.α⁺]]$ (for some potentially empty $[[nbs]]$)
-  \item[$-$] if $[[Γ ⊢ iN ≤ ∀pas.α⁻]]$ or $[[Γ ⊢ ∀pas.α⁻ ≤ iN ]]$ then $[[iN]] = [[∀pbs.α⁻]]$ (for some potentially empty $[[pbs]]$)
-  \end{itemize}
-\end{lemma}
+\lemmaVarSubt*
 \begin{proof}
   We prove by induction on the tree
   inferring $[[Γ ⊢ iP ≥ ∃nas.α⁺]]$ or $[[Γ ⊢ ∃nas.α⁺ ≥ iP ]]$ or
@@ -217,32 +177,14 @@
   \end{caseof}
 \end{proof}
 
-\begin{corollary}[Variables have no proper subtypes and supertypes]
-  \label{corollary:vars-no-proper-subtypes}
-  Assuming that all mentioned types are well-formed in $[[Γ]]$,
-  \begin{align*}
-    [[Γ ⊢ iP ≥ α⁺]] ~ &\iff ~ [[iP = ∃nbs.α⁺]]  ~ \iff ~ [[Γ ⊢ iP ≈ α⁺]] ~ \iff ~ [[iP ≈ α⁺]]\\
-    [[Γ ⊢ α⁺≥ iP]]  ~ &\iff ~ [[iP = ∃nbs.α⁺]]  ~ \iff ~ [[Γ ⊢ iP ≈ α⁺]] ~ \iff ~ [[iP ≈ α⁺]]\\
-    [[Γ ⊢ iN ≤ α⁻]] ~ &\iff ~ [[iN = ∀pbs.α⁻]]  ~ \iff ~ [[Γ ⊢ iN ≈ α⁻]] ~ \iff ~ [[iN ≈ α⁻]]\\
-    [[Γ ⊢ α⁻ ≤ iN]] ~ &\iff ~ [[iN = ∀pbs.α⁻]]  ~ \iff ~ [[Γ ⊢ iN ≈ α⁻]] ~ \iff ~ [[iN ≈ α⁻]]\\
-  \end{align*}
-\end{corollary}
+\corollaryVarsNoProperSubtypes*
 \begin{proof}
   Notice that $[[Γ ⊢ ∃nbs.α⁺ ≈ α⁺]]$ and $[[∃nbs.α⁺ ≈ α⁺]]$ and apply
   \cref{lemma:var-subt}.
 \end{proof}
 
 
-
-\begin{lemma}[Subtyping context irrelevance]
-  \label{lemma:subt-ctxt-irrelevance}
-  Suppose that all the mentioned types are well-formed in $[[Γ1]]$ and $[[Γ2]]$. 
-  Then 
-  \begin{enumerate}
-    \item[$+$] $[[Γ1 ⊢ iP ≥ iQ]]$ is equivalent to $[[Γ2 ⊢ iP ≥ iQ]]$;
-    \item[$-$] $[[Γ1 ⊢ iN ≤ iM]]$ is equivalent to $[[Γ2 ⊢ iN ≤ iM]]$.
-  \end{enumerate}
-\end{lemma}
+\lemmaSubtCtxtIrrelevance*
 \begin{proof}
   We prove it by induction on 
   the size of $[[Γ1 ⊢ iP ≥ iQ]]$ and mutually,
@@ -254,7 +196,7 @@
   corresponding rule $X$, then we apply the induction hypothesis to each premise,
   and build the inference tree (with $[[Γ2]]$) by the same rule $X$. 
 
-  Suppose that the judgement is inferred by \ruleref{\ottdruleDOneExistsLabel}.
+  Suppose that the judgment is inferred by \ruleref{\ottdruleDOneExistsLabel}.
   Then we are proving that $[[Γ1 ⊢ ∃nas.iP ≥ ∃nbs.iQ]]$ implies 
   $[[Γ2 ⊢ ∃nas.iP ≥ ∃nbs.iQ]]$ (the other implication is proven symmetrically).
 
@@ -324,7 +266,7 @@
     \item $[[Γi, nbs ⊢ [σ0]iP]]$, 
     \item $[[Γi, nbs ⊢ iQ]]$, and
     \item $[[Γ1, nbs ⊢ [σ0]iP ≥ iQ ]]$, 
-      notice that the tree inferring this judgement 
+      notice that the tree inferring this judgment 
       is the same tree inferring $[[Γ1, nbs ⊢ [σ]iP ≥ iQ ]]$ 
       (since $[[ [σ0]iP = [σ]iP]]$), i.e., 
       it is a subtree of $[[Γ1 ⊢ ∃nas.iP ≥ ∃nbs.iQ]]$.
@@ -339,27 +281,13 @@
 \end{proof}
 
 
-\begin{lemma}[Weakening of subtyping context]
-  \label{lemma:subt-weakening}
-  Suppose $[[Γ1]]$ and $[[Γ2]]$ are contexts 
-  and $[[ Γ1 ⊆ Γ2 ]]$.
-  Then 
-  \begin{enumerate}
-    \item [$+$] $[[Γ1 ⊢ iP ≥ iQ]]$ implies $[[Γ2 ⊢ iP ≥ iQ]]$;
-    \item [$-$] $[[Γ1 ⊢ iN ≤ iM]]$ implies $[[Γ2 ⊢ iN ≤ iM]]$.
-  \end{enumerate}
-\end{lemma}
+\lemmaSubtWeakening*
 \begin{proof}
+  By straightforward induction on the subtyping derivation.
+  The polymorphic cases follow from \cref{lemma:subst-range-weakening}.
 \end{proof}
 
-
-\begin{lemma}[Reflexivity of subtyping] \label{lemma:subtyping-reflexivity}
-  Assuming all the types are well-formed in $[[Γ]]$,
-  \begin{itemize}
-    \item [$-$] $[[Γ ⊢ iN ≤ iN]]$
-    \item [$+$] $[[Γ ⊢ iP ≥ iP]]$
-  \end{itemize}
-\end{lemma}
+\lemmaSubtypingReflexivity*
 \begin{proof}
   Let us prove it by the size of $[[iN]]$ and mutually, $[[iP]]$.
   \begin{caseof}
@@ -387,15 +315,8 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Substitution preserves subtyipng]
-  \label{lemma:subst-pres-subt}
-  Suppose that all mentioned types are well-formed in $[[Γ1]]$,
-  and $[[σ]]$ is a substitution $[[Γ2 ⊢ σ : Γ1]]$.
-  \begin{itemize}
-    \item [$-$] If $[[Γ1 ⊢ iN ≤ iM]]$ then $[[Γ2 ⊢ [σ]iN ≤ [σ]iM]]$.
-    \item [$+$] If $[[Γ1 ⊢ iP ≥ iQ]]$ then $[[Γ2 ⊢ [σ]iP ≥ [σ]iQ]]$.
-  \end{itemize}
-\end{lemma}
+
+\lemmaSubstPresSubt*
 \begin{proof}
   We prove it by induction on the size of the derivation of $[[Γ1 ⊢ iN ≤ iM]]$
   and mutually, $[[Γ1 ⊢ iP ≥ iQ]]$. Let us consider the last rule 
@@ -455,26 +376,9 @@
   \end{caseof}
 \end{proof}
 
-\begin{corollary}[Substitution preserves subtyping induced equivalence]
-  \label{corollary:subst-pres-equiv}
-  Suppose that $[[Γ ⊢ σ : Γ1]]$. Then
-    \begin{itemize}
-      \item[$+$] if $[[Γ1 ⊢ iP]]$,~ $[[Γ1 ⊢ iQ]]$,~ and $[[Γ1 ⊢ iP ≈ iQ]]$ ~ 
-        then $[[Γ ⊢ [σ]iP ≈ [σ]iQ]]$
-      \item[$-$] if $[[Γ1 ⊢ iN]]$,~ $[[Γ1 ⊢ iM]]$,~ and $[[Γ1 ⊢ iN ≈ iM]]$ ~ 
-        then $[[Γ ⊢ [σ]iN ≈ [σ]iM]]$
-    \end{itemize}
-\end{corollary}
+\corollarySubstPresEquiv*
 
-
-\begin{lemma}[Transitivity of subtyping] 
-  \label{lemma:subtyping-transitivity}
-  Assuming the types are well-formed in $[[Γ]]$,
-  \begin{itemize}
-    \item[$-$] if $[[Γ ⊢ iN1 ≤ iN2]]$ and $[[Γ ⊢ iN2 ≤ iN3]]$ then $[[Γ ⊢ iN1 ≤ iN3]]$,
-    \item[$+$] if $[[Γ ⊢ iP1 ≥ iP2]]$ and $[[Γ ⊢ iP2 ≥ iP3]]$ then $[[Γ ⊢ iP1 ≥ iP3]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaSubtypingTransitivity*
 \begin{proof}
   To prove it, we formulate a stronger property, 
   which will imply the required one, taking $[[σ]] = [[Γ ⊢ id : Γ]]$.
@@ -507,7 +411,7 @@
     \item Let us consider the case when $[[iM2 = ∀pbs2.α⁻]]$.
       This case is symmetric to the previous one. Notice that 
       \cref{lemma:var-subt,corollary:red-quant-elim} are agnostic to the 
-      side on which the the quantifiers occur, and thus, 
+      side on which the quantifiers occur, and thus, 
       the proof stays the same. 
     \item Let us decompose the types, by extracting the outer quantifiers:
       \begin{itemize}
@@ -634,14 +538,8 @@
       This way, by \ruleref{\ottdruleDOneArrowLabel}, $[[Γ' ⊢ [σ]iP → [σ]iN' ≤ [σ]iR → [σ]iK']]$,
       that is $[[Γ' ⊢ [σ]iN ≤ [σ]iK]]$, as required.
   \end{caseof}
-  After that we consider all the 
-  analogous positive cases, and prove them symmetrically.
+  After that, we consider all the 
+  analogous positive cases and prove them symmetrically.
 \end{proof}
 
-\begin{corollary}[Transitivity of equivalence] \label{corollary:equivalence-transitivity}
-  Assuming the types are well-formed in $[[Γ]]$,
-  \begin{itemize}
-    \item[$-$] if $[[Γ ⊢ iN1 ≈ iN2]]$ and $[[Γ ⊢ iN2 ≈ iN3]]$ then $[[Γ ⊢ iN1 ≈ iN3]]$,
-    \item[$+$] if $[[Γ ⊢ iP1 ≈ iP2]]$ and $[[Γ ⊢ iP2 ≈ iP3]]$ then $[[Γ ⊢ iP1 ≈ iP3]]$.
-  \end{itemize}
-\end{corollary}
+\corollaryEquivalenceTransitivity*

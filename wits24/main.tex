@@ -1,0 +1,95 @@
+\documentclass[sigplan,natbib=false,screen]{acmart}
+\settopmatter{printacmref=false}
+\usepackage{../bibliography}
+\input{../prelude.tex}
+
+\title{Local Type Inference for Polarised System F with Existentials}
+
+\author{Ilya Kaysin}
+
+\begin{document}
+
+\maketitle
+
+Type inference for polymorphic lambda calculi has been extensively
+researched, but handling \emph{existential} types remains under-studied.
+Our work presents a novel type inference algorithm for a 
+variant of System F with impredicative polymorphism and first-class
+existential types (F$_{\pm}^{\exists}$).
+Describing the algorithm on a low level, we resolve the challenges that 
+an implementer would face. In particular, the first-class existentials 
+break the standard algorithm invariants, complicate the constraint resolution,
+and require anti-unification---a novel for this area technique.
+
+\paragraph{Polarization}
+While powerful, the combination of impredicativity and polymorphism 
+makes type inference undecidable. To address this, we work in a variant 
+of a Call-By-Push-Value system, that stratifies types into positive ($[[iP]]$) 
+and negative ($[[iN]]$) kinds. 
+The positive types correspond to values (for example, integers, products, 
+and existential $[[∃]]$-types),
+and the negative types are computations 
+(in particular, functions and polymorphic $[[∀]]$-types).
+This stratification lets us formulate a typing specification that is decidable.
+
+\paragraph{Algorithm Structure}
+The algorithm has four main components: subtyping, unification, anti-unification
+and type inference. It introduces novel techniques like mixed-polarity
+unification and upgrade-based anti-unification enabled by CBPV's polarized
+structure. These differ significantly from traditional Hindley-Milner style
+inference. In particular, CBPV's restrictions break some key invariants relied
+on by HM algorithms like stability of type variables. This requires mixing
+unification and anti-unification in non-standard ways.
+
+
+
+
+\paragraph{Subtyping}
+An important component of the algorithm is the subtyping relation.
+The polymorphism it induces is driven by instantiation:
+$[[∀α⁺.iN]]$ is a subtype of any of the instantiations $[[ [iP/α⁺]iN]]$,
+and dually, $[[∃α⁻.iP]]$ is a \emph{super}type of any of the 
+instantiations $[[ [iN/α⁻]iP]]$.
+
+When checking for subtyping of $\forall\alpha.P \leqslant Q$
+or $\exists\alpha.N \geqslant M$, one must instantiate
+$\alpha$ with a type that is not known beforehand. 
+Standardly, we handle it by replacing $\alpha$ with a 
+\emph{meta}variable $[[α̂⁺]]$, and then we recursively accumulate the 
+constraints on it. Typically, the constraints are resolved by unification.
+For example, the constraint $[[α̂⁺]]\rightarrow[[iN]]$ is resolved by 
+unification to $[[α̂⁺]] = [[iP]]$.
+
+
+\paragraph{Anti-Unificaiton}
+However, in an impredicative system, unification is no longer sufficient.    
+For instance, the conjunction of constraints 
+$\alpha \geqslant (Int \rightarrow  Int)$ and $\alpha \geqslant (Bool \rightarrow Bool)$
+has a solution $\alpha = \exists \beta. \beta \rightarrow \beta$.
+This raises the need for \emph{anti-unification}: to find the least upper bound, 
+one must find the most concrete pattern that fits both types and then 
+quantify over the placeholders by $\exists$.
+
+Our algorithm performs local type inference, instantiating quantifiers based
+only on information available at each application site. This provides clear
+error messages, modular checking and avoids complex heuristics like those used
+by global inference algorithms. The algorithm supports implicit
+elimination universal quantifiers ($\forall$) and implicit construction of the 
+existential ($\exists$) quantifiers without type annotations. 
+We prove the algorithm is sound and complete relative to a declarative specification. 
+
+
+\paragraph{Extensions}
+
+We also explore extensions to the core algorithm.
+One is allowing the quantifiers to be bounded: in particular, 
+the universally quantified variables can have 
+a lower bound: $\forall \alpha \geqslant P. \cdots$ 
+limits the types that can be substituted for $\alpha$.
+Another is allowing lambda abstractions to omit type annotations,
+which requires bidirectionalization of the type system
+and complicates constraint resolution. 
+
+\paragraph{Conclusion}
+
+\end{document}

@@ -1,0 +1,32 @@
+\begin{restatable}[Any constraint is satisfiable]{lemma}{lemmaConstraintSat}
+    \label{lemma:constraint-sat}
+    Suppose that $[[Θ ⊢ SC]]$
+    and $[[Ξ]]$ is a set such that
+    $[[dom(SC)]] \subseteq [[Ξ]] \subseteq [[dom(Θ)]]$.
+    Then there exists 
+    $[[uσ]]$ such that 
+    $[[ Θ  ⊢ uσ : Ξ ]]$ and
+    $[[ Θ  ⊢ uσ : SC ]]$.
+\end{restatable}
+
+\begin{restatable}[Constraint Entry Satisfaction is Stable under Equivalence]{lemma}{lemmaEntrySatEquiv}
+    \label{lemma:entry-sat-equiv}
+    \begin{itemize}
+        \item [$-$] If $[[Γ ⊢ iN1 : scE]]$ and $[[Γ ⊢ iN1 ≈ iN2]]$ then $[[Γ ⊢ iN2 : scE]]$.
+        \item [$+$] If $[[Γ ⊢ iP1 : scE]]$ and $[[Γ ⊢ iP1 ≈ iP2]]$ then $[[Γ ⊢ iP2 : scE]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Constraint Satisfaction is stable under Equivalence]{corollary}{corollarySatEquiv}
+    \label{corollary:sat-equiv}
+    \hfill\\
+    If $[[ Θ ⊢ uσ1 : SC ]]$ and $[[Θ ⊢ uσ1 ≈ uσ2 : dom(SC) ]]$ then $[[ Θ ⊢ uσ2 : SC ]]$;\\
+    if $[[ Θ ⊢ uσ1 : UC ]]$ and $[[Θ ⊢ uσ1 ≈ uσ2 : dom(SC) ]]$ then $[[ Θ ⊢ uσ2 : UC ]]$.
+\end{restatable}
+
+\begin{restatable}[Normalization preserves Constraint Satisfaction]{corollary}{corollaryNfSat}
+    \label{corollary:nf-sat}
+    \hfill\\
+    If $[[Θ ⊢ uσ : SC]]$ then $[[Θ  ⊢ nf(uσ) : SC]]$;\\
+    if $[[Θ ⊢ uσ : UC]]$ then $[[Θ  ⊢ nf(uσ) : UC]]$.
+\end{restatable}

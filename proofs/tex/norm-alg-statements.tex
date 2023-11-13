@@ -1,0 +1,29 @@
+\begin{restatable}[Determinicity of typing algorithm]{lemma}{lemmaTypingDeterminicity}
+    \label{lemma:typing-determinicity}
+    Suppose that $[[Γ ⊢ Φ]]$ and $[[Γ ⊢ Θ]]$. Then 
+    \begin{itemize}
+        \item [$+$] If $[[Γ; Φ ⊨ v : iP]]$ and $[[Γ; Φ ⊨ v : iP']]$ then $[[iP = iP']]$.
+        \item [$-$] If $[[Γ; Φ ⊨ c : iN]]$ and $[[Γ; Φ ⊨ c : iN']]$ then $[[iN = iN']]$.
+        \item If $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$ and 
+            $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM' ⫤ Θ'; SC']]$ then 
+            $[[uM = uM']]$, $[[Θ]] = [[Θ']]$, and $[[SC]] =[[SC']]$.  
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Algorithmic variables are not changed by the normalization]{lemma}{lemmaUVNF}
+    \label{lemma:uv-nf}
+    \hfill\\
+    \begin{itemize}
+    \item[$-$] $[[uv uN]] \equiv [[uv nf(uN)]]$
+    \item[$+$] $[[uv uP]] \equiv [[uv nf(uP)]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Soundness of normalization of algorithmic types]{lemma}{lemmaNormalizationSoundnessAlg}
+    \label{lemma:normalization-soundness-alg}
+    \hfill
+    \begin{itemize}
+        \item[$-$] $[[uN ≈ nf(uN)]]$
+        \item[$+$] $[[uP ≈ nf(uP)]]$
+    \end{itemize}
+\end{restatable}

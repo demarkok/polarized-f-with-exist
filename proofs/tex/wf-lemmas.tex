@@ -1,12 +1,4 @@
-\begin{lemma}[Soundness of type well-formedness]
-    \label{lemma:wf-soundness}
-    \hfill
-
-  \begin{itemize}
-    \item[$+$] if $[[Γ ⊢ iP]]$ then $[[fv(iP) ⊆ Γ]]$;
-    \item[$-$] if $[[Γ ⊢ iN]]$ then $[[fv(iN) ⊆ Γ]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaWfSoundness*
 \begin{proof}
   The proof is done by a simple structural induction on 
   $[[Γ⊢ iP]]$ and mutually, $[[Γ ⊢ iN]]$.
@@ -25,30 +17,12 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Completeness of type well-formedness]
-  \label{lemma:wf-ctxt-equiv}
-
-  In the well-formedness judgment, only used variables matter:
-  \begin{itemize}
-  \item[$+$] if $[[Γ1 ∩ fv iP]] = [[Γ2 ∩ fv iP]]$ then
-    $[[Γ1 ⊢ iP]] \iff [[Γ2 ⊢ iP]]$,
-  \item[$-$] if $[[Γ1 ∩ fv iN]] = [[Γ2 ∩ fv iN]]$ then
-    $[[Γ1 ⊢ iN]] \iff [[Γ2 ⊢ iN]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaWfCompleteness*
 \begin{proof}
   By simple mutual induction on $[[iP]]$ and $[[iN]]$.
 \end{proof}
 
-\begin{corollary}[Context Strengthening]
-  \label{corollary:wf-ctxt-strengthening}
-  \hfill
-  
-  \begin{itemize}
-    \item [$+$] If $[[Γ ⊢ iP]]$ then $[[fv(iP) ⊢ iP]]$;
-    \item [$-$] If $[[Γ ⊢ iN]]$ then $[[fv(iN) ⊢ iN]]$.
-  \end{itemize}
-\end{corollary}
+\corollaryWfCtxtStrengthening*
 \begin{proof}
   It follows from \cref{lemma:wf-ctxt-equiv} and \cref{lemma:wf-soundness}.
   \begin{itemize}
@@ -60,14 +34,7 @@
   \end{itemize}
 \end{proof}
 
-\begin{corollary}[Well-formedness Context Weakening]
-  \label{lemma:wf-weakening}
-  Suppose that $[[Γ1 ⊆ Γ2]]$, then
-  \begin{itemize}
-    \item[$+$] if $[[Γ1 ⊢ iP]]$ then $[[Γ2 ⊢ iP]]$,
-    \item[$-$] if $[[Γ1 ⊢ iN]]$ then $[[Γ2 ⊢ iN]]$.
-  \end{itemize}
-\end{corollary}
+\lemmaWfWeakening*
 \begin{proof}
   By \cref{lemma:wf-soundness},
   $[[Γ1 ⊢ iP]]$ implies $[[fv(iP) ⊆ Γ1]]$,
@@ -78,28 +45,7 @@
 \end{proof}
 
 
-\begin{corollary}
-  \label{lemma:mut-sub-types-wf-equiv}
-  Suppose that all the types below are well-formed in $[[Γ]]$ and
-  $[[Γ' ⊆ Γ]]$. Then
-  \begin{itemize}
-  \item[$+$] $[[Γ ⊢ iP ≈ iQ]]$ implies $[[Γ' ⊢ iP]] \iff [[Γ' ⊢ iQ]]$
-  \item[$-$] $[[Γ ⊢ iN ≈ iM]]$ implies $[[Γ' ⊢ iN]] \iff [[Γ' ⊢ iM]]$
-  \end{itemize}
-\end{corollary}
-\begin{proof}
-  From \cref{lemma:wf-ctxt-equiv,corollary:fv-mut-sub}.
-\end{proof}
-
-
-\begin{lemma}[Well-formedness agrees with substitution]
-  \label{lemma:wf-subst}
-  Suppose that $[[Γ2 ⊢ σ : Γ1]]$. Then
-  \begin{itemize}
-  \item[$+$] $[[Γ, Γ1 ⊢ iP]]$ implies $[[Γ, Γ2 ⊢ [σ]iP]]$, and
-  \item[$-$] $[[Γ, Γ1 ⊢ iN]]$ implies $[[Γ, Γ2 ⊢ [σ]iN]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaWfSubst*
 \begin{proof}
   We prove it by induction on $[[Γ, Γ1 ⊢ iP]]$ and mutually, on $[[Γ, Γ1 ⊢ iN]]$.
   Let us consider the last rule used in the derivation.

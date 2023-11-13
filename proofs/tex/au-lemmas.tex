@@ -1,35 +1,10 @@
-\begin{observation}[Anti-unification algorithm is deterministic]
-    \label{obs:au-deterministic}
-    \hfill\\
-\begin{itemize}
-    \item [$+$] If $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$ and 
-    $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ', uQ', aus'1, aus'2)]]$,
-    then $[[Ξ]] = [[Ξ']]$, $[[uQ]] = [[uQ']]$, $[[aus1]] = [[aus'1]]$, and $[[aus2]] = [[aus'2]]$.
-    \item [$-$] If $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$ and
-    $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ', uM', aus'1, aus'2)]]$,
-    then $[[Ξ]] = [[Ξ']]$, $[[uM]] = [[uM']]$, $[[aus1]] = [[aus'1]]$, and $[[aus2]] = [[aus'2]]$.
-\end{itemize}
-\end{observation}
+\obsAuDeterministic*
 \begin{proof}
     By trivial induction on $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
     and mutually on $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$.
 \end{proof}
 
-\begin{observation} \label{obs:names-defined-by-mapping}
-    Names of the anti-unification variables are uniquely defined by
-    the types they are mapped to by the resulting substitutions. 
-
-    \begin{itemize}
-        \item [$+$]  Assuming $[[iP1]]$ and $[[iP2]]$ are normalized,
-        if $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
-        then for any $[[β̂⁻]] \in [[Ξ]]$,
-        $[[β̂⁻]] = [[â⁻_{[aus1]β̂⁻, [aus2]β̂⁻}]]$
-        \item [$-$]  Assuming $[[iN1]]$ and $[[iN2]]$ are normalized,
-        if $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$
-        then for any $[[β̂⁻]] \in [[Ξ]]$,
-        $[[β̂⁻]] = [[â⁻_{[aus1]β̂⁻, [aus2]β̂⁻}]]$
-    \end{itemize}
-\end{observation}
+\obsNamesDefinedByMapping*
 \begin{proof}
     By simple induction on $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
     and mutually on $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$.
@@ -56,30 +31,7 @@
     \end{caseof}
 \end{proof}
 
-\begin{lemma}[Soundness of Anti-Unification] \label{lemma:au-soundness}
-    \hfill
-    \begin{itemize}
-        \item [$+$]  Assuming $[[iP1]]$ and $[[iP2]]$ are normalized,
-        if $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
-        then 
-        \begin{enumerate}
-            \item $[[Γ ; Ξ ⊢ uQ]]$,
-            \item $[[Γ ; · ⊢ ausi : Ξ]]$ for $i \in \{1,2\}$
-            are anti-unification substitutions, and
-            \item $[[ [ausi] uQ = iPi ]]$ for $i \in \{1,2\}$.
-        \end{enumerate}
-
-        \item [$-$] Assuming $[[iN1]]$ and $[[iN2]]$ are normalized,
-        if $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$
-        then
-        \begin{enumerate}
-            \item $[[Γ ; Ξ ⊢ uM]]$,
-            \item $[[Γ ; · ⊢ ausi : Ξ]]$ for $i \in \{1,2\}$
-            are anti-unification substitutions, and
-            \item $[[ [ausi] uM = iNi ]]$ for $i \in \{1,2\}$.
-        \end{enumerate}
-    \end{itemize}
-\end{lemma}
+\lemmaAuSoundness*
 \begin{proof}
     We prove it by induction on 
     $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$
@@ -191,52 +143,7 @@
     \end{caseof}
 \end{proof}
 
-
-
-
-% \renewcommand{\ottdruleAUPVarName}[0]{(Var$^{+[[≈au]]}$)}
-% \renewcommand{\ottdruleAUShiftDName}[0]{($\downarrow^{[[≈au]]}$)}
-% \renewcommand{\ottdruleAUExistsName}[0]{($\exists^{[[≈au]]}$)}
-
-% G ⊨ iN1 ≈au iN2 ⫤ ( Ξ , uM , aus1 , aus2 )
-% \renewcommand{\ottdruleAUNVarName}[0]{(Var$^{-[[≈au]]}$)}
-% \renewcommand{\ottdruleAUShiftUName}[0]{($\uparrow^{[[≈au]]}$)}
-% \renewcommand{\ottdruleAUForallName}[0]{($\forall^{[[≈au]]}$)}
-% \renewcommand{\ottdruleAUArrowName}[0]{($\rightarrow^{[[≈au]]}$)}
-% \renewcommand{\ottdruleAUAUName}[0]{(AU$^{-}$)}
-
-
-\begin{lemma}[Completeness of Anti-Unification] \label{lemma:au-completeness}
-    \hfill
-    \begin{itemize}
-        \item [$+$] 
-            Assume that $[[iP1]]$ and $[[iP2]]$ are normalized, and
-            there exists $[[(Ξ', uQ', aus'1, aus'2)]]$ such that
-            \begin{enumerate}
-                \item $[[Γ ; Ξ' ⊢ uQ']]$,
-                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$ 
-                are anti-unification substitutions, and
-                \item $[[ [aus'i] uQ' = iPi ]]$ for $i \in \{1,2\}$.
-            \end{enumerate}
-
-            Then the anti-unification algorithm terminates, that is there exists
-            $[[(Ξ, uQ, aus1, aus2)]]$ such that $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
-
-        \item [$-$] 
-            Assume that $[[iN1]]$ and $[[iN2]]$ are normalized, and
-            there exists $[[(Ξ', uM', aus'1, aus'2)]]$ such that
-            \begin{enumerate}
-                \item $[[Γ ; Ξ' ⊢ uM']]$,
-                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$,
-                are anti-unification substitutions, and
-                \item $[[ [aus'i] uM' = iNi ]]$ for $i \in \{1,2\}$.
-            \end{enumerate}
-
-            Then the anti-unification algorithm succeeds, that is 
-            there exists $[[(Ξ, uM, aus1, aus2)]]$ such that
-            $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$.
-    \end{itemize}
-\end{lemma}
+\lemmaAuCompleteness*
 \begin{proof}
     We prove it by the induction on $[[uM']]$ and mutually on $[[uQ']]$.
     \begin{caseof}
@@ -290,43 +197,7 @@
     \end{caseof}
 \end{proof}
 
-\begin{lemma}[Initiality of Anti-Unification] \label{lemma:au-initial}
-    \hfill
-    \begin{itemize}
-        \item [$+$] 
-            Assume that $[[iP1]]$ and $[[iP2]]$ are normalized, and
-            $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$, 
-            then $[[(Ξ, uQ, aus1, aus2)]]$ is more specific than
-            any other sound anti-unifier $[[(Ξ', uQ', aus'1, aus'2)]]$, i.e.
-            if 
-            \begin{enumerate}
-                \item $[[Γ ; Ξ' ⊢ uQ']]$,
-                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$, and
-                \item $[[ [aus'i] uQ' = iPi ]]$ for $i \in \{1,2\}$
-            \end{enumerate}
-            then there exists $[[ausr]]$ such that
-            $[[Γ ; Ξ ⊢ ausr : (Ξ' | uv uQ')]]$ and $[[ [ausr] uQ' = uQ ]]$. 
-            Moreover, $[[ [ausr]β̂⁻]]$ can
-            be uniquely determined by $[[ [aus'1]β̂⁻ ]]$, $[[ [aus'2]β̂⁻ ]]$, and
-            $[[Γ]]$.
-        \item [$-$] 
-            Assume that $[[iN1]]$ and $[[iN2]]$ are normalized, and
-            $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$, 
-            then $[[(Ξ, uM, aus1, aus2)]]$ is more specific than
-            any other sound anti-unifier $[[(Ξ', uM', aus'1, aus'2)]]$, i.e.
-            if
-            \begin{enumerate}
-                \item $[[Γ ; Ξ' ⊢ uM']]$,
-                \item $[[Γ ; · ⊢ aus'i : Ξ']]$ for $i \in \{1,2\}$, and
-                \item $[[ [aus'i] uM' = iNi ]]$ for $i \in \{1,2\}$
-            \end{enumerate}
-            then there exists $[[ausr]]$ such that
-            $[[Γ ; Ξ ⊢ ausr : (Ξ' | uv uM')]]$ and $[[ [ausr] uM' = uM ]]$.
-            Moreover, $[[ [ausr]β̂⁻]]$ can
-            be uniquely determined by $[[ [aus'1]β̂⁻ ]]$, $[[ [aus'2]β̂⁻ ]]$, and
-            $[[Γ]]$.
-    \end{itemize}
-\end{lemma}
+\lemmaAuInitial*
 \begin{proof}
     First, let us assume that $[[uM']]$ is a algorithmic variable $[[α̂⁻]]$. 
     Then we can take $[[ausr]] = [[α̂⁻]] \mapsto [[uM]]$, which satisfies the required properties:

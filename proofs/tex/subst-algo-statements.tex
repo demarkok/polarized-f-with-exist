@@ -1,0 +1,51 @@
+\begin{restatable}[Determinicity of typing algorithm]{lemma}{lemmaTypingDeterminicity}
+    \label{lemma:typing-determinicity}
+    Suppose that $[[Γ ⊢ Φ]]$ and $[[Γ ⊢ Θ]]$. Then 
+    \begin{itemize}
+        \item [$+$] If $[[Γ; Φ ⊨ v : iP]]$ and $[[Γ; Φ ⊨ v : iP']]$ then $[[iP = iP']]$.
+        \item [$-$] If $[[Γ; Φ ⊨ c : iN]]$ and $[[Γ; Φ ⊨ c : iN']]$ then $[[iN = iN']]$.
+        \item If $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$ and 
+            $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM' ⫤ Θ'; SC']]$ then 
+            $[[uM = uM']]$, $[[Θ]] = [[Θ']]$, and $[[SC]] =[[SC']]$.  
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Algorithmic Substitution Strengthening]{lemma}{lemmaSubstRestrUV}
+    \label{lemma:subst-restr-uv}
+    Restricting the substitution to the algorithmic 
+    variables of the
+    substitution subject does not affect the result.
+    Suppose that $[[uσ]]$ is an algorithmic substitution,
+    $[[uP]]$ and $[[uN]]$ are algorithmic types. Then
+ \begin{itemize}
+        \item[$+$] $[[ [uσ]uP ]] = [[ [uσ|uv uP]uP ]]$,
+        \item[$-$] $[[ [uσ]uN ]] = [[ [uσ|uv uN]uN ]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Substitutions equal on the algorithmic variables]{lemma}{lemmaSubstEqAlgVar}
+    \label{lemma:subst-eq-algovar}
+    Suppose that $[[uσ1]]$ and $[[uσ2]]$ are 
+    normalized substitutions of signature $[[Θ ⊢ uσi : Ξ]]$.
+    Then 
+    \begin{enumerate}
+        \item [$+$] for a normalized type $[[Γ; Ξ ⊢ uP]]$, if $[[ [uσ1]uP = [uσ2]uP ]]$ then
+            $[[uσ1|(uv uP)  = uσ2|(uv uP)]]$;
+        \item [$-$] for a normalized type $[[Γ; Ξ ⊢ uN]]$, if $[[ [uσ1]uN = [uσ2]uN ]]$ then
+            $[[uσ1|(uv uN)  = uσ2|(uv uN)]]$.
+    \end{enumerate}
+\end{restatable}
+
+
+\begin{restatable}[Substitutions equivalent on the algorithmic variables]{corollary}{corollarySubstEquivAlgVar}
+    \label{lemma:subst-equiv-algovar}
+    Suppose that $[[uσ1]]$ and $[[uσ2]]$ are substitutions 
+    of signature $[[Θ ⊢ uσi : Ξ]]$ where $[[Γ ⊢ Θ]]$.
+    Then 
+    \begin{enumerate}
+        \item [$+$] for a type $[[Γ; Ξ ⊢ uP]]$, if $[[Γ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ then
+            $[[Θ ⊢ uσ1 ≈ uσ2 : uv uP]]$;
+        \item [$-$] for a type $[[Γ; Ξ ⊢ uN]]$, if $[[Γ ⊢ [uσ1]uN ≈ [uσ2]uN]]$ then
+            $[[Θ ⊢ uσ1 ≈ uσ2 : uv uN]]$.
+    \end{enumerate}
+\end{restatable}

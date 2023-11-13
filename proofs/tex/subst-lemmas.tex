@@ -1,14 +1,4 @@
-\begin{lemma}[Substitution strengthening]
-  \label{lemma:subst-restr-fv}
-  Restricting the substitution to the free variables of the
-  substitution subject does not affect the result.
-  Suppose that $[[σ]]$ is a substitution,
-  $[[iP]]$ and $[[iN]]$ are types. Then
- \begin{itemize}
-    \item[$+$] $[[ [σ]iP ]] = [[ [σ|fv iP]iP ]]$,
-    \item[$-$] $[[ [σ]iN ]] = [[ [σ|fv iN]iN ]]$
-  \end{itemize}
-\end{lemma}
+\lemmaSubstRestrFv*
 \begin{proof}
   First, we strengthen the statement by saying that
   one can restrict the substitution to an arbitrary
@@ -52,10 +42,7 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Signature of a restricted substitution]
-  \label{lemma:subst-restr-sig}
-  If $[[Γ2 ⊢ σ : Γ1]]$ then $[[Γ2 ⊢ σ|varset :  Γ1 ∩ varset]]$.
-\end{lemma}
+\lemmaSubstRestrSig*
 \begin{proof}
   Let us take an arbitrary $[[α± ∊ Γ1 ∩ varset]]$.
   Since $[[α± ∊ Γ1]]$, $[[Γ2 ⊢ [σ]α± ]]$ by the signature of $[[σ]]$.
@@ -67,11 +54,7 @@
   and $[[ [σ]α± ]] = [[α±]]$ by the signature of $[[σ]]$.
 \end{proof}
 
-\begin{lemma}
-  Suppose that $[[σ]]$ is a substitution with signature $[[Γ2 ⊢ σ : Γ1]]$. 
-  Then if $[[varset]]$ is disjoint from $[[Γ1]]$, 
-  then $[[ σ|varset]] = [[ id ]]$. 
-\end{lemma}
+\lemmaSubstDisjoint*
 \begin{proof}
   Let us take an arbitrary $[[α±]]$.
   If $[[α± ∉ varset]]$ then $[[ [σ|varset]α±]] = [[α±]]$ by definition.
@@ -81,21 +64,9 @@
   since $[[Γ2 ⊢ σ : Γ1]]$, we have $[[ [σ]α± = α± ]]$.
 \end{proof}
 
-\begin{corollary}[Application of a disjoint substitution]
-  \label{corollary:subst-disj}
-  Suppose that $[[σ]]$ is a substitution with signature $[[Γ2 ⊢ σ : Γ1]]$. Then
-  \begin{itemize}
-    \item [$+$] if $[[Γ1 ∩ fv(iQ) = ∅]]$ then $[[ [σ] iQ = iQ]]$;
-    \item [$-$] if $[[Γ1 ∩ fv(iN) = ∅]]$ then $[[ [σ] iN = iN]]$.
-  \end{itemize}
-\end{corollary}
+\corollarySubstDisj*
 
-\begin{lemma}[Substitution range weakening]
-  \label{lemma:subst-range-weakening}
-  Suppose that $[[Γ2 ⊆ Γ'2]]$ are contexts and 
-  $[[σ]]$ is a substitution.
-  Then $[[Γ2 ⊢ σ : Γ1]]$ implies $[[Γ'2 ⊢ σ : Γ1]]$.
-\end{lemma}
+\lemmaSubstRangeWeak*
 \begin{proof}
   For any $[[α± ∊ Γ1]]$, 
   $[[Γ2 ⊢ σ : Γ1]]$ gives us  $[[ Γ2 ⊢ [σ]α± ]]$, which can be
@@ -103,17 +74,7 @@
   This way, $[[Γ'2 ⊢ σ : Γ1]]$.
 \end{proof}
 
-\begin{lemma}[]
-  Suppose that $[[Γ' ⊆ Γ]]$,
-  $[[σ1]]$ and $[[σ2]]$ are substitutions of signature $[[Γ ⊢ σi : Γ']]$.
-  Then 
-  \begin{enumerate}
-    \item [$+$] for a type $[[Γ ⊢ iP]]$, if $[[Γ ⊢ [σ1]iP ≈ [σ2]iP]]$ then 
-    $[[Γ ⊢ σ1 ≈ σ2 : fv iP ∩ Γ']]$;
-    \item [$-$] for a type $[[Γ ⊢ iN]]$, if $[[Γ ⊢ [σ1]iN ≈ [σ2]iN]]$ then
-    $[[Γ ⊢ σ1 ≈ σ2 : fv iN ∩ Γ']]$.
-  \end{enumerate}
-\end{lemma}
+\lemmaSubstEquiv*
 \begin{proof}
   Let us make an additional assumption that $[[σ1]]$, $[[σ2]]$, 
   and the mentioned types are normalized. If they are not,
@@ -168,32 +129,35 @@
 
 
 
-\begin{lemma}[Substitution composition well-formedness]
-  If $[[Γ'1 ⊢ σ1 : Γ1]]$ and $[[Γ'2 ⊢ σ2 : Γ2]]$,
-  then $[[Γ'1, Γ'2 ⊢ σ2 ○ σ1 : Γ1, Γ2]]$.
-\end{lemma}
+\lemmaSubstCompWell*
+\begin{proof}
+    By definition of composition.
+\end{proof}
 
-\begin{lemma}[Substitution monadic composition well-formedness]
-  \label{lemma:subst-monad-composition-wf}
-  If $[[Γ'1 ⊢ σ1 : Γ1]]$ and $[[Γ'2 ⊢ σ2 : Γ2]]$,
-  then $[[Γ'2 ⊢ σ2 <=< σ1 : Γ1]]$.
-\end{lemma}
+\lemmaSubstMonadCompWell*
+\begin{proof}
+  By definition of monadic composition. 
+\end{proof}
 
-\begin{lemma}[Substitution composition]
-  \label{lemma:subst-composition}
-    If $[[Γ'1 ⊢ σ1 : Γ1]]$, $[[Γ'2 ⊢ σ2 : Γ2]]$, 
-    $[[Γ1 ∩ Γ'2 = ∅ ]]$ and $[[ Γ1 ∩ Γ2 = ∅ ]]$ then 
-    $[[ σ2 ○ σ1 ]] = [[ (σ2 <=< σ1) ○ σ2 ]]$.
-\end{lemma}
+\lemmaSubstComp*
+\begin{proof}
+  \hfill
+  \begin{enumerate}
+    \item Suppose that $[[α± ∊ Γ1]]$ then $[[α± ∉ Γ2]]$ , and thus, 
+      $[[ [(σ2 <=< σ1) ○ σ2]α± = [(σ2 <=< σ1)]α± ]] = [[ [σ2][σ1]α± = [(σ2 ○ σ1)]α± ]]$.
+    \item Suppose that $[[α± ∉ Γ1]]$ then $[[ [(σ2 ○ σ1)]α± = [σ2]α± ]]$.  Then 
+    \begin{enumerate}
+      \item if $[[α± ∉ Γ2]]$ then $[[ [σ2]α± = α± ]]$ and 
+        $[[ [(σ2 <=< σ1) ○ σ2]α± = [(σ2 <=< σ1)][σ2]α±]] = [[ [σ2 <=< σ1]α± = α± ]]$
+      \item if  $[[α± ∊ Γ2]]$ then $[[ Γ2' ⊢ [σ2]α±  ]]$, and hence, 
+        $[[ [(σ2 <=< σ1) ○ σ2]α±  = [(σ2 <=< σ1)][σ2]α±]] = [[ [σ2]α± ]]$
+        by definition of monadic composition, since 
+        none of the free variables of  $[[ [σ2]α± ]]$ is in $[[Γ1]]$.
+    \end{enumerate}
+  \end{enumerate}
+\end{proof}
 
-\begin{corollary}[Substitution composition commutativity]
-  \label{corollary:subst-composition-commutativity}
-  If $[[Γ'1 ⊢ σ1 : Γ1]]$, $[[Γ'2 ⊢ σ2 : Γ2]]$, and
-  $[[ Γ1 ∩ Γ2 = ∅ ]]$, 
-  $[[ Γ1 ∩ Γ'2 = ∅ ]]$, and
-  $[[ Γ'1 ∩ Γ2 = ∅ ]]$ then 
-  $[[ σ2 ○ σ1 ]] = [[ σ1 ○ σ2 ]]$.
-\end{corollary}
+\corollarySubstCompCumm*
 \begin{proof}
   by \cref{lemma:subst-composition},
     $[[ σ2 ○ σ1 ]] = [[ (σ2 <=< σ1) ○ σ2 ]]$.
@@ -202,10 +166,7 @@
     $[[σ2 <=< σ1]] = [[σ1]]$.
 \end{proof}
 
-\begin{lemma}[Substitution domain weakening]
-  \label{lemma:subst-domain-weakening}
-  If $[[Γ2 ⊢ σ : Γ1]]$ then $[[Γ2, Γ' ⊢ σ : Γ1, Γ']]$
-\end{lemma}
+\lemmaSubstDomWeak*
 \begin{proof}
   If the variable $[[α±]]$ is in $[[Γ1]]$ then $[[Γ2 ⊢ [σ]α± ]]$ by assumption,
   and then $[[Γ2, Γ' ⊢ [σ]α± ]]$ by weakening.
@@ -213,18 +174,7 @@
   and thus, $[[Γ2, Γ' ⊢ α± ]]$.
 \end{proof}
 
-\begin{lemma}[Free variables after substitution]
-  \label{lemma:subst-fv}
-  Suppose that $[[Γ2 ⊢ σ : Γ1]]$, then
-  \begin{enumerate}
-    \item [$+$] for a type $[[iP]]$,
-      the free variables of $[[ [σ]iP ]]$ are bounded in the following way:
-     $[[fv(iP) \ Γ1 ⊆ fv([σ]iP) ⊆ (fv(iP) \ Γ1) ∪ Γ2]]$;
-    \item [$-$] for a type $[[iN]]$, 
-      the free variables of $[[ [σ]iP ]]$ are bounded in the following way:
-      $[[fv(iN) \ Γ1 ⊆ fv([σ]iN) ⊆ (fv(iN) \ Γ1) ∪ Γ2]]$.
-  \end{enumerate}
-\end{lemma}
+\lemmaSubstFv*
 \begin{proof}
   We prove it by structural induction on 
   $[[iP]]$ and mutually, on $[[iN]]$.
@@ -276,15 +226,7 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Free variables of a variable image]
-  \label{lemma:subst-fv-image}
-  Suppose that $[[σ]]$ is an arbitrary substitution, 
-  Then 
-  \begin{itemize}
-    \item [$+$] if $[[α± ∊ fv(iP)]]$ then $[[ fv([σ]α±) ⊆ fv([σ]iP) ]]$,
-    \item [$-$] if $[[α± ∊ fv(iN)]]$ then $[[ fv([σ]α±) ⊆ fv([σ]iN) ]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaSubstFvImage*
 \begin{proof}
   By mutual induction on $[[iP]]$ and $[[iN]]$.
   The base cases (when $[[iP]]$ or $[[iN]]$ is a variable) 
@@ -295,7 +237,7 @@
   hold since $[[α±]]$ occurs in type means that it occurs
   in one of its parts, to which we apply the induction hypothesis.
 
-  Let us suppose that te type is $[[∃nas.iQ]]$.
+  Let us suppose that the type is $[[∃nas.iQ]]$.
   Then $[[α± ∊ fv(∃nas.iQ)]]$ means
   $[[α± ∊ fv(iQ)]]$ and $[[α± ∉ {nas}]]$.
   Then by the induction hypothesis, 

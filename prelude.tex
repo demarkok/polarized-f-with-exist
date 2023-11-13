@@ -18,7 +18,7 @@
 \usepackage{mathtools}
 
 % Show the frame 
-% \usepackage{showframe}
+\usepackage{showframe}
 
 \usepackage{newtxmath}
 % \usepackage{mathabx}
@@ -59,6 +59,7 @@
 
 
 
+
 \setlength{\columnsep}{1cm}
 
 \newcommand{\niton}{\not\owns}
@@ -66,16 +67,44 @@
 \newcommand{\ilyam}[1]{{\color{red} \texttt{Ilya:  #1}}}
 \newcommand{\nk}[1]{{\color{purple} \texttt{Neel:  #1}}}
 
+\usepackage{thmtools}
+\usepackage{thm-restate}
+
+% https://tex.stackexchange.com/questions/553406/the-label-command-defined-by-cleveref-fails-in-a-thm-restate-environment
+\usepackage{xpatch}
+
+% \makeatletter
+% \@ifpackageloaded{cleveref}{
+%   \xpatchcmd\thmt@restatable
+%     {\let\label=\@gobble}
+%     {\let\label=\gobbled@cleveref@label}
+%     {}{}
+  
+%   \newcommand\gobbled@cleveref@label[2][]{}
+% }{}
+
+
+\declaretheorem[name=Theorem,refname={theorem,theorems},Refname={Theorem,Theorems}]{theoremRes}
+
+\declaretheorem[name=Corollary,refname={corollary,corollaries},Refname={Corollary,Corollaries}]{corollaryRes}
+
+\declaretheorem[name=Proposition,refname={proposition,propositions},Refname={Proposition,Propositions}]{propositionRes}
+
+\declaretheorem[name=Property,refname={property,properties},Refname={Property,Properties}]{propertyRes}
+
+\declaretheorem[name=Lemma,refname={lemma,lemmas},Refname={Lemma,Lemmas}]{lemmaRes}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{property}{Property}
+
 \newtheorem{algorithm}{Algorithm}
 \newtheorem{definition}{Definition}
 \newtheorem*{notation*}{Notation}
-\newtheorem{theorem}{Theorem}
 \newtheorem*{theorempreview}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{corollary}{Corollary}
-\newtheorem{proposition}{Proposition}
 \newtheorem{observation}{Observation}
-\newtheorem{property}{Property}
 \newtheorem*{assertion*}{Assertion}
 
 
@@ -129,3 +158,9 @@
 
 
 \setlength\multicolsep{0pt}
+
+
+\newcommand{\pureSize}[1]{\ensuremath{\mathsf{pure\_size}(#1)}}
+\newcommand{\metric}[1]{\ensuremath{\mathsf{metric}(#1)}}
+\newcommand{\eqNodes}[1]{\ensuremath{\mathsf{eq\_nodes}(#1)}}
+\newcommand{\npq}[1]{\ensuremath{\mathsf{npq}(#1)}}

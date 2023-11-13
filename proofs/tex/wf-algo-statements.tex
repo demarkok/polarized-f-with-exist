@@ -1,0 +1,55 @@
+\begin{restatable}{lemma}{lemmaAppInfEquStable}
+    \label{lemma:app-inf-equ-stable}
+    If $[[Γ; Φ ⊢ iN1 ● args ⇒> iM]]$ and $[[Γ ⊢ iN1 ≈ iN2]]$ 
+    then $[[Γ; Φ ⊢ iN2 ● args ⇒> iM]]$.
+\end{restatable}
+
+\begin{restatable}[Soundness of algorithmic type well-formedness]{lemma}{lemmaWfAlgoSoundness}
+        \label{lemma:wf-algo-soundness}
+        \hfill
+    \begin{itemize}
+        \item[$+$] if $[[Γ ; Ξ ⊢ uP]]$ then $[[fv(uP) ⊆ Γ]]$ and $[[uv(uP) ⊆ Ξ]]$;
+        \item[$-$] if $[[Γ ; Ξ ⊢ uN]]$ then $[[fv(uN) ⊆ Γ]]$ and $[[uv(uN) ⊆ Ξ]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Completeness of algorithmic type well-formedness]{lemma}{lemmaWfAlgoCtxtEquiv}
+    \label{lemma:wf-algo-ctxt-equiv}
+    In the well-formedness judgment, only used variables matter:
+    \begin{itemize}
+    \item[$+$] if $[[Γ1 ∩ fv iP]] = [[Γ2 ∩ fv iP]]$
+        and $[[Ξ1 ∩ uv uP]] = [[Ξ2 ∩ uv uP]]$ then
+        $[[Γ1 ; Ξ1 ⊢ uP]] \iff [[Γ2 ; Ξ2 ⊢ uP]]$, and
+    \item[$-$] if $[[Γ1 ∩ fv iN]] = [[Γ2 ∩ fv iN]]$
+        and $[[Ξ1 ∩ uv uN]] = [[Ξ2 ∩ uv uN]]$ then
+        $[[Γ1 ; Ξ1 ⊢ uN]] \iff [[Γ2 ; Ξ2 ⊢ uN]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Variable algorithmization agrees with well-formedness]{lemma}{lemmaVarAlgoWf}
+    \label{lemma:var-algo-wf}
+    \hfill
+    \begin{itemize}
+        \item[$+$]  $[[Γ, nas ⊢ iP]]$ implies $[[Γ; {nuas} ⊢ [nuas/nas]iP]]$;
+        \item[$-$]  $[[Γ, nas ⊢ iN]]$ implies $[[Γ; {nuas} ⊢ [nuas/nas]iN]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Variable de-algorithmization agrees with well-formedness]{lemma}{lemmaVarDealgoWf}
+    \label{lemma:var-dealgo-wf}
+    \hfill
+    \begin{itemize}
+        \item[$+$]  $[[Γ; {nuas} ⊢ uP]]$ implies $[[Γ, nas ⊢ [nas/nuas]iP]]$;
+        \item[$-$]  $[[Γ; {nuas} ⊢ uN]]$ implies $[[Γ, nas ⊢ [nas/nuas]iN]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Well-formedness Algorithmic Context Weakening]{corollary}{corollaryWfWeakeningAlgo}
+    \label{lemma:wf-weakening-algo}
+    Suppose that $[[Γ1 ⊆ Γ2]]$,
+    and $[[Ξ1 ⊆ Ξ2]]$. Then
+    \begin{itemize}
+        \item[$+$] if $[[Γ1 ; Ξ1 ⊢ uP]]$ implies $[[Γ2 ; Ξ2 ⊢ uP]]$,
+        \item [$-$] if $[[Γ1 ; Ξ1 ⊢ uN]]$ implies $[[Γ2 ; Ξ2 ⊢ uN]]$.
+    \end{itemize}
+\end{restatable}

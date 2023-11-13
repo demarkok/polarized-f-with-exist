@@ -1,0 +1,51 @@
+\begin{restatable}[Unification Constraint Merge Determinism]{observation}{obsUnifMergeDet}
+    \label{obs:unif-merge-deterministic}
+    Suppose that $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$
+    If $[[Θ ⊢ UC1 & UC2 = UC]]$ and $[[Θ ⊢ UC1 & UC2 = UC']]$ are defined then 
+    $[[UC]] = [[UC']]$.
+\end{restatable}
+
+
+\begin{restatable}[Soundness of Unification Constraint Merge]{lemma}{lemUnifMergeSoundness}
+    \label{lemma:unif-merge-soundness}
+    Suppose that $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$ 
+    are normalized unification constraints.
+    If $[[Θ ⊢ UC1 & UC2 = UC]]$ is defined then
+    $[[UC = UC1 ∪ UC2]]$.
+\end{restatable}
+
+\begin{restatable}{corollary}{corUnifMergeSoundness}
+    \label{corollary:unif-merge-soundness}
+    Suppose that $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$ 
+    are normalized unification constraints.
+    If $[[Θ ⊢ UC1 & UC2 = UC]]$ is defined then
+    \begin{enumerate}
+        \item $[[Θ ⊢ UC]]$ is normalized unification constraint,
+        \item for any substitution $[[Θ ⊢ uσ : dom(UC)]]$, $[[ Θ  ⊢ uσ : lift UC ]]$ implies 
+        $[[ Θ ⊢ uσ : lift UC1 ]]$ and $[[Θ ⊢ uσ : lift UC2]]$.
+    \end{enumerate}
+\end{restatable}
+
+\begin{restatable}[Completeness of Unification Constraint Entry Merge]{lemma}{lemUnifEntryMergeCompleteness}
+    \label{lemma:unif-entry-merge-completeness}
+    For a fixed context $[[Γ]]$,
+    suppose that $[[Γ ⊢ ucE1]]$ and $[[Γ ⊢ ucE2]]$ are matching constraint entries.
+    \begin{itemize}
+        \item[$+$] for a type $[[iP]]$ such that $[[Γ ⊢ iP : ucE1]]$ and $[[Γ ⊢ iP : ucE2]]$,
+        $[[Γ ⊢ ucE1 & ucE2 = ucE]]$ is defined and $[[Γ ⊢ iP : ucE]]$.
+        \item[$-$] for a type $[[iN]]$ such that $[[Γ ⊢ iN : ucE1]]$ and $[[Γ ⊢ iN : ucE2]]$,
+        $[[Γ ⊢ ucE1 & ucE2 = ucE]]$ is defined and $[[Γ ⊢ iN : ucE]]$.
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Completeness of Unification Constraint Merge]{lemma}{lemUnifMergeCompleteness}
+    \label{lemma:unif-merge-completeness}
+    Suppose that $[[Θ ⊢ UC1]]$ and $[[Θ ⊢ UC2]]$.
+    Then for any $[[Ξ]] \supseteq [[dom(UC1) ∪ dom(UC2)]]$ 
+    and substitution $[[Θ ⊢ uσ : Ξ]]$ such that $[[ Θ ⊢ uσ : lift UC1 ]]$ and $[[ Θ   ⊢ uσ : lift UC2 ]]$, 
+    \begin{enumerate}
+        \item $[[Θ ⊢ UC1 & UC2 = UC]]$ is defined and
+        \item $[[ Θ  ⊢ uσ : UC ]]$.
+    \end{enumerate}
+\end{restatable}

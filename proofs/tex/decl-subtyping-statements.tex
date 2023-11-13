@@ -1,0 +1,153 @@
+\begin{restatable}[Free Variable Propagation]{lemma}{lemmaFvPropagation}
+    \label{lemma:fv-propagation}
+    In the judgments of negative subtyping or positive supertyping,
+    free variables propagate left to right. For a context $[[Γ]]$,
+    \begin{itemize}
+        \item [$-$] if $[[Γ ⊢ iN ≤ iM]]$ then $[[fv(iN)]] \subseteq [[fv(iM)]]$
+        \item [$+$] if $[[Γ ⊢ iP ≥ iQ]]$ then $[[fv(iP)]] \subseteq [[fv(iQ)]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Free Variables of mutual subtypes]{corollary}{corollaryFvMutSub}
+    \label{corollary:fv-mut-sub}
+    \hfill
+    \begin{itemize}
+        \item [$-$] If $[[Γ ⊢ iN ≈ iM]]$ then $[[fv iN]] = [[fv iM]]$, 
+        \item [$+$] If $[[Γ ⊢ iP ≈ iQ]]$ then $[[fv iP]] = [[fv iQ]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}{corollary}{lemmaMutSubTypesWfEquiv}
+    \label{lemma:mut-sub-types-wf-equiv}
+    Suppose that all the types below are well-formed in $[[Γ]]$ and
+    $[[Γ' ⊆ Γ]]$. Then
+    \begin{itemize}
+    \item[$+$] $[[Γ ⊢ iP ≈ iQ]]$ implies $[[Γ' ⊢ iP]] \iff [[Γ' ⊢ iQ]]$
+    \item[$-$] $[[Γ ⊢ iN ≈ iM]]$ implies $[[Γ' ⊢ iN]] \iff [[Γ' ⊢ iM]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Decomposition of quantifier rules]{lemma}{lemmaQuantRuleDecomposition}
+    \label{lemma:quant-rule-decomposition}
+    Assuming that $[[pas]]$, $[[pbs]]$, $[[nas]]$, and $[[nas]]$ are disjoint from $[[Γ]]$,
+    \begin{itemize}
+        \item [$-_{R}$] $[[Γ ⊢ iN ≤ ∀pbs.iM]]$ holds if and only if $[[Γ, pbs ⊢ iN ≤ iM]]$;
+        \item [$+_{R}$] $[[Γ ⊢ iP ≥ ∃nbs.iQ]]$ holds if and only if $[[Γ, nbs ⊢ iP ≥ iQ]]$;
+        \item [$-_{L}$] suppose $[[iM]] \neq [[∀]]\dots$
+            then $[[Γ ⊢ ∀pas.iN ≤ iM]]$ holds if and only if $[[Γ ⊢ [iPs/pas]iN ≤ iM]]$
+            for some $[[Γ ⊢ iPs]]$;
+        \item [$+_{L}$] suppose $[[iQ]] \neq [[∃]]\dots$
+            then $[[Γ ⊢ ∃nas.iP ≥ iQ]]$ holds if and only if $[[Γ ⊢ [iNs/nas]iP ≥ iQ]]$
+            for some $[[Γ ⊢ iNs]]$.
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Redundant quantifier elimination]{corollary}{corollaryRedQuantElim}
+    \label{corollary:red-quant-elim}
+    \hfill
+    \begin{itemize}
+        \item [$-_{L}$] Suppose that $[[ {pas} ∩ fv(iN) = ∅]]$ then 
+            $[[Γ ⊢ ∀pas.iN ≤ iM]]$ holds if and only if $[[Γ ⊢ iN ≤ iM]]$;
+        \item [$-_{R}$] Suppose that $[[ {pas} ∩ fv(iM) = ∅]]$ then 
+            $[[Γ ⊢ iN ≤ ∀pas.iM]]$ holds if and only if $[[Γ ⊢ iN ≤ iM]]$;
+        \item [$+_{L}$] Suppose that $[[ {nas} ∩ fv(iP) = ∅]]$ then
+            $[[Γ ⊢ ∃nas.iP ≥ iQ]]$ holds if and only if $[[Γ ⊢ iP ≥ iQ]]$.
+        \item [$+_{R}$] Suppose that $[[ {nas} ∩ fv(iQ) = ∅]]$ then 
+            $[[Γ ⊢ iP ≥ ∃nas.iQ]]$ holds if and only if $[[Γ ⊢ iP ≥ iQ]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Subtypes and supertypes of a variable]{lemma}{lemmaVarSubt}
+    \label{lemma:var-subt}
+    Assuming $[[Γ ⊢  α⁻]]$, $[[Γ ⊢ α⁺]]$, $[[Γ ⊢ iN]]$, and $[[Γ ⊢ iP]]$,
+    \begin{itemize}
+    \item[$+$] if $[[Γ ⊢ iP ≥ ∃nas.α⁺]]$ or $[[Γ ⊢ ∃nas.α⁺ ≥ iP ]]$ then $[[iP]] = [[∃nbs.α⁺]]$ (for some potentially empty $[[nbs]]$)
+    \item[$-$] if $[[Γ ⊢ iN ≤ ∀pas.α⁻]]$ or $[[Γ ⊢ ∀pas.α⁻ ≤ iN ]]$ then $[[iN]] = [[∀pbs.α⁻]]$ (for some potentially empty $[[pbs]]$)
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Variables have no proper subtypes and supertypes]{corollary}{corollaryVarsNoProperSubtypes}
+    \label{corollary:vars-no-proper-subtypes}
+    Assuming that all mentioned types are well-formed in $[[Γ]]$,
+    \begin{align*}
+        [[Γ ⊢ iP ≥ α⁺]] ~ &\iff ~ [[iP = ∃nbs.α⁺]]  ~ \iff ~ [[Γ ⊢ iP ≈ α⁺]] ~ \iff ~ [[iP ≈ α⁺]]\\
+        [[Γ ⊢ α⁺≥ iP]]  ~ &\iff ~ [[iP = ∃nbs.α⁺]]  ~ \iff ~ [[Γ ⊢ iP ≈ α⁺]] ~ \iff ~ [[iP ≈ α⁺]]\\
+        [[Γ ⊢ iN ≤ α⁻]] ~ &\iff ~ [[iN = ∀pbs.α⁻]]  ~ \iff ~ [[Γ ⊢ iN ≈ α⁻]] ~ \iff ~ [[iN ≈ α⁻]]\\
+        [[Γ ⊢ α⁻ ≤ iN]] ~ &\iff ~ [[iN = ∀pbs.α⁻]]  ~ \iff ~ [[Γ ⊢ iN ≈ α⁻]] ~ \iff ~ [[iN ≈ α⁻]]\\
+    \end{align*}
+\end{restatable}
+
+
+\begin{restatable}[Subtyping context irrelevance]{lemma}{lemmaSubtCtxtIrrelevance}
+    \label{lemma:subt-ctxt-irrelevance}
+    Suppose that all the mentioned types are well-formed in $[[Γ1]]$ and $[[Γ2]]$. 
+    Then 
+    \begin{enumerate}
+        \item[$+$] $[[Γ1 ⊢ iP ≥ iQ]]$ is equivalent to $[[Γ2 ⊢ iP ≥ iQ]]$;
+        \item[$-$] $[[Γ1 ⊢ iN ≤ iM]]$ is equivalent to $[[Γ2 ⊢ iN ≤ iM]]$.
+    \end{enumerate}
+\end{restatable}
+
+
+\begin{restatable}[Weakening of subtyping context]{lemma}{lemmaSubtWeakening}
+    \label{lemma:subt-weakening}
+    Suppose $[[Γ1]]$ and $[[Γ2]]$ are contexts 
+    and $[[ Γ1 ⊆ Γ2 ]]$.
+    Then 
+    \begin{enumerate}
+        \item [$+$] $[[Γ1 ⊢ iP ≥ iQ]]$ implies $[[Γ2 ⊢ iP ≥ iQ]]$;
+        \item [$-$] $[[Γ1 ⊢ iN ≤ iM]]$ implies $[[Γ2 ⊢ iN ≤ iM]]$.
+    \end{enumerate}
+\end{restatable}
+
+
+\begin{restatable}[Reflexivity of subtyping]{lemma}{lemmaSubtypingReflexivity}
+    \label{lemma:subtyping-reflexivity}
+    Assuming all the types are well-formed in $[[Γ]]$,
+    \begin{itemize}
+        \item [$-$] $[[Γ ⊢ iN ≤ iN]]$
+        \item [$+$] $[[Γ ⊢ iP ≥ iP]]$
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Substitution preserves subtyipng]{lemma}{lemmaSubstPresSubt}
+    \label{lemma:subst-pres-subt}
+    Suppose that all mentioned types are well-formed in $[[Γ1]]$,
+    and $[[σ]]$ is a substitution $[[Γ2 ⊢ σ : Γ1]]$.
+    \begin{itemize}
+        \item [$-$] If $[[Γ1 ⊢ iN ≤ iM]]$ then $[[Γ2 ⊢ [σ]iN ≤ [σ]iM]]$.
+        \item [$+$] If $[[Γ1 ⊢ iP ≥ iQ]]$ then $[[Γ2 ⊢ [σ]iP ≥ [σ]iQ]]$.
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Substitution preserves subtyping induced equivalence]{corollary}{corollarySubstPresEquiv}
+    \label{corollary:subst-pres-equiv}
+    Suppose that $[[Γ ⊢ σ : Γ1]]$. Then
+        \begin{itemize}
+            \item[$+$] if $[[Γ1 ⊢ iP]]$,~ $[[Γ1 ⊢ iQ]]$,~ and $[[Γ1 ⊢ iP ≈ iQ]]$ ~ 
+                then $[[Γ ⊢ [σ]iP ≈ [σ]iQ]]$
+            \item[$-$] if $[[Γ1 ⊢ iN]]$,~ $[[Γ1 ⊢ iM]]$,~ and $[[Γ1 ⊢ iN ≈ iM]]$ ~ 
+                then $[[Γ ⊢ [σ]iN ≈ [σ]iM]]$
+        \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Transitivity of subtyping]{lemma}{lemmaSubtypingTransitivity}
+        \label{lemma:subtyping-transitivity}
+        Assuming the types are well-formed in $[[Γ]]$,
+        \begin{itemize}
+            \item[$-$] if $[[Γ ⊢ iN1 ≤ iN2]]$ and $[[Γ ⊢ iN2 ≤ iN3]]$ then $[[Γ ⊢ iN1 ≤ iN3]]$,
+            \item[$+$] if $[[Γ ⊢ iP1 ≥ iP2]]$ and $[[Γ ⊢ iP2 ≥ iP3]]$ then $[[Γ ⊢ iP1 ≥ iP3]]$.
+        \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Transitivity of equivalence]{corollary}{corollaryEquivalenceTransitivity}
+    \label{corollary:equivalence-transitivity}
+    Assuming the types are well-formed in $[[Γ]]$,
+    \begin{itemize}
+        \item[$-$] if $[[Γ ⊢ iN1 ≈ iN2]]$ and $[[Γ ⊢ iN2 ≈ iN3]]$ then $[[Γ ⊢ iN1 ≈ iN3]]$,
+        \item[$+$] if $[[Γ ⊢ iP1 ≈ iP2]]$ and $[[Γ ⊢ iP2 ≈ iP3]]$ then $[[Γ ⊢ iP1 ≈ iP3]]$.
+    \end{itemize}
+\end{restatable}

@@ -1,68 +1,10 @@
-\begin{observation}[Normalization is deterministic]
-  \label{obs:norm-deterministic}
-  If $[[nf(iN) = iM]]$ and $[[nf(iN) = iM']]$ then $[[iM = iM']]$.
-  If $[[nf(iP) = iQ]]$ and $[[nf(iP) = iQ']]$ then $[[iQ = iQ']]$.
-  This way, we can use normalization as a function.
-\end{observation}
+\obsNormDeterministic*
 \begin{proof}
   By straightforward induction using \cref{obs:ord-deterministic}.
 \end{proof}
 
 
-\begin{lemma}
-  \label{lemma:equiv-fv}
-  Set of free variables is invariant under equivalence.
-  \begin{itemize}
-  \item[$-$] If $[[iN ≈ iM]]$ then $[[fv iN = fv iM]]$ (as sets)
-  \item[$+$] If $[[iP ≈ iQ]]$ then $[[fv iP = fv iQ]]$ (as sets)
-  \end{itemize}
-\end{lemma}
-\begin{proof}
-  Mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$
-  The base cases 
-  (\ruleref{\ottdruleEOneNVarLabel} and \ruleref{\ottdruleEOnePVarLabel})
-  are trivial.
-  So are \ruleref{\ottdruleEOneShiftULabel}, 
-  \ruleref{\ottdruleEOneShiftDLabel}, and
-  \ruleref{\ottdruleEOneArrowLabel}, where
-  the required property follows from the induction hypothesis.
-
-  Let us consider the case when the equivalence is formed by
-  \ruleref{\ottdruleEOneForallLabel}, 
-  that is the equivalence has shape 
-  $[[∀pas.iN ≈ ∀pbs.iM]]$, 
-  and by inversion,
-  there is a bijection 
-  $[[mu : ({pbs} ∩ fv iM) ↔ ({pas} ∩ fv iN)]]$
-  such that $[[iN ≈ [mu] iM]]$, which 
-  by the induction hypothesis means
-  $[[ fv iN = fv [mu]iM ]] = [[ [mu] fv iM]] $.
-  
-  Let us ensure by alpha-equivalence that 
-  $[[pas]]$ is disjoint from $[[fv iM]]$.
-  Then $[[ (fv ∀pbs.iM) \ {pas}]] = [[fv ∀pbs.iM]]$.
-  Then we apply the following chain of equalities:
-  $[[fv ∀pas.iN = fv iN \ {pas}]] = 
-  [[ ([mu] fv iM) \ {pas}]] = 
-  [[ [mu] (fv ∀pbs.iM ∪ ({pbs} ∩ fv iM)) \ {pas}]] = 
-  [[ ([mu] fv ∀pbs.iM ∪ [mu]({pbs} ∩ fv iM)) \ {pas}]] = 
-  [[ ([mu] fv ∀pbs.iM) \ {pas}]] = 
-  [[ (fv ∀pbs.iM) \ {pas}]] = 
-  [[  fv ∀pbs.iM ]]$.
-
-  Symmetrically, we prove the case when the equivalence is formed by
-  \ruleref{\ottdruleEOneExistsLabel}.
-\end{proof}
-
-
-\begin{lemma}
-  \label{lemma:fv-nf}
-  Free variables are not changed by the normalization
-  \begin{itemize}
-  \item[$-$] $[[fv iN = fv nf(iN)]]$
-  \item[$+$] $[[fv iP = fv nf(iP)]]$
-  \end{itemize}
-\end{lemma}
+\lemmaFvNf*
 \begin{proof}
   By mutual induction on $[[iN]]$ and $[[iP]]$.
   The base cases 
@@ -73,7 +15,7 @@
   \ruleref{\ottdruleNrmArrowLabel}) are proved by the induction hypothesis.
 
   Let us consider the case when the term is formed by $[[∀]]$,
-  that is the normalization judgement has shape 
+  that is the normalization judgment has a shape 
   $[[nf(∀pas.iN) = ∀pas'.iN']]$,
   where by inversion $[[nf(iN) = iN']]$
   and $[[ord {pas} in iN' = pas']]$.
@@ -91,15 +33,7 @@
   The case when the term is positive and formed by $[[∃]]$ is symmetric.
 \end{proof}
 
-
-\begin{lemma}[Soundness of normalization]
-  \label{lemma:normalization-soundness}
-  \hfill
-  \begin{itemize}
-    \item[$-$] $[[iN ≈ nf(iN)]]$
-    \item[$+$] $[[iP ≈ nf(iP)]]$
-  \end{itemize}
-\end{lemma}
+\lemmaNormSoundness*
 \begin{proof}
   Mutual induction on $[[nf(iN) = iM]]$ and $[[nf(iP) = iQ]]$.
   Let us consider how this judgment is formed:
@@ -124,27 +58,69 @@
   \end{caseof}
 \end{proof}
 
-\begin{corollary}[Normalization preserves ordering]
-  \label{corollary:normalization-ord}
-  For any $[[varset]]$,
+\corollaryWfNf*
+\begin{proof}
+  Immediately from \cref{lemma:wf-equiv,lemma:normalization-soundness}.
+\end{proof}
+
+\corollaryWfSNf*
+\begin{proof}
+  Let us prove the forward direction.
+  Suppose that $[[α± ∊ Γ1]]$.  Let us show that $[[Γ2 ⊢ [nf(σ)]α±]]$.
+  By the definition of substitution normalization,
+  $[[ [nf(σ)]α± = nf([σ]α±) ]]$. Then by \cref{corollary:wf-nf},
+  to show $[[Γ2 ⊢ nf([σ]α±)]]$, it suffices to show $[[Γ2 ⊢ [σ]α±]]$,
+  which holds by the assumption $[[Γ2 ⊢ σ : Γ1]]$.
+
+  The backward direction is proved analogously.
+\end{proof}
+
+\lemmaNormSubstSig*
+\begin{proof}
+  Suppose that $[[α± ∊ Γ1]]$. 
+  Then by \cref{corollary:wf-nf}, $[[Γ2 ⊢ nf([σ]α±)]] = [[ [nf(σ)]α± ]]$ 
+  is equivalent to $[[Γ2 ⊢ [σ]α±]]$.
+
+  Suppose that $[[α± ∉ Γ1]]$. 
+  $[[Γ2 ⊢ σ : Γ1]]$ means that $[[ [σ]α± = α± ]]$, 
+  and then $[[ [nf(σ)]α± ]] = [[nf([σ]α±)]] = [[nf(α±)]] = [[α±]]$.
+\end{proof}
+
+\corollaryNfSoundWrtSubtEquiv*
+\begin{proof}
+  Immediately from \cref{lemma:normalization-soundness,corollary:wf-nf,lemma:equiv-soundness}.  
+\end{proof}
+
+\corollaryNfPresSubt*
+\begin{proof}
+  \hfill
   \begin{itemize}
-  \item[$-$] $[[ord varset in nf(iN)]] = [[ord varset in iM]]$
-  \item[$+$] $[[ord varset in nf(iP)]] = [[ord varset in iQ]]$
+    \item [$+$]  
+    \begin{itemize}
+      \item [$\Rightarrow$] Let us assume $[[Γ ⊢ iP ≥ iQ]]$.
+        By \cref{corollary:nf-sound-wrt-subt-equiv},
+        $[[Γ ⊢ iP ≈ nf(iP)]]$ and $[[Γ ⊢ iQ ≈ nf(iQ)]]$, 
+        in particular, by inversion, 
+        $[[Γ ⊢ nf(iP) ≥ iP]]$ and $[[Γ ⊢ iQ ≥ nf(iQ)]]$.
+        Then by transitivity of subtyping 
+        (\cref{lemma:subtyping-transitivity}), 
+        $[[Γ ⊢ nf(iP) ≥ nf(iQ)]]$.
+      \item [$\Leftarrow$] Let us assume $[[Γ ⊢ nf(iP) ≥ nf(iQ)]]$.
+        Also by \cref{corollary:nf-sound-wrt-subt-equiv}
+        and inversion, 
+        $[[Γ ⊢ iP ≥ nf(iP)]]$ and $[[Γ ⊢ nf(iQ) ≥ iQ]]$.
+        Then by the transitivity, $[[Γ ⊢ iP ≥ iQ]]$.
+    \end{itemize}
+    \item [$-$] The negative case is proved symmetrically.
   \end{itemize}
-\end{corollary}
+\end{proof}
+
+\corollaryNormPreservesOrdering*
 \begin{proof}
   Immediately from \cref{lemma:ord-completeness,lemma:normalization-soundness}.
 \end{proof}
 
-\begin{lemma}[Distributivity of normalization over substitution]
-  \label{lemma:norm-subst-distr} Normalization of a term distributes over substitution.
-  Suppose that $[[σ]]$ is a substitution, $[[iN]]$ and $[[iP]]$ are types. Then
-    \begin{itemize}
-      \item[$-$] $[[nf([σ]iN)]] = [[ [nf(σ)] nf(iN) ]]$
-      \item[$+$] $[[nf([σ]iP)]] = [[ [nf(σ)] nf(iP) ]]$
-  \end{itemize}
-  where $[[nf(σ)]]$ means pointwise normalization: $[[ [nf(σ)] α⁻]] = [[nf([σ]α⁻)]]$.
-\end{lemma}
+\lemmaNormSubstDistr*
 \begin{proof}
   Mutual induction on $[[iN]]$ and $[[iP]]$.
   \begin{caseof}
@@ -200,7 +176,7 @@
                           && \text {By the induction hypothesis}\\
          \end{aligned}$ \\
 
-     To show alpha-equivalence of 
+     To show the alpha-equivalence of 
      $[[ [nf(σ)] ∀pas'.nf(iM) ]]$ and $[[ ∀pas'.[nf(σ)]nf(iM) ]]$,
      we can assume that $[[{pas'} ∩ Γ1]] = \emptyset$, and $[[{pas'} ∩ Γ2]]
      = \emptyset$.
@@ -210,34 +186,14 @@
   \end{caseof}
 \end{proof}
 
-
-\begin{corollary}[Commutativity of normalization and renaming]
-  \label{lemma:norm-subst-commute} Normalization of a term commutes with renaming.
-  Suppose that $\mu$ is a bijection between two sets of variables
-  $\mu : A \leftrightarrow B$. Then
-  \begin{itemize}
-    \item[$-$] $[[nf([mu]iN)]] = [[ [mu] nf(iN) ]]$
-    \item[$+$] $[[nf([mu]iP)]] = [[ [mu] nf(iP) ]]$
-  \end{itemize}
-\end{corollary}
+\lemmaNormSubstCommute*
 \begin{proof}
-  Immediately from \cref{lemma:norm-subst-distr},
-  after noticing that $[[nf(mu)]] = [[mu]]$.
+  Immediately from \cref{lemma:norm-subst-distr}, after noticing that $[[nf(mu)]] = [[mu]]$.
 \end{proof}
 
 
 
-
-\begin{lemma}[Completeness of quantified normalization]
-  \label{lemma:normalization-completeness}
-  Normalization returns the same representative for equivalent types.
-
-  \begin{itemize}
-  \item[$-$] If $[[iN ≈ iM]]$ then $[[nf(iN)]] = [[nf(iM)]]$
-  \item[$+$] If $[[iP ≈ iQ]]$ then $[[nf(iP)]] = [[nf(iQ)]]$
-  \end{itemize}
-\end{lemma}
-
+\lemmaNormalizationCompleteness*
 \begin{proof}
   Mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$.
   \begin{caseof}
@@ -292,43 +248,34 @@
   \end{caseof}
 \end{proof}
 
-
-\begin{lemma}[Idempotence of normalization]
-  \label{lemma:norm-idemp}
-  Normalization is idempotent
+\lemmaDeclEquivAlg*
+\begin{proof} \hfill
   \begin{itemize}
-  \item[$-$] $[[nf(nf(iN))]] = [[nf(iN)]]$
-  \item[$+$] $[[nf(nf(iP))]] = [[nf(iP)]]$
+    \item[$+$] Let us prove both directions separately.
+    \begin{itemize}
+      \item[$\Rightarrow$] 
+        exactly by \cref{lemma:normalization-completeness},
+      \item[$\Leftarrow$] 
+        from \cref{lemma:normalization-soundness}, we know
+        $[[iP ≈ nf(iP)]] = [[nf(iQ) ≈ iQ]]$, then by transitivity (\cref{lemma:decl-equiv-transitivity}),
+        $[[iP ≈ iQ]]$.
+    \end{itemize}
+    \item[$-$] For the negative case, the proof is the same.
   \end{itemize}
-\end{lemma}
+\end{proof}
+
+\corollaryNfCompleteWrtSubtEquiv*
+\begin{proof}
+  Immediately from \cref{lemma:equiv-completeness,lemma:normalization-completeness}.
+\end{proof}
+
+
+\lemmaNormIdemp*
 \begin{proof}
   By applying \cref{lemma:normalization-completeness} to \cref{lemma:normalization-soundness}.
 \end{proof}
 
-
-\begin{lemma}
-  \label{lemma:normal-after-subst}
-  The result of a substitution is normalized if and only if the initial type and
-  the substitution are normalized.
-
-  Suppose that $[[σ]]$ is a substitution  $[[Γ2 ⊢ σ : Γ1]]$,
-  $[[iP]]$ is a positive type ($[[Γ1 ⊢ iP]]$),
-  $[[iN]]$ is a negative type ($[[Γ1 ⊢ iN]]$). Then
-  \begin{itemize}
-  \item[$+$]
-    $[[ [σ]iP  ]] \text{ is normal} \iff
-    \begin{cases}
-      [[σ|fv(iP)]] &\text{is normal}\\
-      [[iP]]       &\text{is normal}\\
-    \end{cases} $
-  \item[$-$]
-    $[[ [σ]iN  ]] \text{is normal} \iff
-    \begin{cases}
-      [[σ|fv(iN)]] &\text{is normal}\\
-      [[iN]]       &\text{is normal}\\
-    \end{cases} $
-  \end{itemize}
-\end{lemma}
+\lemmaNormalAfterSubst*
 \begin{proof}
   Mutual induction on $[[Γ1 ⊢ iP]]$ and $[[Γ1 ⊢ iN]]$.
   \begin{caseof}
@@ -412,4 +359,28 @@
   \end{caseof}
 \end{proof}
 
+\lemmaSubtInducedEquivAlg*
+\begin{proof}
+  Let us prove the positive case, the negative case is symmetric.
+  We prove both directions of $\iff$ separately:
+  \begin{itemize}
+    \item [$\Rightarrow$] exactly \cref{corollary:nf-complete-wrt-subt-equiv};
+    \item [$\Leftarrow$] by \cref{lemma:decl-equiv-algorithmization,lemma:equiv-soundness}.
+  \end{itemize}
+\end{proof}
 
+
+\corSubstPresDeclEquiv*
+\begin{proof}
+  $
+  \begin{aligned}[t] 
+    [[ iP ≈ iQ ]] &\Rightarrow        [[ nf(iP) = nf(iQ) ]]
+                  && \text{by \cref{lemma:subt-equiv-algorithmization}}\\
+                  &\Rightarrow [[ [nf(σ)]nf(iP) = [nf(σ)]nf(iQ)]]\\
+                  &\Rightarrow [[ nf([σ]iP) = nf([σ]iQ)]]
+                  && \text{by \cref{lemma:norm-subst-distr}}\\ 
+                  &\Rightarrow        [[ [σ]iP ≈ [σ]iQ ]]
+                  && \text{by \cref{lemma:subt-equiv-algorithmization}}\\
+  \end{aligned} 
+  $
+\end{proof}

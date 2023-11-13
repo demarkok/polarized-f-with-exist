@@ -1,14 +1,4 @@
-\begin{lemma}[Soundness of Entry Singularity]
-    \label{lemma:entry-singularity-soundness}
-    \begin{itemize}
-        \item [$+$] Suppose $[[scE singular with iP]]$ for $[[iP]]$ well-formed in $[[Γ]]$.
-            Then $[[ Γ ⊢ iP : scE ]]$
-            and for any $[[ Γ ⊢ iP']]$ such that $[[Γ ⊢ iP' : scE]]$, $[[Γ ⊢ iP' ≈ iP]]$;
-        \item [$-$] Suppose $[[scE singular with iN]]$ for $[[iN]]$ well-formed in $[[Γ]]$.
-            Then $[[ Γ ⊢ iN : scE ]]$
-            and for any $[[ Γ ⊢ iN']]$ such that $[[Γ ⊢ iN' : scE]]$, $[[Γ ⊢ iN' ≈ iN]]$.
-    \end{itemize}
-\end{lemma}
+\lemEntrySingularitySoundness*
 \begin{proof}
     Let us consider how $[[scE singular with iP]]$ or $[[scE singular with iN]]$ is formed.
     \begin{caseof}
@@ -81,20 +71,7 @@
 
 
 
-\begin{lemma}[Completeness of Entry Singularity]
-    \label{lemma:entry-singularity-completeness}
-    \hfill
-    \begin{itemize}
-        \item [$-$] Suppose that there exists $[[iN]]$ well-formed in $[[Γ]]$ 
-            such that for any $[[iN']]$ well-formed in $[[Γ]]$,
-            $[[Γ ⊢ iN' : scE]]$ implies $[[Γ ⊢ iN' ≈ iN]]$. 
-            Then $[[scE singular with nf(iN)]]$.
-        \item [$+$] Suppose that there exists $[[iP]]$ well-formed in $[[Γ]]$ 
-            such that for any $[[iP']]$ well-formed in $[[Γ]]$,
-            $[[Γ ⊢ iP' : scE]]$ implies $[[Γ ⊢ iP' ≈ iP]]$. 
-            Then $[[scE singular with nf(iP)]]$ .
-    \end{itemize}
-\end{lemma}
+\lemEntrySingularityCompleteness*
 \begin{proof}
     \hfill
     \begin{itemize}
@@ -166,14 +143,7 @@
     \end{itemize}
 \end{proof}
 
-\begin{lemma}[Soundness of Singularity]
-    \label{lemma:singularity-soundness}
-    Suppose $[[Θ ⊢ SC : Ξ]]$, and $[[SC singular with uσ]]$. 
-    Then $[[ Θ ⊢ uσ : Ξ ]]$,
-     $[[ Θ ⊢ uσ : SC ]]$ and for any 
-    $[[uσ']]$ such that $[[Θ ⊢ uσ : SC]]$,
-    $[[Θ ⊢ uσ' ≈ uσ : Ξ]]$.
-\end{lemma}
+\lemSingularitySoundness*
 \begin{proof}
     Suppose that $[[Θ ⊢ uσ' : SC]]$.
     It means that for every $[[scE]] \in [[SC]]$ restricting $[[α̂±]]$,
@@ -186,11 +156,7 @@
     $[[uσ]]$ is equivalent to $[[uσ']]$ on this set.
 \end{proof}
 
-\begin{observation}[Singularity is Deterministiic]
-    For a fixed $[[SC]]$ such that $[[Θ ⊢ SC : Ξ]]$,
-    if $[[SC singular with uσ]]$ and $[[SC singular with uσ']]$,
-    then $[[uσ = uσ']]$.
-\end{observation}
+\obsSingularityDeterministic*
 \begin{proof}
     By \cref{lemma:singularity-soundness},
     $[[Θ ⊢ uσ : Ξ]]$ and $[[Θ ⊢ uσ' : Ξ]]$.
@@ -209,21 +175,7 @@
 \end{proof}
 
 
-
-\begin{lemma}[Completeness of Singularity]
-    \label{lemma:singularity-completeness}
-    For a given $[[Θ ⊢ SC]]$,
-    suppose that all the substitutions satisfying $[[SC]]$ are equivalent
-    on $[[Ξ]] \supseteq [[dom(SC)]]$.
-    In other words, suppose that there exists $[[Θ ⊢ uσ1 : Ξ]]$ such that
-    for any $[[Θ ⊢ uσ : Ξ]]$, $[[Θ ⊢ uσ : SC]]$ implies 
-    $[[Θ ⊢ uσ ≈ uσ1 : Ξ]]$.
-    Then 
-    \begin{itemize}
-        \item $[[SC singular with uσ0]]$ for some $[[uσ0]]$ and
-        \item $[[Ξ]] = [[dom(SC)]]$.
-    \end{itemize} 
-\end{lemma}
+\lemSingularityCompleteness*
 \begin{proof}
 
     First, let us assume $[[Ξ]] \neq [[dom(SC)]]$. 

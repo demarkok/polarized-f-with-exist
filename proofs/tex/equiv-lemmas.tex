@@ -1,15 +1,4 @@
-\begin{lemma} [Declarative Equivalence is invariant under bijections]
-  \label{lemma:decl-equiv-bijection}
-  Suppose $[[μ]]$ is a bijection $[[μ : varset1 ↔ varset2]]$, then
-  \begin{itemize}
-    \item[$+$] $[[iP1 ≈ iP2]]$ implies $[[ [μ]iP1 ≈ [μ]iP2 ]]$,
-      and there exists an inference tree of $[[ [μ]iP1 ≈ [μ]iP2 ]]$
-      with the same shape as the one inferring $[[iP1 ≈ iP2]]$;
-    \item[$-$] $[[iN1 ≈ iN2]]$ implies $[[ [μ]iN1 ≈ [μ]iN2 ]]$, 
-      and there exists an inference tree of $[[ [μ]iN1 ≈ [μ]iN2 ]]$
-      with the same shape as the one inferring $[[iN1 ≈ iN2]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaDeclEquivBijection*
 \begin{proof}
   We prove it by induction on $[[iP1 ≈ iP2]]$ and mutually, on $[[iN1 ≈ iN2]]$.
   Let us consider the last rule used in the derivation.
@@ -74,14 +63,45 @@
     \end{caseof}
 \end{proof}
 
-\begin{lemma}[Declarative equivalence is transitive]
-  \hfill
-  \label{lemma:decl-equiv-transitivity}
-  \begin{itemize}
-    \item[$+$] if $[[iP1 ≈ iP2]]$ and $[[iP2 ≈ iP3]]$ then $[[iP1 ≈ iP3]]$,
-    \item[$-$] if $[[iN1 ≈ iN2]]$ and $[[iN2 ≈ iN3]]$ then $[[iN1 ≈ iN3]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaEquivFV*
+\begin{proof}
+  Mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$
+  The base cases 
+  (\ruleref{\ottdruleEOneNVarLabel} and \ruleref{\ottdruleEOnePVarLabel})
+  are trivial.
+  So are \ruleref{\ottdruleEOneShiftULabel}, 
+  \ruleref{\ottdruleEOneShiftDLabel}, and
+  \ruleref{\ottdruleEOneArrowLabel}, where
+  the required property follows from the induction hypothesis.
+
+  Let us consider the case when the equivalence is formed by
+  \ruleref{\ottdruleEOneForallLabel}, 
+  that is the equivalence has a shape 
+  $[[∀pas.iN ≈ ∀pbs.iM]]$, 
+  and by inversion,
+  there is a bijection 
+  $[[mu : ({pbs} ∩ fv iM) ↔ ({pas} ∩ fv iN)]]$
+  such that $[[iN ≈ [mu] iM]]$, which 
+  by the induction hypothesis means
+  $[[ fv iN = fv [mu]iM ]] = [[ [mu] fv iM]] $.
+  
+  Let us ensure by alpha-equivalence that 
+  $[[pas]]$ is disjoint from $[[fv iM]]$.
+  Then $[[ (fv ∀pbs.iM) \ {pas}]] = [[fv ∀pbs.iM]]$.
+  Then we apply the following chain of equalities:
+  $[[fv ∀pas.iN = fv iN \ {pas}]] = 
+  [[ ([mu] fv iM) \ {pas}]] = 
+  [[ [mu] (fv ∀pbs.iM ∪ ({pbs} ∩ fv iM)) \ {pas}]] = 
+  [[ ([mu] fv ∀pbs.iM ∪ [mu]({pbs} ∩ fv iM)) \ {pas}]] = 
+  [[ ([mu] fv ∀pbs.iM) \ {pas}]] = 
+  [[ (fv ∀pbs.iM) \ {pas}]] = 
+  [[  fv ∀pbs.iM ]]$.
+
+  Symmetrically, we prove the case when the equivalence is formed by
+  \ruleref{\ottdruleEOneExistsLabel}.
+\end{proof}
+
+\lemmaDeclEquivTransitivity*
 \begin{proof}
   We prove it by
   $\size{[[iP1 ≈ iP2]]} + \size{[[iP2 ≈ iP3]]}$
@@ -166,14 +186,7 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Type well-formedness is invariant under equivalence]
-  \label{lemma:wf-equiv}
-  Mutual subtyping implies declarative equivalence.
-  \begin{itemize}
-  \item[$+$] if $[[iP ≈ iQ]]$ then $[[Γ ⊢ iP]] \iff [[Γ ⊢ iQ]]$,
-  \item[$-$] if $[[iN ≈ iM]]$ then $[[Γ ⊢ iN]] \iff [[Γ ⊢ iM]]$
-  \end{itemize}
-\end{lemma}
+\lemmaWfEquiv*
 \begin{proof}
   We prove it by induction on $[[iP ≈ iQ]]$ and mutually, on $[[iN ≈ iM]]$.
   Let us consider the last rule used in the derivation.
@@ -232,58 +245,7 @@
   \end{caseof}
 \end{proof}
 
-\begin{corollary}[Normalization preserves well-formedness]
-  \label{corollary:wf-nf}
-  \hfill
-  \begin{itemize}
-  \item[$+$] $[[Γ ⊢ iP]] \iff [[Γ ⊢ nf(iP)]]$,
-  \item[$-$] $[[Γ ⊢ iN]] \iff [[Γ ⊢ nf(iN)]]$
-  \end{itemize}
-\end{corollary}
-\begin{proof}
-  Immediately from \cref{lemma:wf-equiv,lemma:normalization-soundness}.
-\end{proof}
-
-\begin{corollary}[Normalization preserves well-formedness of substitution]
-  \label{corollary:wf-s-nf}
-  \hfill \\
-   $[[Γ2 ⊢ σ : Γ1]] \iff [[Γ2 ⊢ nf(σ) : Γ1]]$
-\end{corollary}
-\begin{proof}
-  Let us prove the forward direction.
-  Suppose that $[[α± ∊ Γ1]]$.  Let us show that $[[Γ2 ⊢ [nf(σ)]α±]]$.
-  By the definition of substitution normalization,
-  $[[ [nf(σ)]α± = nf([σ]α±) ]]$. Then by \cref{corollary:wf-nf},
-  to show $[[Γ2 ⊢ nf([σ]α±)]]$, it suffices to show $[[Γ2 ⊢ [σ]α±]]$,
-  which holds by the assumption $[[Γ2 ⊢ σ : Γ1]]$.
-
-  The backward direction is proved analogously.
-\end{proof}
-
-\begin{lemma}[Normalization preserves substitution signature]
-  \label{lemma:norm-subst-sig}
-  Suppose that $[[σ]]$ is a substitution, $[[Γ1]]$ and $[[Γ2]]$ are contexts.
-  Then $[[Γ2 ⊢ σ : Γ1]]$ implies $[[Γ2 ⊢ nf(σ) : Γ1]]$.
-\end{lemma}
-\begin{proof}
-  Suppose that $[[α± ∊ Γ1]]$. 
-  Then by \cref{corollary:wf-nf}, $[[Γ2 ⊢ nf([σ]α±)]] = [[ [nf(σ)]α± ]]$ 
-  is equivalent to $[[Γ2 ⊢ [σ]α±]]$.
-
-  Suppose that $[[α± ∉ Γ1]]$. 
-  $[[Γ2 ⊢ σ : Γ1]]$ means that $[[ [σ]α± = α± ]]$, 
-  and then $[[ [nf(σ)]α± ]] = [[nf([σ]α±)]] = [[nf(α±)]] = [[α±]]$.
-\end{proof}
-
-
-\begin{lemma}[Soundness of equivalence]
-  \label{lemma:equiv-soundness}
-  Declarative equivalence implies mutual subtyping.
-  \begin{itemize}
-    \item[$+$] if $[[Γ ⊢ iP]]$, $[[Γ ⊢ iQ]]$, and $[[iP ≈ iQ]]$ then $[[Γ ⊢ iP ≈ iQ]]$,
-    \item[$-$] if $[[Γ ⊢ iN]]$, $[[Γ ⊢ iM]]$, and $[[iN ≈ iM]]$ then $[[Γ ⊢ iN ≈ iM]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaEquivSoundness*
 \begin{proof}
   We prove it by mutual induction on $[[iP ≈ iQ]]$ and $[[iN ≈ iM]]$.
   \begin{caseof}
@@ -338,62 +300,7 @@
   \end{caseof}
 \end{proof}
 
-\begin{corollary}[Normalization is sound w.r.t. subtyping-induced equivalence] 
-  \label{corollary:nf-sound-wrt-subt-equiv}
-  \hfill
-  \begin{itemize}
-    \item [$+$] if $[[Γ ⊢ iP]]$ then $[[Γ ⊢ iP ≈ nf(iP)]]$,
-    \item [$-$] if $[[Γ ⊢ iN]]$ then $[[Γ ⊢ iN ≈ nf(iN)]]$.
-  \end{itemize}
-\end{corollary}
-\begin{proof}
-  Immediately from \cref{lemma:normalization-soundness,corollary:wf-nf,lemma:equiv-soundness}.
-\end{proof}
-
-\begin{corollary}[Normalization preserves subtyping] 
-  \label{corollary:nf-pres-subt}
-  Assuming all the types are well-formed in context $[[Γ]]$,
-  \begin{itemize}
-    \item [$+$] $[[Γ ⊢ iP ≥ iQ]] \iff [[Γ ⊢ nf(iP) ≥ nf(iQ)]]$,
-    \item [$-$] $[[Γ ⊢ iN ≤ iM]] \iff [[Γ ⊢ nf(iN) ≤ nf(iM)]]$.
-  \end{itemize}
-\end{corollary}
-\begin{proof}
-  \hfill
-  \begin{itemize}
-    \item [$+$]  
-    \begin{itemize}
-      \item [$\Rightarrow$] Let us assume $[[Γ ⊢ iP ≥ iQ]]$.
-        By \cref{corollary:nf-sound-wrt-subt-equiv},
-        $[[Γ ⊢ iP ≈ nf(iP)]]$ and $[[Γ ⊢ iQ ≈ nf(iQ)]]$, 
-        in particular, by inversion, 
-        $[[Γ ⊢ nf(iP) ≥ iP]]$ and $[[Γ ⊢ iQ ≥ nf(iQ)]]$.
-        Then by transitivity of subtyping 
-        (\cref{lemma:subtyping-transitivity}), 
-        $[[Γ ⊢ nf(iP) ≥ nf(iQ)]]$.
-      \item [$\Leftarrow$] Let us assume $[[Γ ⊢ nf(iP) ≥ nf(iQ)]]$.
-        Also by \cref{corollary:nf-sound-wrt-subt-equiv}
-        and inversion, 
-        $[[Γ ⊢ iP ≥ nf(iP)]]$ and $[[Γ ⊢ nf(iQ) ≥ iQ]]$.
-        Then by the transitivity, $[[Γ ⊢ iP ≥ iQ]]$.
-    \end{itemize}
-    \item [$-$] The negative case is proved symmetrically.
-  \end{itemize}
-\end{proof}
-
-\begin{lemma}[Subtyping induced by disjoint substitutions]
-  \label{lemma:subt-ind-disj-subst}
-  If two disjoint substitutions induce subtyping, they are degenerate (so is the
-  subtyping).
-  Suppose that $[[Γ ⊢ σ1 : Γ1]]$ and $[[Γ ⊢ σ2 : Γ1]]$,
-  where $[[Γi ⊆ Γ]]$ and $[[Γ1 ∩ Γ2= ∅]]$. Then
-  \begin{itemize}
-  \item[$-$] assuming $[[Γ ⊢ iN]]$,~
-    $[[Γ ⊢ [σ1]iN ≤ [σ2]iN]]$ implies $[[Γ ⊢ σi ≈ id : fv iN]]$
-  \item[$+$] assuming $[[Γ ⊢ iP]]$,~
-    $[[Γ ⊢ [σ1]iP ≥ [σ2]iP]]$ implies $[[Γ ⊢ σi ≈ id : fv iP]]$
-  \end{itemize}
-\end{lemma}
+\lemmaSubtIndDisjSubst*
 \begin{proof}
   Proof by induciton on $[[Γ ⊢ iN]]$ (and mutually on $[[Γ ⊢ iP]]$).
   \begin{caseof}
@@ -503,34 +410,10 @@
   \end{caseof}
 \end{proof}
 
-\begin{corollary}[Substitution cannot induce proper subtypes or supertypes] \label{corollary:subst-proper-subt}
-  Assuming all mentioned types are well-formed in $[[Γ]]$ and $[[σ]]$ is a
-  substitution $[[Γ ⊢ σ : Γ]]$,
-  \begin{align*}
-    [[Γ ⊢ [σ]iN ≤ iN]] ~&\Rightarrow~ [[Γ ⊢ [σ]iN ≈ iN]]
-                          \text{ and } [[Γ ⊢ σ ≈ id :  fv iN]] \\
-    [[Γ ⊢ iN ≤ [σ]iN]] ~&\Rightarrow~ [[Γ ⊢ iN ≈ [σ]iN]]
-                          \text{ and } [[Γ ⊢ σ ≈ id :  fv iN]] \\
-    [[Γ ⊢ [σ]iP ≥ iP]] ~&\Rightarrow~ [[Γ ⊢ [σ]iP ≈ iP]]
-                          \text{ and } [[Γ ⊢ σ ≈ id :  fv iP]] \\
-    [[Γ ⊢ iP ≥ [σ]iP]] ~&\Rightarrow~ [[Γ ⊢ iP ≈ [σ]iP]]
-                          \text{ and } [[Γ ⊢ σ ≈ id :  fv iP]] \\
-  \end{align*}
-\end{corollary}
+\corollarySubstProperSubt*
 
 
-\begin{lemma} \label{lemma:mutual-subst-subtyping}
-  Assuming that the mentioned types ($[[iP]]$, $[[iQ]]$, $[[iN]]$, and $[[iM]]$)
-  are well-formed in $[[Γ]]$ and that the substitutions ($[[σ1]]$ and $[[σ2]]$) have signature $[[Γ ⊢ σi : Γ]]$,
-  \begin{itemize}
-  \item[$+$] if $[[Γ ⊢ [σ1] iP ≥ iQ]]$ and $[[Γ ⊢ [σ2] iQ ≥ iP]]$\\
-    then there exists a bijection $[[μ : fv iP ↔ fv iQ]]$ such that
-    $[[Γ ⊢ σ1 ≈ Sub μ :  fv iP]]$ and $[[Γ ⊢ σ2 ≈ Sub μ-1 :  fv iQ]]$;
-  \item[$-$] if $[[Γ ⊢ [σ1] iN ≤ iM]]$ and $[[Γ ⊢ [σ2] iN ≤ iM]]$\\
-    then there exists a bijection $[[μ : fv iN ↔ fv iM]]$ such that
-    $[[Γ ⊢ σ1 ≈ Sub μ :  fv iN]]$ and $[[Γ ⊢ σ2 ≈ Sub μ-1 :  fv iM]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaMutualSubstSubtyping*
 \begin{proof}
   \hfill
   \begin{itemize}
@@ -609,16 +492,7 @@
   \end{itemize}
 \end{proof}
 
-\begin{lemma}[Equivalent substitution act equivalently]
-  \label{lemma:equiv-subst-on-same-term}
-  Suppose that $[[Γ' ⊢ σ1 : Γ]]$ and $[[Γ' ⊢ σ2 : Γ]]$
-  are substitutions equivalent on their domain, that is $[[Γ' ⊢ σ1 ≈ σ2 : Γ]]$.
-  Then
-  \begin{itemize}
-    \item[$+$] for any $[[Γ ⊢ iP]]$, $[[Γ' ⊢ [σ1]iP ≈ [σ2]iP]]$;
-    \item[$-$] for any $[[Γ ⊢ iN]]$, $[[Γ' ⊢ [σ1]iN ≈ [σ2]iN]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaEquivSubstOnSameTerm*
 \begin{proof}
   We prove it by induction on $[[iP]]$ (and mutually on $[[iN]]$).
   \begin{caseof}
@@ -679,18 +553,7 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Equivalence of polymorphic types]
-  \label{lemma:poly-types-equivalence}
-  \hfill
-  \begin{itemize}
-    \item[$-$] For $[[Γ ⊢ ∀pas.iN]]$ and $[[Γ ⊢ ∀pbs.iM]]$,\\ if $[[Γ ⊢ ∀pas.iN ≈ ∀pbs.iM ]]$
-    then there exists a bijection $[[μ : {pbs} ∩ fv iM ↔ {pas} ∩ fv iN]]$
-    such that $[[ Γ, pas ⊢ iN ≈ [Sub μ] iM ]]$,
-    \item[$+$] For $[[Γ ⊢ ∃nas.iP]]$ and $[[Γ ⊢ ∃nbs.iQ]]$,\\  if $[[Γ ⊢ ∃nas.iP ≈ ∃nbs.iQ ]]$
-    then there exists a bijection $[[μ : {nbs} ∩ fv iQ ↔ {nas} ∩ fv iP]]$
-    such that $[[ Γ, nbs ⊢ iP ≈ [Sub μ] iQ ]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaPolyTypesEquivalence*
 \begin{proof}
     \hfill
   \begin{itemize}
@@ -771,14 +634,7 @@
 \end{proof}
 
 
-\begin{lemma}[Completeness of equivalence] \label{lemma:equiv-completeness}
-  Mutual subtyping implies declarative equivalence.
-  Assuming all the types below are well-formed in $[[Γ]]$: 
-  \begin{itemize}
-  \item[$+$] if $[[Γ ⊢ iP ≈ iQ]]$ then $[[iP ≈ iQ]]$,
-  \item[$-$] if $[[Γ ⊢ iN ≈ iM]]$ then $[[iN ≈ iM]]$.
-  \end{itemize}
-\end{lemma}
+\lemmaEquivCompleteness*
 \begin{proof}
   \begin{itemize}
     \item[$-$] 
@@ -820,55 +676,3 @@
   \end{itemize}
 \end{proof}
 
-\begin{corollary}[Normalization is complete w.r.t. subtyping-induced equivalence]
-  \label{corollary:nf-complete-wrt-subt-equiv}
-  Assuming all the types below are well-formed in $[[Γ]]$:
-  \begin{itemize}
-    \item [$+$] if $[[Γ ⊢ iP ≈ iQ]]$ then $[[nf(iP) = nf(iQ)]]$,
-    \item [$-$] if $[[Γ ⊢ iN ≈ iM]]$ then $[[nf(iN) = nf(iM)]]$.
-  \end{itemize}
-\end{corollary}  
-\begin{proof}
-  Immediately from \cref{lemma:equiv-completeness,lemma:normalization-completeness}.
-\end{proof}
-
-\begin{lemma}[Algorithmization of subtyping-induced equivalence]
-  \label{lemma:subt-equiv-algorithmization}
-  Mutual subtyping is the equality of normal forms.
- Assuming all the types below are well-formed in $[[Γ]]$:
-  \begin{itemize}
-    \item [$+$] $[[Γ ⊢ iP ≈ iQ]] \iff [[nf(iP) = nf(iQ)]]$,
-    \item [$-$] $[[Γ ⊢ iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$.
-  \end{itemize}
-\end{lemma}
-\begin{proof}
-  Let us prove the positive case, the negative case is symmetric.
-  We prove both directions of $\iff$ separately:
-  \begin{itemize}
-    \item [$\Rightarrow$] exactly \cref{corollary:nf-complete-wrt-subt-equiv};
-    \item [$\Leftarrow$] by \cref{lemma:decl-equiv-algorithmization,lemma:equiv-soundness}.
-  \end{itemize}
-\end{proof}
-
-\begin{lemma}[Substitution preserves declarative equivalence]
-  \label{corollary:subst-pres-decl-equiv}
-  Suppose that $[[σ]]$ is a substitution. Then
-    \begin{itemize}
-      \item[$+$] $[[iP ≈ iQ]]$ implies $[[ [σ]iP ≈ [σ]iQ ]]$
-      \item[$-$] $[[iN ≈ iM]]$ implies $[[ [σ]iN ≈ [σ]iM ]]$
-  \end{itemize}
-\end{lemma}
-\begin{proof}
-
-  $
-  \begin{aligned}[t] 
-    [[ iP ≈ iQ ]] &\Rightarrow        [[ nf(iP) = nf(iQ) ]]
-                  && \text{by \cref{lemma:subt-equiv-algorithmization}}\\
-                  &\Rightarrow [[ [nf(σ)]nf(iP) = [nf(σ)]nf(iQ)]]\\
-                  &\Rightarrow [[ nf([σ]iP) = nf([σ]iQ)]]
-                  && \text{by \cref{lemma:norm-subst-distr}}\\ 
-                  &\Rightarrow        [[ [σ]iP ≈ [σ]iQ ]]
-                  && \text{by \cref{lemma:subt-equiv-algorithmization}}\\
-  \end{aligned} 
-  $
-\end{proof}

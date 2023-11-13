@@ -1,9 +1,4 @@
-\begin{observation} [Least Upper Bound algorithm is deterministic]
-  \label{obs:lub-deterministic}
-  For types $[[Γ ⊢ iP1]]$, and $[[Γ ⊢ iP2]]$,
-  if $[[Γ ⊨ iP1 ∨ iP2 = iQ]]$ and $[[Γ ⊨ iP1 ∨ iP2 = iQ']]$
-  then $[[iQ = iQ']]$.
-\end{observation}
+\obsLubDeterministic*
 \begin{proof}
   The shape of $[[iP1]]$ and $[[iP2]]$ uniquely determines the rule 
   applied to infer the upper bound.
@@ -19,30 +14,7 @@
   \end{itemize}
 \end{proof}
 
-\begin{lemma}[Characterization of the Supertypes]
-  \label{lemma:shape-of-supertypes}
-  Let us define the
-  set of upper bounds of a positive type $\UB([[iP]])$ in the following way:
-
-  \hfill
-
-  \begin{tabular}{@{}lr@{}} \toprule
-    % supertypes of ... & ... are \\ 
-    $[[G ⊢ iP]]$          & $\UB([[G ⊢ iP]])$ \\ \midrule
-    \addlinespace[0.7em]
-    $[[ G ⊢ pb ]]$        & $\{[[ ∃nas.pb ]] \ \mid \ \text{for }[[nas]]\}$ \\
-    \addlinespace[0.7em]
-    $[[ G ⊢ ∃nbs.iQ ]]$   & %$\Set{ [[iQ]] \ | \begin{array}{l} [[iQ]] \in \UB([[iP]]) \\  \text{ s.t. } [[fv iQ ∩ {nbs} = ∅]] \end{array}}$  \\
-                            $\UB([[G, nbs ⊢ iQ]])$ not using $[[nbs]]$ \\
-    \addlinespace[0.7em]
-    $[[ G ⊢ ↓iM ]]$       & $\Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l}
-                                                         \text{for $[[nas]]$, $[[iM']]$, and $[[iNs]]$ s.t. }\\
-                                                         \text{$[[G ⊢ iNi]]$, $[[G,nas ⊢ iM']]$,  and $[[ [iNs/nas] ↓iM' ≈ ↓iM ]]$}
-                                                       \end{array}}$  \\
-  \end{tabular}
-
-  Then $\UB([[G ⊢ iP]]) \equiv \{[[iQ]]\ \mid \ [[G ⊢ iQ ≥ iP]] \}$.
-\end{lemma}
+\lemmaShapeOfSupertypes*
 \begin{proof}
   By induction on $[[G ⊢ iP]]$.
   \begin{caseof}
@@ -110,32 +82,7 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Characterization of the Normalized Supertypes]
-  \label{lemma:shape-supertypes-norm}
-  For a normalized positive type $[[iP = nf(iP)]]$,
-  let us define the set of normalized upper bounds in the following way:
-  
-  \hfill
-
-  \begin{tabular}{@{}lr@{}} \toprule
-    % supertypes of ... & ... are \\ 
-    $[[G ⊢ iP]]$          & $\NFUB([[G ⊢ iP]])$ \\ \midrule
-    \addlinespace[0.7em]
-    $[[ G ⊢ pb ]]$        & $\{ [[pb]] \}$ \\
-    \addlinespace[0.7em]
-    $[[ G ⊢ ∃nbs.iP ]]$   & %$\Set{ [[iQ]] \ | \begin{array}{l} [[iQ]] \in \UB([[iP]]) \\  \text{ s.t. } [[fv iQ ∩ {nbs} = ∅]] \end{array}}$  \\
-    $\NFUB([[G, nbs ⊢ iP]])$ not using $[[nbs]]$ \\
-    \addlinespace[0.7em]
-    $[[ G ⊢ ↓iM ]]$       & $\Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l}
-                                                         \text{for $[[nas]]$, $[[iM']]$, and $[[iNs]]$ s.t. $[[ord {nas} in iM' = nas]]$,}\\
-                                                         \text{$[[G ⊢ iNi]]$, $[[G,nas ⊢ iM']]$,  and $[[ [iNs/nas] ↓iM' = ↓iM ]]$}
-                                                       \end{array}}$  \\
-  \end{tabular}
-
-  Then $\NFUB([[G ⊢ iP]]) \equiv \{[[nf(iQ)]]\ \mid \ [[G ⊢ iQ ≥ iP]] \}$.
-\end{lemma}
-
-
+\lemmaShapeOfNormalizedSupertypes*
 \begin{proof}
   By induction on $[[G ⊢ iP]]$.
   \begin{caseof}
@@ -254,15 +201,7 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}
-  \label{observation:ub-context-irrelevant}
-  Upper bounds of a type do not depend on the context
-  as soon as the type is well-formed in it.
-
-  If $[[Γ1 ⊢ iP]]$ and $[[Γ2 ⊢ iP]]$ then
-  $\UB([[Γ1 ⊢ iP]]) = \UB([[Γ2 ⊢ iP]])$ and
-  $\NFUB([[Γ1 ⊢ iP]]) = \NFUB([[Γ2 ⊢ iP]])$
-\end{lemma}
+\lemUbContextIrrelevant*
 \begin{proof}
   We prove both inclusions by structural induction on  
   $[[iP]]$.
@@ -332,15 +271,7 @@
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Soundness of the Least Upper Bound]
-  \label{lemma:lub-soundness}
-  For types $[[Γ ⊢ iP1]]$, and $[[Γ ⊢ iP2]]$,
-  if $[[Γ ⊨ iP1 ∨ iP2 = iQ]]$ then
-  \begin{enumerate}
-    \item[(i)]  $[[Γ ⊢ iQ]]$
-    \item[(ii)] $[[Γ ⊢ iQ ≥ iP1]]$ and $[[Γ ⊢ iQ ≥ iP2]]$
-  \end{enumerate}
-\end{lemma}
+\lemmaLubSoundness*
 \begin{proof}
   Induction on $[[Γ ⊨ iP1 ∨ iP2 = iQ]]$.
   \begin{caseof}
@@ -442,15 +373,7 @@
 
 \end{proof}
 
-
-\begin{lemma}[Completeness and Initiality of the Least Upper Bound]
-  \label{lemma:lub-completeness}
-  For types $[[Γ ⊢ iP1]]$, $[[Γ ⊢ iP2]]$, and $[[Γ ⊢ iQ]]$
-  such that $[[Γ ⊢ iQ ≥ iP1]]$ and $[[Γ ⊢ iQ ≥ iP2]]$,
-  there exists $[[iQ']]$ s.t. $[[Γ ⊨ iP1 ∨ iP2 = iQ']]$ 
-  and $[[Γ ⊢ iQ ≥ iQ']]$.
-\end{lemma}
-
+\lemmaLubCompleteness*
 \begin{proof}
   Induction on the pair $([[iP1]], [[iP2]])$.
   From \cref{lemma:shape-supertypes-norm},

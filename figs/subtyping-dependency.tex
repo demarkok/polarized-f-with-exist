@@ -1,0 +1,26 @@
+  \begin{tikzpicture}
+    [>={Stealth[scale=2]},node distance=2.4cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
+
+
+    % Define nodes
+    \node[] (1) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$\\(\cref{sec:subtyping})};
+    \node[below of=1] (3) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$\\(\cref{sec:subtyping})};
+    \node[left=1cm of 3] (2) {Subtyping Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
+    \node[right=1.4cm of 3] (5) {Unification\\ $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$\\ $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$\\(\cref{sec:unification})};
+    \node[below of=3] (4) {Upgrade\\$[[upgrade Γ ⊢ iP to Δ = iQ]]$\\(\cref{sec:lub})};
+    \node[below of=2] (6) {Least Upper Bound\\$[[Γ ⊨ iP1 ∨ iP2 = iQ]]$\\(\cref{sec:lub})};
+    \node[below of=6] (7) {Anti-Unification\\$[[Γ ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )]]$\\$[[Γ ⊨ iN1 ≈au iN2 ⫤ ( Ξ , uM , aus1 , aus2 )]]$\\(\cref{sec:antiunification})};
+    \node[below of=5] (8) {Unification Constraint Merge\\$[[Θ ⊢ UC1 & UC2 = UC3]]$\\(\cref{sec:constraint-merge})};
+    
+    % Define edges
+    \draw[->] (1) to (2);
+    \draw[->] (1) to (3);
+    \draw[->] (1) to (5);
+    \draw[->] (2) to (3);
+    \draw[->] (2) to (6);
+    \draw[->] (3) to (4);
+    \draw[->] (3) to (5);
+    \draw[->] (4) to (6);
+    \draw[->] (5) to (8);
+    \draw[->] (6) to (7);
+  \end{tikzpicture}  

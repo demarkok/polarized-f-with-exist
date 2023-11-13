@@ -1,0 +1,64 @@
+\begin{restatable}[Positive Subtyping is Deterministic]{observation}{obsPosSubtDeterministic}
+    \label{obs:pos-subt-deterministic}
+    For fixed $[[Γ]]$, $[[Θ]]$, $[[uP]]$, and $[[iQ]]$,
+    if $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$ and $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC']]$
+    then $[[SC]] = [[SC']]$.
+\end{restatable}
+
+\begin{restatable}[Constraint Entry Merge is Deterministic]{observation}{obsEntryMergeDeterministic}
+    \label{obs:entry-merge-deterministic}
+    For fixed $[[Γ]]$, $[[scE1]]$, $[[scE2]]$,
+    if $[[Γ ⊢ scE1 & scE2 = scE]]$ and $[[Γ ⊢ scE1 & scE2 = scE']]$ 
+    then $[[scE]] = [[scE']]$.
+\end{restatable}
+
+\begin{restatable}[Subtyping Constraint Merge is Deterministic]{observation}{obsSubtMergeDeterministic}
+    \label{obs:subt-merge-deterministic}
+    Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$
+    If $[[Θ ⊢ SC1 & SC2 = SC]]$ and $[[Θ ⊢ SC1 & SC2 = SC']]$ are defined then 
+    $[[SC]] = [[SC']]$.
+\end{restatable}
+
+\begin{restatable}[Soundness of Constraint Entry Merge]{lemma}{lemEntryMergeSoundness}
+    \label{lemma:entry-merge-soundness}
+    For a fixed context $[[Γ]]$,
+    suppose that  $[[Γ ⊢ scE1]]$ and $[[Γ ⊢ scE2]]$. 
+    If $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined then
+    \begin{enumerate}
+        \item $[[Γ ⊢ scE]]$
+        \item For any $[[Γ ⊢ iP]]$, $[[Γ ⊢ iP : scE]]$ implies $[[Γ ⊢ iP : scE1]]$ and $[[Γ ⊢ iP : scE2]]$ 
+    \end{enumerate}
+\end{restatable}
+
+\begin{restatable}[Soundness of Constraint Merge]{lemma}{lemMergeSoundness} 
+    \label{lemma:merge-soundness}
+    Suppose that $[[Θ ⊢ SC1 : Ξ1]]$ and $[[Θ ⊢ SC2 : Ξ2]]$ 
+    and $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined.
+    Then 
+    \begin{enumerate}
+        \item $[[Θ ⊢ SC : Ξ1 ∪ Ξ2]]$,
+        \item for any substitution $[[Θ ⊢ uσ : Ξ1 ∪ Ξ2]]$, 
+            $[[ Θ ⊢ uσ : SC ]]$
+            implies $[[ Θ ⊢ uσ : SC1 ]]$ and $[[ Θ ⊢ uσ : SC2 ]]$.
+    \end{enumerate}
+\end{restatable}
+
+\begin{restatable}[Completeness of Constraint Entry Merge]{lemma}{lemEntryMergeCompleteness}
+    \label{lemma:entry-merge-completeness}
+    For a fixed context $[[Γ]]$,
+    suppose that $[[Γ ⊢ scE1]]$ and $[[Γ ⊢ scE2]]$ are matching constraint entries.
+    \begin{itemize}
+        \item for a type $[[iP]]$ such that $[[Γ ⊢ iP : scE1]]$ and $[[Γ ⊢ iP : scE2]]$,
+        $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined and $[[Γ ⊢ iP : scE]]$.
+        \item for a type $[[iN]]$ such that $[[Γ ⊢ iN : scE1]]$ and $[[Γ ⊢ iN : scE2]]$,
+        $[[Γ ⊢ scE1 & scE2 = scE]]$ is defined and $[[Γ ⊢ iN : scE]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Completeness of Constraint Merge]{lemma}{lemMergeCompleteness} 
+    \label{lemma:merge-completeness}
+    Suppose that $[[Θ ⊢ SC1 : Ξ1]]$ and $[[Θ ⊢ SC2 : Ξ2]]$.
+    If there exists a substitution $[[Θ ⊢ uσ : Ξ1 ∪ Ξ2]]$ such that 
+    $[[ Θ ⊢ uσ : SC1 ]]$ and $[[ Θ ⊢ uσ : SC2 ]]$
+    then $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined.
+\end{restatable}

@@ -1,24 +1,10 @@
-\begin{lemma}
-  \label{lemma:uv-nf}
-  Algorithmic variables are not changed by the normalization
-  \begin{itemize}
-  \item[$-$] $[[uv uN]] \equiv [[uv nf(uN)]]$
-  \item[$+$] $[[uv uP]] \equiv [[uv nf(uP)]]$
-  \end{itemize}
-\end{lemma}
+\lemmaUVNF*
 \begin{proof}
   By straightforward induction on $[[uN]]$ and mutually on $[[uP]]$, 
   similar to the proof of \cref{lemma:fv-nf}.
 \end{proof}
 
-\begin{lemma}[Soundness of normalization of algorithmic types]
-  \label{lemma:normalization-soundness-alg}
-  \hfill
-  \begin{itemize}
-    \item[$-$] $[[uN ≈ nf(uN)]]$
-    \item[$+$] $[[uP ≈ nf(uP)]]$
-  \end{itemize}
-\end{lemma}
+\lemmaNormalizationSoundnessAlg*
 \begin{proof}
   The proof coincides with the proof of \cref{lemma:normalization-soundness}.
 \end{proof}

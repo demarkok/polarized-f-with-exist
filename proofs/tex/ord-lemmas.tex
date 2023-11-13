@@ -1,10 +1,4 @@
-\begin{observation}[Ordering is deterministic]
-  \label{obs:ord-deterministic}
-  If $[[ord varset in iN = ordVars1]]$ and $[[ord varset in iN = ordVars2]]$ then $[[ordVars1 = ordVars2]]$.
-  If $[[ord varset in iP = ordVars1]]$ and $[[ord varset in iP = ordVars2]]$ then $[[ordVars1 = ordVars2]]$.
-  This way, we can use $[[ord varset in iN]]$ and as a function on $[[iN]]$,
-  and $[[ord varset in iP]]$ as a function on $[[iP]]$.
-\end{observation}
+\obsOrdDeterministic*
 \begin{proof}
   By mutual structural induction on $[[iN]]$ and $[[iP]]$.
   Notice that the shape of the term $[[iN]]$ or $[[iP]]$
@@ -12,15 +6,7 @@
   and all the premises are deterministic on the input.
 \end{proof}
 
-
-\begin{lemma}[Soundness of variable ordering]
-  \label{lemma:ord-soundness}
-  Variable ordering extracts used free variables.
-  \begin{itemize}
-    \item[$-$] $[[ {ord varset in iN} ]] = [[varset ∩ fv iN]]$ (as sets)
-    \item[$+$] $[[ {ord varset in iP} ]] = [[varset ∩ fv iP]]$ (as sets)
-  \end{itemize}
-\end{lemma}
+\lemOrdSoundness*
 \begin{proof}
   We prove it by mutual induction on 
   $[[ ord varset in iN = ordVars ]]$ and $[[ ord varset in iP = ordVars ]]$.
@@ -62,28 +48,9 @@
 \end{proof}
 
 
-\begin{corollary}[Additivity of ordering]
-  \label{corollary:ord-additivity}
-  Variable ordering is additive (in terms of set union) with respect to its first argument.
-  \begin{itemize}
-    \item[$-$] $[[ {ord (varset1 ∪ varset2) in iN} 
-                = 
-                {ord varset1 in iN} ∪ {ord varset2 in iN}]]$ (as sets)
-    \item[$+$] $[[{ord (varset1 ∪ varset2) in iP}
-                =
-                {ord varset1 in iP} ∪ {ord varset2 in iP}]]$ (as sets)
+\corOrdAdditivity*
 
-  \end{itemize}
-\end{corollary}
-
-\begin{lemma}[Weakening of ordering]
-  \label{corollary:ord-weakening}
-  Only used variables matter in the first argument of the ordering,
-  \begin{itemize}
-    \item[$-$] $[[ ord (varset ∩ fv iN) in iN ]] = [[ ord varset in iN ]]$
-    \item[$+$] $[[ ord (varset ∩ fv iP) in iP ]] = [[ ord varset in iP ]]$
-  \end{itemize}
-\end{lemma}
+\lemOrdWeakening*
 \begin{proof}
   Mutual structural induction on $[[iN]]$ and $[[iP]]$.
 
@@ -134,26 +101,17 @@
   \end{caseof}
 \end{proof}
 
-\begin{corollary}[Idempotency of ordering]
-  \label{corollary:ord-idemp}
-  \hfill
-  \begin{itemize}
-    \item[$-$] If $[[ ord varset in iN = ordVars ]]$ then 
-      $[[ ord {ordVars} in iN = ordVars ]]$,
-    \item[$+$] If $[[ ord varset in iP = ordVars ]]$ then 
-      $[[ ord {ordVars} in iP = ordVars ]]$;
-  \end{itemize}
-\end{corollary}
+\corOrdIdemp*
 \begin{proof}
   By \cref{lemma:ord-soundness,corollary:ord-weakening}.
 \end{proof}
   
 
-Next we make a set-theoretical observation
+Next, we make a set-theoretical observation
 that will be useful further.
 In general, any injective function (its image)
-distributes over set intersection.
-However, for convenience we allow the bijections
+distributes over the set intersection.
+However, for convenience, we allow the bijections
 on variables to be applied
 \emph{outside of their domains}
 (as identities), which may violate
@@ -164,7 +122,7 @@ in such a way that
 a bijection that is collision-free on $P$ and $Q$,
 distributes over intersection of $P$ and $Q$.
 
-\begin{definition} [Collision free bijection]
+\begin{definition} [Collision-free bijection]
   We say that a bijection $\mu : A \leftrightarrow B$ between sets of
   variables is \textbf{collision free on sets} $P$ and $Q$ if and only if
   \begin{enumerate}
@@ -179,22 +137,7 @@ distributes over intersection of $P$ and $Q$.
   Then $\mu(P \cap Q) = \mu(P) \cap \mu(Q)$.
 \end{observation}
   
-
-\begin{lemma}[Distributivity of renaming over variable ordering]
-  \label{lemma:distr-mu-ord}
-  Suppose that $\mu$ is a bijection between two sets of variables
-  $\mu : A \leftrightarrow B$.
-  
-  \begin{itemize}
-  \item[$-$]
-    If $[[mu]]$ is collision free on $[[varset]]$ and $[[fv iN]]$ then
-    $[[ [mu] (ord varset in iN) ]] = [[ord ([mu] varset) in [mu] iN ]]$
-  \item[$+$]
-    If $[[mu]]$ is collision free on $[[varset]]$ and $[[fv iP]]$ then
-    $[[ [mu] (ord varset in iP) ]] = [[ord ([mu] varset) in [mu] iP ]]$
-  \end{itemize}
-\end{lemma}
-
+\lemDistrMuOrd*
 \begin{proof}
   Mutual induction on $[[iN]]$ and $[[iP]]$.
   \begin{caseof}
@@ -312,17 +255,7 @@ distributes over intersection of $P$ and $Q$.
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Ordering is not affected by independent substitutions]
-  \label{lemma:ord-sigma}
-  Suppose that $[[Γ2 ⊢ σ : Γ1]]$, i.e. $[[σ]]$ maps variables from $[[Γ1]]$ into types
-  taking free variables from $[[Γ2]]$, and $[[varset]]$ is a set of variables
-  disjoint with both $[[Γ1]]$ and $[[Γ2]]$, 
-  $[[iN]]$ and $[[iP]]$ are types. Then
-    \begin{itemize}
-  \item[$-$] $[[ ord varset in [σ]iN ]] = [[ord varset in iN ]]$
-  \item[$+$] $[[ ord varset in [σ]iP ]] = [[ord varset in iP ]]$
-  \end{itemize}
-\end{lemma}
+\lemOrdSigma*
 \begin{proof}
   Mutual induction on $[[iN]]$ and $[[iP]]$.
   \begin{caseof}
@@ -363,27 +296,22 @@ distributes over intersection of $P$ and $Q$.
        $ \begin{aligned}
         [[ ord varset in [σ]iN ]] &= [[ ord varset in [σ](iP → iM) ]] \\
                                    &= [[ ord varset in ([σ]iP → [σ]iM) ]]
-                                   && \text{by the definition of substitution}\\
-                                   &= [[ ord varset in [σ]iP, (ord varset in [σ]iM \ {ord varset in [σ]iP}) ]]
-                                   && \text{by the definition of ordering}\\
-                                   &= [[ ord varset in iP, (ord varset in iM \ {ord varset in iP}) ]]
-                                   && \text{by the induction hypothesis}\\
+                                   && \text{def. of substitution}\\
+                                   &= [[ ord varset in [σ]iP]],\\
+                                   &\phantom{=} ~ [[(ord varset in [σ]iM \ {ord varset in [σ]iP}) ]]
+                                   && \text{def. of ordering}\\
+                                   &= [[ ord varset in iP]],\\
+                                   &\phantom{=} ~ [[(ord varset in iM \ {ord varset in iP}) ]]
+                                   && \text{the induction hypothesis}\\
                                    &= [[ ord varset in iP → iM ]]
-                                   && \text{by the definition of ordering}\\
+                                   && \text{def. of ordering}\\
                                    &= [[ ord varset in iN ]]
        \end{aligned} $
     \item The proofs of the positive cases are symmetric.
   \end{caseof}
 \end{proof}
 
-\begin{lemma}[Completeness of variable ordering]
-  \label{lemma:ord-completeness}
-  Variable ordering is invariant under equivalence. For arbitrary $[[varset]]$,
-   \begin{itemize}
-  \item[$-$] If $[[iN ≈ iM]]$ then $[[ord varset in iN]] = [[ord varset in iM]]$ (as lists)
-  \item[$+$] If $[[iP ≈ iQ]]$ then $[[ord varset in iP]] = [[ord varset in iQ]]$ (as lists)
-  \end{itemize}
-\end{lemma}
+\lemOrdCompleteness*
 \begin{proof}
   Mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$.
   Let us consider the rule inferring $[[iN ≈ iM]]$. 
@@ -393,7 +321,7 @@ distributes over intersection of $P$ and $Q$.
     \item \ruleref{\ottdruleEOneArrowLabel}
       Then the equivalence has shape $[[iP → iN ≈ iQ → iM]]$,
       and by inversion, $[[iP ≈ iQ]]$ and $[[iN ≈ iM]]$.
-      They by the induction hypothesis,
+      Then by the induction hypothesis,
       $[[ord varset in iP]] = [[ord varset in iQ]]$ 
       and $[[ord varset in iN]] = [[ord varset in iM]]$.
       Since the resulting ordering for $[[iP → iN]]$ and $[[iQ → iM]]$

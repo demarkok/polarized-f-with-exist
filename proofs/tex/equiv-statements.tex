@@ -1,0 +1,132 @@
+\begin{restatable}[Declarative Equivalence is invariant under bijections]{lemma}{lemmaDeclEquivBijection}
+    \label{lemma:decl-equiv-bijection}
+    Suppose $[[μ]]$ is a bijection $[[μ : varset1 ↔ varset2]]$, then
+    \begin{itemize}
+        \item[$+$] $[[iP1 ≈ iP2]]$ implies $[[ [μ]iP1 ≈ [μ]iP2 ]]$,
+            and there exists an inference tree of $[[ [μ]iP1 ≈ [μ]iP2 ]]$
+            with the same shape as the one inferring $[[iP1 ≈ iP2]]$;
+        \item[$-$] $[[iN1 ≈ iN2]]$ implies $[[ [μ]iN1 ≈ [μ]iN2 ]]$, 
+            and there exists an inference tree of $[[ [μ]iN1 ≈ [μ]iN2 ]]$
+            with the same shape as the one inferring $[[iN1 ≈ iN2]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}{lemma}{lemmaEquivFV}
+    \label{lemma:equiv-fv}
+    The set of free variables is invariant under equivalence.
+    \begin{itemize}
+    \item[$-$] If $[[iN ≈ iM]]$ then $[[fv iN = fv iM]]$ (as sets)
+    \item[$+$] If $[[iP ≈ iQ]]$ then $[[fv iP = fv iQ]]$ (as sets)
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Declarative equivalence is transitive]{lemma}{lemmaDeclEquivTransitivity}
+    \hfill
+    \label{lemma:decl-equiv-transitivity}
+    \begin{itemize}
+        \item[$+$] if $[[iP1 ≈ iP2]]$ and $[[iP2 ≈ iP3]]$ then $[[iP1 ≈ iP3]]$,
+        \item[$-$] if $[[iN1 ≈ iN2]]$ and $[[iN2 ≈ iN3]]$ then $[[iN1 ≈ iN3]]$.
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Type well-formedness is invariant under equivalence]{lemma}{lemmaWfEquiv}
+    \label{lemma:wf-equiv}
+    Mutual subtyping implies declarative equivalence.
+    \begin{itemize}
+    \item[$+$] if $[[iP ≈ iQ]]$ then $[[Γ ⊢ iP]] \iff [[Γ ⊢ iQ]]$,
+    \item[$-$] if $[[iN ≈ iM]]$ then $[[Γ ⊢ iN]] \iff [[Γ ⊢ iM]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Soundness of equivalence]{lemma}{lemmaEquivSoundness}
+    \label{lemma:equiv-soundness}
+    Declarative equivalence implies mutual subtyping.
+    \begin{itemize}
+        \item[$+$] if $[[Γ ⊢ iP]]$, $[[Γ ⊢ iQ]]$, and $[[iP ≈ iQ]]$ then $[[Γ ⊢ iP ≈ iQ]]$,
+        \item[$-$] if $[[Γ ⊢ iN]]$, $[[Γ ⊢ iM]]$, and $[[iN ≈ iM]]$ then $[[Γ ⊢ iN ≈ iM]]$.
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Subtyping induced by disjoint substitutions]{lemma}{lemmaSubtIndDisjSubst}
+    \label{lemma:subt-ind-disj-subst}
+    Suppose that $[[Γ ⊢ σ1 : Γ1]]$ and $[[Γ ⊢ σ2 : Γ1]]$,
+    where $[[Γi ⊆ Γ]]$ and $[[Γ1 ∩ Γ2= ∅]]$. Then
+    \begin{itemize}
+    \item[$-$] assuming $[[Γ ⊢ iN]]$,~
+        $[[Γ ⊢ [σ1]iN ≤ [σ2]iN]]$ implies $[[Γ ⊢ σi ≈ id : fv iN]]$
+    \item[$+$] assuming $[[Γ ⊢ iP]]$,~
+        $[[Γ ⊢ [σ1]iP ≥ [σ2]iP]]$ implies $[[Γ ⊢ σi ≈ id : fv iP]]$
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Substitution cannot induce proper subtypes or supertypes]{corollary}{corollarySubstProperSubt}
+    \label{corollary:subst-proper-subt}
+    Assuming all mentioned types are well-formed in $[[Γ]]$ and $[[σ]]$ is a
+    substitution $[[Γ ⊢ σ : Γ]]$,
+    \begin{align*}
+        [[Γ ⊢ [σ]iN ≤ iN]] ~&\Rightarrow~ [[Γ ⊢ [σ]iN ≈ iN]]
+                                                    \text{ and } [[Γ ⊢ σ ≈ id :  fv iN]] \\
+        [[Γ ⊢ iN ≤ [σ]iN]] ~&\Rightarrow~ [[Γ ⊢ iN ≈ [σ]iN]]
+                                                    \text{ and } [[Γ ⊢ σ ≈ id :  fv iN]] \\
+        [[Γ ⊢ [σ]iP ≥ iP]] ~&\Rightarrow~ [[Γ ⊢ [σ]iP ≈ iP]]
+                                                    \text{ and } [[Γ ⊢ σ ≈ id :  fv iP]] \\
+        [[Γ ⊢ iP ≥ [σ]iP]] ~&\Rightarrow~ [[Γ ⊢ iP ≈ [σ]iP]]
+                                                    \text{ and } [[Γ ⊢ σ ≈ id :  fv iP]] \\
+    \end{align*}
+\end{restatable}
+
+\begin{restatable}[Mutual substitution and subtyping]{lemma}{lemmaMutualSubstSubtyping}
+    \label{lemma:mutual-subst-subtyping}
+    Assuming that the mentioned types ($[[iP]]$, $[[iQ]]$, $[[iN]]$, and $[[iM]]$)
+    are well-formed in $[[Γ]]$ and that the substitutions ($[[σ1]]$ and $[[σ2]]$) have signature $[[Γ ⊢ σi : Γ]]$,
+    \begin{itemize}
+    \item[$+$] if $[[Γ ⊢ [σ1] iP ≥ iQ]]$ and $[[Γ ⊢ [σ2] iQ ≥ iP]]$\\
+        then there exists a bijection $[[μ : fv iP ↔ fv iQ]]$ such that
+        $[[Γ ⊢ σ1 ≈ Sub μ :  fv iP]]$ and $[[Γ ⊢ σ2 ≈ Sub μ-1 :  fv iQ]]$;
+    \item[$-$] if $[[Γ ⊢ [σ1] iN ≤ iM]]$ and $[[Γ ⊢ [σ2] iN ≤ iM]]$\\
+        then there exists a bijection $[[μ : fv iN ↔ fv iM]]$ such that
+        $[[Γ ⊢ σ1 ≈ Sub μ :  fv iN]]$ and $[[Γ ⊢ σ2 ≈ Sub μ-1 :  fv iM]]$.
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Equivalent substitution act equivalently]{lemma}{lemmaEquivSubstOnSameTerm}
+    \label{lemma:equiv-subst-on-same-term}
+    Suppose that $[[Γ' ⊢ σ1 : Γ]]$ and $[[Γ' ⊢ σ2 : Γ]]$
+    are substitutions equivalent on their domain, that is $[[Γ' ⊢ σ1 ≈ σ2 : Γ]]$.
+    Then
+    \begin{itemize}
+        \item[$+$] for any $[[Γ ⊢ iP]]$, $[[Γ' ⊢ [σ1]iP ≈ [σ2]iP]]$;
+        \item[$-$] for any $[[Γ ⊢ iN]]$, $[[Γ' ⊢ [σ1]iN ≈ [σ2]iN]]$.
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Equivalence of polymorphic types]{lemma}{lemmaPolyTypesEquivalence}
+    \label{lemma:poly-types-equivalence}
+    \hfill
+    \begin{itemize}
+        \item[$-$] For $[[Γ ⊢ ∀pas.iN]]$ and $[[Γ ⊢ ∀pbs.iM]]$,\\ if $[[Γ ⊢ ∀pas.iN ≈ ∀pbs.iM ]]$
+        then there exists a bijection $[[μ : {pbs} ∩ fv iM ↔ {pas} ∩ fv iN]]$
+        such that $[[ Γ, pas ⊢ iN ≈ [Sub μ] iM ]]$,
+        \item[$+$] For $[[Γ ⊢ ∃nas.iP]]$ and $[[Γ ⊢ ∃nbs.iQ]]$,\\  if $[[Γ ⊢ ∃nas.iP ≈ ∃nbs.iQ ]]$
+        then there exists a bijection $[[μ : {nbs} ∩ fv iQ ↔ {nas} ∩ fv iP]]$
+        such that $[[ Γ, nbs ⊢ iP ≈ [Sub μ] iQ ]]$.
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Completeness of Equivalence]{lemma}{lemmaEquivCompleteness} 
+    \label{lemma:equiv-completeness}
+    Mutual subtyping implies declarative equivalence.
+    Assuming all the types below are well-formed in $[[Γ]]$: 
+    \begin{itemize}
+    \item[$+$] if $[[Γ ⊢ iP ≈ iQ]]$ then $[[iP ≈ iQ]]$,
+    \item[$-$] if $[[Γ ⊢ iN ≈ iM]]$ then $[[iN ≈ iM]]$.
+    \end{itemize}
+\end{restatable}
+
+
+

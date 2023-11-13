@@ -1,0 +1,68 @@
+\begin{restatable}[Determinicity of typing algorithm]{lemma}{lemmaTypingDeterminicity}
+    \label{lemma:typing-determinicity}
+    Suppose that $[[Γ ⊢ Φ]]$ and $[[Γ ⊢ Θ]]$. Then 
+    \begin{itemize}
+        \item [$+$] If $[[Γ; Φ ⊨ v : iP]]$ and $[[Γ; Φ ⊨ v : iP']]$ then $[[iP = iP']]$.
+        \item [$-$] If $[[Γ; Φ ⊨ c : iN]]$ and $[[Γ; Φ ⊨ c : iN']]$ then $[[iN = iN']]$.
+        \item If $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$ and 
+            $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM' ⫤ Θ'; SC']]$ then 
+            $[[uM = uM']]$, $[[Θ]] = [[Θ']]$, and $[[SC]] =[[SC']]$.  
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Soundness of typing]{lemma}{lemmaTypingSoundness}
+    \label{lemma:typing-soundness}
+    Suppose that $[[Γ ⊢ Φ]]$.
+    For an inference tree $T_1$,
+    \hfill
+    \begin{itemize}
+        \item [$+$] If $T_1$ infers $[[Γ; Φ ⊨ v : iP]]$ then $[[Γ ⊢ iP]]$ and $[[Γ; Φ ⊢ v : iP]]$
+        \item [$-$] If $T_1$ infers $[[Γ; Φ ⊨ c : iN]]$ then $[[Γ ⊢ iN]]$ and $[[Γ; Φ ⊢ c : iN]]$
+        \item  If $T_1$ infers $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$
+                for $[[Γ ⊢ Θ]]$ and $[[Γ; dom(Θ) ⊢  uN]]$ free from negative algorithmic variables, 
+                then
+            \begin{enumerate}
+                \item $[[Γ ⊢ Θ']]$
+                \item $[[Θ ⊆ Θ']]$
+                \item $[[Γ; dom(Θ') ⊢  uM]]$
+                \item $[[dom(Θ) ∩ uv(uM) ⊆ uv uN]]$
+                \item $[[uM]]$ is normalized and free from negative algorithmic variables
+                \item $[[Θ'|uv uN ∪ uv uM ⊢ SC]]$
+                \item for any $[[ Θ' ⊢ uσ : uv uN ∪ uv uM ]]$,
+                    $[[ Θ' ⊢ uσ : SC ]]$ implies $[[ Γ ; Φ ⊢ [uσ]uN ● args ⇒> [uσ]uM ]]$
+            \end{enumerate}
+    \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Completeness of Typing]{lemma}{lemmaTypingCompleteness}
+    \label{lemma:typing-completeness}
+    Suppose that $[[Γ ⊢ Φ]]$.
+    For an inference tree $T_1$,
+    \begin{itemize}
+        \item [$+$] If $T_1$ infers $[[Γ; Φ ⊢ v : iP]]$ then $[[Γ; Φ ⊨ v : nf(iP)]]$        
+        \item [$-$] If $T_1$ infers $[[Γ; Φ ⊢ c : iN]]$ then  $[[Γ; Φ ⊨ c : nf(iN)]]$
+        \item [$\bullet$] If 
+            $T_1$ infers $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$
+            and 
+            \begin{enumerate}
+                \item $[[Γ ⊢ Θ]]$, 
+                \item $[[Γ ⊢ iM]]$,
+                \item $[[Γ; dom(Θ) ⊢ uN]]$ (free from negative algorithmic variables, that is $[[α̂⁻]] \notin [[uv uN]]$), and
+                \item $[[Θ ⊢ uσ : uv(uN)]]$,
+            \end{enumerate}
+            then there exist $[[uM']]$, $[[Θ']]$, and $[[SC]]$ such that
+            \begin{enumerate}
+                \item $[[ Γ; Φ; Θ ⊨ uN ● args ⇒> uM' ⫤ Θ'; SC ]]$ and
+                \item for any $[[Θ ⊢ uσ : uv(uN)]]$ and $[[Γ ⊢ iM]]$
+                    such that $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$, 
+                    there exists $[[uσ']]$ such that 
+                    \begin{enumerate}
+                        \item $[[Θ' ⊢ uσ' : uv uN ∪ uv uM]]$
+                            and $[[Θ' ⊢ uσ' : SC]]$,
+                        \item $[[Θ ⊢ uσ' ≈ uσ : uv uN]]$, and 
+                        \item $[[Γ ⊢ [uσ']uM' ≈ iM]]$.
+                    \end{enumerate}
+            \end{enumerate}
+    \end{itemize}
+\end{restatable}

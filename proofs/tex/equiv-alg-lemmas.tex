@@ -1,34 +1,4 @@
-\begin{lemma}[Algorithmization of declarative equivalence]
-  \label{lemma:decl-equiv-algorithmization}
-  Declarative equivalence is the equality of normal forms. 
-  \begin{itemize}
-    \item[$+$] $[[iP ≈ iQ]] \iff [[nf(iP) = nf(iQ)]]$,
-    \item[$-$] $[[iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$.
-  \end{itemize}
-\end{lemma}
-\begin{proof} \hfill
-  \begin{itemize}
-    \item[$+$] Let us prove both directions separately.
-    \begin{itemize}
-      \item[$\Rightarrow$] 
-        exactly by \cref{lemma:normalization-completeness},
-      \item[$\Leftarrow$] 
-        from \cref{lemma:normalization-soundness}, we know
-        $[[iP ≈ nf(iP)]] = [[nf(iQ) ≈ iQ]]$, then by transitivity (\cref{lemma:decl-equiv-transitivity}),
-        $[[iP ≈ iQ]]$.
-    \end{itemize}
-    \item[$-$] For the negative case, the proof is the same.
-  \end{itemize}
-\end{proof}
-
-\begin{lemma}[Algorithmic type well-formedness is invariant under equivalence]
-  \label{lemma:wf-equiv-algo}
-  Mutual subtyping implies declarative equivalence.
-  \begin{itemize}
-  \item[$+$] if $[[uP ≈ uQ]]$ then $[[Γ; Ξ ⊢ uP]] \iff [[Γ; Ξ ⊢ uQ]]$,
-  \item[$-$] if $[[uN ≈ uM]]$ then $[[Γ; Ξ ⊢ uN]] \iff [[Γ; Ξ ⊢ uM]]$
-  \end{itemize}
-\end{lemma}
+\lemmaWfEquivAlgo*
 \begin{proof}
   The proof coincides with the proof of \cref{lemma:wf-equiv},
   and adds two cases for equating two positive or two negative algorithmic variables,
@@ -36,34 +6,18 @@
   $[[Γ; Ξ ⊢ α̂±]] \iff [[Γ; Ξ  ⊢ α̂±]]$ holds trivially.
 \end{proof}
 
-\begin{corollary}[Normalization preserves well-formedness of algorithmic types]
-  \label{corollary:wf-nf-algo}
-  \begin{itemize}
-    \item[$+$] $[[Γ; Ξ ⊢ uP]] \iff [[Γ; Ξ ⊢ nf(uP)]]$,
-    \item[$-$] $[[Γ; Ξ ⊢ uN]] \iff [[Γ; Ξ ⊢ nf(uN)]]$
-  \end{itemize}
-\end{corollary}
+\corollaryWfNfAlgo*
 \begin{proof}
   Immediately from \cref{lemma:wf-equiv-algo,lemma:normalization-soundness-alg}.
 \end{proof}
 
-\begin{corollary}[Normalization preserves the signature of the algorithmic substitution]
-  \label{corollary:norm-subst-sig-algo}
-  \hfill \\
-  $[[Θ ⊢ uσ : Ξ]] \iff [[Θ ⊢ nf(uσ) : Ξ]]$,
-  $[[Γ ⊢ uσ : Ξ]] \iff [[Γ ⊢ nf(uσ) : Ξ]]$.
-\end{corollary}
+\corollaryNormSubstSigAlgo*
 \begin{proof}
   The proof is analogous to \cref{corollary:wf-s-nf}.
 \end{proof}
 
 
-\begin{lemma}[Algorithmic substitution equivalence becomes equality after normalization]
-  \label{corollary:subst-subt-equiv-algorithmization}
-  Suppose that $[[Θ ⊢ uσ1 : Ξ']]$ and $[[Θ ⊢ uσ2 : Ξ']]$ are algorithmic substitutions
-  and $[[Ξ ⊆ Ξ']]$. 
-  Then $[[Θ ⊢ uσ1 ≈ uσ2 : Ξ]] \iff [[nf(uσ1)|Ξ = nf(uσ2)|Ξ]]$.
-\end{lemma}
+\corollarySubstSubtEquivAlg*
 \begin{proof}
   Follows immediately from \cref{lemma:subt-equiv-algorithmization}:
   \begin{itemize}

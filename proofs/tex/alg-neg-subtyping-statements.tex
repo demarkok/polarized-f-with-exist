@@ -1,0 +1,24 @@
+\begin{restatable}[Negative Algorithmic Subtyping is Deterministic]{observation}{obsNegSubtDeterministic}
+    \label{obs:neg-subt-deterministic}
+    For fixed $[[Γ]]$, $[[Θ]]$, $[[iM]]$, and $[[uN]]$, 
+    if $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$ 
+    and $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC']]$
+    then $[[SC]]$ = $[[SC']]$.
+\end{restatable}
+
+\begin{restatable}[Soundness of Negative Subtyping]{lemma}{lemNegSubtSoundness}
+    \label{lemma:neg-subt-soundness}
+    If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; dom(Θ) ⊢ uN]]$ and 
+    $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$, then 
+    $[[Θ ⊢ SC : uv(uN)]]$ and 
+    for any normalized $[[uσ]]$ such that $[[ Θ  ⊢ uσ : SC ]]$,
+    $[[ Γ ⊢ [uσ]uN ≤ iM ]]$.
+\end{restatable}
+
+\begin{restatable}[Completeness of the Negative Subtyping]{lemma}{lemNegSubtCompleteness}
+    \label{lemma:neg-subt-completeness}
+    Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; dom(Θ) ⊢ uN]]$,
+    and $[[uN]]$ does not contain negative unification variables ($[[α̂⁻]] \notin [[uv uN]]$).
+    Then for any $[[Θ ⊢ uσ : uv(uN)]]$ such that $[[Γ ⊢ [uσ]uN ≤ iM]]$,
+    there exists $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$ and moreover, $[[ Θ ⊢ uσ : SC ]]$.
+\end{restatable}
