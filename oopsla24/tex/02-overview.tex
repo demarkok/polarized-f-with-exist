@@ -85,11 +85,10 @@ In \cref{fig:declarative-terms}, we define the language of terms of
 Notice that the language does not have first-class applications: 
 their role is played by the applicative let forms, binding 
 the result of a \emph{fully applied} function to a variable.
-Also notice that the language does not have a type application 
-(i.e. the eliminator of $[[∀]]$) and dually, 
-it does not have \pack (i.e. the constructor of $[[∃]]$).
-This is because the instantiation of polymorphic and existential 
-types is inferred by the algorithm.  \ilyam{refer to the extension chapter}
+Also notice that the language does not have a type application (i.e. the eliminator of $[[∀]]$) and dually, it does not have \pack (i.e. the constructor of $[[∃]]$).
+This is because the instantiation of polymorphic and existential types is inferred by the algorithm. 
+In \cref{sec:extensions}, we discuss the way to modify the system to introduce \emph{explicit} type applications.
+
 
 \begin{figure}[h]
   \begin{multicols}{2}

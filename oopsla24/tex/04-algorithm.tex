@@ -10,6 +10,7 @@ which simplifies reasoning about the algorithm and its correctness proofs.
 
 
 \subsection{Algorithmic Syntax}
+\label{sec:algo-syntax}
 
 First, let us discuss the syntax of the algorithmic system. 
 
@@ -173,6 +174,7 @@ We write $[[Θ(α̂±)]]$ to denote the context associated with $[[α̂±]]$ in 
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Subtyping Algorithm}
+\label{sec:subtyping-algorithm}
   
   For convenience and scalability, 
   we decompose the subtyping algorithm 
@@ -331,6 +333,7 @@ The following sections discuss these additional procedures in detail.
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Unification}
+\label{sec:unification}
 
 As an input the unification context 
 takes a type context $[[Γ]]$, a constraint context $[[Θ]]$,
@@ -415,6 +418,7 @@ constraint merge procedure and the well-formedness checking.
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Constraint Merge}
+\label{sec:constraint-merge}
 
 In this section, we discuss the constraint merging procedure.
 It allows one to combine two constraint sets into one. 
@@ -493,6 +497,7 @@ ell-formed in a given context.
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Type Upgrade and the Least Upper Bounds}
+\label{sec:lub}
 
 Both type upgrade and the least upper bound algorithms are used
 to find a minimal supertype under certain conditions. 
@@ -587,6 +592,7 @@ We discuss the anti-unification algorithm in detail in the following section.
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Anti-Unification}
+\label{sec:antiunification}
 
 The anti-unification algorithm \cite{todo}, 
 is a procedure dual to unification
@@ -767,6 +773,7 @@ Let us discuss the specific rules of the algorithm in detail.
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Type Inference}
+\label{sec:typing}
 
 Finally, we present the type inference algorithm. 
 Similarly to the subtyping algorithm, it structurally corresponds to the declarative
@@ -775,7 +782,35 @@ declarative counterparts, with respect to which they are sound and complete.
 
 This way, the inference algorithm also consists of three mutually recursive procedures: 
 the positive type inference, the negative type inference, and the
-application type inference. 
+application type inference. As subroutines, the inference algorithm uses
+subtyping, constraint merge, and normalization.  
+The corresponding graph is shown in \cref{fig:alg-typing-graph}.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    [>={Stealth[scale=2]},node distance=2.2cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
+    % Define nodes
+    \node[] (1) {Positive Inference\\$[[Γ; Φ ⊨ v : iP]]$};
+    \node[right=1.4cm of 1] (2) {Negative Inference\\$[[Γ; Φ ⊨ c : iN]]$};
+    \node[right=1.4cm of 2] (3) {Application Inference\\$[[Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC]]$};
+    \node[below of=2,xshift=+2cm] (4) {Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
+    \node[below of=4] (5) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP1 ≥ iP2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
+    \node[left=0.75cm of 4] (6) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN1 ≤ iN2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
+    \draw[->] ([yshift=-.2cm]2.west) to ([yshift=-.2cm]1.east);
+    \draw[->] ([yshift=+.2cm]1.east) to ([yshift=+.2cm]2.west);
+    \draw[->, bend right=20] (3) to (1);
+    \draw[->] (2) to (3);
+    \draw[->] (2) to (4);
+    \draw[->] (3) to (4);
+    \draw[->, bend right] (1.south west) to (5);
+    \draw[->, bend left] (3) to (5);
+    \draw[->] (2) to (6);
+  \end{tikzpicture}  
+  \caption{Dependency graph of the typing algorithm}
+  \label{fig:alg-typing-graph}
+\end{figure}
+
 
 The positive and the negative type inference judgments have symmetric forms:
 $[[Γ; Φ ⊨ v : iP]]$ and $[[Γ; Φ ⊨ c : iN]]$. Both of these algorithms

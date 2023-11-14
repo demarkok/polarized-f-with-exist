@@ -110,6 +110,26 @@
         *** The Inference Algorithm
         *** Constraint Singularity
 * Correctness of the Algorithm 
+
+** Soundness and Completeness
+
+    The main theorem we prove is the correctness of the algorithm.
+    It consists of two properties:
+    the soundness and the completeness with respect to the declarative specification.
+    The soundness means that given a term e, 
+    the algorithm will always return a type that is allowed to be a type of e 
+    by the declarative specification.
+    The completeness says that once a term e has a some type declaratively, 
+    the type inference algorithm succeeds. 
+
+    The soundness and completeness are proved gradually for each
+    component of the algorithm, following its dependency graph. 
+    The statement are formulated in the following way:
+
+    
+
+
+
     ** Type Well-formedness
         WF = fv are in the context
         weakening, strengthening, agrees with substitution 
@@ -233,7 +253,6 @@
         - Determinicity
         - Soundness
         - Completeness
-
 
 * Extensions and Modifications
     ** Elementary Type Theory
