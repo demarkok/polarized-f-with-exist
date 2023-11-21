@@ -351,6 +351,7 @@ Greatest Common Subtype procedure to resolve the constraints.
 \end{lemma*}
 
 \subsection{Singularity}
+\label{sec:singularity-proof}
 
 The rule \ruleref{\ottdruleDTAppLetLabel} of the declarative inference
 says that one can omit the type annotation of a let-binding if the inferred 
@@ -411,16 +412,86 @@ Finally, we discuss the proofs of the theorems stated at the beginning of this s
     \end{itemize}
 \end{lemma*}
 
-\paragraph{Mutual Induction of Soundness and Completeness}
+\paragraph{Mutuality of the Soundness and Completeness Proofs}
 
-The soundness and completeness of type inference cannot be proven separately:
-the inductive proof of one requires another, and vice versa. 
-Soundness proof requires completeness in the case of 
-\ruleref{\ottdruleATAppLetLabel},
-The soundness proof can be considered as a transformation from the algorithmic 
-inference tree to a declarative one. In the case of \ruleref{\ottdruleATAppLetLabel},
-the declarative rule requires that the (declaratively) inferred type of the application
-is unique.  To show that, we take an arbitrary application typing tree and apply the typing
-\emph{completeness}. Then the soundness of singularity 
+Typically in our inductive proofs, the soundness is proven before completeness,
+as the completeness requires certain properties of the premise subtrees.
+However, in the case of the typing algorithm, the soundness and completeness proofs
+cannot be separated: the inductive proof of one requires another, and vice versa. 
 
+The soundness proof requires completeness in the case of 
+\ruleref{\ottdruleATAppLetLabel}, whose declarative counterpart requires \emph{uniqueness}
+of the inferred application type. To show the uniqueness, we
+need to conclude that any other \emph{declarative} tree 
+must infer the same (or rather equivalent) type. 
+The only way to do so is by applying the soundness of singularity (\cref{sec:singularity-proo}),
+however, first, the declarative tree must be converted to the algorithmic one (by completeness!).
+
+This way, these lemmas are proven by mutual induction. 
+Since the declarative and the algorithmic systems are not mutually inductive,
+we must introduce a metric on which the induction is conducted.
+
+\paragraph{Inductive Metric}
+
+Let us extend the declarative typing metric (\cref{def:decl-typing-metric}) 
+to the algorithmic typing.
+
+\begin{definition}[Number of prenex quantifiers]
+    We define $\npq{[[iN]]}$ and $\npq{[[iP]]}$ as the number of 
+    prenex quantifiers, i.e.
+    \begin{itemize}
+        \item [$+$] $\npq{[[∃nas.iP]]} = |[[nas]]|$, if $[[iP ≠ ∃nbs.iP']]$,
+        \item [$-$] $\npq{[[∀pas.iN]]} = |[[pas]]|$, if $[[iN ≠ ∀pbs.iN']]$.
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Size of a Declarative Judgement]
+    \label{def:decl-typing-size}
+    For a declarative typing judgment $J$
+    let us define a metrics $\size{J}$ as a pair of numbers 
+    in the following way:
+    \begin{itemize}
+        \item [$+$] $\size{[[Γ ; Φ ⊢ v : iP]]} = (\size{[[v]]}, 0)$;
+        \item [$-$] $\size{[[Γ ; Φ ⊢ c : iN]]} = (\size{[[c]]}, 0)$;
+        \item [$\bullet$] $\size{[[Γ ; Φ ⊢ iN ● args ⇒> iM]]} = 
+            (\size{[[args]]}, \npq{[[iN]]})$)
+    \end{itemize}
+    where $\size{[[v]]}$ or $\size{[[c]]}$ is the size of the 
+    syntax tree of the term $[[v]]$ or $[[c]]$
+    and $\size{[[args]]}$ is the sum of sizes of the terms in $[[args]]$.
+\end{definition}
+
+\begin{definition}[Number of Equivalence Nodes]
+    For a tree $T$ inferring
+    a declarative typing judgment,
+    let us a function $\eqNodes{T}$
+    as the number of nodes in $T$ labeled with \ruleref{\ottdruleDTPEquivLabel} or 
+    \ruleref{\ottdruleDTNEquivLabel}.
+\end{definition}
+
+\begin{definition}[Declarative Tree Metric]
+    \label{def:decl-typing-metric}
+    For a tree $T$ inferring
+    a declarative typing judgment $J$,
+    we define a metric $\metric{T}$
+    as a pair $(\size{J}, \eqNodes{T})$.
+\end{definition}
+
+
+\begin{definition}[Size of an Algorithmic Judgement]
+    For an algorithmic typing judgement $J$
+    let us define a metrics $\size{J}$ as a pair of numbers 
+    in the following way:
+    \begin{itemize}
+        \item [$+$] $\size{[[Γ ; Φ ⊨ v : iP]]} = (\size{[[v]]}, 0)$;
+        \item [$-$] $\size{[[Γ ; Φ ⊨ c : iN]]} = (\size{[[c]]}, 0)$;
+        \item [$\bullet$] $\size{[[Γ ; Φ ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]} = 
+            (\size{[[args]]}, \npq{[[uN]]})$)
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Algorithmic Tree Metric]
+    For a tree $T$ inferring an algorithmic typing judgement $J$, we define 
+    $\metric{T}$ as $(\size{J}, 0)$.
+\end{definition}
 
