@@ -27,7 +27,7 @@ to the algorithmic typing.
     We extend the metric from \cref{def:decl-typing-metric} to the algorithmic typing
     in the following way.
     For a tree $T$ inferring an algorithmic typing judgement $J$, we define 
-    $\size{T}$ as $(\size{J}, 0)$.
+    $\metric{T}$ as $(\size{J}, 0)$.
 \end{definition}
 
 Soundness and completeness are proved by mutual induction on
@@ -806,7 +806,7 @@ the metric of the inference tree.
             imply $[[Γ; Φ ⊨ let x = v(args); c : nf(iN)]]$ by \ruleref{\ottdruleATVarLetLabel}.
 
         \item \ruleref{\ottdruleDTAppLetAnnLabel}\\
-            Then we are proving that 
+            Then we prove that 
             $[[Γ ; Φ ⊢ let x:iP = v(args); c : iN]]$
             implies 
             $[[Γ; Φ ⊨ let x:iP = v(args); c : nf(iN)]]$.
@@ -1113,13 +1113,13 @@ the metric of the inference tree.
                             for some $[[Θ ⊢ SC1 : uv(uQ)]]$, and moreover, $[[ Θ ⊢ uσ : SC1 ]]$;
                         \item $[[Γ; Φ ⊢ [uσ]uN1 ● args ⇒> iM]]$. 
                             \label{point:completeness-arrow-app-ih}
-                            Notice that the induction hypothesis is applicable to this case:
+                            Notice that the induction hypothesis applies to this case:
                             $[[Γ ; dom(Θ) ⊢  uN1]]$ is free from negative algorithmic variables because
                             so is $[[uQ → uN1]]$. This way, there exist 
                             $[[uM']]$, $[[Θ']]$, and $[[SC2]]$ such that 
                             \begin{enumerate}
                                 \item $[[ Γ; Φ; Θ ⊨ uN1 ● args ⇒> uM' ⫤ Θ'; SC2 ]]$
-                                    and then by soundness of typing 
+                                    and then by the soundness of typing 
                                     (i.e. the induction hypothesis), 
                                     \begin{enumerate}
                                         \item $[[Θ ⊆ Θ']]$
