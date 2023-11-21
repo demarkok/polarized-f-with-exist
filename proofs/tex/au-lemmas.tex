@@ -8,7 +8,7 @@
 \begin{proof}
     By simple induction on $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
     and mutually on $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$.
-    Let us consider tha last rule applied to infer this judgment.
+    Let us consider the last rule applied to infer this judgment.
     \begin{caseof}
         \item \ruleref{\ottdruleAUPVarLabel} or \ruleref{\ottdruleAUNVarLabel},
         then $[[Ξ]] = [[·]]$, and the property holds vacuously.
@@ -26,8 +26,8 @@
         Then since the union of solutions does not change the types the variables are mapped to,
         the required property holds for $[[Ξ]]$, $[[aus1]]$, and $[[aus2]]$.
 
-        \item For the other rules, the resulting $[[Ξ]]$ is taken from the recursive call
-        and the required property holds immediately by the induction hypothesis.
+        \item For the other rules, the resulting $[[Ξ]]$ is taken from the recursive call and 
+        the required property holds immediately by the induction hypothesis.
     \end{caseof}
 \end{proof}
 
@@ -210,7 +210,7 @@
             in context $[[Γ]]$, and hence, it is uniquely determined by them (\cref{obs:au-deterministic}).
     \end{itemize}
 
-    Now, we can assume that $[[uM']]$ is not a algorithmic variable. 
+    Now, we can assume that $[[uM']]$ is not an algorithmic variable. 
     We prove by induction on the derivation of $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
     and mutually on the derivation of $[[Γ ⊨ iN1 ≈au iN2 ⫤ (Ξ, uM, aus1, aus2)]]$.
 

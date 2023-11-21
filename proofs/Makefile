@@ -14,7 +14,7 @@ OTT_GEN := $(OTT)/_gen
 # Files
 OTTS := $(OTT)/*.ott
 PDFS := main.pdf
-TEXS := main.tex $(wildcard $(TEX)/*.tex)
+TEXS := main.tex content.tex $(wildcard $(TEX)/*.tex)
 GEN_TEXS := $(addprefix $(GEN)/,$(TEXS))
 
 CACHE := $(OTT_GEN)/ott.cache

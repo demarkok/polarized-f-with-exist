@@ -806,7 +806,7 @@ the metric of the inference tree.
             imply $[[Γ; Φ ⊨ let x = v(args); c : nf(iN)]]$ by \ruleref{\ottdruleATVarLetLabel}.
 
         \item \ruleref{\ottdruleDTAppLetAnnLabel}\\
-            Then we are proving that 
+            Then we prove that 
             $[[Γ ; Φ ⊢ let x:iP = v(args); c : iN]]$
             implies 
             $[[Γ; Φ ⊨ let x:iP = v(args); c : nf(iN)]]$.
@@ -1119,7 +1119,7 @@ the metric of the inference tree.
                             $[[uM']]$, $[[Θ']]$, and $[[SC2]]$ such that 
                             \begin{enumerate}
                                 \item $[[ Γ; Φ; Θ ⊨ uN1 ● args ⇒> uM' ⫤ Θ'; SC2 ]]$
-                                    and then by soundness of typing 
+                                    and then by the soundness of typing 
                                     (i.e. the induction hypothesis), 
                                     \begin{enumerate}
                                         \item $[[Θ ⊆ Θ']]$
