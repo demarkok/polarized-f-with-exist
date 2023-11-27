@@ -157,7 +157,7 @@ the positive case, since the negative case is symmetric.
     then 
     \begin{enumerate*}
         \item $[[Γ ; Ξ ⊢ uQ]]$,
-        \item $[[Γ ; · ⊢ aus1 : Ξ]]$ for $i \in \{1,2\}$
+        \item $[[Γ ; · ⊢ ausi : Ξ]]$ for $i \in \{1,2\}$
         are anti-unification substitutions (in particular, $[[Ξ]]$ contains only negative algorithmic variables), and
         \item $[[ [ausi] uQ = iPi ]]$ for $i \in \{1,2\}$.
     \end{enumerate*}
@@ -215,6 +215,9 @@ This is important to guarantee that, for example,
 the anti-unifier of $[[↓↑Int → ↑Int]]$ and 
 $[[↓↑Bool → ↑Bool]]$ is $[[↓â⁻ → â⁻]]$, but not
 (less specific) $[[↓â⁻ → b̂⁻]]$.
+To preserve this property, we arrange the algorithm in such a way 
+that the name of the placeholder is determined by the types it is mapped to.
+The following lemma specifies this observation.
 
 \begin{lemma*}[Uniqueness of Anti-unification Variable Names]
     Names of the anti-unification variables are uniquely defined by
@@ -259,7 +262,7 @@ $[[↓↑Bool → ↑Bool]]$ is $[[↓â⁻ → â⁻]]$, but not
 
     \begin{lemma*}[Characterization of Normalized Supertypes]
         \label{lemma:char-supertypes}
-        For a normalized positive type $[[iP]]$ well-fordmed in $[[Γ]]$,
+        For a normalized positive type $[[iP]]$ well-formed in $[[Γ]]$,
         the set of normalized $[[Γ]]$-formed supertypes of $[[iP]]$ is the following:
         \begin{itemize}
             \item if $[[iP]]$ is a variable $[[pb]]$, its only normalized supertype is $[[pb]]$ itself;
@@ -274,7 +277,7 @@ $[[↓↑Bool → ↑Bool]]$ is $[[↓â⁻ → â⁻]]$, but not
 
     Similarly to the Least Upper Bound algorithm, the Upgrade finds the least type among upper bounds
     (this time the set of considered upper bounds consists of supertypes well-formed in a \emph{smaller} context).
-    This way, we also use the supertype characterization to prove the following property of the Upgrade algorithm. 
+    This way, we also use the supertype characterization to prove the following properties of the Upgrade algorithm. 
 
     \begin{lemma*}[Upgrade Soundness]
         Assuming $[[iP]]$ is well-formed in $[[Γ = Δ, pnas]]$,
@@ -293,8 +296,8 @@ $[[↓↑Bool → ↑Bool]]$ is $[[↓â⁻ → â⁻]]$, but not
             \item $[[Δ ⊢ iQ']]$ and
             \item $[[Γ ⊢ iQ' ≥ iP]]$,
         \end{enumerate*}
-        the result of the upgrade algorithm $[[iQ]]$ exists
-        ($[[upgrade Γ ⊢ iP to Δ = iQ]]$) and satisfies $[[Δ ⊢ iQ' ≥ iQ]]$.
+        there exists$[[iQ]]$ such that
+        ($[[upgrade Γ ⊢ iP to Δ = iQ]]$) and $[[Δ ⊢ iQ' ≥ iQ]]$.
     \end{lemma*}
 
 \subsection{Subtyping}
@@ -313,11 +316,11 @@ $[[↓↑Bool → ↑Bool]]$ is $[[↓â⁻ → â⁻]]$, but not
     In other words, any substitution satisfying $[[SC]]$, 
     ensures the desired declarative subtyping: $[[Γ ⊢ [uσ]uP ≥ iQ]]$.
     Notice that the soundness requires that only the left-hand side input 
-    type ($[[uP]]$) is algorithmic. This is one of the invariants of the algorithm
+    type ($[[uP]]$) can have algorithmic variables. This is one of the invariants of the algorithm
     that significantly simplifies the unification and constraint resolution.
 
 \begin{lemma*}[Soundness of the Positive Subtyping]
-    If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iQ]]$, $[[Γ ; dom(Θ) ⊢  uP]]$, and 
+    If $[[Γ ⊢ Θ]]$ and $[[Γ ⊢ iQ]]$ and $[[Γ ; dom(Θ) ⊢  uP]]$ and 
     $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$,
     then $[[Θ ⊢ SC : uv uP]]$ and
     for any  $[[uσ]]$ such that $[[ Θ ⊢ uσ : SC ]]$,
@@ -344,7 +347,7 @@ variable will never be generated, and thus, we do not need the
 Greatest Common Subtype procedure to resolve the constraints.
 
 \begin{lemma*}[Completeness of the Negative Subtyping]
-    Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; dom(Θ) ⊢ uN]]$,
+    Suppose that $[[Γ ⊢ Θ]]$ and $[[Γ ⊢ iM]]$ and $[[Γ ; dom(Θ) ⊢ uN]]$
     and $[[uN]]$ does not contain negative unification variables ($[[α̂⁻]] \notin [[uv uN]]$).
     Then for any $[[Θ ⊢ uσ : uv(uN)]]$ such that $[[Γ ⊢ [uσ]uN ≤ iM]]$,
     the subtyping algorithm succeeds: $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$.
@@ -388,20 +391,26 @@ $[[SC]]$-compliant substitutions are equivalent, then the singularity procedure 
 
 \subsection{Typing}
 
-Finally, we discuss the proofs of the theorems stated at the beginning of this section.
+Finally, we discuss the proofs of the soundness and completeness of type
+inference algorithm that we stated at the beginning of this section.
+There are three subtleties that we will cover that are important 
+for the proof to go through: the determinacy of the algorithm,
+the mutual dependence of the soundness and completeness proofs, and
+the non-trivial inductive metric that we use.
 
-\paragraph{Determinicity}
-    One of the properties that our proof relies on is the determinicity of the 
-    typing algorithm: the output (the type, the set of restrictions, \etc) 
-    is uniquely determined by the input (the term, the context, \etc).
-    Determinicity is not hard to demonstrate by structural induction: 
+
+\paragraph{Determinacy}
+    One of the properties that our proof relies on is the determinacy of the 
+    typing algorithm: the output (the inferred type)
+    is uniquely determined by the input (the term and the contexts).
+    Determinacy is not hard to demonstrate by structural induction: 
     in every algorithmic inference system, only one inference rule can be applied 
     for a given input.  However, we need to prove it for \emph{every} 
     subroutine of the algorithm. Ultimately, it requires 
-    the determinicity of such procedures as \emph{generation of fresh variables}, 
+    the determinacy of such procedures as \emph{generation of fresh variables}, 
     which is easy to ensure, but must be taken into account in the implementation.
 
-\begin{lemma*}[Determinicity of the Typing Algorithm]
+\begin{lemma*}[Determinacy of the Typing Algorithm]
     Suppose that $[[Γ ⊢ Φ]]$ and $[[Γ ⊢ Θ]]$. Then 
     \begin{itemize}
         \item [$+$] If $[[Γ; Φ ⊨ v : iP]]$ and $[[Γ; Φ ⊨ v : iP']]$ then $[[iP = iP']]$.
@@ -419,79 +428,109 @@ as the completeness requires certain properties of the premise subtrees.
 However, in the case of the typing algorithm, the soundness and completeness proofs
 cannot be separated: the inductive proof of one requires another, and vice versa. 
 
-The soundness proof requires completeness in the case of 
-\ruleref{\ottdruleATAppLetLabel}, whose declarative counterpart requires \emph{uniqueness}
-of the inferred application type. To show the uniqueness, we
-need to conclude that any other \emph{declarative} tree 
-must infer the same (or rather equivalent) type. 
-The only way to do so is by applying the soundness of singularity (\cref{sec:singularity-proo}),
-however, first, the declarative tree must be converted to the algorithmic one (by completeness!).
 
-This way, these lemmas are proven by mutual induction. 
-Since the declarative and the algorithmic systems are not mutually inductive,
-we must introduce a metric on which the induction is conducted.
+The soundness proof can be viewed as a mapping from an algorithmic tree to a
+declarative one. We show that each algorithmic inference rule can
+be transformed into the corresponding declarative rule, as long as the premises
+are transformed accordingly, and apply the induction principle. 
+
+The soundness requires completeness in the case of
+\ruleref{\ottdruleATAppLetLabel}. To prove the soundness, 
+in other words, to transform this rule into its
+declarative counterpart \ruleref{\ottdruleDTAppLetLabel}, one needs
+to prove \emph{uniqueness} of the inferred application type $[[↑iQ]]$. 
+To show the uniqueness, we need to conclude that any other \emph{declarative} tree
+(which is given by the induction hypothesis) infers an equivalent type. 
+The only way to do so is by applying the soundness of singularity (\cref{sec:singularity-proo}), however, first, the declarative tree must be converted to the algorithmic one (by completeness!).
+This way, the soundness and completeness proofs are mutually dependent.
+
 
 \paragraph{Inductive Metric}
+    The soundness and completeness lemmas are proven by \emph{mutual} induction. 
+    Since the declarative and the algorithmic systems do not depend on each other,
+    we must introduce a uniform \emph{metric} on which the induction is conducted.
+    We define the metric gradually, starting from the
+    auxiliary function---the size of a judgment $\size{J}$.
 
-Let us extend the declarative typing metric (\cref{def:decl-typing-metric}) 
-to the algorithmic typing.
+    The size of \emph{declarative} and \emph{algorithmic} judgments is defined as
+    a pair: the first component is the syntactic size of the terms used in the judgment. 
+    The second component depends on the kind of judgment. For regular
+    type inference judgments (such as $[[Γ ; Φ ⊢ v : iP]]$
+    or $[[Γ ; Φ ⊨ c : iN]]$), it is always zero. For application inference judgments
+    $([[Γ ; Φ ⊢ iN ● args ⇒> iM]]$ or $[[Γ ; Φ ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$), 
+    it is equal to the number of prenex quantifiers of the head type $[[iN]]$.
+    We need this adjustment to ensure the monotonicity of the metric, since the rules 
+    \ruleref{\ottdruleATForallAppLabel} and \ruleref{\ottdruleDTForallAppLabel}
+    only reduce the quantifiers in the head type but not change the list of arguments.
 
-\begin{definition}[Number of prenex quantifiers]
-    We define $\npq{[[iN]]}$ and $\npq{[[iP]]}$ as the number of 
-    prenex quantifiers, i.e.
-    \begin{itemize}
-        \item [$+$] $\npq{[[∃nas.iP]]} = |[[nas]]|$, if $[[iP ≠ ∃nbs.iP']]$,
-        \item [$-$] $\npq{[[∀pas.iN]]} = |[[pas]]|$, if $[[iN ≠ ∀pbs.iN']]$.
-    \end{itemize}
-\end{definition}
-
-\begin{definition}[Size of a Declarative Judgement]
+\begin{definition*}[Judgement Size]
     \label{def:decl-typing-size}
-    For a declarative typing judgment $J$
-    let us define a metrics $\size{J}$ as a pair of numbers 
-    in the following way:
+    For a declarative or an algorithmic typing judgment $J$, we define a metric $\size{J}$ as a pair of integers in the following way:
+
+    \begin{multicols}{2}
     \begin{itemize}
         \item [$+$] $\size{[[Γ ; Φ ⊢ v : iP]]} = (\size{[[v]]}, 0)$;
         \item [$-$] $\size{[[Γ ; Φ ⊢ c : iN]]} = (\size{[[c]]}, 0)$;
-        \item [$\bullet$] $\size{[[Γ ; Φ ⊢ iN ● args ⇒> iM]]} = 
-            (\size{[[args]]}, \npq{[[iN]]})$)
+        \item [$\bullet$] $\size{[[Γ ; Φ ⊢ iN ● args ⇒> iM]]}=$\\ 
+            $(\size{[[args]]}, \npq{[[iN]]})$;
     \end{itemize}
-    where $\size{[[v]]}$ or $\size{[[c]]}$ is the size of the 
-    syntax tree of the term $[[v]]$ or $[[c]]$
-    and $\size{[[args]]}$ is the sum of sizes of the terms in $[[args]]$.
-\end{definition}
-
-\begin{definition}[Number of Equivalence Nodes]
-    For a tree $T$ inferring
-    a declarative typing judgment,
-    let us a function $\eqNodes{T}$
-    as the number of nodes in $T$ labeled with \ruleref{\ottdruleDTPEquivLabel} or 
-    \ruleref{\ottdruleDTNEquivLabel}.
-\end{definition}
-
-\begin{definition}[Declarative Tree Metric]
-    \label{def:decl-typing-metric}
-    For a tree $T$ inferring
-    a declarative typing judgment $J$,
-    we define a metric $\metric{T}$
-    as a pair $(\size{J}, \eqNodes{T})$.
-\end{definition}
-
-
-\begin{definition}[Size of an Algorithmic Judgement]
-    For an algorithmic typing judgement $J$
-    let us define a metrics $\size{J}$ as a pair of numbers 
-    in the following way:
-    \begin{itemize}
+    \columnbreak
+    \begin{itemize}[leftmargin=*]
         \item [$+$] $\size{[[Γ ; Φ ⊨ v : iP]]} = (\size{[[v]]}, 0)$;
         \item [$-$] $\size{[[Γ ; Φ ⊨ c : iN]]} = (\size{[[c]]}, 0)$;
-        \item [$\bullet$] $\size{[[Γ ; Φ ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]} = 
-            (\size{[[args]]}, \npq{[[uN]]})$)
+        \item [$\bullet$] $\size{[[Γ ; Φ ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]} =$\\ 
+             $(\size{[[args]]}, \npq{[[uN]]})$.
     \end{itemize}
-\end{definition}
+    \end{multicols}
 
-\begin{definition}[Algorithmic Tree Metric]
-    For a tree $T$ inferring an algorithmic typing judgement $J$, we define 
-    $\metric{T}$ as $(\size{J}, 0)$.
-\end{definition}
+    Here $\size{[[v]]}$ and $\size{[[c]]}$ is the size of the 
+    syntax tree of the term,
+    and $\size{[[args]]}$ is the sum of sizes of the terms in $[[args]]$;
+    and $\npq{[[iN]]}$ and $\npq{[[iP]]}$ represent the number of 
+    prenex quantifiers, \ie
+        \begin{itemize} \centering
+            \item [$+$] $\npq{[[∃nas.iP]]} = |[[nas]]|$, if $[[iP ≠ ∃nbs.iP']]$,
+            \item [$-$] $\npq{[[∀pas.iN]]} = |[[pas]]|$, if $[[iN ≠ ∀pbs.iN']]$.
+        \end{itemize}
+\end{definition*}
+
+Notice that for \emph{algorithmic} inference system, $\size{J}$ decreases in
+all the inductive steps, \ie for each inference rule, the size of the
+premise judgments is strictly less than the size of the conclusion.
+However, the \emph{declarative} inference system has rules
+\ruleref{\ottdruleDTNEquivLabel} and \ruleref{\ottdruleDTPEquivLabel}, that
+`step to' an equivalent type, and thus, technically, might keep the judgment
+unchanged altogether.
+
+To deal with this issue, we introduce the metric on the entire 
+\emph{inference trees} rather than on judgments, and plug into this metric the
+parameter that certainly decreases in rules \ruleref{\ottdruleDTNEquivLabel} and \ruleref{\ottdruleDTPEquivLabel}---the number of these rules in the inference tree. We
+denote this number as $\eqNodes{T}$.  Then the final metric is defined as a pair in the following way.
+
+\begin{definition*}[Inference Tree Metric]
+    For a tree $T$, inferring a declarative or an algorithmic judgement $J$, we define $\metric{T}$ as follows:
+        \[
+        \metric{T} = \begin{cases}
+        (\size{J}, \eqNodes{T}) & \text{if } J \text{ represents a declarative judgement}, \\
+        (\size{J}, 0) & \text{if } J \text{ represents an algorithmic judgement}.
+        \end{cases}
+        \]
+    Here $\eqNodes{T}$ is the number of nodes in $T$ labeled with \ruleref{\ottdruleDTPEquivLabel} or \ruleref{\ottdruleDTNEquivLabel}.
+\end{definition*}
+
+This metric is suitable for mutual induction on the soundness and completeness
+of the typing algorithm.  First, it is monotonous \wrt the inference rules,
+and this way, we can always apply the induction hypothesis to premises 
+of each rule. Second, the induction hypothesis is powerful enough,
+so we can use the completeness of the algorithm in the soundness proof,
+where required. For instance, to prove the soundness
+of typing in case of $[[Γ; Φ ⊨ let x = v(args); c' : iN]]$,
+we can assume, that  \emph{completeness}
+holds for a term of shape $[[Γ; Φ ⊢ iM ● args ⇒> iK ]]$, since
+$\size{args} < \size{let x = v(args); c'}$.
+This is exactly what allows us to 
+deal with the case of \ruleref{\ottdruleATAppLetLabel},
+because then we can conclude that 
+the inferred type (of a declarative judgment $[[Γ; Φ ⊢ iM ● args ⇒> ↑[uσ]uQ
+]]$ constructed by the induction hypothesis) is unique.
 

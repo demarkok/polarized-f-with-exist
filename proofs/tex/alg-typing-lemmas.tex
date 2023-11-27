@@ -1,4 +1,4 @@
-\lemmaTypingDeterminicity*
+\lemmaTypingDeterminacy*
 \begin{proof}
     We show it by structural induction on the inference tree.
     Notice that the last rule used to infer the judgement is uniquely
@@ -117,8 +117,7 @@ the metric of the inference tree.
             which implies $[[Γ ⊢ iP]]$.
 
             Also by inversion of $[[Γ; Φ ⊨ λx:iP . c : nf(iP → iN)]]$,
-            we have $[[Γ; Φ, x:iP ⊨ c : iN]]$, applying induction 
-            hypothesis to which gives us:
+            we have $[[Γ; Φ, x:iP ⊨ c : iN]]$, applying induction hypothesis to which gives us:
             \begin{enumerate}
                 \item  $[[Γ ⊢ iN]]$, thus $[[Γ ⊢ iP → iN]]$, 
                     and by \cref{corollary:wf-nf}, $[[Γ ⊢ nf(iP → iN)]]$;
@@ -265,7 +264,7 @@ the metric of the inference tree.
             \end{enumerate}
 
             By the induction hypothesis applied to $[[Γ; Φ ⊨ v : ↓iM]]$, we have    
-            $[[Γ; Φ ⊢ v : ↓iM]]$ and $[[Γ ⊢ ↓iM]]$ (and thus, $[[Γ ; dom(Θ) ⊢  uM]]$).
+            $[[Γ; Φ ⊢ v : ↓iM]]$ and $[[Γ ⊢ ↓iM]]$ (and thus, $[[Γ ; dom(Θ) ⊢ uM]]$).
        
             By the induction hypothesis applied to $[[Γ; Φ, x:[uσ3]uQ ⊨ c' : iN]]$, we have
             $[[Γ ⊢ iN]]$ and $[[Γ; Φ, x:[uσ3]uQ ⊢ c' : iN]]$.
@@ -305,7 +304,7 @@ the metric of the inference tree.
                         \item there exists a substitution $[[Θ' ⊢ uσ' : SC']]$ 
                             such that $[[Γ ⊢ [uσ']uN' ≈ iK]]$.
                     \end{enumerate}
-                    By determinicity of the typing algorithm (\cref{lemma:typing-determinicity}),
+                    By determinacy of the typing algorithm (\cref{lemma:typing-determinacy}),
                     $[[ Γ; Φ; · ⊨ uM ● args ⇒> uN' ⫤ Θ'; SC' ]]$,
                     means that $[[SC']]$ is $[[SC]]$, $[[Θ']]$ is $[[Θ]]$, and $[[uN']]$ is
                     $[[↑uQ]]$. 

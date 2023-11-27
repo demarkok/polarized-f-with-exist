@@ -508,5 +508,5 @@ fun fv uP :: Γ :: uPfv by
 fun fv iP :: Γ :: Pfv by
 fun fv iN :: Γ :: Nfv by
 
-fun uv uN :: Ξ :: uNuv by
-fun uv uP :: Ξ :: uPuv by
+fun uv uN :: Ξ :: uNuv {{ tex \ottkw{fav} [[uN]] }} by 
+fun uv uP :: Ξ :: uPuv {{ tex \ottkw{fav} [[uP]] }} by 

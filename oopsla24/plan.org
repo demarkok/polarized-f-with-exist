@@ -161,7 +161,7 @@
         - Soundness: ord vars in iN returns a list of variables form vars ∩ fv(iN)
         - Completeness: Ordering is an invariant of an equivalence class
     ** Normalization 
-        - Determinicity 
+        - Determinacy 
         - Soundness wrt declarative normalization: normalization preserves the equivalence class 
         - Completeness wrt declarative normalization: equivalent types have equal normal forms
         - Soundness and Completeness wrt mutual subtyping = Algorithmization of mutual subtyping:
@@ -250,7 +250,7 @@
             then C singular with σ succeeds and 
             Ξ = dom(C)
     ** Typing 
-        - Determinicity
+        - Determinacy
         - Soundness
         - Completeness
 
