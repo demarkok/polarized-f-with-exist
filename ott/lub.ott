@@ -19,6 +19,16 @@ defns
 
   % Γ ⊨ ↓iN ∨ ↓iM = ∃ nas . [nas/ToList Ξ] uP
 
+  defn Γ ⊨ iP1 ∨ iP2 = iQ  :: :: EPlub :: ''
+  {{ com Least Upper Bound }} by
+
+
+  Γ, {nas} ⊨ iP1 ∨ iP2 = iQ    {nas} ⊆ fv iQ
+  ------------------------------------------- :: EExists
+  Γ ⊨ ∃nas.iP1 ∨ ∃nas.iP2 = iQ
+  
+
+
 
   defn upgrade Γ ⊢ iP to Δ = iQ :: :: Up :: '' 
   {{ com Type Upgrade }} by

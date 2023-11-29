@@ -1,1 +1,95 @@
 \label{sec:extensions}
+
+
+\subsection{Explicit Type Application}
+
+In our system, all type applications are inferred implicitly: the algorithm
+automatically instantiates the variables abstracted by $\forall$. 
+The implicit type application can be added to the declarative system by the following rule:
+$$\ottdruleDTTypeApp{}$$
+
+However, this rule alone would cause ambiguity.
+The declarative system does not fix the order of the quantifiers, 
+which means that $[[∀α⁺.∀β⁺.iN]]$ and $[[∀β⁺.∀α⁺.iN]]$ can be inferred 
+as a type of $[[c]]$ interchangeably. But then explicit instantiation
+$([[ c[iP] ]])$ would be ambiguous, as it is unclear whether $[[α⁺]]$ or
+$[[β⁺]]$ should be instantiated with $[[iP]]$.
+
+\paragraph{Solution 1: Declarative Normalization}
+One way to resolve this ambiguity is to fix the order of quantifiers.  
+The algorithm already performs the ordering of the quantifiers in the normalization procedure.
+This way, we could require the inferred type to be normalized
+to specify the order of the quantifiers:
+$$\ottdruleDTTypeAppOrdered{}$$
+
+The drawback of this approach is that it 
+would cause the `leakage' of the internal algorithmic 
+concept of type normalization into the `surface' declarative 
+system. 
+
+\paragraph{Solution 2: Elementary Type Inference}
+An alternative approach to provide explicit type application
+ was proposed by \cite{zhao22:elementary}.
+In this work, the subtyping relation is restricted 
+in such a way that 
+$[[∀α⁺.∀β⁺.iN]]$ and $[[∀β⁺.∀α⁺.iN]]$ are \emph{not} mutual subtypes 
+(as long as $[[α⁺ ∊ fv(iN)]]$ and $[[β⁺ ∊ fv(iN)]]$).
+It implies that the order of the quantifiers of the inferred type is unique,
+and thus, the explicit type application is unambiguous.
+
+These restrictions can be incorporated into our system by
+replacing the polymorphic subtyping rules
+\ruleref{\ottdruleDOneForallLabel} and \ruleref{\ottdruleDOneExistsLabel}
+with the following stronger versions:
+\vspace{-\baselineskip}
+\begin{multicols}{2}
+$$ \ottdruleDOneEForallR{} $$\\
+$$ \ottdruleDOneEForallL{} $$
+\end{multicols}
+
+\begin{multicols}{2}
+$$ \ottdruleDOneEExistsR{} $$\\
+$$ \ottdruleDOneEExistsL{} $$
+\end{multicols}
+\vspace{\baselineskip}
+From the perspective of mutual subtyping,
+these changes fix the order of the quantifiers for an equivalence class. 
+Moreover, the equivalence degenerates to equality (alpha-equivalence). 
+
+To accommodate these changes in the \emph{algorithm}, 
+it suffices to 
+    (i) replace the normalization procedure with identity: $[[nf(iN)]] \defeq [[iN]]$, $[[nf(iP)]] \defeq [[iP]]$,
+    (ii) modify the least upper bound polymorphic rule \ruleref{\ottdruleLUBExistsLabel} in the following way:
+        $$\ottdruleLUBEExists{}$$ 
+    and 
+    (iii) replace the subtyping polymorphic rule \ruleref{\ottdruleAForallLabel} 
+    by the following pair of rules:
+    \begin{multicols}{2}
+            $$\ottdruleAForallR{}$$\\
+            $$\ottdruleAForallL{}$$
+    \end{multicols}
+
+\subsection{Bounded Quantification}
+
+It is possible to smoothly extend the type system with bounded quantifiers.
+In particular, we can add lower bounds to polymorphic $[[∀]]$-quantifiers:
+$[[∀(pas ≥ iPs). iN]]$ with the expected subtyping specification: 
+
+$$ ??? $$
+
+%   Γ, pbs ⊢ σ : {pas}    Γ, pbs ⊢ [σ] iN ≤ iM
+%   ---------------------------------------- :: Forall
+%   Γ ⊢ ∀(pas ≥ iPs). iN ≤ ∀(pbs ≥ iQs).iM
+
+\subsection{Bidirectionalization and Invariants Relaxation}
+
+The algorithm we provide requires that all lambda functions are annotated. To
+augment the system's expressiveness and lessen this requirement, we can employ
+bidirectionalization.
+
+However, this approach will disrupt the crucial invariants of the system and
+necessitate a more sophisticated constraint solver. Specifically, the generated
+constraints may contain algorithmic variables on both sides of the subtyping
+relation. If the constraint set only imposes an equivalence restriction, this
+task aligns with pattern-unification. Nevertheless, the subtyping restrictions
+render the problem undecidable. For instance, ...

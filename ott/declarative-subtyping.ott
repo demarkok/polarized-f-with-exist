@@ -48,6 +48,20 @@ defns
   ---------------------------------------- :: Forall
   Γ ⊢ ∀pas.iN ≤ ∀pbs.iM
 
+  defn Γ ⊢ iN ≤ iM :: :: Elemsub :: ''
+  {{ com Elementary Subtyping }}
+  {{ tex [[Γ]] [[⊢]] [[iN]] \subDOne [[iM]] }} by
+
+  Γ, pas ⊢ iN ≤ iM
+  ---------------------- :: EForallR
+  Γ ⊢ ∀pas.iN ≤ ∀pas.iM
+
+
+  iM ≠ ∀pbs.iM'  Γ ⊢ σ : {pas}     Γ ⊢ [σ]iN ≤ iM
+  -------------------------------- :: EForallL
+  Γ ⊢ ∀pas.iN ≤ iM
+
+
   defn Γ ⊢ iP ≥ iQ :: :: Psup :: ''
   {{ com Positive supertyping }}
   {{ tex [[Γ]] [[⊢]] [[iP]] \supDOne [[iQ]] }} by
@@ -62,6 +76,20 @@ defns
   Γ, nbs ⊢ σ : {nas}    Γ, nbs ⊢ [σ]iP ≥ iQ
   --------------------------------------- :: Exists
   Γ ⊢ ∃nas.iP ≥ ∃nbs.iQ
+
+  defn Γ ⊢ iP ≥ iQ :: :: Elemsup :: ''
+  {{ com Elementary Supertyping }}
+  {{ tex [[Γ]] [[⊢]] [[iP]] \supDOne [[iQ]] }} by
+
+  Γ, nas ⊢ iP ≥ iQ
+  ---------------------- :: EExistsR
+  Γ ⊢ ∃nas.iP ≥ ∃nas.iQ
+
+
+  iQ ≠ ∃nbs.iQ'  Γ ⊢ σ : {nas}     Γ ⊢ [σ]iP ≥ iQ
+  --------------------------------- :: EExistsL
+  Γ ⊢ ∃nas.iP ≥ iQ
+
 
 defns 
   D1S :: 'D1S' ::=

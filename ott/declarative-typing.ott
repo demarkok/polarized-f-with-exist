@@ -67,6 +67,20 @@ defns
   ------------------------------ :: NEquiv
   Γ ; Φ ⊢ c : iN'
 
+  defn Γ ; Φ ⊢ c : iN :: :: NInfExtra :: ''
+  {{ com Negative typing }}
+  {{ tex [[Γ]] ; [[Φ]] \vdash [[c]] \colon [[iN]] }} by
+
+  Γ ; Φ ⊢ c : ∀pas.iN 
+  -------------------------------- :: TypeApp
+  Γ ; Φ ⊢ c [ iPs ] : [iPs/pas]iN
+
+
+  Γ ; Φ ⊢ c : ∀pas.iN  nf(∀pas.iN) = ∀pas.iN
+  ------------------------------------------ :: TypeAppOrdered
+  Γ ; Φ ⊢ c [ iPs ] : [iPs/pas]iN
+
+
 defn Γ ; Φ ⊢ iN ● args ⇒> iM :: :: SpinInf :: ''
 {{ com Application typing }} by
 

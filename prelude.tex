@@ -113,6 +113,19 @@
 \newtheorem{observation}{Observation}
 \newtheorem*{assertion*}{Assertion}
 
+\makeatletter
+\newcommand{\defeq}{\mathrel{\aban@defeq}}
+\newcommand{\aban@defeq}{%
+  \vbox{\offinterlineskip\check@mathfonts
+    \ialign{\hfil##\hfil\cr
+      \fontsize{\ssf@size}{\z@}\normalfont def\cr
+      \noalign{\kern1\p@}
+      $\m@th=$\cr
+      \noalign{\kern-.5\fontdimen22\textfont2}
+    }%
+  }%
+}
+\makeatother
 
 \newcommand{\UB}[0]{\mathsf{UB}}
 \newcommand{\NFUB}[0]{\mathsf{NFUB}}

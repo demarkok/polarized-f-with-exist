@@ -22,7 +22,7 @@ defns
   % *[Γ, pbs]
   {â⁺*} are fresh    
   Γ, pbs; Θ, â⁺*[Γ, pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ SC
-  ----------------------------------------------------------------- :: Forall
+  ------------------------------------------------  :: Forall
   Γ;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ SC \ {â⁺*}
 
 
@@ -30,6 +30,21 @@ defns
   Θ ⊢ SC1 & SC2 = SC
   --------------------------------------------- :: Arrow
   Γ;Θ ⊨ uP → uN ≤ iQ → iM ⫤ SC 
+
+
+  defn Γ ; Θ ⊨ uN ≤ iM ⫤ SC :: :: ENsub :: ''
+  {{ com Elementary Negative subtyping }}
+  {{ tex [[Γ]] ;\, [[Θ]] [[⊨]] [[uN]] \subA [[iM]] [[⫤]] [[SC]] }} by
+
+  {â⁺*} are fresh    iM ≠ ∀pbs.iM'
+  Γ; Θ, â⁺*[Γ] ⊨ [â⁺*/pas] uN ≤ iM ⫤ SC
+  ------------------------------------------------  :: ForallL
+  Γ;Θ ⊨ ∀pas.uN ≤ iM ⫤ SC \ {â⁺*}
+
+
+  Γ,pas; Θ ⊨ uN ≤ iM ⫤ SC
+  ----------------------------- :: ForallR
+  Γ;Θ ⊨ ∀pas.uN ≤ ∀pas.iM ⫤ SC
 
 
   defn Γ ; Θ ⊨ uP ≥ iQ ⫤ SC :: :: Psup :: ''

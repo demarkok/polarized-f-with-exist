@@ -185,6 +185,7 @@ iK {{ tex \mathcolor{negative}{K} }} :: 'iN_' ::= {{ com Negative declarative ty
    | ↑ iP        ::   :: Shift
    | iP → iN     ::   :: Fun
    | ∀ pas . iN  ::   :: Forall 
+   | ∀ ( pas ≥ iPs ) . iN  ::  M :: BForall  % {{ tex [[∀]]([[pas]][[≥]][[iPs]])[[.]][[iN]] }}
    | [ σ ] iN    :: M :: AppSub 
    | [ aus ] uN  :: M :: AppAUSub
    | [ mu ] iN   :: M :: AppMoving
@@ -192,8 +193,8 @@ iK {{ tex \mathcolor{negative}{K} }} :: 'iN_' ::= {{ com Negative declarative ty
    | ( iN )      :: S :: Paren
 
 
-iPs {{ tex \vv{ P } }},
-iQs {{ tex \vv{ Q } }}
+iPs {{ tex \vv{ \mathcolor{positive}{P} } }},
+iQs {{ tex \vv{ \methcolor{positive}{Q} } }}
 :: 'iPs_' ::= {{ com list of positive types }}
    | ·                    ::   :: empty   {{ com empty list }}
    | iP                   ::   :: Var     {{ com a singel type }}
@@ -201,8 +202,8 @@ iQs {{ tex \vv{ Q } }}
    | </ iPsi // , // i /> ::   :: concat  {{ com concatenate lists }}
    | ( iPs )              :: S :: paren
 
-iNs {{ tex \vv{ N } }},
-iMs {{ tex \vv{ M } }}
+iNs {{ tex \vv{ \mathcolor{negative}{N} } }},
+iMs {{ tex \vv{ \mathcolor{negative}{M} } }}
 :: 'iNs_' ::= {{ com list of negative types }}
    | ·                    ::   :: empty   {{ com empty list }}
    | iN                   ::   :: Var     {{ com a singel type }}

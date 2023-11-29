@@ -19,6 +19,7 @@ c, d :: 'c_' ::= {{ com Computation Terms }}
   | λ x : iP . c                  ::   :: Lam       % {{ com annotated abstraction }}
                                                     % {{ tex [[λ]] [[x]] : [[iP]] ~.~ [[c]] }}
   | Λ pa . c                      ::   :: BigLam    % {{ com annotated type abstraction }}
+  | c [ iPs ]                     :: M :: TypeApp   % {{ com type application }}
   | return v                      ::   :: Return    % {{ com computation embedding a value}}
   | let x = v ; c                 ::   :: VarLet    % {{ com standard let-binding }}
   | let x : iP = v ( args ) ; c   ::   :: AppLetAnn % {{ com annotated applicative let }}

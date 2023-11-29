@@ -221,10 +221,16 @@
 \renewcommand{\ottdruleDOneArrowName}[0]{($\rightarrow^{\subDOne}$)}
 \renewcommand{\ottdruleDOneForallName}[0]{($\forall^{\subDOne}$)}
 
+\renewcommand{\ottdruleDOneEForallRName}[0]{(E$\forall^{\subDOne}_{\text{R}}$)}
+\renewcommand{\ottdruleDOneEForallLName}[0]{(E$\forall^{\subDOne}_{\text{L}}$)}
+
 % G ⊢ P ≥1 Q
 \renewcommand{\ottdruleDOnePVarName}[0]{(Var$_+^{\supDOne}$)}
 \renewcommand{\ottdruleDOneShiftDName}[0]{($\downarrow^{\supDOne}$)}
 \renewcommand{\ottdruleDOneExistsName}[0]{($\exists^{\supDOne}$)}
+
+\renewcommand{\ottdruleDOneEExistsRName}[0]{(E$\exists^{\supDOne}_{\text{R}}$)}
+\renewcommand{\ottdruleDOneEExistsLName}[0]{(E$\exists^{\supDOne}_{\text{L}}$)}
 
 
 % G ⊢ N ≈1 M
@@ -241,12 +247,17 @@
 \renewcommand{\ottdruleLUBExistsName}[0]{($\exists^{\vee}$)}
 \renewcommand{\ottdruleLUBUpgradeName}[0]{(Upg)}
 
+\renewcommand{\ottdruleLUBEExistsName}[0]{($\exists^{\vee}$)}
+
 
 % G ; Θ ⊨ uN ≤ iM ⫤ us
 \renewcommand{\ottdruleANVarName}[0]{(Var$_-^{\subA}$)}
 \renewcommand{\ottdruleAShiftUName}[0]{($\uparrow^{\subA}$)}
 \renewcommand{\ottdruleAArrowName}[0]{($\rightarrow^{\subA}$)}
 \renewcommand{\ottdruleAForallName}[0]{($\forall^{\subA}$)}
+
+\renewcommand{\ottdruleAForallLName}[0]{($\forall^{\subA}_{\text{L}}$)}
+\renewcommand{\ottdruleAForallRName}[0]{($\forall^{\subA}_{\text{R}}$)}
 
 % G ; Θ ⊨ iP ≥ uQ ⫤ us
 \renewcommand{\ottdruleAPVarName}[0]{(Var$_+^{\supA}$)}
@@ -334,6 +345,8 @@
 \renewcommand{\ottdruleDTUnpackName}[0]{(let$_{\exists}^{\text{inf}}$)}
 \renewcommand{\ottdruleDTNAnnotName}[0]{(ann$_-^{\text{inf}}$)}
 \renewcommand{\ottdruleDTNEquivName}[0]{($[[≈]]_-^{\text{inf}}$)}
+\renewcommand{\ottdruleDTTypeAppName}[0]{($TApp^{\text{inf}}$)}
+\renewcommand{\ottdruleDTTypeAppOrderedName}[0]{($TApp^{\text{inf}}$)}
 
 % Γ ; Φ ⊢ iN ● args ⇒> iM 
 \renewcommand{\ottdruleDTEmptyAppName}[0]{($\emptyset_{[[●]][[⇒>]]}^{\text{inf}}$)}
