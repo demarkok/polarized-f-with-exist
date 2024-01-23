@@ -15,7 +15,7 @@ defns
     ----------------- :: Arrow
     Γ ⊢ iP → iN
 
-    Γ, {pas} ⊢ iN
+    Γ, pas ⊢ iN
     ------------ :: Forall
     Γ ⊢ ∀pas.iN
 
@@ -32,6 +32,18 @@ defns
     Γ, nas ⊢ iP
     ----------- :: Exists
     Γ ⊢ ∃nas.iP
+  
+  defn Γ ⊢* iP  :: :: PiWFM :: '' 
+  {{ tex \vv{[[Γ]] [[⊢]] [[iP]]} }} by
+
+
+  defn Γ ⊢ iN  :: :: NiWBd :: '' {{ com Negative type well-formedness }} by
+
+    Γ ⊢* iPi   Γ, pas ⊢ iN   {pas} ∩ bv iN = ∅
+    --------------------------------------------------- :: ForallUb
+    Γ ⊢ ∀ ( pa ≤* iP ) . iN 
+
+
 
 defns
   WFAT :: 'WFAT' ::=

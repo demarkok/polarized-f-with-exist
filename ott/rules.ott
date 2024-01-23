@@ -19,6 +19,8 @@ grammar
     | varset are fresh                       ::   :: fresh
                                                      {{ tex [[ varset ]] ~ \ottkw{are} ~\ottkw{fresh} }}
     % | x ∊ T                                  ::   :: x_in_T {{ com lookup $[[ x ]]$ in context $[[ T ]]$ }}
+    | SI = SJ                                ::   :: index_set_eq
+    | SI ⊆ SJ                                ::   :: index_set_subset
     | na ∉ varset                            ::   :: na_notin_set
     | pa ∉ varset                            ::   :: pa_notin_set
     | na ∊ varset                            ::   :: na_in_set

@@ -1,3 +1,5 @@
+\label{sec:algorithm}
+
 In this section, we present the algorithmization of the declarative system described above.
 The algorithmic system follows the structure of the declarative specification closely.
 First, it is also given by a set of inference rules, which, however,
@@ -69,9 +71,14 @@ Then $[[Γ ; Ξ ⊢ uP]]$ and $[[Γ ; Ξ ⊢ uN]]$ represent the well-formedness
 judgment of algorithmic terms defined as expected. 
 Informally, they check that all free declarative variables are in $[[Γ]]$, 
 and all free algorithmic variables are in $[[Ξ]]$.
-In addition to the rules repeating the declarative definition \cref{todo}, 
-we have two base cases for the algorithmic variables:
- \ruleref{\ottdruleWFATPUVarLabel} and \ruleref{\ottdruleWFATNUVarLabel} (see \cref{fig:algo-wf})
+Most of the rules are inherited from the well-formedness of 
+\emph{declarative} types: the declarative variables are
+checked to belong to the context $[[Γ]]$, the quantifiers extend the context,
+type constructors are well-formed congruently.
+As we extend the syntax with algorithmic variables, we also add 
+two base-case rules for them:
+ \ruleref{\ottdruleWFATPUVarLabel} and \ruleref{\ottdruleWFATNUVarLabel} 
+ (see \cref{fig:algo-wf}).
 
 \begin{figure}[h]
 \begin{multicols}{2}
@@ -81,8 +88,8 @@ we have two base cases for the algorithmic variables:
   $\vcenter{\hbox{\vdots}}$\\
   \ottusedrule{\ottdruleWFATNUVarLabeled{}}
 \end{multicols}
-\label{fig:algo-wf}
 \caption{Well-formedness of Algorithmic Types}
+\label{fig:algo-wf}
 \end{figure}
 
 \paragraph{Algorithmic Normalization}
@@ -191,8 +198,8 @@ We write $[[Θ(α̂±)]]$ to denote the context associated with $[[α̂±]]$ in 
 
 
     % Define nodes
-    \node[] (1) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$\\(\cref{sec:subtyping})};
-    \node[below of=1] (3) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$\\(\cref{sec:subtyping})};
+    \node[] (1) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$\\(\cref{fig:alg-subtyping})};
+    \node[below of=1] (3) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$\\(\cref{fig:alg-subtyping})};
     \node[left=1.5cm of 3] (2) {Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
     \node[right=1.5cm of 3] (5) {Unification\\ $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$\\ $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$\\(\cref{sec:unification})};
     \node[below of=3] (4) {Upgrade\\$[[upgrade Γ ⊢ iP to Δ = iQ]]$\\(\cref{sec:lub})};
@@ -258,9 +265,10 @@ they are subtypes of each other, with no constraints (as there are no algorithmi
 \ruleref{\ottdruleAShiftULabel} cover the downshift and the upshift cases,
 respectively. If the input types are constructed by shifts, then the subtyping
 can only hold if they are equivalent. This way, the algorithm must find the
-instantiations of the algorithmic variables on the left-hand side, which make it
-equivalent to the right-hand side. For this purpose, the algorithm invokes the
-unification procedure \cref{todo} preceded by normalization of the input types.
+instantiations of the algorithmic variables on the left-hand side
+such that these instantiations make the left-hand side and the ride-hand side
+equivalent. For this purpose, the algorithm invokes the
+unification procedure (\cref{sec:unification}) preceded by the normalization of the input types.
 It returns the resulting constraints given by the unification algorithm. 
 
 \paragraph{Quantifiers}  
@@ -268,8 +276,8 @@ Rules \ruleref{\ottdruleAForallLabel} and
 \ruleref{\ottdruleAExistsLabel} are symmetric. 
 Declaratively, the quantified variables on the left-hand side must 
 be instantiated with types, which are not known beforehand.
-We address this problem by algorithmization (\cref{todo})
-of the quantified variables.
+We address this problem by algorithmization 
+of the quantified variables (see \cref{sec:algo-syntax}).
 The rule introduces fresh algorithmic variables
 $[[puas]]$ or $[[nuas]]$,
 puts them into the constraint context $[[Θ]]$
@@ -292,7 +300,8 @@ makes two calls:
   \item[(i)] a recursive call ensuring the subtyping of the result types, and
   \item[(ii)] a call to positive subtyping (or rather super-typing) on the argument types.
 \end{enumerate*}
-The resulting constraints are merged (using a special procedure defined later in \cref{todo})
+The resulting constraints are merged
+(using a special procedure defined in \cref{sec:constraint-merge})
 and returned as the output.
 
 \paragraph{Algorithmic Variable}
@@ -313,7 +322,7 @@ As we wish the resulting constraint set to be sound \wrt $[[Θ]]$,
 we cannot simply put $[[α̂⁺ :≥ iP]]$ into the output. 
 Prior to that, we update the type $[[iP]]$ to its lowest supertype $[[iQ]]$
 well-formed in $[[Θ(α̂⁺)]]$. It is done by the \emph{upgrade} procedure,
-which we discuss in detail in \cref{todo}.
+which we discuss in detail in \cref{sec:lub}.
 
 \vspace{\baselineskip}
 % \indent
@@ -346,9 +355,9 @@ $[[Θ]]$, whereas the right-hand side is well-formed declaratively in $[[Γ]]$.
 
 Since only the left-hand side may contain algorithmic variables,
 that the unification instantiates, we could have called this procedure \emph{matching}.
-However, in \cref{todo} we will discuss several modifications of the 
-type system, where this invariant is not preserved, and thus, this procedure
-becomes a genuine first-order pattern unification \cite{miller1991:unification}.
+However, in \cref{sec:weakening-invariant}, we will discuss several modifications of the 
+type system, where this invariant is not preserved, and therefore, this procedure
+requires general first-order pattern unification \cite{miller1991:unification}.
 
 As the output, the unification algorithm returns the weakest
 set of unification constraints $[[UC]]$ such that any instantiation 
@@ -394,12 +403,12 @@ Let us discuss the rules that implement this strategy.
 
 \paragraph{Functions}
   Rule \ruleref{\ottdruleUArrowLabel} unifies two functional types. 
-  First, it unifies the argument types and their result types recursively
-  Then it merges the resulting constraints using the constraint merge procedure (\cref{todo}).
+  First, it unifies the argument types and their result types recursively.
+  Then it merges the resulting constraints using the procedure described in \cref{sec:constraint-merge}.
 
   Notice that the resulting constraints can only have \emph{unification} entries.
   It means that they can be merged in a simpler way than general constraints.
-  In particular, the merging procedure does not call any of the subroutines discussed here,
+  In particular, the merging procedure does not call any of the subtyping subroutines,
   but rather simply checks the matching constraint entries for equality.
 
 \paragraph{Algorithmic Variable}
@@ -460,8 +469,8 @@ If both input entries are supertype constraints: $[[α̂⁺ :≥ iP]]$ and $[[α
 then their conjunction is $[[α̂⁺ :≥ iP ∨ iQ]]$, as given by \ruleref{\ottdruleSCMESupSupLabel}.
 The least upper bound---$[[iP ∨ iQ]]$ is the least supertype of both $[[iP]]$ and $[[iQ]]$,
 and this way, $[[α̂⁺ :≥ iP ∨ iQ]]$ is the weakest constraint entry that implies
-$[[α̂⁺ :≥ iP]]$ and $[[α̂⁺ :≥ iQ]]$. The algorithm for finding the least upper bound
-is discussed in \cref{todo}.
+$[[α̂⁺ :≥ iP]]$ and $[[α̂⁺ :≥ iQ]]$. The algorithm finding the least upper bound
+is discussed in \cref{sec:lub}.
 
 \paragraph{Merging Constraint Sets}
   The algorithm for merging constraint sets is shown in \cref{fig:merge-subtyping-constraints}.
@@ -594,7 +603,7 @@ We discuss the anti-unification algorithm in detail in the following section.
 \subsection{Anti-Unification}
 \label{sec:antiunification}
 
-The anti-unification algorithm \cite{todo}, 
+The anti-unification algorithm \cite{plotkin1970:generalization,reynolds1970:transform}, 
 is a procedure dual to unification
 For two given (potentially different) expressions, 
 it finds the most specific generalizer---the most detailed pattern that 
@@ -647,7 +656,8 @@ $[[ [aus1]uQ = iP1 ]]$ and $[[ [aus2]uQ = iP2 ]]$.
 \end{figure}
 
 At the high level, the algorithm scheme follows
-the standard approach \cite{todo} consisting of two principles:
+the standard approach \cite{plotkin1970:generalization}
+represented as a recursive procedure. Specifically, it follows two principles:
 \begin{enumerate}
   \item[(i)] if the input terms start with the same constructor,
     we anti-unify the corresponding parts recursively and 
@@ -657,7 +667,7 @@ the standard approach \cite{todo} consisting of two principles:
   \item[(ii)] if the first principle does not apply to the input terms $[[iN]]$
     and $[[iM]]$ (for instance, if they have different outer constructors), the
     anti-unification algorithm returns a `hole' such that one substitution maps
-    it to $[[iN]]$ and the other maps it to $[[iM]]$. The name of this `hole'
+    it to $[[iN]]$ and the other maps it to $[[iM]]$. This `hole'
     should have a name uniquely defined by the pair $([[iN]], [[iM]])$, so
     that it automatically merges with other `holes' mapped to the same
     pair of types, and thus, the initiality of the generalizer is ensured. 
@@ -792,19 +802,21 @@ The corresponding graph is shown in \cref{fig:alg-typing-graph}.
     [>={Stealth[scale=2]},node distance=2.2cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
     % Define nodes
     \node[] (1) {Positive Inference\\$[[Γ; Φ ⊨ v : iP]]$};
-    \node[right=1.4cm of 1] (2) {Negative Inference\\$[[Γ; Φ ⊨ c : iN]]$};
-    \node[right=1.4cm of 2] (3) {Application Inference\\$[[Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC]]$};
-    \node[below of=2,xshift=+2cm] (4) {Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
-    \node[below of=4] (5) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP1 ≥ iP2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
-    \node[left=0.75cm of 4] (6) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN1 ≤ iN2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
+    \node[right=1.2cm of 1] (2) {Negative Inference\\$[[Γ; Φ ⊨ c : iN]]$};
+    \node[right=1.2cm of 2] (3) {Application Inference\\$[[Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC]]$};
+    \node[below=0.8cm of 2] (7) {Constraint Singularity\\$[[SC singular with uσ]]$\\(\cref{sec:constraint-singularity})};
+    \node[right=0.3cm of 7] (4) {Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
+    \node[below=0.3cm of 7] (5) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP1 ≥ iP2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
+    \node[left=0.3cm of 7] (6) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN1 ≤ iN2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
     \draw[->] ([yshift=-.2cm]2.west) to ([yshift=-.2cm]1.east);
     \draw[->] ([yshift=+.2cm]1.east) to ([yshift=+.2cm]2.west);
     \draw[->, bend right=20] (3) to (1);
     \draw[->] (2) to (3);
     \draw[->] (2) to (4);
+    \draw[->] (2) to (7);
     \draw[->] (3) to (4);
-    \draw[->, bend right] (1.south west) to (5);
-    \draw[->, bend left] (3) to (5);
+    \draw[->] (1.south west) |- (5);
+    \draw[->] (3) |- (5);
     \draw[->] (2) to (6);
   \end{tikzpicture}  
   \caption{Dependency graph of the typing algorithm}
@@ -962,3 +974,53 @@ Next, we discuss them in detail.
   $[[uQ]]$ is a supertype of the type of $[[v]]$.
   Then it makes a recursive call applying $[[uN]]$ to the rest of the arguments 
   and merges the resulting constraint with $[[SC1]]$.
+
+\subsection{Constraint Singularity}
+\label{sec:constraint-singularity}
+
+The singularity algorithm is used to check that the inferred type of an
+application is unique. In this case, the annotation in the applicative let
+binder can be omitted. In the algorithmic system, the uniqueness means that the
+\emph{constraint set} produced by the application inference has a single
+substitution satisfying it.
+
+To implement the singularity algorithm, we define a partial function $[[SC
+singular with uσ]]$, taking a subtyping constraint $[[SC]]$ as an argument and
+returning a substitution $[[uσ]]$---the only solution of $[[SC]]$. The
+constraint $[[SC]]$ consists of constraint entries. Thus, we define the
+singularity using the singularity of constraint entries: each entry of $[[SC]]$
+must have a unique instantiation and the resulting substitution $[[uσ]]$ must be
+the combination of these instantiations (see \cref{fig:constraint-singularity}).
+
+\begin{figure}[h]
+  For a constraint set $[[SC]]$, we write $[[SC singular with uσ]]$ if and only if:
+  \begin{itemize}
+    \item for any \emph{positive} constraint entry $[[scE ∊ SC]]$, there exists $[[iP]]$ such that $[[scE singular with iP]]$,
+      and for the variable $[[β̂⁺]]$ restricted by $[[scE]]$, $[[ [uσ]β̂⁺ = iP ]]$;
+    \item the symmetric property holds for all \emph{negative} $[[scE ∊ SC]]$; and
+    \item for any $[[α̂± ∉ dom(SC)]]$, $[[ [uσ]α̂± = α̂± ]]$.
+  \end{itemize}
+  \caption{Constraint Singularity}
+  \label{fig:constraint-singularity}
+\end{figure}
+
+The singularity of constraint \emph{entries} is defined in
+\cref{fig:constraint-entry-singularity}. The \emph{equivalence} entries are
+always singular, as the only possible type satisfying them is the one given in
+the constraint itself, which is reflected in \ruleref{\ottdruleSINGNEqLabel} and
+\ruleref{\ottdruleSINGPEqLabel}. The \emph{subtyping} constraints are trickier.
+As will be discussed in \cref{sec:proof-lub-upgrade}, variables 
+(and equivalent types such as $[[∃nas.pa]]$) do not have 
+\emph{proper} supertypes, and thus, the constraints of a form 
+$[[pua :≥ ∃nas.pa]]$ are singular with the only possible normalized solution $[[pa]]$
+\ruleref{\ottdruleSINGSupVarLabel}. However, if the body of the existential type
+is guarded by a shift $[[∃nas.↓iN]]$, it is singular if and only if $[[iN]]$ is
+equivalent to some $[[αi⁻ ∊ {nas}]]$ bound by the quantifier, see the rule
+\ruleref{\ottdruleSINGSupShiftLabel}.
+
+\begin{figure}[h]
+  \hfill\\
+  \ottdefnSINGLabeled
+  \caption{Singular Constraint Entry}
+  \label{fig:constraint-entry-singularity}
+\end{figure}

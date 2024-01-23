@@ -229,6 +229,7 @@ The following lemma specifies this observation.
 \end{lemma*}
 
 \subsection{Least Upper Bound and Upgrade}
+\label{sec:proof-lub-upgrade}
 
     The Least Upper Bound algorithm finds the least type that is a supertype of two given types.
     The \emph{soundness} means that the returned type is indeed a supertype of the given ones;
@@ -301,11 +302,12 @@ The following lemma specifies this observation.
     \end{lemma*}
 
 \subsection{Subtyping}
+    \label{sec:proof-subtyping}
 
     As for other properties, the correctness of subtyping means that
     the algorithm produces a valid result (soundness) 
     whenever it exists (completeness).
-    In \cref{fig:subtyping-algo}, one can see that the positive and 
+    In \cref{fig:alg-subtyping}, one can see that the positive and 
     negative subtyping relations are not \emph{mututally} recursive: 
     negative subtyping algorithm uses the positive subtyping, 
     but not vice versa. 
@@ -441,9 +443,9 @@ declarative counterpart \ruleref{\ottdruleDTAppLetLabel}, one needs
 to prove \emph{uniqueness} of the inferred application type $[[↑iQ]]$. 
 To show the uniqueness, we need to conclude that any other \emph{declarative} tree
 (which is given by the induction hypothesis) infers an equivalent type. 
-The only way to do so is by applying the soundness of singularity (\cref{sec:singularity-proo}), however, first, the declarative tree must be converted to the algorithmic one (by completeness!).
+The only way to do so is by applying the soundness of singularity (\cref{sec:singularity-proof}), 
+however, first, the declarative tree must be converted to the algorithmic one (by completeness!).
 This way, the soundness and completeness proofs are mutually dependent.
-
 
 \paragraph{Inductive Metric}
     The soundness and completeness lemmas are proven by \emph{mutual} induction. 

@@ -1,4 +1,89 @@
+\subsection{Translation to \fexists}
+
+The language of \fexists is different from standard \systemf:
+every term and type has either positive or negative polarity.
+The type variables are annotated with their polarities
+(e.g. $[[α⁺]]$ or $[[β⁻]]$), and the types can change polarity
+via the shift operators $[[↑]]$ (positive to negative) and
+$[[↓]]$ (negative to positive).
+
+To establish a correspondence between \fexists and standard unpolarized systems,
+we present a translation between \fexists and \systemf. The translation of
+\systemf to \fexists is given in \cref{fig:translation}.
+
+\begin{figure}
+  \begin{equation*}
+  \begin{aligned}
+    [[|↓iN|]] &= [[|iN|]] \\
+    [[|↑iP|]] &= [[|iP|]] \\
+  \end{aligned}
+  \qquad
+  \begin{aligned}
+    [[|α±|]] &= [[a]] \\
+    [[|iP → iN|]] &= [[|iP| → |iN|]] \\
+  \end{aligned}
+  \qquad
+  \begin{aligned}
+    [[|∀α⁺.iN|]] &= [[∀α.|iN|]] \\
+    [[|∃α⁻.iP|]] &= [[∃α.|iP|]] \\
+  \end{aligned}
+  \end{equation*}
+  \caption{Type depolarization}
+  \label{fig:depolarization}
+\end{figure}
+
+The translation from \systemf to \fexists can be done in two canonical ways
+depending on the desired polarity. The polarity will also determine the 
+execution strategy \ilyam{how?}.
+Moreover, the translation procedure depends on the \emph{polarity} of the
+free type variables. Thus, the translation functions 
+$[[-| fT |-Γ]]$ and $[[+| fT |+Γ]]$ are indexed by a context $[[Γ]]$, 
+containing either $[[α⁺]]$ or $[[α⁻]]$ for each variable $[[α]]$ free in $[[fT]]$.
+
+\begin{figure}
+  \begin{equation*}
+  \begin{aligned}
+    [[-| a |-Γ]] &= [[α⁻]]  \text{,~if $[[α⁻ ∊ Γ]]$}\\
+    [[-| a |-Γ]] &= [[↑α⁺]] \text{,~if $[[α⁺ ∊ Γ]]$}\\
+    [[-| fA → fB |-Γ]] &= [[ +|fA|+Γ → -|fB|-Γ  ]] \\
+    [[-| ∀α.fT |-Γ]] &= [[ ∀α⁺.-|fT|-Γ,α⁺ ]] \\
+    [[-| ∃α.fT |-Γ]] &= [[ ↑ ∃α⁻.+|fT|+Γ,α⁻ ]] \\
+  \end{aligned}
+  \qquad
+  \begin{aligned}
+    [[+| a |+Γ]] &= [[α⁺]]  \text{,~if $[[α⁺ ∊ Γ]]$}\\
+    [[+| a |+Γ]] &= [[↓α⁻]] \text{,~if $[[α⁻ ∊ Γ]]$}\\
+    [[+| fA → fB |+Γ]] &= [[ ↓ +|fA|+Γ → -|fB|-Γ  ]] \\
+    [[+| ∀α.fT |+Γ]] &= [[ ↓∀α⁺.-|fT|-Γ,α⁺ ]] \\
+    [[+| ∃α.fT |+Γ]] &= [[ ∃α⁻.+|fT|+Γ,α⁻ ]] \\
+  \end{aligned}
+  \end{equation*}
+  \caption{Type polarization}
+  \label{fig:polarization}
+\end{figure}
+
+
+
 \subsection{What types do we infer?}
+
+Suppose that
+we have the following variables in context $[[Φ]]$:
+
+\begin{align*}
+  [[map]] &: [[↓∀α⁺.∀β⁺.↓(α⁺ → ↑β⁺) → List α⁺ → ↑List β⁺]] \\
+  [[len]] &: [[↓∀α⁺.List α⁺ → ↑Int]] \\
+  [[choose]] &: [[↓∀α⁺.α⁺ → α⁺ → ↑α⁺]] \\
+  [[id]] &: [[↓∀α⁺.α⁺ → ↑α⁺]] \\
+  [[auto]] &: [[↓(∀α⁺.α⁺ → ↑α⁺) → (∀α⁺.α⁺ → ↑α⁺)]]\\
+\end{align*}
+
+Then 
+
+\begin{align*}
+  &[[· ; Φ ⊢ [two, three, nine] : List Int]]\\
+  &[[· ; Φ ⊢ let x = map(id, [two, three, nine]); return x : ↑ List Int]] \ilyam{(no)}\\
+\end{align*}
+
 
 
 \subsection{The Language of Types}
@@ -46,14 +131,26 @@ as well as $[[∃nas.∃nbs.iP]]$ with $[[∃nas,nbs.iP]]$,
 and lift these equations transitively and congruently 
 to the whole system.
 
+\paragraph{Type Context and Type Well-formedness}
+
+In the construction of \fexists, a type context (denoted as $[[Γ]]$) is
+represented as a \emph{set} of positive and negative type variables and it is used to
+assert the well-formedness of types. The well-formedness of a type is denoted as
+$[[Γ ⊢ iP]]$ and $[[Γ ⊢ iN]]$ and it asserts that all type variables are either
+bound by a quantifier ($[[∀]]$ and $[[∃]]$) or declared in the context $[[Γ]]$.
+The well-formedness checking is an \emph{algorithmic} procedure. As commonly
+done, we represent it as a system of inference rules, that correspond to a
+recursive algorithm taking the context and the type as input. 
+
 \subsection{The Language of Terms}
 
 In \cref{fig:declarative-terms}, we define the language of terms of 
 \fexists. The language combines \systemf with the \CBPV approach.
 
 \begin{itemize}
-    \item [$+$] $[[x]]$ denotes a (positive) term variable; 
-        \ilyam{why no negatives? Following CBPV}
+    \item [$+$] $[[x]]$ denotes a term variable.
+      Following the \CBPV stratification, we only have \emph{positive} (value)
+      term variables;
     \item [$+$] $[[{c}]]$ is a value corresponding to a thunked 
         or suspended computation;
     \item [$\pm$] $[[(c : iN)]]$ and $[[(v : iP)]]$ allow one to annotate 

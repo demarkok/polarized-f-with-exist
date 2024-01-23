@@ -13,13 +13,37 @@ v, w :: 'v_' ::= {{ com Value Terms }}
   | { c }      ::   :: Thunk  % {{ com thunk }}
   | ( v : iP ) ::   :: PAnnot % {{ com annotated value }}
   | ( v )      :: M :: Paren
+  | const      :: M :: Constant
+
+const :: 'const_' ::= {{ com constants }}
+  | map       ::   :: Map
+  | len       ::   :: Len
+  | id        ::   :: Id
+  | fortyTwo  ::   :: FortyTwo {{ tex 42 }}
+  | two       ::   :: One {{ tex 2 }}
+  | three     ::   :: Trhee {{ tex 3 }}
+  | nine      ::   :: Nine {{ tex 9 }}
+  | [ bareList ]  ::   :: Lst
+  | choose    ::   :: Choose
+  | auto      ::   :: Auto
+
+bareList :: 'bareList_' ::= {{ com bare list }}
+  | ·                     ::   :: Empty
+  | v                     ::   :: Single
+  | </ bareListi // , // i /> ::   :: Concat   {{ com concatenate }}
+
 
 c, d :: 'c_' ::= {{ com Computation Terms }}
   | ( c : iN )                    ::   :: NAnnot    % {{ com annotated computation }}
   | λ x : iP . c                  ::   :: Lam       % {{ com annotated abstraction }}
+  | λ x . c                       :: M :: UALam     % {{ com unannotated abstraction }}
+  | ( c )                         :: M :: Paren
                                                     % {{ tex [[λ]] [[x]] : [[iP]] ~.~ [[c]] }}
   | Λ pa . c                      ::   :: BigLam    % {{ com annotated type abstraction }}
+  | Λ l ▷ pa . c                  :: M :: BigLamLbl 
   | c [ iPs ]                     :: M :: TypeApp   % {{ com type application }}
+  | c [ l ▷ iP ]                  :: M :: LblTypeApp   % {{ com type application }}
+  | c [ l ▷* iP ]                 :: M :: LblTypeAppM {{ tex [[c]] [ \vv{ [[l]] [[▷]] [[iP]] } ] }}  
   | return v                      ::   :: Return    % {{ com computation embedding a value}}
   | let x = v ; c                 ::   :: VarLet    % {{ com standard let-binding }}
   | let x : iP = v ( args ) ; c   ::   :: AppLetAnn % {{ com annotated applicative let }}
@@ -30,6 +54,11 @@ vctx, Φ {{ tex \Gamma }} :: 'vctxt_' ::= {{ com variable context }}
   | ·                     ::   :: Empty
   | x : iP                ::   :: Single
   | </ Φi // , // i />    ::   :: Concat  {{ com concatenate contexts }}
+
+vctxAl {{ tex \Gamma }} :: 'vctxtAl_' ::= {{ com variable context with algorithmic types }}
+  | ·                          ::   :: Empty
+  | x : uP                     ::   :: Single
+  | </ vctxAli // , // i />    ::   :: Concat  {{ com concatenate contexts }}
 
 
 funs TERMF ::=

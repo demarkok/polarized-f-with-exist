@@ -32,6 +32,19 @@ defns
   Γ;Θ ⊨ uP → uN ≤ iQ → iM ⫤ SC 
 
 
+  defn Γ ; Θ ⊨ uP ≥ uQ ⫤ SC :: :: PsubRlx :: ''
+  {{ com Positive subtyping (relaxed) }}
+  {{ tex [[Γ]] ;\, [[Θ]] [[⊨]] [[uP]] \subA [[uQ]] [[⫤]] [[SC]] }} by
+
+  defn Γ ; Θ ⊨ uN ≤ iM ⫤ SC :: :: NsubRlx :: ''
+  {{ com Negative subtyping (relaxed) }}
+  {{ tex [[Γ]] ;\, [[Θ]] [[⊨]] [[uN]] \subA [[iM]] [[⫤]] [[SC]] }} by
+
+  Γ;Θ ⊨ uQ ≥ uP ⫤ SC 
+  ---------------------------- :: ShiftURlx
+  Γ;Θ ⊨ ↑uP ≤ ↑iQ ⫤ SC
+
+
   defn Γ ; Θ ⊨ uN ≤ iM ⫤ SC :: :: ENsub :: ''
   {{ com Elementary Negative subtyping }}
   {{ tex [[Γ]] ;\, [[Θ]] [[⊨]] [[uN]] \subA [[iM]] [[⫤]] [[SC]] }} by
@@ -45,6 +58,24 @@ defns
   Γ,pas; Θ ⊨ uN ≤ iM ⫤ SC
   ----------------------------- :: ForallR
   Γ;Θ ⊨ ∀pas.uN ≤ ∀pas.iM ⫤ SC
+
+
+  {â⁺*} are fresh  Γ, pbs; Θ, â⁺*[Γ,pbs] ⊨ [â⁺*/pas] uN ≤ iM ⫤ SC
+  -------------------------------------------------------------- :: ForallLR
+  Γ;Θ ⊨ ∀pbs,pas.uN ≤ ∀pbs.iM ⫤ SC
+
+
+  Γ;· ⊨ uPi ≥* iP'i ⫤ ·   {β̂⁺*} are fresh
+  Γ, pas; Θ, β̂⁺*[Γ,pas] ⊨ uN ≤ iM ⫤ SC0   Θ ⊢ SC0 & (βî⁺ :≤* uQi) = SC
+  ------------------------------------------------------------------- :: EForallLRUb
+  Γ;Θ ⊨ ∀(pa ≤* iP).∀(pb ≤* iQ).uN ≤ ∀(pa ≤* iP').iM ⫤ SC
+
+
+  defn Γ ; Θ ⊨ uN ≤* iM ⫤ SC :: :: NSubMulti :: ''
+  {{ tex [[Γ]] ;\, [[Θ]] [[⊨]] \vv{[[uN]] \subA [[iM]]} [[⫤]] [[SC]] }} by
+
+  defn Γ ; Θ ⊨ uP ≥* iQ ⫤ SC :: :: PSupMulti :: ''
+  {{ tex [[Γ]] ;\, [[Θ]] [[⊨]] \vv{[[uP]] \supA [[iQ]]} [[⫤]] [[SC]] }} by
 
 
   defn Γ ; Θ ⊨ uP ≥ iQ ⫤ SC :: :: Psup :: ''
@@ -63,7 +94,6 @@ defns
   Γ;Θ ⊨ nf(uN) ≈u nf(iM) ⫤ UC
   --------------------------- :: ShiftD
   Γ;Θ ⊨ ↓uN ≥ ↓iM ⫤ lift UC 
-
 
     
   upgrade Γ ⊢ iP to Θ(â⁺) = iQ

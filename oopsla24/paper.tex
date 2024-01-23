@@ -155,21 +155,21 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-  {\color{red}CHANGE!!}
-  This paper addresses the challenging problem of type inference for
-  Impredicative System F with existential types, a critical aspect of many
-  programming languages. While System F serves as the basis for type systems in
-  numerous languages, existing type inference techniques for Impredicative
-  System F are undecidable due to the presence of existential ($[[∃]]$) 
-  and polymorphic ($[[∀]]$) types. Consequently, current algorithms are often ad-hoc and
-  sub-optimal. This paper presents novel contributions in the form of a local
-  type inference algorithm for Impredicative System F with existential types.
-  The algorithm introduces innovative techniques, such as a unique combination
-  of unification and anti-unification, a full correctness proof, and the use of
-  control structures inspired by \CBPV. Additionally, the paper discusses a type
-  inference framework that allows the algorithm to be applied to different type
-  systems, offering insights into the under-researched area of impredicative
-  existential type inference. 
+  % {\color{red}CHANGE!!}
+  % This paper addresses the challenging problem of type inference for
+  % Impredicative System F with existential types, a critical aspect of many
+  % programming languages. While System F serves as the basis for type systems in
+  % numerous languages, existing type inference techniques for Impredicative
+  % System F are undecidable due to the presence of existential ($[[∃]]$) 
+  % and polymorphic ($[[∀]]$) types. Consequently, current algorithms are often ad-hoc and
+  % sub-optimal. This paper presents novel contributions in the form of a local
+  % type inference algorithm for Impredicative System F with existential types.
+  % The algorithm introduces innovative techniques, such as a unique combination
+  % of unification and anti-unification, a full correctness proof, and the use of
+  % control structures inspired by \CBPV. Additionally, the paper discusses a type
+  % inference framework that allows the algorithm to be applied to different type
+  % systems, offering insights into the under-researched area of impredicative
+  % existential type inference. 
 \end{abstract}
 
 %%
@@ -237,15 +237,11 @@
 \section{Algorithm Correctness}
 \input{\genDir/tex/05-proof.tex}
 
-\section{Extensions}
+\section{Extensions and Future Work}
 \input{\genDir/tex/06-extensions.tex}
 
 \section{Conclusion}
 \input{\genDir/tex/07-conclusion.tex}
-
-
-\cite{botlanMLFRaisingML2003}
-\cite{dunfieldBidirectionalTyping2020}
 
 %% Bibliography
 %% \balance %% necessary for two-column formats

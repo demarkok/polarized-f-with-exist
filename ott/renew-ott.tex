@@ -1,3 +1,14 @@
+\newcommand{\ottdefnSINGLabeled}[0]{
+    \begin{minipage}{0.5\textwidth}
+        \ottusedrule{\ottdruleSINGPEqLabeled{}}
+        \ottusedrule{\ottdruleSINGNEqLabeled{}}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \ottusedrule{\ottdruleSINGSupVarLabeled{}}
+        \ottusedrule{\ottdruleSINGSupShiftLabeled{}}
+    \end{minipage}
+}
+
 \newcommand{\ottuGrammarExt}[4]{\ottgrammartabular{
     \multicolumn{5}{l}{#1}\ottprodnewline$#2$ & $#3$ & $\cdots$ & $\mid$ & $#4$\ottinterrule}}
 
@@ -221,8 +232,18 @@
 \renewcommand{\ottdruleDOneArrowName}[0]{($\rightarrow^{\subDOne}$)}
 \renewcommand{\ottdruleDOneForallName}[0]{($\forall^{\subDOne}$)}
 
+\renewcommand{\ottdruleDOneEForallLRUbName}[0]{(E$\forall^{\subDOne}$)}
+
 \renewcommand{\ottdruleDOneEForallRName}[0]{(E$\forall^{\subDOne}_{\text{R}}$)}
 \renewcommand{\ottdruleDOneEForallLName}[0]{(E$\forall^{\subDOne}_{\text{L}}$)}
+\renewcommand{\ottdruleDOneEForallLRName}[0]{(E$\forall^{\subDOne}$)}
+
+\renewcommand{\ottdruleDOneEForallRUbUbName}[0]{(E$\forall^{\subDOne}_{\text{R}}$)}
+\renewcommand{\ottdruleDOneEForallLUbName}[0]{(E$\forall^{\subDOne}_{\text{L}}$)}
+
+\renewcommand{\ottdruleDOneShiftURlxName}[0]{($\uparrow^{\subDOne}_{\text{Rlx}}$)}
+
+\renewcommand{\ottdruleDOneLblForallLRName}[0]{($\forall^{\subDOne}$)}
 
 % G ⊢ P ≥1 Q
 \renewcommand{\ottdruleDOnePVarName}[0]{(Var$_+^{\supDOne}$)}
@@ -231,6 +252,9 @@
 
 \renewcommand{\ottdruleDOneEExistsRName}[0]{(E$\exists^{\supDOne}_{\text{R}}$)}
 \renewcommand{\ottdruleDOneEExistsLName}[0]{(E$\exists^{\supDOne}_{\text{L}}$)}
+\renewcommand{\ottdruleDOneEExistsLRName}[0]{(E$\exists^{\supDOne}$)}
+
+
 
 
 % G ⊢ N ≈1 M
@@ -247,7 +271,7 @@
 \renewcommand{\ottdruleLUBExistsName}[0]{($\exists^{\vee}$)}
 \renewcommand{\ottdruleLUBUpgradeName}[0]{(Upg)}
 
-\renewcommand{\ottdruleLUBEExistsName}[0]{($\exists^{\vee}$)}
+\renewcommand{\ottdruleLUBEExistsName}[0]{(E$\exists^{\vee}$)}
 
 
 % G ; Θ ⊨ uN ≤ iM ⫤ us
@@ -256,8 +280,15 @@
 \renewcommand{\ottdruleAArrowName}[0]{($\rightarrow^{\subA}$)}
 \renewcommand{\ottdruleAForallName}[0]{($\forall^{\subA}$)}
 
-\renewcommand{\ottdruleAForallLName}[0]{($\forall^{\subA}_{\text{L}}$)}
-\renewcommand{\ottdruleAForallRName}[0]{($\forall^{\subA}_{\text{R}}$)}
+\renewcommand{\ottdruleAForallLName}[0]{(E$\forall^{\subA}_{\text{L}}$)}
+\renewcommand{\ottdruleAForallRName}[0]{(E$\forall^{\subA}_{\text{R}}$)}
+\renewcommand{\ottdruleAForallLRName}[0]{(E$\forall^{\subA}$)}
+
+\renewcommand{\ottdruleAEForallLRUbName}[0]{(E$\forall^{\subA}$)}
+
+
+\renewcommand{\ottdruleAShiftURlxName}[0]{($\uparrow^{\subA}_{\text{Rlx}}$)}
+
 
 % G ; Θ ⊨ iP ≥ uQ ⫤ us
 \renewcommand{\ottdruleAPVarName}[0]{(Var$_+^{\supA}$)}
@@ -303,6 +334,7 @@
 \renewcommand{\ottdruleWFTShiftUName}[0]{($\uparrow^{\text{WF}}$)}
 \renewcommand{\ottdruleWFTArrowName}[0]{($\rightarrow^{\text{WF}}$)}
 \renewcommand{\ottdruleWFTForallName}[0]{($\forall^{\text{WF}}$)}
+\renewcommand{\ottdruleWFTForallUbName}[0]{($\forall^{\text{WF}}$)}
 
 % Γ ⊢ iP
 \renewcommand{\ottdruleWFTPVarName}[0]{(Var$_{+}^{\text{WF}}$)}
@@ -348,10 +380,50 @@
 \renewcommand{\ottdruleDTTypeAppName}[0]{($TApp^{\text{inf}}$)}
 \renewcommand{\ottdruleDTTypeAppOrderedName}[0]{($TApp^{\text{inf}}$)}
 
+\renewcommand{\ottdruleDTTLamLbName}[0]{($\Lambda^{\text{inf}}$)}
+\renewcommand{\ottdruleDTTypeAppLbName}[0]{($TApp^{\text{inf}}$)}
+
 % Γ ; Φ ⊢ iN ● args ⇒> iM 
 \renewcommand{\ottdruleDTEmptyAppName}[0]{($\emptyset_{[[●]][[⇒>]]}^{\text{inf}}$)}
 \renewcommand{\ottdruleDTArrowAppName}[0]{($\rightarrow_{[[●]][[⇒>]]}^{\text{inf}}$)}
 \renewcommand{\ottdruleDTForallAppName}[0]{($\forall_{[[●]][[⇒>]]}^{\text{inf}}$)}
+
+
+% (Bbidir)
+
+% Γ ; Φ ⊢ c ⇒ iN 
+\renewcommand{\ottdruleDTtLamSynName}[0]{($\lambda^{[[⇐]]}$)}
+\renewcommand{\ottdruleDTTLamSynName}[0]{($\Lambda^{[[⇐]]}$)}
+\renewcommand{\ottdruleDTNAnnotSynName}[0]{(ann$_-^{[[⇐]]}$)}
+
+% Γ ; Φ ⊢ c ⇐ iN 
+\renewcommand{\ottdruleDTtLamChkName}[0]{($\lambda^{[[⇐]]}$)}
+\renewcommand{\ottdruleDTNSubName}[0]{(SUB$_{-}$)}
+
+% Γ ; Φ ⊢ c ⇔ iN 
+\renewcommand{\ottdruleDTReturnChkSynName}[0]{(ret$^{[[⇔]]}$)}
+\renewcommand{\ottdruleDTVarLetChkSynName}[0]{(let$^{[[⇔]]}$)}
+\renewcommand{\ottdruleDTAppLetChkSynName}[0]{(let$_@^{[[⇔]]}$)}
+\renewcommand{\ottdruleDTAppLetAnnChkSynName}[0]{(let$_{:@}^{[[⇔]]}$)}
+\renewcommand{\ottdruleDTUnpackChkSynName}[0]{(let$_{\exists}^{[[⇔]]}$)}
+\renewcommand{\ottdruleDTNEquivChkSynName}[0]{($[[≈]]_-^{[[⇔]]}$)}
+
+
+% Γ ; Φ ⊢ v ⇒ iP 
+\renewcommand{\ottdruleDTVarSynName}[0]{(Var$^{[[⇒]]}$)}
+\renewcommand{\ottdruleDTPAnnotSynName}[0]{(ann$_+^{[[⇒]]}$)}
+
+% Γ ; Φ ⊢ v ⇐ iP 
+\renewcommand{\ottdruleDTPSubName}[0]{(SUB$_{+}$)}
+
+% Γ ; Φ ⊢ v ⇔ iP 
+\renewcommand{\ottdruleDTThunkChkSynName}[0]{($\{\}^{[[⇔]]}$)}
+\renewcommand{\ottdruleDTPEquivChkSynName}[0]{($[[≈]]_+^{[[⇔]]}$)}
+
+% Γ ; Φ ⊢ iN ● args ⇒> iM (Bidir)
+\renewcommand{\ottdruleDTEmptyAppBidirName}[0]{($\emptyset_{[[●]][[⇒>]]}^{\text{inf}}$)}
+\renewcommand{\ottdruleDTArrowAppBidirName}[0]{($\rightarrow_{[[●]][[⇒>]]}^{\text{inf}}$)}
+\renewcommand{\ottdruleDTForallAppBidirName}[0]{($\forall_{[[●]][[⇒>]]}^{\text{inf}}$)}
 
 
 
@@ -375,6 +447,43 @@
 \renewcommand{\ottdruleATArrowAppName}[0]{($\rightarrow_{[[●]][[⇒>]]}^{\text{inf}}$)}
 \renewcommand{\ottdruleATForallAppName}[0]{($\forall_{[[●]][[⇒>]]}^{\text{inf}}$)}
 
+
+
+% Γ ; Φ ⊨ c ⇒ iN 
+\renewcommand{\ottdruleATtLamSynName}[0]{($\lambda^{[[⇒]]}$)}
+\renewcommand{\ottdruleATTLamSynName}[0]{($\Lambda^{[[⇒]]}$)}
+\renewcommand{\ottdruleATNAnnotSynName}[0]{(ann$_-^{[[⇒]]}$)}
+
+% Γ ; Φ ⊨ c ⇐ iN 
+\renewcommand{\ottdruleATtLamChkName}[0]{($\lambda^{[[⇐]]}$)}
+\renewcommand{\ottdruleATNSubName}[0]{(SUB$_{-}$)}
+
+% Γ ; Φ ⊨ c ⇔ iN 
+\renewcommand{\ottdruleATReturnChkSynName}[0]{(ret$^{[[⇔]]}$)}
+\renewcommand{\ottdruleATVarLetChkSynName}[0]{(let$^{[[⇔]]}$)}
+\renewcommand{\ottdruleATAppLetChkSynName}[0]{(let$_@^{[[⇔]]}$)}
+\renewcommand{\ottdruleATAppLetAnnChkSynName}[0]{(let$_{:@}^{[[⇔]]}$)}
+\renewcommand{\ottdruleATUnpackChkSynName}[0]{(let$_{\exists}^{[[⇔]]}$)}
+
+
+% (Bidir)
+% Γ ; Φ ⊨ v ⇒ iP 
+\renewcommand{\ottdruleATVarSynName}[0]{(Var$^{[[⇒]]}$)}
+\renewcommand{\ottdruleATPAnnotSynName}[0]{(ann$_+^{[[⇒]]}$)}
+
+% Γ ; Φ ⊨ v ⇐ iP 
+\renewcommand{\ottdruleATPSubName}[0]{(SUB$_{+}$)}
+
+% Γ ; Φ ⊨ v ⇔ iP 
+\renewcommand{\ottdruleATThunkChkSynName}[0]{($\{\}^{[[⇔]]}$)}
+
+% Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC 
+\renewcommand{\ottdruleATEmptyAppBidirName}[0]{($\emptyset^{[[●]][[⇒>]]}$)}
+\renewcommand{\ottdruleATArrowAppBidirSName}[0]{($\rightarrow^{[[●]][[⇒>]]}$)}
+\renewcommand{\ottdruleATArrowAppBidirName}[0]{($\rightarrow^{[[●]][[⇒>]]}$)}
+\renewcommand{\ottdruleATForallAppBidirName}[0]{($\forall^{[[●]][[⇒>]]}$)}
+
+
 % scE1 singular with iP
 \renewcommand{\ottdruleSINGPEqName}[0]{($[[≈]]_{+}^{\text{sing}}$)}
 \renewcommand{\ottdruleSINGSupVarName}[0]{($[[:≥]]\alpha^{\text{sing}}$)}
@@ -382,5 +491,6 @@
 
 % scE1 singular with iN
 \renewcommand{\ottdruleSINGNEqName}[0]{($[[≈]]_{-}^{\text{sing}}$)}
+
 
 

@@ -48,6 +48,15 @@ defns
   ---------------------------------------- :: Forall
   Γ ⊢ ∀pas.iN ≤ ∀pbs.iM
 
+  defn Γ ⊢ iN ≤ iM :: :: NsubRlx :: ''
+  {{ com Negative subtyping }}
+  {{ tex [[Γ]] [[⊢]] [[iN]] \subDOne [[iM]] }} by
+
+  Γ ⊢ iQ ≥ iP
+  ------------ :: ShiftURlx
+  Γ ⊢ ↑iP ≤ ↑iQ
+
+
   defn Γ ⊢ iN ≤ iM :: :: Elemsub :: ''
   {{ com Elementary Subtyping }}
   {{ tex [[Γ]] [[⊢]] [[iN]] \subDOne [[iM]] }} by
@@ -58,9 +67,60 @@ defns
 
 
   iM ≠ ∀pbs.iM'  Γ ⊢ σ : {pas}     Γ ⊢ [σ]iN ≤ iM
-  -------------------------------- :: EForallL
+  ------------------------------------------------- :: EForallL
   Γ ⊢ ∀pas.iN ≤ iM
 
+  Γ,pbs ⊢ σ : {pas}     Γ,pbs ⊢ [σ]iN ≤ iM
+  ------------------------------------------ :: EForallLR
+  Γ ⊢ ∀pbs,pas.iN ≤ ∀pbs.iM
+
+  Γ ⊢ iQ ≥* iP       Γ, pas ⊢ iN ≤ iM
+  ------------------------------------- :: EForallRLbLb
+  Γ ⊢ ∀(pa ≥* iP).iN ≤ ∀(pa ≥* iQ).iM
+
+  Γ ⊢ iPi ≥* iQi       Γ, pas ⊢ iN ≤ iM
+  ------------------------------------- :: EForallRUbUb
+  Γ ⊢ ∀(pa ≤* iP).iN ≤ ∀(pa ≤* iQ).iM
+
+
+  Γ, pas ⊢ iN ≤ iM
+  ------------------------------ :: EForallRUb
+  Γ ⊢ ∀pas.iN ≤ ∀(pa ≤* iQ).iM
+
+
+  Γ, pas ⊢ iN ≤ iM
+  ------------------------------ :: EForallRBLb
+  Γ ⊢ ∀pas.iN ≤ ∀(pa ≥* iP).iM
+
+
+  Γ ⊢ σ : {pas}   Γ ⊢ iPi ≥* [σ]αi⁺     
+  Γ ⊢ [σ]iN ≤ iM
+  ----------------------------------- :: EForallLUb
+  Γ ⊢ ∀(pa ≤* iP).iN ≤ iM
+
+
+  Γ ⊢ σ : {pas}   Γ ⊢ [σ]αi⁺ ≥* iPi     
+  Γ ⊢ [σ]iN ≤ iM
+  ------------------------------------ :: EForallLRLb
+  Γ ⊢ ∀(pa ≥* iP).iN ≤ iM
+
+
+  Γ ⊢ iPi ≥* iP'i  Γ, pas ⊢ σ : {pbs}   Γ, pas ⊢ iQi ≥* [σ]βi⁺    Γ, pas ⊢ [σ]iN ≤ iM
+  ------------------------------------------------------------------- :: EForallLRUb
+  Γ ⊢ ∀(pa ≤* iP).∀(pb ≤* iQ).iN ≤ ∀(pa ≤* iP').iM
+
+
+  {I} ⊆ {J}   Γ, αi⁺*^I ⊢ σ : { αj⁺*^J\{I} }   Γ, αi⁺*^I ⊢ [σ]iN ≤ iM
+  ------------------------------------------------------------------- :: LblForallLR
+  Γ ⊢ ∀(lj ▷* αj⁺)^J. iN ≤ ∀(li ▷* αi⁺)^I. iM
+
+
+
+  defn Γ ⊢ iN ≤* iM :: :: NSubMulti :: ''
+  {{ tex \vv{[[Γ]] [[⊢]] [[iN]] \subDOne [[iM]]} }} by
+
+  defn Γ ⊢ iP ≥* iQ :: :: PSupMulti :: ''
+  {{ tex \vv{[[Γ]] [[⊢]] [[iP]] \supDOne [[iQ]]} }} by
 
   defn Γ ⊢ iP ≥ iQ :: :: Psup :: ''
   {{ com Positive supertyping }}
@@ -89,6 +149,10 @@ defns
   iQ ≠ ∃nbs.iQ'  Γ ⊢ σ : {nas}     Γ ⊢ [σ]iP ≥ iQ
   --------------------------------- :: EExistsL
   Γ ⊢ ∃nas.iP ≥ iQ
+
+  Γ,nbs ⊢ σ : {nas}     Γ,nbs ⊢ [σ]iP ≥ iQ
+  ------------------------------------------ :: EExistsLR
+  Γ ⊢ ∃nbs,nas.iP ≥ ∃nbs.iQ
 
 
 defns 

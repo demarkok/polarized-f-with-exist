@@ -77,3 +77,124 @@ defn Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC :: :: SpinInf :: ''
 {â⁺*} are fresh    args ≠ ·      pas ≠ ·
 ---------------------------------------------------------- :: ForallApp
 Γ; Φ; Θ ⊨ ∀pas.uN ● args ⇒> uM ⫤ Θ'; SC | uv(uN) ∪ uv(uM)
+
+
+
+
+
+defn Γ ; Φ ⊨ v ⇐ uP ⫤ SC :: :: PCheckAl :: ''
+{{ com Positive checking against algorithmic type }} by
+
+defn Γ ; Φ ⊨ v ⇐ iP :: :: PCheck :: ''
+{{ com Positive checking-only }} by
+  Γ ; Φ ⊨ v ⇒ iP    Γ ; · ⊨ uQ ≥ iP ⫤ · 
+  -------------------------------------- :: PSub
+  Γ ; Φ ⊨ v ⇐ iQ 
+
+defn Γ ; Φ ⊨ v ⇒ iP :: :: PSynth :: ''
+{{ com Positive synthesis-only }} by
+
+  x : iP ∊ Φ   
+  --------------- :: VarSyn
+  Γ ; Φ ⊨ x ⇒ iP
+
+  Γ ⊢ iQ   Γ ; Φ ⊨ v ⇐ iQ
+  ----------------------- :: PAnnotSyn
+  Γ ; Φ ⊨ (v : iQ) ⇒ iQ
+
+
+defn Γ ; Φ ⊨ v ⇔ iP :: :: PCheckSynth :: ''
+{{ com Positive checking and synthesis }} by
+
+  Γ ; Φ ⊨ c ⇔ iN
+  ----------------- :: ThunkChkSyn
+  Γ ; Φ ⊨ {c} ⇔ ↓iN
+
+
+
+
+defn Γ ; Φ ⊨ c ⇒ iN :: :: NSynth :: ''
+{{ com Negative synthesis-only }} by
+
+  Γ ⊢ iP    Γ ; Φ, x:iP ⊨ c ⇒ iN 
+  ------------------------------- :: tLamSyn
+  Γ ; Φ ⊨ λx:iP . c ⇒ iP → iN
+
+  Γ, α⁺ ; Φ ⊨ c ⇒ iN
+  ------------------------- :: TLamSyn
+  Γ ; Φ ⊨ Λα⁺ . c ⇒ ∀α⁺.iN
+
+  Γ ⊢ iM    Γ ; Φ ⊨ c ⇐ iM
+  ------------------------- :: NAnnotSyn
+  Γ ; Φ ⊨ (c : iM) ⇒ iM
+
+
+defn Γ ; Φ ⊨ c ⇐ iN :: :: NCheck :: ''
+{{ com Negative checking-only }} by
+
+  Γ ⊢ iP    Γ ; Φ, x:iP ⊨ c ⇐ iN 
+  ------------------------------- :: tLamChk
+  Γ ; Φ ⊨ λx . c ⇐ iP → iN
+
+  Γ ; Φ ⊨ c ⇒ iN    Γ ; · ⊨ uN ≤ iM ⫤ ·
+  ------------------------------------ :: NSub
+  Γ ; Φ ⊨ c ⇐ iM
+
+
+defn Γ ; Φ ⊨ c ⇔ iN :: :: NCheckSynth :: ''
+{{ com Negative checking and synthesis }} by
+
+  Γ ; Φ ⊨ v ⇔ iP
+  ----------------------- :: ReturnChkSyn
+  Γ ; Φ ⊨ return v ⇔ ↑iP
+
+
+  Γ; Φ ⊨ v ⇒ iP    Γ; Φ, x:iP ⊨ c ⇔ iN
+  ------------------------------------- :: VarLetChkSyn
+  Γ; Φ ⊨ let x = v; c ⇔ iN
+
+  Γ ; Φ ⊨ v ⇒ ↓iM   
+  Γ ; Φ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC  
+  uv uQ = dom(SC)    SC singular with uσ    Γ; Φ, x:[uσ]uQ ⊢ c ⇔ iN
+  ----------------------------------------------------------------- :: AppLetChkSyn
+  Γ ; Φ ⊨ let x = v(args); c ⇔ iN
+
+
+  Γ ⊢ iP   Γ; Φ ⊨ v ⇒ ↓iM   Γ; Φ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC1   
+  Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2   Θ ⊢ SC1 & SC2 = SC    Γ; Φ, x:iP ⊨ c ⇔ iN
+  ------------------------------------------------------------------- :: AppLetAnnChkSyn
+  Γ; Φ ⊨ let x:iP = v(args); c ⇔ iN
+
+
+  Γ; Φ ⊨ v ⇒ ∃nas.iP   Γ ⊢ iN
+  Γ, nas ; Φ, x:iP ⊨ c ⇔ iN   
+  -------------------------------------------------------- :: UnpackChkSyn
+  Γ; Φ ⊨ let∃ (nas, x) = v; c ⇔ iN
+
+
+
+
+
+defn Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC :: :: SpinInfBidir :: ''
+{{ com Application typing }} by
+
+---------------------------------- :: EmptyAppBidir
+Γ; Φ; Θ ⊨ uN ● · ⇒> nf(uN) ⫤ Θ; ·
+
+Γ; Φ; Θ, â⁺*[Γ] ⊨ [â⁺*/pas]uN ● args ⇒> uM ⫤ Θ'; SC  
+{â⁺*} are fresh    args ≠ ·      pas ≠ ·
+---------------------------------------------------------- :: ForallAppBidir
+Γ; Φ; Θ ⊨ ∀pas.uN ● args ⇒> uM ⫤ Θ'; SC | uv(uN) ∪ uv(uM)
+
+
+Γ; Φ ⊨ v ⇒ iP  Γ; Θ ⊨ uQ ≥ iP ⫤ SC1  
+Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC2  Θ ⊢ SC1 & SC2 = SC
+-------------------------------------------------------- :: ArrowAppBidirS
+Γ; Φ; Θ ⊨ uQ → uN ● v , args ⇒> uM ⫤ Θ'; SC
+
+
+Γ; Φ ⊨ v ⇐ uQ ⫤ SC1  
+Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC2  Θ ⊢ SC1 & SC2 = SC
+-------------------------------------------- :: ArrowAppBidir
+Γ; Φ; Θ ⊨ uQ → uN ● v , args ⇒> uM ⫤ Θ'; SC
+

@@ -54,7 +54,8 @@ invariants make the system equivalent to \systemf,
 and thus, undecidable. 
 However, after certain changes 
 \ruleref{\ottdruleDOneShiftULabel} can be relaxed to the covariant form,
- as we will discuss in \cref{todo}.
+thereby increasing the expressiveness of the system. These
+changes are discussed in \cref{sec:weakening-invariant}.
 
 \paragraph{Functions}
 Standardly, the subtyping of function types is covariant in the return type
@@ -71,7 +72,7 @@ arbitrary type.
 \label{sec:decl-subtyping-properties}
 
 A property that is important for the subtyping algorithm, 
-in particular for the type \emph{upgrade} procedure (\cref{todo}),
+in particular for the type \emph{upgrade} procedure (\cref{sec:lub}),
 is the preservation of free variables by subtyping.
 Informally, it says that the free variables
 of a positive type cannot disappear in its subtypes,
@@ -188,9 +189,13 @@ This way, to normalize the type, one must
 \end{enumerate}
 
 The normalization algorithm is shown in \cref{fig:type-nf}.
-The steps (i-ii) are implemented by the ordering function, which takes a set of variables $[[varset]]$
-and a type and returns a list of variables from $[[varset]]$ that occur in the type in the order of their
-first occurrence. Its formal definition can be found in \cref{todo}.
+The steps (i-ii) are implemented by the \emph{ordering} function
+$[[ord varset in iN]]$ and $[[ord varset in iP]]$.
+For a set of variables $[[varset]]$, and a type, it 
+returns a list of variables from $[[varset]]$ that occur in the type in 
+the order of their first occurrence.
+For brevity, we omit the formal definition of ordering,
+referring the reader to the appendix.
 
 \begin{figure}[h]
   
@@ -287,7 +292,9 @@ Let us discuss the rules of the declarative system in more detail.
   Rule \ruleref{\ottdruleDTUnpackLabel} types elimination of $[[∃]]$.
   First, it infers the normalized type of the existential package.
   The normalization is required to fix the order of the quantifying variables
-  to bind them. After the bind, the rule infers the type of the body 
+  to bind them. Alternative approaches that do not require normalization
+  will be discussed in \cref{sec:explicit-type-application}.
+  After the bind, the rule infers the type of the body 
   and checks that it does not use the bound variables so that they do not 
   escape the scope.
 
@@ -311,9 +318,11 @@ Let us discuss the rules of the declarative system in more detail.
   This judgment is more restrictive than checking bare 
   $[[Γ ⊢ iP ≥ iQ]]$, however, it is necessary
   to make the algorithm complete as it allows us to preserve
-  certain invariants (see \cref{todo}).
-  In \cref{todo} we discuss how this restriction can be relaxed
-  together with invariant shift subtyping.
+  certain invariants throughout the algorithm to ensure
+  the decidability of the produced unification task.
+  In \cref{sec:proof-subtyping}, we discuss these invariants in
+  more detail, and in \cref{sec:weakening-invariant} we suggest 
+  a way to relax them.
 
 \paragraph{Typing up to Equivalence}
   As discussed in \cref{sec:decl-equivalence}, the subtyping, as a preorder, 
@@ -343,7 +352,7 @@ Let us discuss the rules of the declarative system in more detail.
   (\aka not mode-correct \cite{dunfield2020:bidirectional}).
   In our typing system, such rule is \ruleref{\ottdruleDTForallAppLabel}: 
   the instantiation of the quantifying variables is
-  not known a priori. The algorithm we present in \cref{todo} 
+  not known a priori. The algorithm we present in \cref{sec:algorithm} 
   delays this instantiation until more information about it 
   (in particular, typing constraints) is collected.
 
@@ -355,7 +364,7 @@ Let us discuss the rules of the declarative system in more detail.
   Another important application rule is \ruleref{\ottdruleDTArrowAppLabel}.
   This is where the subtyping is used to check that the type of the argument
   is convertible to (a subtype of) the type of the function parameter.
-  In the algorithm (\cref{todo}), this subtyping check will provide the constraints
+  In the algorithm (\cref{sec:algorithm}), this subtyping check will provide the constraints
   we need to resolve the delayed instantiations of the quantifying variables.
 
 \subsubsection{Declarative Typing Properties}

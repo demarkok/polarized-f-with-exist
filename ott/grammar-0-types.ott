@@ -19,6 +19,17 @@ metavar a {{ tex \alpha }}, b {{ tex \beta }}, α {{ tex \alpha }}, β {{ tex \b
 indexvar n , m, i , j ::= {{ com index variables }}
 
 
+
+% System F
+grammar 
+
+fT {{ tex T }}, fA {{ tex A }}, fB {{ tex B}} :: 'fT_' ::= {{ com System F types }}
+   | a         :: :: Var
+   | fT1 → fT2   :: :: Fun
+   | ∀ a . fT  :: :: Forall
+   | ∃ a . fT  :: :: Exists
+   | ( fT )    :: S :: Paren
+
 grammar
 
 coh {{ tex n }}, mcoh {{ tex m }} :: 'n_' ::= {{ com cohort index }}
@@ -74,8 +85,20 @@ scE {{ tex e }} :: 'scE_' ::= {{ com Constraint Entry }}
    | pua :≈ iP            ::   :: PEq 
    | nua :≈ iN            ::   :: NEq
    | pua :≥ iP            ::   :: Sup 
+   | pua :≥* iP           ::   :: MSup {{tex \vv{[[pua]] [[:≥]] [[iP]]}  }}
    | ( scE )              :: S :: paren
    | SC ( nua )           :: M :: NSelect
+
+scEF {{ tex e }} :: 'scEF_' ::= {{ com Constraint Entry (Full) }}
+   | pua :≈ uP            ::   :: PEq 
+   | nua :≈ uN            ::   :: UNEq
+   | pua :≥ uP            ::   :: USup 
+   | pua :≤ uP            ::   :: USub 
+   | pua :≤* uP           ::   :: MUSub {{tex \vv{[[pua]] [[:≤]] [[uP]]}  }}
+   | pua :≤ iP            ::   :: Sub 
+   | pua :≤* iP           ::   :: MSub {{tex \vv{[[pua]] [[:≤]] [[iP]]}  }}
+   | ( scEF )              :: S :: paren
+
 
 ucE  {{ tex ue }} :: 'ucE_' ::= {{ com Unification Constraint Entry }}
    | pua :≈ iP            ::   :: PEq 
@@ -95,6 +118,7 @@ UC :: 'UC_' ::= {{ com unification constraint }}
 SC {{ tex C }} :: 'SC_' ::= {{ com subtyping constraint }}
    | ·                   ::   :: Empty
    | scE                 ::   :: Entry
+   | scEF                ::   :: FullEntry
    | SC \ varset         ::   :: Exclude
    | SC | varset         ::   :: Restr
    | SC1 ∪ SC2           ::   :: Union
@@ -138,6 +162,8 @@ pds {{ tex \vv{ \mathcolor{positive}{ \delta}^{+}  } }}
    | pa                   ::   :: Var     {{ com a variable }}
    | pa *                 ::   :: Vars    {{ com a variable }}
                                           {{ tex \vv{[[pa]]} }}
+
+   | pa * ^ I               ::   :: VarsDom {{ tex \vv{[[pa]]}^{[[I]]} }}
    | </ pasi // , // i /> ::   :: concat  {{ com concatenate lists }}
 
 nas {{ tex \vv{ \mathcolor{negative}{ \alpha^{-} } } }},
@@ -174,8 +200,37 @@ iR {{ tex \mathcolor{positive}{R} }} :: 'iP_' ::= {{ com Positive declarative ty
    | [ uσ ] uP  :: M :: AppUSub  
    | [ mu ] iP  :: M :: AppMoving 
    | ( iP )     :: S :: Paren
-   | Int        :: M :: Int 
-   | Bool       :: M :: Bool 
+   | ConstT     :: M :: Const
+
+ConstT :: 'ConstT_' ::= {{ com constant type }}
+   | Int     :: :: Int
+   | Bool    :: :: Bool
+   | List iP :: :: List
+
+
+ii {{ tex i }}, 
+jj {{ tex j }} :: 'ii_' ::= {{ com index }}
+
+SI,  SJ ::  'SI_' ::= 
+   | { I } :: :: Unorder
+
+I,  J :: 'I_' ::= 
+   | ii                  :: :: Index
+   | </ Ii // , // i />  ::   :: concat   {{ com concatenate lists }}
+   | I \ SI              ::   :: exclude
+
+
+l, m, k :: 'l_' ::=
+
+ls :: 'ls_' ::=
+   | ·                     ::   :: empty   {{ com empty list }}
+   | l                     ::   :: lbl     {{ com a label }}
+   | </ lsi // , // i />  ::   :: concat   {{ com concatenate lists }}
+
+ql :: 'ql_' ::=
+   | l ▷ pa                ::   :: lbl     {{ com a label }}
+   | l ▷* pa               ::   :: lbls    {{ tex \vv{[[l]][[▷]][[pa]]} }}
+   | ( l ▷* pa ) ^ I       ::   :: lblsDom {{ tex \vv{[[l]][[▷]][[pa]]}^{[[I]]} }}
 
 %   | ⊫  :: :: VDash     {{ tex \mathcolor{\ccolor}{\VDash} }}
 iN {{ tex \mathcolor{negative}{N} }}, 
@@ -185,7 +240,9 @@ iK {{ tex \mathcolor{negative}{K} }} :: 'iN_' ::= {{ com Negative declarative ty
    | ↑ iP        ::   :: Shift
    | iP → iN     ::   :: Fun
    | ∀ pas . iN  ::   :: Forall 
-   | ∀ ( pas ≥ iPs ) . iN  ::  M :: BForall  % {{ tex [[∀]]([[pas]][[≥]][[iPs]])[[.]][[iN]] }}
+   | ∀ ql  . iN  :: M  :: LblForall
+   | ∀ ( pa ≥* iP ) . iN  ::  M :: BForallLB  {{ tex [[∀]]\vv{[[pa]][[≥]][[iP]]}[[.]][[iN]] }}
+   | ∀ ( pa ≤* iP ) . iN  ::  M :: BForallUB  {{ tex [[∀]]\vv{[[pa]][[≤]][[iP]]}[[.]][[iN]] }}
    | [ σ ] iN    :: M :: AppSub 
    | [ aus ] uN  :: M :: AppAUSub
    | [ mu ] iN   :: M :: AppMoving
@@ -194,7 +251,7 @@ iK {{ tex \mathcolor{negative}{K} }} :: 'iN_' ::= {{ com Negative declarative ty
 
 
 iPs {{ tex \vv{ \mathcolor{positive}{P} } }},
-iQs {{ tex \vv{ \methcolor{positive}{Q} } }}
+iQs {{ tex \vv{ \mathcolor{positive}{Q} } }}
 :: 'iPs_' ::= {{ com list of positive types }}
    | ·                    ::   :: empty   {{ com empty list }}
    | iP                   ::   :: Var     {{ com a singel type }}
@@ -284,7 +341,7 @@ varset {{ tex \textit{vars} }} :: Varset ::= {{ com set of variables }}
     | ( varset )         :: S :: paren     {{ com parenthesis }}
     | { ordVars }        ::   :: OrdVars   {{ com ordered list of variables }}
                                            {{ tex [[ordVars]] }}
-    | [ mu ] varset      :: M :: moving    {{ com apply moving to varset }}
+    | [ mu ] varset      :: M :: moving    {{ com ply moving to varset }}
     | Ξ                  ::   :: AU_Ctxt   {{ com algorithmic type context }}
     | Γ                  ::   :: DT_Ctxt   {{ com declarative type context }}
 
@@ -372,6 +429,8 @@ uM {{ tex \ngbox{ \mathcolor{negative}{M} } }} :: 'uN_' ::= {{ com Negative algo
    | ↑ uP           ::   :: Shift
    | uP → uN        ::   :: Fun
    | ∀ pas . uN     ::   :: Forall
+   | ∀ ( pa ≥* iP ) . uN  ::  M :: BForallLB   {{ tex [[∀]]\vv{[[pa]][[≥]][[iP]]}[[.]][[uN]] }}
+   | ∀ ( pa ≤* iP ) . uN  ::  M :: BForallUB  {{ tex [[∀]]\vv{[[pa]][[≤]][[iP]]}[[.]][[uN]] }}
    | [ s ] uN       :: M :: AppSub 
    | [ aus ] uN     :: M :: AppAUSub
    | [ mu ] uN      :: M :: AppMoving
@@ -410,6 +469,8 @@ terminals :: 'terminals_' ::=
   | ∅ :: :: empty      {{ tex \emptyset }}
   | ○ :: :: compose    {{ tex \circ }}
   | ⇒ :: :: implies    {{ tex \Rightarrow }}
+  | ⇐ :: :: checks     {{ tex \Leftarrow }}
+  | ⇔ :: :: synchecks     {{ tex \Leftrightarrow }}
   % | ≈a :: :: antiunify {{ tex \overset{g}{\simeq} }}
   | ⊨  :: :: vDash     {{ tex \vDash }}
   | ⫤  :: :: Dashv     {{ tex \Dashv }}
@@ -421,6 +482,7 @@ terminals :: 'terminals_' ::=
   | ∨  :: :: LUB       {{ tex \vee }}
   | ⇓ :: :: norm       {{ tex \Downarrow }}
   | :≥ :: :: solGeq    {{ tex \mathbin{:\geqslant} }}
+  | :≤ :: :: solLeq    {{ tex \mathbin{:\leqslant} }}
   | :≈ :: :: solEq     {{ tex \mathbin{:\simeq} }}
   | Λ    :: :: bigLam    {{ tex \Lambda }}
   | λ    :: :: lam       {{ tex \lambda }}
@@ -429,6 +491,7 @@ terminals :: 'terminals_' ::=
   | ⇒>   :: :: spinInf   {{ tex \Rightarrow \hspace{-3pt} > }}
   | <=<  :: :: compM     {{ tex \mathord{< \hspace{-5.3pt} = \hspace{-4.2pt} <} }}
   | &    :: :: ampersand {{ tex \mathbin{\&} }}
+  | ▷    :: :: triangle {{ tex \triangleright }}
 
 
 
@@ -511,3 +574,10 @@ fun fv iN :: Γ :: Nfv by
 
 fun uv uN :: Ξ :: uNuv {{ tex \ottkw{fav} [[uN]] }} by 
 fun uv uP :: Ξ :: uPuv {{ tex \ottkw{fav} [[uP]] }} by 
+
+fun bv iN :: Γ :: Pbv {{ tex \ottkw{fbv} [[iN]] }} by 
+
+fun | iP |  :: fT :: unpolP {{ tex | [[iP]] | }} by 
+fun | iN | :: fT :: unpolN {{ tex | [[iN]] | }} by 
+fun +| fT |+ Γ  :: iP :: polarP {{ tex \downharpoonlefttight [[fT]] \downharpoonrighttight^{[[Γ]]} }} by 
+fun -| fT |- Γ :: iN :: polarN {{ tex \upharpoonlefttight [[fT]] \upharpoonrighttight^{[[Γ]]} }} by

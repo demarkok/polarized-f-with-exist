@@ -103,7 +103,10 @@ is an \emph{algorithmic} procedure, in which
 both the context and the type are considered inputs.
 In other words, it is syntax-directed and mode-correct 
 (according to \cite{dunfieldBidirectionalTyping2020}), 
-which means that 
+which means that checking the well-formedness of a type
+can be done recursively by a deterministic algorithm. 
+We will use the well-formedness checking in the inference algorithm, 
+for example, to check that the existential variables do not escape their scope.
 
 \begin{algorithm}[Type Well-formedness]
   \label{alg:wf}
@@ -1451,12 +1454,11 @@ The simplified result is the following.
 \subsection{Constraint Singularity}
 \label{sec:constraint-singularity}
 
-The singularity algorithm used in  \ruleref{\ottdruleATAppLetAnnLabel}
-of the algorithmic typing check whether the constraint $[[SC]]$
-is uniquely defines a substitution satisfying it, and if it does
-returns such a substitution as the result.
-To do that, we define a partial function $[[SC singular with uσ]]$,
-taking a subtyping constraint $[[SC]]$ and returning a substitution 
+The singularity algorithm checks whether the constraint $[[SC]]$
+uniquely defines the substitution satisfying it, and if it does,
+the algorithm returns this substitution as the result.
+To implement it, we define a partial function $[[SC singular with uσ]]$,
+taking a subtyping constraint $[[SC]]$ as an argument and returning a substitution 
 $[[uσ]]$---the only possible solution of $[[SC]]$. 
 
 First, we define the notion of singularity on constraint entries. 
@@ -1480,11 +1482,13 @@ and returning the type satisfying $[[scE]]$ if such a type is unique.
     $[[pa]]$ (it will be shown in \cref{lemma:var-subt}).
   \item \ruleref{\ottdruleSINGSupShiftLabel}
     is perhaps the least obvious rule.
-    In type $[[∃nas.↓iN]]$, if $[[iN]]$ is anything different (non-equivalent) to 
-    $[[nai ∊ {nas}]]$, there are at least 
-    one proper supertype of $[[∃nas.↓iN]]$, since $[[iN]]$ can be abstracted over
-    by an existential quantifier. Otherwise, any supertype of $[[∃nas.↓nai]]$
-    is equivalent to it, and thus, the solution is unique. 
+    Having a type $[[∃nas.↓iN]]$, suppose that $[[iN]]$ is
+    not equivalent to any just bound variable $[[nai ∊ {nas}]]$.
+    Then the type $[[∃nas.↓iN]]$ has a proper supertype: $[[∃nas.↓na1]]$,
+    and thus the constraint is not singular.
+    Otherwise, if $[[iN]]$ is equivalent to some $[[nai]]$,
+    any supertype of $[[∃nas.↓nai]]$ is equivalent to it, and thus, 
+    the constraint has a unique solution.
 \end{itemize}
 
 Next, we extrapolate the singularity function on constraints---sets of constraint entries. 
