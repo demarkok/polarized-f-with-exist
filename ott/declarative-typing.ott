@@ -42,7 +42,7 @@ defns
   Γ; Φ ⊢ let x = v; c : iN
 
   Γ ; Φ ⊢ v : ↓iM   
-  Γ ; Φ ⊢ iM ● args ⇒> ↑iQ uniq   
+  Γ ; Φ ⊢ iM ● args ⇒> ↑iQ principal   
   Γ; Φ, x:iQ ⊢ c : iN
   ---------------------------------- :: AppLet
   Γ ; Φ ⊢ let x = v(args); c : iN
@@ -129,7 +129,7 @@ defns
 
 
   Γ ; Φ ⊢ v ⇒ ↓iM   
-  Γ ; Φ ⊢ iM ● args ⇒> ↑iQ uniq   
+  Γ ; Φ ⊢ iM ● args ⇒> ↑iQ principal   
   Γ; Φ, x:iQ ⊢ c ⇔ iN
   ---------------------------------- :: AppLetChkSyn
   Γ ; Φ ⊢ let x = v(args); c ⇔ iN

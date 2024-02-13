@@ -256,18 +256,17 @@ the metric of the inference tree.
 
             By the inversion, we have:
             \begin{enumerate}
-                \item $[[Γ; Φ ⊨ v : ↓iM]]$ 
-                \item $[[Γ ; Φ ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC]]$
-                \item $[[uv uQ ⊆ dom(SC)]]$
-                \item $[[SC|uv(uQ) singular with uσ3]]$
-                \item $[[Γ; Φ, x:[uσ3]uQ ⊨ c' : iN]]$
+                \item $[[Γ; Φ ⊨ v : ↓iM]]$, 
+                \item $[[Γ ; Φ ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC]]$, 
+                \item $[[Γ ⊢ uQ SC minby uσ]]$, and
+                \item $[[Γ; Φ, x:[uσ]uQ ⊨ c' : iN]]$.
             \end{enumerate}
 
             By the induction hypothesis applied to $[[Γ; Φ ⊨ v : ↓iM]]$, we have    
             $[[Γ; Φ ⊢ v : ↓iM]]$ and $[[Γ ⊢ ↓iM]]$ (and thus, $[[Γ ; dom(Θ) ⊢ uM]]$).
        
-            By the induction hypothesis applied to $[[Γ; Φ, x:[uσ3]uQ ⊨ c' : iN]]$, we have
-            $[[Γ ⊢ iN]]$ and $[[Γ; Φ, x:[uσ3]uQ ⊢ c' : iN]]$.
+            By the induction hypothesis applied to $[[Γ; Φ, x:[uσ]uQ ⊨ c' : iN]]$, we have
+            $[[Γ ⊢ iN]]$ and $[[Γ; Φ, x:[uσ]uQ ⊢ c' : iN]]$.
 
             By the induction hypothesis applied to 
             $[[Γ ; Φ ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC]]$, we have:
@@ -279,48 +278,36 @@ the metric of the inference tree.
                     which, since  $[[iM]]$ is ground means $[[ Γ ; Φ ⊢ iM ● args ⇒> ↑[uσ]uQ]]$.
             \end{enumerate}
 
-
             To infer $[[Γ ; Φ ⊢ let x = v(args) ; c' : iN ]]$, 
             we apply the corresponding 
             declarative rule \ruleref{\ottdruleDTAppLetLabel}.
             Let us show that the premises hold:
             \begin{itemize}
                 \item $[[Γ; Φ ⊢ v : ↓iM]]$ holds by the induction hypothesis;
-                \item $[[Γ; Φ, x:[uσ3]uQ ⊢ c' : iN]]$ also holds by the induction hypothesis, as noted above;
-                \item Let us take an arbitrary substitution $[[uσ]]$ 
-                    $[[ Θ ⊢ uσ : uv uM ∪ uv uQ ]]$
-                    satisfying $[[ Θ ⊢ uσ : SC ]]$
-                    (it exists by \cref{lemma:constraint-sat}).
-                    Then $[[Γ; Φ ⊢ iM ● args ⇒> ↑[uσ]uQ ]]$ holds, as noted above;
-                \item To show the uniqueness of $[[↑[uσ]uQ]]$,
-                    we assume that for some other type $[[iK]]$ 
-                    holds $[[Γ; Φ ⊢ iM ● args ⇒> iK ]]$,
-                    that is $[[Γ; Φ ⊢ [·]uM ● args ⇒> iK ]]$.
+                \item $[[Γ; Φ, x:[uσ]uQ ⊢ c' : iN]]$ also holds by the induction hypothesis, as noted above;
+                \item  $[[Γ; Φ ⊢ iM ● args ⇒> ↑[uσ]uQ ]]$ holds, as noted above;
+                \item To show the principality of $[[↑[uσ]uQ]]$,
+                    we assume that for some other type $[[iR]]$ 
+                    holds $[[Γ; Φ ⊢ iM ● args ⇒> ↑iR ]]$,
+                    that is $[[Γ; Φ ⊢ [·]uM ● args ⇒> ↑iR ]]$.
                     Then by the completeness of typing 
                     (\cref{lemma:typing-completeness}),
                     there exist $[[uN']]$, $[[Θ']]$, and $[[SC']]$ such that
                     \begin{enumerate}
                         \item $[[ Γ; Φ; · ⊨ uM ● args ⇒> uN' ⫤ Θ'; SC' ]]$ and
                         \item there exists a substitution $[[Θ' ⊢ uσ' : SC']]$ 
-                            such that $[[Γ ⊢ [uσ']uN' ≈ iK]]$.
+                            such that $[[Γ ⊢ [uσ']uN' ≈ ↑iR]]$.
                     \end{enumerate}
                     By determinacy of the typing algorithm (\cref{lemma:typing-determinacy}),
                     $[[ Γ; Φ; · ⊨ uM ● args ⇒> uN' ⫤ Θ'; SC' ]]$,
                     means that $[[SC']]$ is $[[SC]]$, $[[Θ']]$ is $[[Θ]]$, and $[[uN']]$ is
                     $[[↑uQ]]$. 
-                    This way, $[[Γ ⊢ [uσ']↑uQ ≈ iK]]$ for substitution 
+                    This way, $[[Γ ⊢ [uσ']↑uQ ≈ ↑iR]]$ for substitution 
                     $[[Θ ⊢ uσ' : SC]]$. 
-
-                    It is left to show that $[[Γ ⊢ [uσ']↑uQ ≈ [uσ]↑uQ]]$, 
-                    then by transitivity of equivalence, we will have $[[Γ ⊢ [uσ]↑uQ ≈ iK]]$.
-                    Since $[[ Θ  ⊢ uσ : SC|uv(uQ) ]]$ and $[[ Θ  ⊢ uσ' : SC|uv(uQ) ]]$, 
-                    and $[[SC|uv(uQ) singular with uσ3]]$, we have 
-                    $[[Θ ⊢ uσ ≈ uσ3 : dom(SC) ∩ uv(uQ)]]$
-                    and $[[Θ ⊢ uσ' ≈ uσ3 : dom(SC) ∩ uv(uQ)]]$.
-                    Then since $[[uv(uQ) ⊆ dom(SC)]]$, we have $[[dom(SC) ∩ uv(uQ) = uv(uQ)]]$.
-                    This way, by transitivity and symmetry of the equivalence, 
-                    $[[Θ ⊢ uσ ≈ uσ' : uv(uQ)]]$, which implies
-                    $[[Γ ⊢ [uσ']↑uQ ≈ [uσ]↑uQ]]$. 
+                    To show the principality, it suffices to notice that
+                    $[[Γ ⊢ iR ≥ [uσ]uQ]]$ or equivalently $[[Γ ⊢ [uσ']uQ ≥ [uσ]uQ]]$,
+                    which holds by the soundness of the minimal instantiation 
+                    (\cref{lemma:min-inst-soundness}) since $[[Γ ⊢ uQ SC minby uσ]]$.
             \end{itemize}
 
         \item \ruleref{\ottdruleATUnpackLabel}
@@ -885,12 +872,15 @@ the metric of the inference tree.
                 \item $[[Γ ; Φ ⊢ v : ↓iM]]$, 
                     which by the induction hypothesis means 
                     $[[Γ; Φ ⊨ v : ↓nf(iM)]]$;
-                \item $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ uniq]]$. 
+                \item $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ principal]]$. 
                     Then by \cref{lemma:app-inf-equ-stable}, since 
                     $[[Γ ⊢ iM ≈ nf(iM)]]$, we have
                     $[[Γ ; Φ ⊢ nf(iM) ● args ⇒> ↑iQ]]$
-                    and moreover, $[[Γ ; Φ ⊢ nf(iM) ● args ⇒> ↑iQ uniq]]$
-                    (since symmetrically, $[[nf(iM)]]$ can be replaced back by $[[iM]]$).
+                    and moreover, $[[Γ ; Φ ⊢ nf(iM) ● args ⇒> ↑iQ principal]]$:
+                    since for any inference, $[[nf(iM)]]$ can be replaced back with $[[iM]]$,
+                    the sets of types $[[iQ']]$ inferred for the applications
+                    $[[Γ ; Φ ⊢ nf(iM) ● args ⇒> ↑iQ']]$ and 
+                    $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ']]$ are the same.
                     Then the induction hypothesis applied to 
                     $[[Γ ; Φ ⊢ [·]nf(uM) ● args ⇒> ↑iQ]]$
                     implies that there exist $[[uM']]$, $[[Θ]]$, and $[[SC]]$ such that
@@ -905,9 +895,7 @@ the metric of the inference tree.
                                 \item $[[Θ|uv(uM') ⊢ SC]]$, which means $[[dom(SC) ⊆ uv(uM')]]$,
                                 \item \label{point:typing-completeness:AppLet:ih-sound} 
                                     for any $[[Θ ⊢ uσ : uv uM' ]]$ such that $[[ Θ ⊢ uσ : SC ]]$, 
-                                    we have $[[ Γ ; Φ ⊢ nf(iM) ● args ⇒> [uσ]uM' ]]$,
-                                    which, since $[[Γ ; Φ ⊢ nf(iM) ● args ⇒> ↑iQ uniq]]$,
-                                    means $[[Γ ⊢ [uσ]uM' ≈ ↑iQ]]$.
+                                    we have $[[ Γ ; Φ ⊢ nf(iM) ● args ⇒> [uσ]uM' ]]$.
                             \end{enumerate}
                             and
                         \item for any $[[Γ ⊢ iM'']]$
@@ -939,6 +927,31 @@ the metric of the inference tree.
 
                 \item $[[Γ; Φ ; · ⊨ nf(uM) ● args ⇒> ↑uP ⫤ Θ; SC]]$ holds as noted above;
 
+                \item Let us show that $nf(iQ)$ is the minimal instantiation 
+                    of $[[uP]]$ \wrt $[[SC]]$, in other words, 
+                    $[[Γ ⊢ uP SC minby uσ]]$ for some $[[uσ]]$ and 
+                    $[[ [uσ]uP = nf(iQ) ]]$.
+                    By rewriting $[[nf(iQ)]]$ as $[[ nf([uσ1]uP) ]]$,
+                    we need to show $[[ [uσ]uP = nf([uσ1]uP) ]]$. 
+
+                    Let us apply the completeness of minimal instantiation
+                    (\cref{lemma:min-inst-completeness}). That would give us
+                    $[[uσ = nf(uσ1)]]$, which would immediately imply the required
+                    equality.  To do that, we need to
+                    demonstrate that $[[uσ1]]$ is the minimal instantiation of
+                    $[[uP]]$ \wrt $[[SC]]$.
+                    In other words, any other
+                    substitution respecting $[[SC]]$,
+                    instantiate $[[uP]]$ into a \emph{supertype} of $[[iQ]]$.
+                    To do that, we apply the principality of $[[iQ]]$:
+                    $[[Γ ; Φ ⊢ nf(iM) ● args ⇒> ↑iQ principal]]$:
+                    which means that for any 
+                    other $[[iQ']]$ such that $[[Γ ; Φ ⊢ nf(iM) ● args ⇒> ↑iQ']]$,
+                    we have $[[Γ ⊢ iQ' ≥ iQ]]$.
+                    It is left to show that any substitution respecting $[[SC]]$
+                    gives us $[[iQ']]$ inferrable for the application $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ']]$,
+                    which holds by \ref{point:typing-completeness:AppLet:ih-sound}.
+
                 \item To show $[[uv uP = dom(SC)]]$ and 
                     $[[SC singular with uσ0]]$ for some $[[uσ0]]$,
                     we apply \cref{lemma:singularity-completeness}
@@ -949,7 +962,7 @@ the metric of the inference tree.
                     for any substitution $[[Θ ⊢ uσ : Ξ]]$, $[[ Θ ⊢ uσ : SC ]]$ implies 
                     $[[Γ ⊢ [uσ]uM' ≈ ↑iQ]]$,
                     which is rewritten as $[[Γ ⊢ [uσ]uP ≈ iQ]]$.
-                    And since $[[Γ ⊢ [uσ1]uP ≈ iQ]]$, 
+                   And since $[[Γ ⊢ [uσ1]uP ≈ iQ]]$, 
                     we have $[[Γ ⊢ [uσ]uP ≈ [uσ1]uP]]$,
                     which implies $[[Θ ⊢ uσ ≈ uσ1 : Ξ]]$ by \cref{lemma:subst-equiv-algovar}.
 

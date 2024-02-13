@@ -304,11 +304,15 @@ Let us discuss the rules of the declarative system in more detail.
   Both of them infer the type of the head $[[v]]$ 
   and invoke the application typing to infer the type of the application 
   before recursing on the body of the let binder.
-  The difference is that the former rule is for the 
-  \emph{unannotated} let binder, and thus
-  it requires the resulting type of application to be unique
-  (up to equivalence), so that the type of the bound variable $[[x]]$
-  is known before it is put into the context.
+
+  The former rule infers the type of an \emph{unannotated} let binder, and thus
+  it requires the resulting type of application to be \emph{the principal type},
+  so that the type we assign to the bound variable $[[x]]$ is determined.
+  In this context, principality means minimality. In other words, 
+  $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ principal]]$ means that
+  any other type $[[iQ']]$ inferrable for the application (\ie $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ']]$)
+  is greater than the principal type $[[iQ]]$, \ie $[[Γ ⊢ iQ' ≥ iQ]]$.
+
   The latter rule is for the \emph{annotated} binder,
   and thus, the type of the bound $[[x]]$ is given, 
   however, the rule must check that this type is a

@@ -1,3 +1,13 @@
+\newcommand{\ottdefnMININSTLabeled}[0]{
+    \begin{minipage}{0.5\textwidth}
+        \ottusedrule{\ottdruleSINGPUvarLabeled{}}
+        \ottusedrule{\ottdruleSINGExistsLabeled{}}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \ottusedrule{\ottdruleSINGSingLabeled{}}
+    \end{minipage}
+}
+
 \newcommand{\ottdefnSINGLabeled}[0]{
     \begin{minipage}{0.5\textwidth}
         \ottusedrule{\ottdruleSINGPEqLabeled{}}
@@ -491,6 +501,11 @@
 
 % scE1 singular with iN
 \renewcommand{\ottdruleSINGNEqName}[0]{($[[≈]]_{-}^{\text{sing}}$)}
+
+% Γ ⊢ uP SC minby uσ 
+\renewcommand{\ottdruleSINGPUvarName}[0]{(UVar$^{\text{min}}$)}
+\renewcommand{\ottdruleSINGExistsName}[0]{($[[∃]]^{\text{min}}$)}
+\renewcommand{\ottdruleSINGSingName}[0]{(sing$^{\text{min}}$)}
 
 
 

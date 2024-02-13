@@ -1,4 +1,7 @@
-\subsection{Translation to \fexists}
+% Imprediicative
+% CBPV, monadic control
+% Local Inference
+% Two ways to translate
 
 The language of \fexists is different from standard \systemf:
 every term and type has either positive or negative polarity.
@@ -7,83 +10,58 @@ The type variables are annotated with their polarities
 via the shift operators $[[↑]]$ (positive to negative) and
 $[[↓]]$ (negative to positive).
 
-To establish a correspondence between \fexists and standard unpolarized systems,
-we present a translation between \fexists and \systemf. The translation of
-\systemf to \fexists is given in \cref{fig:translation}.
+Positive expressions correspond to values in the \CBPV system
+\cite{levy2006:cbpv}, and negative expressions correspond to computations.
+The difference between the computations and values is intuitively described 
+in the slogan of \CBPV: ``a value is, a computation does''. 
+In particular, an argument of a function is always a value (\ie positive), 
+and the resulting type, as well as the function itself, 
+is a computation (\ie negative).
 
-\begin{figure}
-  \begin{equation*}
-  \begin{aligned}
-    [[|↓iN|]] &= [[|iN|]] \\
-    [[|↑iP|]] &= [[|iP|]] \\
-  \end{aligned}
-  \qquad
-  \begin{aligned}
-    [[|α±|]] &= [[a]] \\
-    [[|iP → iN|]] &= [[|iP| → |iN|]] \\
-  \end{aligned}
-  \qquad
-  \begin{aligned}
-    [[|∀α⁺.iN|]] &= [[∀α.|iN|]] \\
-    [[|∃α⁻.iP|]] &= [[∃α.|iP|]] \\
-  \end{aligned}
-  \end{equation*}
-  \caption{Type depolarization}
-  \label{fig:depolarization}
-\end{figure}
+\subsection{Examples}
 
-The translation from \systemf to \fexists can be done in two canonical ways
-depending on the desired polarity. The polarity will also determine the 
-execution strategy \ilyam{how?}.
-Moreover, the translation procedure depends on the \emph{polarity} of the
-free type variables. Thus, the translation functions 
-$[[-| fT |-Γ]]$ and $[[+| fT |+Γ]]$ are indexed by a context $[[Γ]]$, 
-containing either $[[α⁺]]$ or $[[α⁻]]$ for each variable $[[α]]$ free in $[[fT]]$.
+The standard \systemf types and terms must be polarized to be used in \fexists, 
+we present the embedding formally in \cref{fig:polarization}.
+For instance, the following types and terms of \systemf 
+can be polarized in the given way:
 
-\begin{figure}
-  \begin{equation*}
-  \begin{aligned}
-    [[-| a |-Γ]] &= [[α⁻]]  \text{,~if $[[α⁻ ∊ Γ]]$}\\
-    [[-| a |-Γ]] &= [[↑α⁺]] \text{,~if $[[α⁺ ∊ Γ]]$}\\
-    [[-| fA → fB |-Γ]] &= [[ +|fA|+Γ → -|fB|-Γ  ]] \\
-    [[-| ∀α.fT |-Γ]] &= [[ ∀α⁺.-|fT|-Γ,α⁺ ]] \\
-    [[-| ∃α.fT |-Γ]] &= [[ ↑ ∃α⁻.+|fT|+Γ,α⁻ ]] \\
-  \end{aligned}
-  \qquad
-  \begin{aligned}
-    [[+| a |+Γ]] &= [[α⁺]]  \text{,~if $[[α⁺ ∊ Γ]]$}\\
-    [[+| a |+Γ]] &= [[↓α⁻]] \text{,~if $[[α⁻ ∊ Γ]]$}\\
-    [[+| fA → fB |+Γ]] &= [[ ↓ +|fA|+Γ → -|fB|-Γ  ]] \\
-    [[+| ∀α.fT |+Γ]] &= [[ ↓∀α⁺.-|fT|-Γ,α⁺ ]] \\
-    [[+| ∃α.fT |+Γ]] &= [[ ∃α⁻.+|fT|+Γ,α⁻ ]] \\
-  \end{aligned}
-  \end{equation*}
-  \caption{Type polarization}
-  \label{fig:polarization}
+\begin{figure}[h]
+  \begin{align*}
+    [[map]] &: [[↓∀α⁺.∀β⁺.↓(α⁺ → ↑β⁺) → List α⁺ → ↑List β⁺]] \\
+    [[len]] &: [[↓∀α⁺.List α⁺ → ↑Int]] \\
+    [[choose]] &: [[↓∀α⁺.α⁺ → α⁺ → ↑α⁺]] \\
+    [[id]] &: [[↓∀α⁺.α⁺ → ↑α⁺]] \\
+    [[auto]] &: [[↓(∀α⁺.α⁺ → ↑α⁺) → (∀α⁺.α⁺ → ↑α⁺)]]\\
+    [[autoP]] &: [[↓(∀α⁺.α⁺ → ↑α⁺) → (∀α⁺.α⁺ → ↑α⁺)]]\\
+  \end{align*}
+  \caption{Polarization of standard \systemf terms}
+  \label{fig:polarization-examples}
 \end{figure}
 
 
-
-\subsection{What types do we infer?}
-
-Suppose that
-we have the following variables in context $[[Φ]]$:
+Let us assume that $[[Φ]]$ is a context containing the terms from \cref{fig:polarization-examples}.
+Then the following types are inferrable in \fexists:
 
 \begin{align*}
-  [[map]] &: [[↓∀α⁺.∀β⁺.↓(α⁺ → ↑β⁺) → List α⁺ → ↑List β⁺]] \\
-  [[len]] &: [[↓∀α⁺.List α⁺ → ↑Int]] \\
-  [[choose]] &: [[↓∀α⁺.α⁺ → α⁺ → ↑α⁺]] \\
-  [[id]] &: [[↓∀α⁺.α⁺ → ↑α⁺]] \\
-  [[auto]] &: [[↓(∀α⁺.α⁺ → ↑α⁺) → (∀α⁺.α⁺ → ↑α⁺)]]\\
+  % &[[· ; Φ ⊢ [two, three, nine] : List Int]]\\
+  &[[· ; Φ, x1:↓(↓iN → iN), x2:↓(↓iM → iM) ⊢ let x = choose (x1, x2); return x : ↑ ∃γ⁻.↓(↓γ⁻ → γ⁻)]]\\
+  &[[· ; Φ ⊢ let x = choose (id, auto); return x : ↑ ∃γ⁻.↓γ⁻]]\\
+  &[[· ; Φ ⊢ let x = choose (id, autoP); return x : ↑ ∃γ⁻.↓γ⁻]]\\
 \end{align*}
 
-Then 
+The focus of our system is the \emph{local} type inference \cite{pierce2000:local},
+which has certain limitations.
+In particular, if an argument of a function is polymorphic,
+its polymorphic variables are not instantiated by the inference algorithm. 
+For example, one would expect the following to be inferrable:
+$[[· ; Φ ⊢ let x = map(id, [two, three, nine]); return x : ↑ List Int]]$.
+However, to infer this, the $[[id]]$ must be instantiated to $[[Int → ↑Int]]$, 
+which requires the information to be propagated from the neighboring branch 
+of the syntax tree ($[[ [two, three, nine] ]]$), \ie bypass the locality. 
 
-\begin{align*}
-  &[[· ; Φ ⊢ [two, three, nine] : List Int]]\\
-  &[[· ; Φ ⊢ let x = map(id, [two, three, nine]); return x : ↑ List Int]] \ilyam{(no)}\\
-\end{align*}
-
+However, the polymorphic arguments of the function are instantiated, 
+and thus, the annotated version of the same term infers the type successfully:
+$[[· ; Φ ⊢ let x = map((id : ↓(Int → ↑Int)), [two, three, nine]); return x : ↑ List Int]]$.
 
 
 \subsection{The Language of Types}
@@ -91,8 +69,7 @@ Then
 The types of \fexists are given in \cref{fig:declarative-types}.
 They are stratified into two syntactic 
 categories (polarities): positive and negative,  
-similarly to the \CBPV system \cite{levy2006:cbpv}.
-The negative types represent computations, and the positive types represent values:
+similar to the values and computations in the \CBPV system \cite{levy2006:cbpv}.
 \begin{itemize}
 \item [$-$] $[[na]]$ is a negative type variable, which can be taken from a context or introduced by $[[∃]]$.
 \item [$-$] a function $[[iP → iN]]$ takes a value as input and returns a computation; 
@@ -199,6 +176,64 @@ In \cref{sec:extensions}, we discuss the way to modify the system to introduce \
   \end{multicols}
   \caption{Declarative Terms of \fexists}
   \label{fig:declarative-terms}
+\end{figure}
+
+\subsection{Relation to \systemf}
+
+To establish a correspondence between \fexists and standard unpolarized systems,
+we present a translation between \fexists and \systemf. The translation of
+\systemf to \fexists is given in \cref{fig:polarization}, and the backward translation
+is given in \cref{fig:depolarization}. 
+
+\begin{figure}[h]
+  \begin{equation*}
+  \begin{aligned}
+    [[|↓iN|]] &= [[|iN|]] \\
+    [[|↑iP|]] &= [[|iP|]] \\
+  \end{aligned}
+  \qquad
+  \begin{aligned}
+    [[|α±|]] &= [[a]] \\
+    [[|iP → iN|]] &= [[|iP| → |iN|]] \\
+  \end{aligned}
+  \qquad
+  \begin{aligned}
+    [[|∀α⁺.iN|]] &= [[∀α.|iN|]] \\
+    [[|∃α⁻.iP|]] &= [[∃α.|iP|]] \\
+  \end{aligned}
+  \end{equation*}
+  \caption{Type depolarization}
+  \label{fig:depolarization}
+\end{figure}
+
+The translation from \systemf to \fexists can be done in two canonical ways
+depending on the desired polarity. The polarity will also determine the 
+execution strategy \ilyam{how?}.
+Moreover, the translation procedure depends on the \emph{polarity} of the
+free type variables. Thus, the translation functions 
+$[[-| fT |-Γ]]$ and $[[+| fT |+Γ]]$ are indexed by a context $[[Γ]]$, 
+containing either $[[α⁺]]$ or $[[α⁻]]$ for each variable $[[α]]$ free in $[[fT]]$.
+
+\begin{figure}[h]
+  \begin{equation*}
+  \begin{aligned}
+    [[-| a |-Γ]] &= [[α⁻]]  \text{,~if $[[α⁻ ∊ Γ]]$}\\
+    [[-| a |-Γ]] &= [[↑α⁺]] \text{,~if $[[α⁺ ∊ Γ]]$}\\
+    [[-| fA → fB |-Γ]] &= [[ +|fA|+Γ → -|fB|-Γ  ]] \\
+    [[-| ∀α.fT |-Γ]] &= [[ ∀α⁺.-|fT|-Γ,α⁺ ]] \\
+    [[-| ∃α.fT |-Γ]] &= [[ ↑ ∃α⁻.+|fT|+Γ,α⁻ ]] \\
+  \end{aligned}
+  \qquad
+  \begin{aligned}
+    [[+| a |+Γ]] &= [[α⁺]]  \text{,~if $[[α⁺ ∊ Γ]]$}\\
+    [[+| a |+Γ]] &= [[↓α⁻]] \text{,~if $[[α⁻ ∊ Γ]]$}\\
+    [[+| fA → fB |+Γ]] &= [[ ↓ +|fA|+Γ → -|fB|-Γ  ]] \\
+    [[+| ∀α.fT |+Γ]] &= [[ ↓∀α⁺.-|fT|-Γ,α⁺ ]] \\
+    [[+| ∃α.fT |+Γ]] &= [[ ∃α⁻.+|fT|+Γ,α⁻ ]] \\
+  \end{aligned}
+  \end{equation*}
+  \caption{Type polarization}
+  \label{fig:polarization}
 \end{figure}
 
 \subsection{The key ideas of the algorithm}

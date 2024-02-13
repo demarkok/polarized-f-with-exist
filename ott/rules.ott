@@ -1,7 +1,7 @@
 grammar
   formula :: 'formula_' ::=
     | judgement                              ::   :: judgement
-    | judgement uniq                         ::   :: judgement_uniq {{ tex [[judgement]] \text{ unique} }}
+    | judgement principal                    ::   :: judgement_principal {{ tex [[judgement]] \text{ principal} }}
     | formula1 .. formulan                   ::   :: dots
     | mu : varset1 ↔ varset2                 ::   :: moving_decl
     | mu is bijective                        ::   :: moving_bij

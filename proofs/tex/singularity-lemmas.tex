@@ -1,3 +1,180 @@
+\lemMinInstSoundness*
+\begin{proof}
+    We prove it by induction on the inference of $[[Γ ⊢ uP SC minby uσ ]]$.
+    Let us consider the last rule used in the inference.
+    \begin{caseof}
+        \item \ruleref{\ottdruleSINGPUvarLabel}, which means 
+            that the inferred judgment is $[[Γ ⊢  α̂⁺ SC minby (nf(iP) / α̂⁺)]]$, 
+            and by inversion, $[[(α̂⁺ :≥ iP) ∊ SC]]$. Let us show the required properties:
+            \begin{itemize}
+                \item $[[Θ ⊢ (nf(iP) / α̂⁺) : uv α̂⁺]]$ holds trivially;
+                \item $[[Θ ⊢  (nf(iP) / α̂⁺) : SC]]$ holds since
+                    $[[Γ ⊢ nf(iP) : (α̂⁺ :≥ iP)]]$, which is true 
+                    since $[[Γ ⊢ nf(iP) ≥ iP]]$ by the soundness of normalization
+                    (\cref{lemma:normalization-soundness});
+                \item $[[(nf(iP) / α̂⁺)]]$ is normalized trivially;
+                \item let us take an arbitrary $[[Θ ⊢ uσ' : {α̂⁺} ]]$
+                    respecting $[[SC]]$. Since $[[uσ']]$ respects $[[SC]]$,
+                    $[[Γ ⊢ [uσ']α̂⁺ ≥ iP]]$ holds, and then
+                    $[[Γ ⊢ [uσ']α̂⁺ ≥ nf(iP)]]$ holds by the soundness of normalization
+                    and transitivity of subtyping. Finally,
+                    $[[Γ ⊢ [uσ']α̂⁺ ≥ nf(iP)]]$ can be rewritten as
+                    $[[Γ ⊢ [uσ']α̂⁺ ≥ [(nf(iP) / α̂⁺)]α̂⁺]]$.
+            \end{itemize}
+        \item \ruleref{\ottdruleSINGExistsLabel}, which means that 
+            the inferred judgment has form $[[Γ ⊢ ∃nas.uP SC minby uσ ]]$,
+            and by inversion, $[[Γ, nas ⊢ uP SC minby uσ]]$.
+            By applying the induction hypothesis to $[[Γ, nas ⊢ uP SC minby uσ]]$
+            we have 
+            \begin{itemize}
+                \item $[[Θ ⊢ uσ : uv uP]]$, which also means $[[Θ ⊢ uσ : uv ∃nas.uP]]$,
+                \item $[[Θ ⊢ uσ : SC]]$,
+                \item $[[uσ]]$ is normalized, and
+                \item for any other $[[Θ ⊢ uσ' : uv uP ]]$
+                    respecting $[[SC]]$ (\ie $[[Θ ⊢ uσ' : SC]]$), we have
+                    $[[Γ, nas ⊢ [uσ']uP ≥ [uσ]uP ]]$, which immediately implies 
+                    $[[Γ ⊢ [uσ']∃nas.uP ≥ [uσ]∃nas.uP ]]$ (the left-hand side
+                    existential variables are instantiated with the corresponding 
+                    right-hand side existential variables).
+            \end{itemize}
+        \item \ruleref{\ottdruleSINGSingLabel}, which means that
+            the inferred judgment has form $[[Γ ⊢ uP SC minby uσ]]$,
+            and by inversion, $[[uv(uP) ⊆ dom(SC)]]$ and
+            $[[SC|uv(uP) singular with uσ]]$. Let us apply the soundness of singularity
+            (\cref{lemma:singularity-soundness}) to $[[SC|uv(uP) singular with uσ]]$ to
+            obtain the following properties:
+            \begin{itemize}
+                \item $[[ Θ ⊢ uσ : uv(uP) ∩ dom(SC) ]]$, which also means 
+                    $[[Θ ⊢ uσ : uv(uP)]]$,
+                \item $[[Θ ⊢ uσ : SC|uv(uP)]]$,
+                \item $[[uσ]]$ is normalized, and
+                \item for any other $[[Θ ⊢ uσ' : uv(uP) ]]$
+                    respecting $[[SC|uv(uP)]]$, we have
+                    $[[Θ ⊢ uσ' ≈ uσ : uv(uP)]]$. The latter means that
+                    $[[Γ ⊢ [uσ']uP ≈ [uσ]uP]]$, and in particular, 
+                    $[[Γ ⊢ [uσ']uP ≥ [uσ]uP]]$.
+            \end{itemize}
+    \end{caseof}
+
+\end{proof}
+
+\lemMinInstCompleteness*
+\begin{proof}
+    We prove it by induction on $[[uP]]$.
+    \begin{caseof}
+        \item \label{case:min-inst-completeness-uvar} 
+            $[[uP]] = [[α̂⁺]]$. Suppose that $[[α̂⁺ ∉ dom(SC)]]$.
+            Then the instantiation of $[[α̂⁺]]$ is
+            not restricted, and thus, any type can instantiate it.
+            However, among unrestricted instantiations, there is no minimum:
+            any type $[[iP]]$ is \emph{not} a subtype of $[[↓↑iP]]$,
+            which contradicts the assumption.
+            This way, $[[α̂⁺ ∊ dom(SC)]]$.
+
+            If the entry restricting $[[α̂⁺]]$ in $[[SC]]$ is a \emph{subtyping} entry
+            ($[[(α̂⁺ :≥ iQ) ∊ SC]]$), then 
+            we apply \ruleref{\ottdruleSINGPUvarLabel} to infer 
+            $[[Γ ⊢  α̂⁺ SC minby (nf(iQ) / α̂⁺)]]$.
+            It is left to show that $[[ nf(iQ) = nf([uσ]α̂⁺) ]]$.
+            Since $[[Θ ⊢ uσ : SC]]$, and $[[(α̂⁺ :≥ iQ) ∊ SC]]$, 
+            we know that $[[Γ ⊢ [uσ]α̂⁺ ≥ iQ]]$. 
+            On the other hand, let us consider $[[Θ ⊢ uσ' : SC]]$,
+            that copies $[[uσ]]$ on $[[dom(SC)]]$ except $[[α̂⁺]]$,
+            where it is instantiated with $[[iQ]]$.
+            Then $[[Γ ⊢ [uσ']α̂⁺ ≥ [uσ]α̂⁺ ]]$ means $[[Γ ⊢ iQ ≥ [uσ]α̂⁺ ]]$,
+            this way, $[[Γ ⊢ iQ ≈ [uσ]α̂⁺ ]]$, which by \cref{lemma:subt-equiv-algorithmization}
+            means $[[nf(iQ) = nf([uσ]α̂⁺)]]$.
+
+            If the entry restricting $[[α̂⁺]]$ in $[[SC]]$ is an \emph{equivalence} entry
+            ($[[(α̂⁺ :≈ iQ) ∊ SC]]$), then we wish to apply
+            \ruleref{\ottdruleSINGSingLabel}.
+            The first premise $[[uv(α̂⁺) ⊆ dom(SC)]]$  
+            holds by assumption;
+            to infer $[[SC|{α̂⁺} singular with uσ0]]$, 
+            we apply the completeness of singularity (\cref{lemma:singularity-completeness}).
+            It applies because all the substitutions satisfying $[[SC|{α̂⁺}]] = [[(α̂⁺ :≈ iQ)]]$
+            are equivalent on $[[{α̂⁺}]]$ by transitivity of equivalence 
+            (\cref{corollary:equivalence-transitivity}): 
+            the satisfaction of this constraint means that the substitution 
+            sends $[[α̂⁺]]$ to $[[iQ]]$ or an equivalent type.
+            This way, $[[SC|{α̂⁺} singular with uσ0]]$ for some $[[uσ0]]$,
+            which means $[[Γ ⊢ α̂⁺ SC minby uσ0]]$.
+            To show that $[[uσ0 = nf(uσ)]]$ notice that 
+            Since $[[uσ0]]$ is normalized and equivalent to $[[uσ]]$ on $[[{α̂⁺}]]$, 
+            and only has $[[α̂⁺]]$ in its domain
+            (by soundness of singularity, \cref{lemma:singularity-soundness}).
+            This way, $[[Γ ⊢ α̂⁺ SC minby uσ]]$, as required.
+        \item  \label{case:min-inst-completeness-down}
+            $[[uP = ↓uN]]$. Then since
+            $[[Γ ⊢ ↓[uσ']uN ≥ ↓[uσ]uN ]]$ means
+            $[[Γ ⊢ ↓[uσ']uN ≈ ↓[uσ]uN ]]$ by inversion.
+            Then by \cref{lemma:subst-equiv}, 
+            $[[uσ]]$ is equivalent to any other substitution 
+            $[[Θ ⊢ uσ' : uv uN ]]$ satisfying $[[SC|uv uN]]$,
+            hence, the completeness of singularity (\cref{lemma:singularity-completeness})
+            can be applied to conclude that
+            \begin{itemize}
+                \item $[[uv(uN) = dom(SC|uv uN)]]$, then $[[uv(uP) ⊆ dom(SC)]]$,
+                \item $[[SC|uv uN singular with uσ0]]$ for some (normalized) $[[uσ0]]$.
+            \end{itemize}
+            It means $[[Γ ⊢ uP SC minby uσ0 ]]$, and then
+            since $[[uσ0]]$ is normalized and equivalent to $[[uσ0]]$ on $[[uv(uN)]]$,
+            and its domain is $[[uv(uN)]]$, $[[uσ0 = nf(uσ)]]$.
+        % \item $[[uP = ∃nas.uP']]$ 
+        %     Then we wish to apply the induction hypothesis to show 
+        %     $[[Γ, nas ⊢ uP' SC minby nf(uσ)]]$, which would imply 
+        %     $[[Γ ⊢ ∃nas.uP' SC minby nf(uσ)]]$ by \ruleref{\ottdruleMINExistsLabel}.
+        %     Let us demonstrate that the premises of the induction hypothesis hold. 
+        %     \begin{itemize}
+        %         \item  $[[Γ, nas ⊢ Θ]]$ holds by weakening;
+        %         \item  $[[Γ, nas; dom(Θ) ⊢ uP']]$ holds by inversion of $[[Γ; dom(Θ) ⊢ uP]]$;
+        %         \item $[[uv uP' = uv uP]]$, and 
+        %                 $[[Γ ⊢ [uσ']∃nas.uP' ≥ [uσ]∃nas.uP' ]]$ implies
+        %                 $[[Γ, nas ⊢ [uσ']uP' ≥ [uσ]uP' ]]$ by \cref{lemma:subst-equiv}.
+        %     \end{itemize}
+
+        \item $[[uP = ∃nas.β⁺]]$ then 
+            as there are no algorithmic variables in $[[uP]]$, 
+            $[[nf([uσ]uP) = β⁺]]$,
+            and thus, we wish to show that 
+            $[[Γ ⊢ ∃nas.β⁺ SC minby ·]]$.
+            To do so, we apply \ruleref{\ottdruleSINGExistsLabel},
+            and it is left to show that $[[Γ, nas ⊢ β⁺ SC minby · ]]$,
+            which holds vacuously by \ruleref{\ottdruleSINGSingLabel}.
+        \item $[[uP = ∃nas.α̂⁺]]$ then 
+            $[[Γ ⊢ [uσ']∃nas.α̂⁺ ≥ [uσ]∃nas.α̂⁺ ]]$ implies 
+            $[[Γ ⊢ ∃nas.[uσ']α̂⁺ ≥ ∃nas.[uσ]α̂⁺ ]]$ implies 
+            $[[Γ ⊢ [uσ']α̂⁺ ≥ [uσ]α̂⁺ ]]$.
+            It means that $[[uσ]]$ instantiates $[[α̂⁺]]$ to the minimal 
+            type among all the instantiations of $[[α̂⁺]]$ respecting $[[SC]]$.
+            In other words, we can apply the reasoning from 
+            \cref{case:min-inst-completeness-uvar}
+            to conclude that $[[Γ ⊢ α̂⁺ SC minby nf(uσ) ]]$.
+            And then \ruleref{\ottdruleSINGExistsLabel}
+            gives us $[[Γ ⊢ ∃nas.α̂⁺ SC minby nf(uσ) ]]$.
+        \item $[[uP = ∃nas.↓uN]]$ then 
+            $[[Γ ⊢ [uσ']∃nas.↓uN ≥ ∃nas.↓[uσ]uN ]]$ implies 
+            $[[Γ ⊢ ∃nas.↓[uσ']uN ≥ ∃nas.↓[uσ]uN ]]$ implies
+            $[[Γ, nas ⊢ ↓[σ0][uσ']uN ≥ ↓[uσ]uN ]]$ for some $[[σ0]]$ implies
+            $[[Γ, nas ⊢ [σ0][uσ']uN ≈ [uσ]uN ]]$.
+            By \cref{lemma:subst-equiv}, it means in particular
+            that $[[uσ']]$ and $[[uσ]]$ are equivalent on 
+            $[[uv uN]]$. 
+            This way, we can apply the completeness of singularity 
+            (\cref{lemma:singularity-completeness}), and continue as in
+            \cref{case:min-inst-completeness-down}
+            to conclude that $[[Γ, nas ⊢ ↓uN SC minby nf(uσ)]]$.
+            Then by \ruleref{\ottdruleSINGExistsLabel},
+            we have $[[Γ ⊢ ∃nas.↓uN minby nf(uσ)]]$.
+    \end{caseof}
+\end{proof}
+
+\obsMinInstDeterministic*
+\begin{proof}
+    We prove it by induction on $[[Γ ⊢ uP SC minby uσ]]$.
+    It is easy to see that each inference rule is deterministic.
+\end{proof}
+
 \lemEntrySingularitySoundness*
 \begin{proof}
     Let us consider how $[[scE singular with iP]]$ or $[[scE singular with iN]]$ is formed.

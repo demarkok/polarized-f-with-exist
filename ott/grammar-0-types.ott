@@ -581,3 +581,5 @@ fun | iP |  :: fT :: unpolP {{ tex | [[iP]] | }} by
 fun | iN | :: fT :: unpolN {{ tex | [[iN]] | }} by 
 fun +| fT |+ Γ  :: iP :: polarP {{ tex \downharpoonlefttight [[fT]] \downharpoonrighttight^{[[Γ]]} }} by 
 fun -| fT |- Γ :: iN :: polarN {{ tex \upharpoonlefttight [[fT]] \upharpoonrighttight^{[[Γ]]} }} by
+
+fun [ SC ] uP :: iP :: minInst by

@@ -1274,9 +1274,11 @@ Let us discuss the selected rules of the declarative system:
     to the arguments, the resulting type can be equated to the annotated one,
     we infer the body of the let-binding in the context extended with the bound variable.
   \item \ruleref{\ottdruleDTAppLetLabel} is similar to \ruleref{\ottdruleDTAppLetAnnLabel},
-    but it is used when the type of the application is unique, and thus, the annotation
-    is redundant. Here $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ uniq]]$ means that
-    if also $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ']]$ then $[[Γ ⊢ iQ ≈ iQ']]$
+    bus is used for unannotated let-bindings. In this case, 
+    we require the type application to infer the `canonical' principal type.
+    $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ principal]]$ means that
+    any other type $[[iQ']]$ inferrable for the application (\ie $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ']]$)
+    is greater than the principal type $[[iQ]]$, \ie $[[Γ ⊢ iQ' ≥ iQ]]$.
 \end{itemize}
 
 Let us discuss the rules of the application inference:
@@ -1392,24 +1394,27 @@ Let us discuss the inference rules of the algorithm:
     check whether the instantiation to the annotated type $[[iP]]$ is possible,
     and if it is, the algorithm infers the type of the body in the extended context,
     and returns it as the result. 
-  \item \ruleref{\ottdruleATAppLetAnnLabel}
+  \item \ruleref{\ottdruleATAppLetLabel}
     works similarly to \ruleref{\ottdruleATAppLetAnnLabel},
-    However, since there is no annotation, 
-    instead of checking the instantiation to it, 
-    the algorithm checks that the inferred type
-    $[[↑uQ]]$ is unique.
-    It is the case if all the algorithmic variables of 
-    $[[↑uQ]]$ are sufficiently restricted by $[[SC]]$,
-    which is checked by the combination of
-    $[[uv uQ = dom(SC)]]$ and $[[SC singular with uσ]]$.
-    Together, these two premises guarantee that the only 
-    possible instantiation of $[[↑uQ]]$ is $[[ [uσ]uQ ]]$.
+    However, since there is no annotation to assign the result to,
+    the algorithm must infer the `canonical' principal type.
+    To do that algorithmically, we ensure that 
+    the inferred algorithmic type $[[uQ]]$ is instantiated
+    to the minimal possible type $[[ [uσ]uQ ]]$.
+    The premise $[[Γ ⊢ uQ SC minby uσ]]$
+    provides the minimal instantiation of $[[uQ]]$ \wrt $[[SC]]$. It 
+    guarantees that if we consider all possible substitutions satisfying the inferred 
+    constraints $[[SC]]$, then substitution $[[uσ]]$ will instantiate
+    $[[uQ]]$ to the minimal possible type $[[ [uσ]uQ ]]$.
+    This will be the principal type that we assign to the result of the application 
+    (bound to the variable $[[x]]$)
+    and then we infer the type of the body in the context extended with 
+    the bound variable $[[x : [uσ]uQ]]$.
   \item \ruleref{\ottdruleATUnpackLabel}
-    works in the expected way. First, it infers the 
-    existential type $[[∃nas.iP]]$ of the value being unpacked,
+    first, infers the existential type $[[∃nas.iP]]$ of the value being unpacked,
     and since the type is guaranteed to be normalized, binds 
     the quantified variables with $[[nas]]$.
-    Then it infers the type of the body in the appropriately extended context,
+    Then it infers the type of the body in the appropriately extended context
     and checks that the inferred type does not depend on $[[nas]]$
     by checking well-formedness $[[Γ ⊢ iN]]$.
 \end{itemize}
@@ -1449,6 +1454,24 @@ The simplified result is the following.
       and $[[Γ; Φ ⊢ v : iP]]$ implies $[[Γ; Φ ⊨ v : nf(iP)]]$.
   \end{itemize}
 \end{theorempreview}
+
+\subsection{Minimal Instantiation}
+The minimal instantiation algorithm is used
+to infer the type of the bound variable in the un-annotated 
+applicative let-binders, as long as there exists a principal
+(minimal) type.  
+Given a positive algorithmic type $[[uP]]$ 
+and a set of constraints $[[SC]]$, it finds the substitution $[[uσ]]$
+respecting $[[SC]]$ (i.e., $[[Θ ⊢ uσ : SC]]$) such that
+it instantiates $[[uP]]$ to the minimal type, in other words 
+for any other substitution $[[uσ']]$ respecting $[[SC]]$,
+we have $[[Γ ⊢ [uσ']uP ≥ [uσ]uP]]$.
+
+The minimal instantiation algorithm is defined as follows:
+\begin{algorithm}[Minimal Instantiation]
+  \hfill \\
+  \ottdefnSINGminInstLabeled{}
+\end{algorithm}
 
 
 \subsection{Constraint Singularity}
@@ -1600,7 +1623,7 @@ The correctness of the singularity algorithm is formulated as follows:
 \subsection{Negative Subtyping}
 \input{\genDir/tex/alg-neg-subtyping-statements.tex}
 
-\subsection{Singularity}
+\subsection{Singularity and Minimal Instantiation}
 \input{\genDir/tex/singularity-statements.tex}
 
 \subsection{Correctness of the Typing Algorithm}
@@ -1682,7 +1705,7 @@ The correctness of the singularity algorithm is formulated as follows:
 
 \section{Properties of the Algorithmic Typing}
 
-\subsection{Singularity}
+\subsection{Singularity and Minimal Instantiation}
 \input{\genDir/tex/singularity-lemmas.tex}
 
 \subsection{Correctness of the Typing Algorithm}

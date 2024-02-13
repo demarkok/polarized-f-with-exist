@@ -26,6 +26,7 @@ const :: 'const_' ::= {{ com constants }}
   | [ bareList ]  ::   :: Lst
   | choose    ::   :: Choose
   | auto      ::   :: Auto
+  | autoP     ::   :: AutoPrime {{ tex auto' }}
 
 bareList :: 'bareList_' ::= {{ com bare list }}
   | ·                     ::   :: Empty

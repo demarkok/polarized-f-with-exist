@@ -355,21 +355,46 @@ Greatest Common Subtype procedure to resolve the constraints.
     the subtyping algorithm succeeds: $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$.
 \end{lemma*}
 
-\subsection{Singularity}
+\subsection{Minimal Instantiation and Singularity}
 \label{sec:singularity-proof}
 
-The rule \ruleref{\ottdruleDTAppLetLabel} of the declarative inference
-says that one can omit the type annotation of a let-binding if the inferred 
-type of the bound application is unique. Accordingly, the algorithm,
-that returns the constraint set, must be able to check that
-the set of constraints has a single solution, and also to find this solution. 
-This subroutine is called singularity, and its correctness is formulated as follows.
+\paragraph{Minimal Instantiation}
+Algorithmic typing relies on the \emph{minimal instantiation} procedure.
+For a given positive type $[[uP]]$ and a set of constraints $[[SC]]$
+it returns a substitution $[[Θ ⊢ uσ : SC]]$ such that
+$[[ [uσ]uP ]]$ is a subtype of all the other instantiations of $[[uP]]$ satisfying $[[SC]]$.
+This way, the correctness of minimal instantiation is formulated as the following two lemmas.
 
-The soundness states that $[[SC singular with uσ]]$
+\begin{lemma*}[Soundness of Minimal Instantiation]
+    Suppose that $[[Γ ⊢ Θ]]$, $[[Θ ⊢ SC]]$, and $[[Γ; dom(Θ) ⊢ uP]]$.
+    Then $[[Γ ⊢ uP SC minby uσ ]]$ implies that 
+    $[[Θ ⊢ uσ : uv uP]]$ is a normalized substitution satisfying $[[SC]]$
+    (\ie $[[Θ ⊢ uσ : SC]]$)
+    and for any other substitution $[[Θ ⊢ uσ' : uv uP ]]$ satisfying $[[SC]]$,
+    $[[Γ ⊢ [uσ']uP ≥ [uσ]uP ]]$ holds
+\end{lemma*}
+
+\begin{lemma*}[Completeness of Minimal Instantiation]
+    Suppose that $[[Γ ⊢ Θ]]$, $[[Θ ⊢ SC]]$, $[[Γ; dom(Θ) ⊢ uP]]$, and there exists 
+    $[[Θ ⊢ uσ : uv uP ]]$ satisfying $[[SC]]$ ($[[Θ ⊢ uσ : SC]]$) 
+    such that for any other $[[Θ ⊢ uσ' : uv uP ]]$
+    satisfying $[[SC]]$, we have
+    $[[Γ ⊢ [uσ']uP ≥ [uσ]uP ]]$.  Then the minimal instantiation procedure  
+    succeeds, specifically, $[[Γ ⊢ uP SC minby nf(uσ) ]]$ holds.
+\end{lemma*}
+
+The soundness is rather straightforwardly proved by induction on the 
+judgment inference tree, relying on the soundness of the singularity procedure.
+The proof of completeness is done by induction on the structure of the type $[[uP]]$.
+It uses the fact that $[[ Γ ⊢ ∃nas.[uσ']uP ≥ ∃nas.[uσ]uP]]$ implies
+$[[ Γ, nas ⊢ [uσ']uP ≥ [uσ]uP]]$.
+
+
+\paragraph{Singularity}
+The soundness of singularity states that $[[SC singular with uσ]]$
 implies that any substitution satisfying $[[SC]]$ is equivalent to $[[uσ]]$ 
 on the domain.  The completeness states that if all the 
 $[[SC]]$-compliant substitutions are equivalent, then the singularity procedure succeeds. 
-
 
 \begin{lemma*}[Soundness of Singularity]
     \label{lemma:singularity-soundness}

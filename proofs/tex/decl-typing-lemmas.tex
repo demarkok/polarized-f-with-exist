@@ -154,7 +154,7 @@
               the term in the premise is a syntactic subterm of the
               term in the conclusion.
 
-              And after that, we apply the same rule to infer the required judgement.
+              And after that, we apply the same rule to infer the required judgment.
               
         \item \ruleref{\ottdruleDTPEquivLabel} and \ruleref{\ottdruleDTNEquivLabel}
             In these cases, the induction hypothesis is also applicable to the premise:
@@ -167,7 +167,7 @@
             Having made this note, we continue the proof in the same way as in the previous case.
 
         \item \ruleref{\ottdruleDTtLamLabel}
-            Then we are proving that 
+            Then we prove that 
             $[[Γ ; Φ1 ⊢ λx:iP.c : iP → iN]]$ implies $[[Γ ; Φ2 ⊢ λx:iP.c : iP → iN]]$.
             Analogously to the previous cases, 
             we apply the induction hypothesis to the
@@ -180,7 +180,7 @@
             Then we infer $[[Γ ; Φ2 ⊢ λx:iP.c : iP → iN]]$ by \ruleref{\ottdruleDTtLamLabel}.
 
         \item \ruleref{\ottdruleDTVarLetLabel}
-            Then we are proving that 
+            Then we prove that 
             $[[Γ ; Φ1 ⊢ let x = v; c : iN]]$ implies $[[Γ ; Φ2 ⊢ let x = v; c : iN]]$.
             First, we apply the induction hypothesis to 
             $[[Γ; Φ1 ⊢ v : iP]]$ to obtain $[[Γ; Φ2 ⊢ v : iP]]$ 
@@ -193,7 +193,7 @@
             Then we infer $[[Γ ; Φ2 ⊢ let x = v; c : iN]]$ by \ruleref{\ottdruleDTVarLetLabel}.
 
         \item \ruleref{\ottdruleDTAppLetLabel}
-            Then we are proving that 
+            Then we prove that 
             $[[Γ ; Φ1 ⊢ let x = v(args); c : iN]]$ implies 
             $[[Γ ; Φ2 ⊢ let x = v(args); c : iN]]$.
 
@@ -206,22 +206,23 @@
                 (notice that $[[Γ ⊢ Φ1, x:iQ ≈ Φ2, x:iQ]]$).
             \end{itemize}
 
-            It is left to show the uniqueness of $[[Γ ; Φ2 ⊢ iM ● args ⇒> ↑iQ]]$.
-            Let us assume that this judgement holds for other $[[iQ']]$, 
+            It is left to show the principality of $[[Γ ; Φ2 ⊢ iM ● args ⇒> ↑iQ]]$.
+            Let us assume that this judgment holds for other $[[iQ']]$, 
             i.e.  there exists a tree $T_0$ inferring 
             $[[Γ ; Φ2 ⊢ iM ● args ⇒> ↑iQ']]$.
-            Then notice that the induction hypothesis is applicable to
+            Then notice that the induction hypothesis applies to
             $T_0$: the first component of the first component of $\metric{T_0}$
             is $S = \sum_{[[v]] \in [[args]]} \size{[[v]]}$, and it is less than
             the corresponding component of $\metric{T_1}$, which is
             $\size{[[let x = v(args); c]]} = 1 + \size{[[v]]} + \size{[[c]]} + S$.
             This way, $[[Γ ; Φ1 ⊢ iM ● args ⇒> ↑iQ']]$ holds by the induction hypothesis,
-            but since $[[Γ ; Φ1 ⊢ iM ● args ⇒> ↑iQ uniq]]$, we have $[[Γ ⊢ iQ' ≈ iQ]]$.
-
+            but since $[[Γ ; Φ1 ⊢ iM ● args ⇒> ↑iQ]]$ is principal, 
+            we have $[[Γ ⊢ iQ' ≥ iQ]]$. 
+            This way, $[[Γ ; Φ2 ⊢ iM ● args ⇒> ↑iQ principal]]$.
             Then we infer $[[Γ ; Φ2 ⊢ let x = v(args); c : iN]]$ by \ruleref{\ottdruleDTAppLetLabel}.
 
         \item \ruleref{\ottdruleDTAppLetAnnLabel}
-            Then we are proving that
+            Then we prove that
             $[[Γ ; Φ1 ⊢ let x:iP = v(args); c : iN]]$ implies
             $[[Γ ; Φ2 ⊢ let x:iP = v(args); c : iN]]$.
         

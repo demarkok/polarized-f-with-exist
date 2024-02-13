@@ -1,12 +1,41 @@
+\begin{restatable}[Soundness of Minimal Instantiation]{lemma}{lemMinInstSoundness}
+    \label{lemma:min-inst-soundness}
+    Suppose that $[[Γ ⊢ Θ]]$, $[[Θ ⊢ SC]]$, and $[[Γ; dom(Θ) ⊢ uP]]$.
+    If $[[Γ ⊢ uP SC minby uσ ]]$ then
+    \begin{itemize}
+        \item $[[Θ ⊢ uσ : uv uP]]$,
+        \item $[[Θ ⊢ uσ : SC]]$,
+        \item $[[uσ]]$ is normalized, and
+        \item for any other $[[Θ ⊢ uσ' : uv uP ]]$
+            respecting $[[SC]]$ (\ie $[[Θ ⊢ uσ' : SC]]$), we have
+            $[[Γ ⊢ [uσ']uP ≥ [uσ]uP ]]$. 
+    \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Completeness of Minimal Instantiation]{lemma}{lemMinInstCompleteness}
+    \label{lemma:min-inst-completeness}
+    Suppose that $[[Γ ⊢ Θ]]$, $[[Θ ⊢ SC]]$, $[[Γ; dom(Θ) ⊢ uP]]$, and there exists 
+    $[[Θ ⊢ uσ : uv uP ]]$ respecting $[[SC]]$ ($[[Θ ⊢ uσ : SC]]$) 
+    such that for any other $[[Θ ⊢ uσ' : uv uP ]]$
+    respecting $[[SC]]$ ($[[Θ ⊢ uσ' : SC]]$), we have
+    $[[Γ ⊢ [uσ']uP ≥ [uσ]uP ]]$. 
+    Then $[[Γ ⊢ uP SC minby nf(uσ) ]]$.
+\end{restatable}
+
+\begin{restatable}[Minimal Instantiation is Deterministic]{observation}{obsMinInstDeterministic}
+    Suppose that $[[Γ ⊢ Θ]]$, $[[Θ ⊢ SC]]$, $[[Γ; dom(Θ) ⊢ uP]]$.
+    Then $[[Γ ⊢ uP SC minby uσ]]$ and $[[Γ ⊢ uP SC minby uσ']]$ implies $[[uσ = uσ']]$.
+\end{restatable}
+
 \begin{restatable}[Soundness of Entry Singularity]{lemma}{lemEntrySingularitySoundness}
     \label{lemma:entry-singularity-soundness}
     \hfill
     \begin{itemize}
         \item [$+$] Suppose $[[scE singular with iP]]$ for $[[iP]]$ well-formed in $[[Γ]]$.
-            Then $[[ Γ ⊢ iP : scE ]]$
+            Then $[[ Γ ⊢ iP : scE ]]$, $[[iP]]$ is normalized, 
             and for any $[[ Γ ⊢ iP']]$ such that $[[Γ ⊢ iP' : scE]]$, $[[Γ ⊢ iP' ≈ iP]]$;
         \item [$-$] Suppose $[[scE singular with iN]]$ for $[[iN]]$ well-formed in $[[Γ]]$.
-            Then $[[ Γ ⊢ iN : scE ]]$
+            Then $[[ Γ ⊢ iN : scE ]]$, $[[iN]]$ is normalized,
             and for any $[[ Γ ⊢ iN']]$ such that $[[Γ ⊢ iN' : scE]]$, $[[Γ ⊢ iN' ≈ iN]]$.
     \end{itemize}
 \end{restatable}
@@ -29,8 +58,8 @@
 \begin{restatable}[Soundness of Singularity]{lemma}{lemSingularitySoundness}
     \label{lemma:singularity-soundness}
     Suppose $[[Θ ⊢ SC : Ξ]]$, and $[[SC singular with uσ]]$. 
-    Then $[[ Θ ⊢ uσ : Ξ ]]$,
-     $[[ Θ ⊢ uσ : SC ]]$ and for any 
+    Then $[[ Θ ⊢ uσ : Ξ ]]$, 
+     $[[ Θ ⊢ uσ : SC ]]$, $[[uσ]]$ is normalized, and for any 
     $[[uσ']]$ such that $[[Θ ⊢ uσ : SC]]$,
     $[[Θ ⊢ uσ' ≈ uσ : Ξ]]$.
 \end{restatable}

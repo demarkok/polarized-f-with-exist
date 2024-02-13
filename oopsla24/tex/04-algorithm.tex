@@ -804,10 +804,11 @@ The corresponding graph is shown in \cref{fig:alg-typing-graph}.
     \node[] (1) {Positive Inference\\$[[Γ; Φ ⊨ v : iP]]$};
     \node[right=1.2cm of 1] (2) {Negative Inference\\$[[Γ; Φ ⊨ c : iN]]$};
     \node[right=1.2cm of 2] (3) {Application Inference\\$[[Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC]]$};
-    \node[below=0.8cm of 2] (7) {Constraint Singularity\\$[[SC singular with uσ]]$\\(\cref{sec:constraint-singularity})};
+    \node[below=0.6cm of 2] (7) {Minimal Instantiation\\$[[Γ ⊢ uP SC minby uσ]]$\\(\cref{sec:constraint-singularity})};
+    \node[below=0.5cm of 7] (8) {Constraint Singularity\\$[[SC singular with uσ]]$\\(\cref{sec:constraint-singularity})};
     \node[right=0.3cm of 7] (4) {Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
-    \node[below=0.3cm of 7] (5) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP1 ≥ iP2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
     \node[left=0.3cm of 7] (6) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN1 ≤ iN2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
+    \node[below=0.9cm of 6] (5) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP1 ≥ iP2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
     \draw[->] ([yshift=-.2cm]2.west) to ([yshift=-.2cm]1.east);
     \draw[->] ([yshift=+.2cm]1.east) to ([yshift=+.2cm]2.west);
     \draw[->, bend right=20] (3) to (1);
@@ -815,14 +816,14 @@ The corresponding graph is shown in \cref{fig:alg-typing-graph}.
     \draw[->] (2) to (4);
     \draw[->] (2) to (7);
     \draw[->] (3) to (4);
+    \draw[->] (7) to (8);
     \draw[->] (1.south west) |- (5);
-    \draw[->] (3) |- (5);
+    \draw[->] (3) |- (5.south east);
     \draw[->] (2) to (6);
   \end{tikzpicture}  
   \caption{Dependency graph of the typing algorithm}
   \label{fig:alg-typing-graph}
 \end{figure}
-
 
 The positive and the negative type inference judgments have symmetric forms:
 $[[Γ; Φ ⊨ v : iP]]$ and $[[Γ; Φ ⊨ c : iN]]$. Both of these algorithms
@@ -928,19 +929,16 @@ Next, we discuss them in detail.
   and if it is, the algorithm infers the type of the body in the extended context,
   and returns it as the result. 
 
-  Rule \ruleref{\ottdruleATAppLetAnnLabel}
-  works similarly to \ruleref{\ottdruleATAppLetAnnLabel},
-  However, since there is no annotation, 
-  instead of checking
-  that the inferred type $[[↑uQ]]$ 
-  can be a subtype of the annotation,
-  the algorithm checks that $[[↑uQ]]$ is unique. 
-  As we prove, uniqueness means that all the algorithmic variables of 
-  $[[↑uQ]]$ are sufficiently restricted by $[[SC]]$.
-  This way, uniqueness is checked by the combination of
-  $[[uv uQ = dom(SC)]]$ and $[[SC singular with uσ]]$.
-  Together, these two premises guarantee that the only 
-  possible instantiation of $[[uQ]]$ is $[[ [uσ]uQ ]]$.
+  Rule \ruleref{\ottdruleATAppLetLabel}
+  works similarly to \ruleref{\ottdruleATAppLetAnnLabel}.
+  However, since no annotation is given,
+  the algorithm must ensure that the inferred $[[uQ]]$
+  has the `canonical' minimal instantiation.
+  To find it, it makes a call to the minimal instantiation algorithm 
+  (\cref{sec:minimal-instantiation})
+  that finds the substitution that satisfies the inferred constraints $[[SC]]$ and
+  instantiates $[[uQ]]$ to the minimal (among other such instantiations)
+  type $[[ [uσ]uQ ]]$.
 
 \paragraph{Application to an Empty List of Arguments}
   Rule \ruleref{\ottdruleATEmptyAppLabel}
@@ -975,14 +973,53 @@ Next, we discuss them in detail.
   Then it makes a recursive call applying $[[uN]]$ to the rest of the arguments 
   and merges the resulting constraint with $[[SC1]]$.
 
-\subsection{Constraint Singularity}
+\subsection{Minimal Instantiation and Constraint Singularity}
 \label{sec:constraint-singularity}
 
-The singularity algorithm is used to check that the inferred type of an
-application is unique. In this case, the annotation in the applicative let
-binder can be omitted. In the algorithmic system, the uniqueness means that the
-\emph{constraint set} produced by the application inference has a single
-substitution satisfying it.
+Multiple types $[[iM]]$ can be inferred for a type application:
+$[[Γ ; Φ ⊢ iN ● args ⇒> iM]]$ but only one \emph{principal} 
+type should be chosen for a variable in an unannotated let binder.
+Declaratively, we require the principal type $[[iP]]$ to be
+minimal among other all types $[[iP']]$ that can be inferred
+for the application $[[Γ ; Φ ⊢ iN ● args ⇒> ↑iP']]$.
+Algorithmically, the inference returns an
+\emph{algorithmic} type $[[uP]]$ 
+together with a set of necessary and sufficient constraints $[[SC]]$
+that any instantiation of $[[uP]]$ must satisfy.
+This way, to guarantee principality, we must minimize the instantiation of $[[uP]]$,
+while ensuring that it satisfies the given constraints $[[SC]]$. 
+
+The minimal instantiation judgment `$[[Γ ⊢ uP SC minby uσ]]$'
+means that $[[uσ]]$ is the minimum among all the substitutions satisfying $[[SC]]$,
+that is $[[uσ]]$ instantiates $[[uP]]$ to a subtype of any other 
+instantiation of $[[uP]]$. The algorithm is given in \cref{fig:minimal-instantiation}.
+First, it removes the existential quantifiers by \ruleref{\ottdruleSINGExistsLabel}.
+Then it considers two cases. If the type is an algorithmic variable $[[α̂⁺]]$
+restricted by a constraint $[[(α̂⁺ :≥ iP) ∊ SC]]$,
+its minimal instantiation is the type $[[nf(iP)]]$, 
+and \ruleref{\ottdruleSINGPUvarLabel} is applied.
+Otherwise, \ruleref{\ottdruleSINGSingLabel} is applied,
+meaning that all the instantiations of the type must be equivalent.
+The algorithm ensures that by two premises:
+\begin{enumerate*}
+  \item[(i)] checking that all the algorithmic variables of the type are restricted by the constraint set; and
+  \item[(ii)] building the substitution that satisfies the constraint set on these variables 
+    (and simultaneously checking that such substitution is unique up-to-equivalence)
+    using the constraint singularity algorithm.
+\end{enumerate*}
+
+\begin{figure}[h]
+  \hfill\\
+  \ottdefnMININSTLabeled
+  \caption{Minimal Instantiation}
+  \label{fig:minimal-instantiation}
+\end{figure}
+
+
+The singularity algorithm 
+performs two tasks: it checks that a
+\emph{constraint set} has a single substitution satisfying it, 
+and if it does, it builds this substitution.
 
 To implement the singularity algorithm, we define a partial function $[[SC
 singular with uσ]]$, taking a subtyping constraint $[[SC]]$ as an argument and
