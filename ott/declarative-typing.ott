@@ -37,6 +37,11 @@ defns
   ----------------------- :: Return
   Γ ; Φ ⊢ return v : ↑iP
 
+  Γ ⊢ iP    Γ; Φ ⊢ c : iM    
+  Γ ⊢ iM ≤ ↑iP   Γ; Φ, x:iP ⊢ c' : iN
+  -------------------------------- :: CVarLet
+  Γ; Φ ⊢ let x : iP = c; c' : iN
+
   Γ; Φ ⊢ v : iP    Γ; Φ, x:iP ⊢ c : iN
   ------------------------------------- :: VarLet
   Γ; Φ ⊢ let x = v; c : iN
@@ -48,8 +53,8 @@ defns
   Γ ; Φ ⊢ let x = v(args); c : iN
 
   Γ ⊢ iP   Γ ; Φ ⊢ v : ↓iM   
-  Γ ; Φ ⊢ iM ● args ⇒> ↑iQ   
-  Γ ⊢ ↑iQ ≤ ↑iP   Γ; Φ, x:iP ⊢ c : iN
+  Γ ; Φ ⊢ iM ● args ⇒> iM'  
+  Γ ⊢ iM' ≤ ↑iP   Γ; Φ, x:iP ⊢ c : iN
   ----------------------------------------------------- :: AppLetAnn
   Γ ; Φ ⊢ let x:iP = v(args); c : iN
 
@@ -66,6 +71,29 @@ defns
   Γ ; Φ ⊢ c : iN   Γ ⊢ iN ≈ iN'
   ------------------------------ :: NEquiv
   Γ ; Φ ⊢ c : iN'
+
+
+defn Γ ; Φ ⊢ iN ● args ⇒> iM :: :: SpinInf :: ''
+{{ com Application typing }} by
+
+Γ ⊢ iN ≈ iN'
+---------------------- :: EmptyApp
+Γ ; Φ ⊢ iN ● · ⇒> iN' 
+
+Γ ; Φ ⊢ v : iP   Γ ⊢ iQ ≥ iP  
+Γ ; Φ ⊢ iN ● args ⇒> iM
+-------------------------------- :: ArrowApp
+Γ ; Φ ⊢ iQ → iN ● v , args ⇒> iM
+
+args ≠ ·           pas ≠ ·   Γ ⊢ σ : {pas}      
+Γ ; Φ ⊢ [σ]iN ● args ⇒> iM
+------------------------------------------------ :: ForallApp
+Γ ; Φ ⊢ ∀pas.iN ● args ⇒> iM
+
+
+
+
+
 
   defn Γ ; Φ ⊢ c : iN :: :: NInfExtra :: ''
   {{ com Negative typing }}
@@ -183,24 +211,6 @@ defns
   -------------------------- :: PEquivChkSyn
   Γ ; Φ ⊢ v ⇔ iP
 
-
-
-defn Γ ; Φ ⊢ iN ● args ⇒> iM :: :: SpinInf :: ''
-{{ com Application typing }} by
-
-Γ ⊢ iN ≈ iN'
----------------------- :: EmptyApp
-Γ ; Φ ⊢ iN ● · ⇒> iN' 
-
-Γ ; Φ ⊢ v : iP   Γ ⊢ iQ ≥ iP  
-Γ ; Φ ⊢ iN ● args ⇒> iM
--------------------------------- :: ArrowApp
-Γ ; Φ ⊢ iQ → iN ● v , args ⇒> iM
-
-args ≠ ·           pas ≠ ·   Γ ⊢ σ : {pas}      
-Γ ; Φ ⊢ [σ]iN ● args ⇒> iM
------------------------------------------------- :: ForallApp
-Γ ; Φ ⊢ ∀pas.iN ● args ⇒> iM
 
 
 defn Γ ; Φ ⊢ iN ● args ⇒> iM :: :: SpinInfBidir :: ''

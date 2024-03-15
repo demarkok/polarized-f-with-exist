@@ -184,13 +184,27 @@
             $[[Γ ; Φ1 ⊢ let x = v; c : iN]]$ implies $[[Γ ; Φ2 ⊢ let x = v; c : iN]]$.
             First, we apply the induction hypothesis to 
             $[[Γ; Φ1 ⊢ v : iP]]$ to obtain $[[Γ; Φ2 ⊢ v : iP]]$ 
-            of the same pure size.
+            of the same size.
             
             Then we apply the induction hypothesis to
             the equivalent contexts $[[Γ ⊢ Φ1, x:iP ≈ Φ2, x:iP]]$
             and the premise $[[Γ ; Φ1, x:iP ⊢ c : iN]]$ to obtain
             $[[Γ ; Φ2, x:iP ⊢ c : iN]]$.
             Then we infer $[[Γ ; Φ2 ⊢ let x = v; c : iN]]$ by \ruleref{\ottdruleDTVarLetLabel}.
+
+        \item \ruleref{\ottdruleDTCVarLetLabel}
+            Then we prove that 
+            $[[Γ ; Φ1 ⊢ let x : iP = c; c' : iN]]$ implies $[[Γ ; Φ2 ⊢ let x : iP = c; c' : iN]]$.
+
+            First, we apply the induction hypothesis to 
+            $[[Γ; Φ1 ⊢ c : iM]]$ to obtain $[[Γ; Φ2 ⊢ c : iM]]$
+            of the same size.
+            
+            Then we apply the induction hypothesis to
+            the equivalent contexts $[[Γ ⊢ Φ1, x:iP ≈ Φ2, x:iP]]$
+            and the premise $[[Γ ; Φ1, x:iP ⊢ c' : iN]]$ to obtain
+            $[[Γ ; Φ2, x:iP ⊢ c' : iN]]$.
+            Then we infer $[[Γ ; Φ2 ⊢ let x : iP = c; c' : iN]]$ by \ruleref{\ottdruleDTCVarLetLabel}.
 
         \item \ruleref{\ottdruleDTAppLetLabel}
             Then we prove that 
@@ -230,13 +244,13 @@
             and rewrite:
             \begin{itemize}
                 \item $[[Γ ; Φ1 ⊢ v : ↓iM]]$ into $[[Γ ; Φ2 ⊢ v : ↓iM]]$,
-                \item $[[Γ ; Φ1 ⊢ iM ● args ⇒> ↑iQ]]$ into $[[Γ ; Φ2 ⊢ iM ● args ⇒> ↑iQ]]$, 
+                \item $[[Γ ; Φ1 ⊢ iM ● args ⇒> iM']]$ into $[[Γ ; Φ2 ⊢ iM ● args ⇒> iM']]$, 
                     and
                 \item $[[Γ ; Φ1, x:iP ⊢ c : iN]]$ into $[[Γ ; Φ2, x:iP ⊢ c : iN]]$
                 (notice that $[[Γ ⊢ Φ1, x:iP ≈ Φ2, x:iP]]$).
             \end{itemize}
             
-            Notice that $[[Γ ⊢ iP]]$ and $[[Γ ⊢ ↑iQ ≤ ↑iP]]$ 
+            Notice that $[[Γ ⊢ iP]]$ and $[[Γ ⊢ iM' ≤ ↑iP]]$ 
             do not depend on the variable context, and hold by assumption.
             Then we infer $[[Γ ; Φ2 ⊢ let x:iP = v(args); c : iN]]$ by \ruleref{\ottdruleDTAppLetAnnLabel}.
 

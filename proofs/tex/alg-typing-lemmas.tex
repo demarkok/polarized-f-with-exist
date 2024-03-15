@@ -167,8 +167,6 @@ the metric of the inference tree.
             $[[Γ; Φ ⊨ let x = v ; c : iN]]$,
             we have:
             \begin{enumerate}
-                \item $[[Γ ⊢ let x = v ; c]]$, which gives us 
-            $[[Γ ⊢ v]]$ and $[[Γ ⊢ c]]$.
                 \item $[[Γ; Φ ⊨ v : iP]]$, 
                     which by the induction hypothesis implies
                     $[[Γ ⊢ iP]]$ (and thus, $[[Γ ⊢ Φ, x:iP]]$) 
@@ -180,6 +178,30 @@ the metric of the inference tree.
             This way, 
             $[[Γ; Φ ⊢ let x = v ; c : iN]]$ holds by
             \ruleref{\ottdruleDTVarLetLabel}.
+        
+        \item \ruleref{\ottdruleATCVarLetLabel}
+            We are proving that if
+            $[[Γ; Φ ⊨ let x : iP = c ; c' : iN]]$
+            then
+            $[[Γ ; Φ ⊢ let x : iP = c ; c' : iN]]$ and 
+            $[[Γ ⊢ iN]]$.
+
+            By inversion of
+            $[[Γ; Φ ⊨ let x : iP = c ; c' : iN]]$,
+            we have:
+            \begin{enumerate}
+                \item $[[Γ; Φ ⊨ c : iM]]$, 
+                    which by the induction hypothesis implies
+                    $[[Γ ⊢ iM]]$ and $[[Γ; Φ ⊢ c : iM]]$;
+                \item $[[Γ;· ⊨ uM ≤ ↑iP ⫤ ·]]$, 
+                    which by the soundness of negative subtyping (\cref{lemma:neg-subt-soundness})
+                    means $[[Γ ⊢ iM ≤ ↑iP]]$;
+                \item $[[Γ; Φ, x:iP ⊨ c' : iN]]$,
+                    which by the induction hypothesis implies
+                    $[[Γ ⊢ iN]]$ and $[[Γ; Φ, x:iP ⊢ c' : iN]]$.
+            \end{enumerate}
+            This way, $[[Γ; Φ ⊢ let x : iP = c ; c' : iN]]$ holds by
+            \ruleref{\ottdruleDTCVarLetLabel}.
 
         \item \ruleref{\ottdruleATAppLetAnnLabel}
             We are proving that 
@@ -193,8 +215,8 @@ the metric of the inference tree.
             \begin{enumerate}
                 \item $[[Γ ⊢ iP]]$, hence, $[[Γ ⊢ Φ, x:iP]]$
                 \item $[[Γ; Φ ⊨ v : ↓iM]]$
-                \item $[[Γ; Φ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC1]]$
-                \item $[[Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2]]$
+                \item $[[Γ; Φ; · ⊨ uM ● args ⇒> uM' ⫤ Θ; SC1]]$
+                \item $[[Γ; Θ ⊨ uM' ≤ ↑iP ⫤ SC2]]$
                 \item $[[Θ ⊢ SC1 & SC2 = SC]]$
                 \item $[[Γ; Φ, x:iP ⊨ c' : iN]]$
             \end{enumerate}
@@ -205,36 +227,36 @@ the metric of the inference tree.
             By the induction hypothesis applied to $[[Γ; Φ, x:iP ⊨ c' : iN]]$, we have
             $[[Γ; Φ, x:iP ⊢ c' : iN]]$ and $[[Γ ⊢ iN]]$. 
 
-            By the induction hypothesis applied to $[[Γ; Φ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC1]]$, we have:
+            By the induction hypothesis applied to $[[Γ; Φ; · ⊨ uM ● args ⇒> uM' ⫤ Θ; SC1]]$, we have:
             \begin{enumerate}
                 \item \label{typing-soundness:theta-wf} $[[Γ ⊢ Θ]]$,
-                \item $[[Γ; dom(Θ) ⊢ ↑uQ]]$,
+                \item $[[Γ; dom(Θ) ⊢ uM']]$,
                 \item $[[Θ'|uv uM ∪ uv uQ ⊢ SC1]]$,
-                    and thus, $[[dom(SC1) ⊆ uv uM ∪ uv uQ]]$.
+                    and thus, $[[dom(SC1) ⊆ uv uM ∪ uv uM']]$.
                 \item \label{typing-soundness:SC1-initiality} 
-                    for any $[[ Θ' ⊢ uσ : SC1 ]]$, we have $[[ Γ ; Φ ⊢ [uσ]uM ● args ⇒> [uσ]↑uQ ]]$.
+                    for any $[[ Θ' ⊢ uσ : SC1 ]]$, we have $[[ Γ ; Φ ⊢ [uσ]uM ● args ⇒> [uσ]uM' ]]$.
             \end{enumerate}
 
             By soundness of negative subtyping (\cref{lemma:neg-subt-soundness})
-            applied to $[[Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2]]$, we have
-            $[[Θ ⊢ SC2 : uv(↑uQ)]]$, and thus, $[[uv(↑uQ) = dom(SC2)]]$.
+            applied to $[[Γ; Θ ⊨ uM' ≤ ↑iP ⫤ SC2]]$, we have
+            $[[Θ ⊢ SC2 : uv(uM')]]$, and thus, $[[uv(uM') = dom(SC2)]]$.
 
             By soundness of constraint merge (\cref{lemma:merge-soundness}),
-            $[[dom(SC) = dom(SC1) ∪ dom(SC2)]] \subseteq [[uv uM ∪ uv uQ]]$
+            $[[dom(SC) = dom(SC1) ∪ dom(SC2)]] \subseteq [[uv uM ∪ uv uM']]$
             Then by \cref{lemma:constraint-sat},
             let us take $[[uσ]]$ such that
-            $[[ Θ ⊢ uσ : uv(uM) ∪ uv(uQ) ]]$ and 
+            $[[ Θ ⊢ uσ : uv(uM) ∪ uv(uM') ]]$ and 
             $[[ Θ ⊢ uσ : SC ]]$.
             By the soundness of constraint merge, 
             $[[ Θ ⊢ uσ : SC1 ]]$ and $[[ Θ  ⊢ uσ : SC2 ]]$,
             and by weakening, $[[ Θ' ⊢ uσ : SC1 ]]$ and $[[ Θ' ⊢ uσ : SC2 ]]$.
 
             Then as noted above (\ref{typing-soundness:SC1-initiality}),
-            $[[ Γ ; Φ ⊢ iM ● args ⇒> [uσ]↑uQ ]]$
-            And again, by soundness of negative subtyping (\cref{lemma:neg-subt-soundness})
-            applied to $[[Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2]]$,
+            $[[ Γ ; Φ ⊢ iM ● args ⇒> [uσ]uM' ]]$
+            And again, by the soundness of negative subtyping (\cref{lemma:neg-subt-soundness})
+            applied to $[[Γ; Θ ⊨ uM' ≤ ↑iP ⫤ SC2]]$,
             we have
-            $[[Γ ⊢ [uσ]↑uQ ≤ ↑iP]]$.
+            $[[Γ ⊢ [uσ]uM' ≤ ↑iP]]$.
 
             To infer $[[Γ ; Φ ⊢ let x : iP = v(args); c' : iN ]]$,
             we apply the corresponding declarative rule \ruleref{\ottdruleDTAppLetAnnLabel}, where
@@ -242,8 +264,8 @@ the metric of the inference tree.
             hold above:
             \begin{enumerate}
                 \item $[[Γ ⊢ iP]]$ and $[[Γ; Φ ⊢ v : ↓iM]]$ from the assumption,
-                \item $[[Γ; Φ ⊢ iM ● args ⇒> ↑[uσ]uQ]]$ holds since $[[ [uσ]↑uQ ]] = [[ ↑[uσ]uQ ]]$,
-                \item $[[Γ ⊢ ↑[uσ]uQ ≤ ↑iP]]$ by soundness of negative subtyping,
+                \item $[[Γ; Φ ⊢ iM ● args ⇒> [uσ]uM']]$ holds as noted above,
+                \item $[[Γ ⊢ [uσ]uM' ≤ ↑iP]]$ by soundness of negative subtyping,
                 \item $[[Γ; Φ, x:iP ⊢ c' : iN]]$ from the the induction hypothesis.
             \end{enumerate}
 
@@ -758,7 +780,7 @@ the metric of the inference tree.
             $[[Γ; Φ ⊨ v : nf(iP)]]$ can be rewritten to $[[Γ; Φ ⊨ v : nf(iP')]]$.
 
         \item \ruleref{\ottdruleDTVarLabel}\\
-            Then we are proving that
+            Then we prove that
             $[[Γ; Φ ⊢ x : iP]]$
             implies
             $[[Γ; Φ ⊨ x : nf(iP)]]$.
@@ -768,7 +790,7 @@ the metric of the inference tree.
             $[[Γ; Φ ⊨ x : nf(iP)]]$.
 
         \item \ruleref{\ottdruleDTVarLetLabel}\\
-            Then we are proving that
+            Then we prove that
             $[[Γ; Φ ⊢ let x = v(args); c : iN]]$
             implies
             $[[Γ; Φ ⊨ let x = v(args); c : nf(iN)]]$.
@@ -790,6 +812,37 @@ the metric of the inference tree.
 
             Together, $[[Γ; Φ ⊨ v : nf(iP)]]$ and $[[Γ; Φ, x:nf(iP) ⊨ c : nf(iN)]]$
             imply $[[Γ; Φ ⊨ let x = v(args); c : nf(iN)]]$ by \ruleref{\ottdruleATVarLetLabel}.
+        
+        \item \ruleref{\ottdruleDTCVarLetLabel}\\
+            Then we prove that
+            $[[Γ; Φ ⊢ let x:iP = c; c' : iN]]$
+            implies
+            $[[Γ; Φ ⊨ let x:iP = c; c' : nf(iN)]]$.
+
+            By inversion of
+            $[[Γ; Φ ⊢ let x:iP = c; c' : iN]]$,
+            we have
+            \begin{enumerate}
+                \item $[[Γ ⊢ iP]]$; 
+                \item $[[Γ; Φ ⊢ c : iM]]$,
+                    and by the induction hypothesis,
+                    $[[Γ; Φ ⊨ c : nf(iM)]]$;
+                \item $[[Γ ⊢ iM ≤ ↑iP]]$, 
+                    which by \cref{corollary:nf-sound-wrt-subt-equiv}
+                    and \cref{lemma:subtyping-transitivity} implies
+                    $[[Γ ⊢ nf(iM) ≤ ↑iP]]$,
+                    that is 
+                    $[[Γ ⊢ [·]nf(uM) ≤ ↑iP]]$.
+                    Then by the completeness of subtyping
+                    (\cref{lemma:neg-subt-completeness}), we have
+                    $[[Γ ; · ⊨ nf(uM) ≤ ↑iP ⫤ ·]]$;
+                \item $[[Γ; Φ, x:iP ⊢ c' : iN]]$,
+                    and by the induction hypothesis,
+                    $[[Γ; Φ, x:iP ⊨ c' : nf(iN)]]$.
+            \end{enumerate}
+
+            Together, these premises imply
+            $[[Γ; Φ ⊨ let x:iP = c; c' : nf(iN)]]$ by \ruleref{\ottdruleATCVarLetLabel}.
 
         \item \ruleref{\ottdruleDTAppLetAnnLabel}\\
             Then we prove that 
@@ -805,43 +858,43 @@ the metric of the inference tree.
                 \item $[[Γ ; Φ ⊢ v : ↓iM]]$ for some ground $[[iM]]$,
                     which by the induction hypothesis means
                     $[[Γ ; Φ ⊨ v : ↓nf(iM)]]$
-                \item $[[Γ ; Φ ⊢ iM ● args ⇒> ↑iQ]]$. 
+                \item $[[Γ ; Φ ⊢ iM ● args ⇒> iM']]$. 
                     By \cref{lemma:app-inf-equ-stable}, since
                     $[[Γ ⊢ iM ≈ nf(iM)]]$, we have
-                    $[[Γ ; Φ ⊢ [·]nf(uM) ● args ⇒> ↑iQ]]$, 
+                    $[[Γ ; Φ ⊢ [·]nf(uM) ● args ⇒> iM']]$, 
                     which by the induction hypothesis means 
                     that there exist normalized 
-                    $[[uM']]$, $[[Θ]]$, and $[[SC1]]$ such that
+                    $[[uM0]]$, $[[Θ]]$, and $[[SC1]]$ such that
                     (noting that $[[iM]]$ is ground):
                     \begin{enumerate}
-                        \item $[[ Γ; Φ; · ⊨ nf(uM) ● args ⇒> uM' ⫤ Θ; SC1 ]]$,
-                            where by the soundness, $[[Γ; dom(Θ) ⊢ uM']]$ and $[[Θ ⊢ SC1]]$.
+                        \item $[[ Γ; Φ; · ⊨ nf(uM) ● args ⇒> uM0 ⫤ Θ; SC1 ]]$,
+                            where by the soundness, $[[Γ; dom(Θ) ⊢ uM0]]$ and $[[Θ ⊢ SC1]]$.
                         \item for any $[[Γ ⊢ iM'']]$ 
                             such that $[[Γ; Φ ⊢ nf(iM) ● args ⇒> iM'']]$
                             there exists $[[uσ]]$ such that 
                             \begin{enumerate}
-                                \item $[[ Θ ⊢ uσ : uv uM' ]]$, $[[ Θ ⊢ uσ : SC1 ]]$, and 
-                                \item $[[Γ ⊢ [uσ]uM' ≈ iM'']]$,
+                                \item $[[ Θ ⊢ uσ : uv uM0 ]]$, $[[ Θ ⊢ uσ : SC1 ]]$, and 
+                                \item $[[Γ ⊢ [uσ]uM0 ≈ iM'']]$,
                             \end{enumerate}
                             In particular, there exists
                             $[[uσ0]]$
                             such that 
-                            $[[ Θ ⊢ uσ0 : uv uM']]$,
+                            $[[ Θ ⊢ uσ0 : uv uM0]]$,
                             $[[ Θ ⊢ uσ0 : SC1]]$,
-                            $[[Γ ⊢ [uσ0]uM' ≈ ↑iQ]]$.
-                            Since $[[uM']]$ is normalized and free of negative algorithmic variables,
-                            the latter equivalence means
-                            $[[uM' = ↑uQ0]]$ for some $[[uQ0]]$, and $[[Γ ⊢ [uσ0]uQ0 ≈ iQ]]$.
+                            $[[Γ ⊢ [uσ0]uM0 ≈ iM']]$.
+                            % Since $[[uM0]]$ is normalized and free of negative algorithmic variables,
+                            % the latter equivalence means
+                            % $[[uM0 = ↑uQ0]]$ for some $[[uQ0]]$, and $[[Γ ⊢ [uσ0]uQ0 ≈ iQ]]$.
                     \end{enumerate}
-                \item $[[Γ ⊢ ↑iQ ≤ ↑iP]]$,
-                    and by transitivity, since $[[Γ ⊢ [uσ0]↑uQ0 ≈ ↑iQ]]$,
-                    we have $[[Γ ⊢ [uσ0]↑uQ0 ≤ ↑iP]]$.
+                \item $[[Γ ⊢ iM' ≤ ↑iP]]$,
+                    and by transitivity, since $[[Γ ⊢ [uσ0]uM0  ≈ iM']]$,
+                    we have $[[Γ ⊢ [uσ0]uM0 ≤ ↑iP]]$.
                     
                     Let us apply \cref{lemma:neg-subt-completeness} to 
-                    $[[Γ ⊢ [uσ0]↑uQ0  ≤ ↑iP]]$ and obtain
+                    $[[Γ ⊢ [uσ0]uM0 ≤ ↑iP]]$ and obtain
                     $[[Θ ⊢ SC2]]$ such that 
                     \begin{enumerate}
-                        \item $[[Γ ; Θ ⊨ ↑uQ0 ≤ ↑iP ⫤ SC2]]$ and
+                        \item $[[Γ ; Θ ⊨ [uσ0]uM0 ≤ ↑iP ⫤ SC2]]$ and
                         \item $[[ Θ   ⊢ uσ0 : SC2 ]]$.
                     \end{enumerate}
                 \item $[[Γ; Φ, x:iP ⊢ c : iN]]$, 
@@ -856,12 +909,12 @@ the metric of the inference tree.
             \begin{enumerate}
                 \item $[[Γ ⊢ iP]]$,
                 \item $[[Γ; Φ ⊨ v : ↓nf(iM)]]$,
-                \item $[[Γ; Φ; · ⊨ nf(uM) ● args ⇒> ↑uQ0 ⫤ Θ; SC1]]$, 
-                \item $[[Γ; Θ ⊨ ↑uQ0 ≤ ↑iP ⫤ SC2]]$, and
+                \item $[[Γ; Φ; · ⊨ nf(uM) ● args ⇒> uM0 ⫤ Θ; SC1]]$, 
+                \item $[[Γ; Θ ⊨ uM0 ≤ ↑iP ⫤ SC2]]$, and
                 \item $[[Γ; Φ, x:iP ⊨ c : nf(iN)]]$ hold as noted above;
                 \item $[[Θ ⊢ SC1 & SC2 = SC]]$ 
                     is defined by \cref{lemma:merge-completeness},
-                    since $[[ Θ   ⊢ uσ0 : SC1 ]]$ and $[[ Θ   ⊢ uσ0 : SC2 ]]$.
+                    since $[[ Θ ⊢ uσ0 : SC1 ]]$ and $[[ Θ   ⊢ uσ0 : SC2 ]]$.
             \end{enumerate}
 
         \item \ruleref{\ottdruleDTAppLetLabel}\\

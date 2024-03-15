@@ -390,6 +390,67 @@ Let us discuss the rules of the declarative system in more detail.
   \end{itemize}
 \end{property}
 
-\ilyam{Other properties?}
+\subsection{Relation to \systemf}
+
+To establish a correspondence between \fexists and standard unpolarized \systemf,
+we present a translation between them. The translation of
+\systemf to \fexists is given in \cref{fig:polarization}, and the backward translation
+is given in \cref{fig:depolarization}. 
+
+\begin{figure}[h]
+  
+\end{figure}
+
+
+% \begin{figure}[h]
+%   \begin{equation*}
+%   \begin{aligned}
+%     [[|↓iN|]] &= [[|iN|]] \\
+%     [[|↑iP|]] &= [[|iP|]] \\
+%   \end{aligned}
+%   \qquad
+%   \begin{aligned}
+%     [[|α±|]] &= [[a]] \\
+%     [[|iP → iN|]] &= [[|iP| → |iN|]] \\
+%   \end{aligned}
+%   \qquad
+%   \begin{aligned}
+%     [[|∀α⁺.iN|]] &= [[∀α.|iN|]] \\
+%     [[|∃α⁻.iP|]] &= [[∃α.|iP|]] \\
+%   \end{aligned}
+%   \end{equation*}
+%   \caption{Type depolarization}
+%   \label{fig:depolarization}
+% \end{figure}
+
+% The translation from \systemf to \fexists can be done in two canonical ways
+% depending on the desired polarity. The polarity will also determine the 
+% execution strategy \ilyam{how?}.
+% Moreover, the translation procedure depends on the \emph{polarity} of the
+% free type variables. Thus, the translation functions 
+% $[[-| fT |-Γ]]$ and $[[+| fT |+Γ]]$ are indexed by a context $[[Γ]]$, 
+% containing either $[[α⁺]]$ or $[[α⁻]]$ for each variable $[[α]]$ free in $[[fT]]$.
+
+% \begin{figure}[h]
+%   \begin{equation*}
+%   \begin{aligned}
+%     [[-| a |-Γ]] &= [[α⁻]]  \text{,~if $[[α⁻ ∊ Γ]]$}\\
+%     [[-| a |-Γ]] &= [[↑α⁺]] \text{,~if $[[α⁺ ∊ Γ]]$}\\
+%     [[-| fA → fB |-Γ]] &= [[ +|fA|+Γ → -|fB|-Γ  ]] \\
+%     [[-| ∀α.fT |-Γ]] &= [[ ∀α⁺.-|fT|-Γ,α⁺ ]] \\
+%     [[-| ∃α.fT |-Γ]] &= [[ ↑ ∃α⁻.+|fT|+Γ,α⁻ ]] \\
+%   \end{aligned}
+%   \qquad
+%   \begin{aligned}
+%     [[+| a |+Γ]] &= [[α⁺]]  \text{,~if $[[α⁺ ∊ Γ]]$}\\
+%     [[+| a |+Γ]] &= [[↓α⁻]] \text{,~if $[[α⁻ ∊ Γ]]$}\\
+%     [[+| fA → fB |+Γ]] &= [[ ↓ +|fA|+Γ → -|fB|-Γ  ]] \\
+%     [[+| ∀α.fT |+Γ]] &= [[ ↓∀α⁺.-|fT|-Γ,α⁺ ]] \\
+%     [[+| ∃α.fT |+Γ]] &= [[ ∃α⁻.+|fT|+Γ,α⁻ ]] \\
+%   \end{aligned}
+%   \end{equation*}
+%   \caption{Type polarization}
+%   \label{fig:polarization}
+% \end{figure}
 
 

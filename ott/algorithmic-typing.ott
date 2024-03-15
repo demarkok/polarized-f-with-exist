@@ -43,6 +43,10 @@ defns
   ------------------------------------- :: VarLet
   Γ; Φ ⊨ let x = v; c : iN
 
+  Γ ⊢ iP  Γ; Φ ⊨ c : iM   
+  Γ;· ⊨ uM ≤ ↑iP ⫤ ·  Γ; Φ, x:iP ⊨ c' : iN
+  ------------------------------------- :: CVarLet
+  Γ; Φ ⊨ let x : iP = c; c' : iN
 
   Γ ⊢ iP   Γ; Φ ⊨ v : ↓iM   Γ; Φ; · ⊨ uM ● args ⇒> ↑uQ ⫤ Θ; SC1   
   Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2   Θ ⊢ SC1 & SC2 = SC    Γ; Φ, x:iP ⊨ c : iN

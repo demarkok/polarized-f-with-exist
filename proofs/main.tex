@@ -1,5 +1,6 @@
 \PassOptionsToPackage{prologue,dvipsnames}{xcolor}
 
+
 % \UseRawInputEncoding
 % vim: ft=tex
 
@@ -256,6 +257,87 @@ The following observations about the declarative subtyping are worth noting:
 
 In the next section, we present the sound and complete algorithm
 checking whether one type is a subtype of another according to \cref{def:subDOne}. 
+
+\section{Relation to System F}
+
+The types and terms of \fexists have an additional polarization structure.
+Despite that, it is closely related to the well-known \systemf.
+To demonstrate that, we provide two translations in both ways:
+the polarization from \systemf to \fexists and the depolarization from 
+\fexists to \systemf. These translations are done at the level of types and terms,
+and the expected typing preservation properties are proved.
+
+\begin{figure}[h]
+  \ottdefnSFtyLabeled{}
+  \ottdefnSFtyALabeled{}
+  \caption{Typing rules of \systemf}
+  \label{fig:systemf-typing}
+\end{figure}
+
+\begin{figure}[h]
+  \ottdefnSFWFLabeled{}
+\end{figure}
+
+\subsection{Type-level Translation}
+
+\begin{figure}[h]
+  \ottfundefnunpolP{}
+  \ottfundefnunpolN{}
+\end{figure}
+
+\begin{figure}[h]
+  \ottdefnELNLabeled{}
+  \ottdefnELPLabeled{}
+  \caption{Subtyping elaboration from \fexists to \systemf}
+  \label{fig:subt-elaboration}
+\end{figure}
+
+
+% \lemmaSubtElabSoundness
+
+% \lemmaElabRemovable
+
+% \lemmaDepolSubst
+
+\subsection{Term-level Translation}
+
+The term-level translation is defined not solely for terms, but for typing
+derivations. The reason for that is that the terms of \systemf and \fexists
+contain different typing information that cannot be reconstructed without the
+appropriate derivation tree. For instance, the lambda expressions in \systemf do
+not have the bound variable annotation, while the lambda expressions in \fexists
+do; on the other hand, \fexists has rich subtyping, which cannot be expressed in
+in terms of polymorphic type instantiation of \systemf.
+
+\begin{figure}[h]
+  \ottdefnTELPLabeled{}
+  \caption{Typing elaboration from \fexists to \systemf}
+  \label{fig:typing-elaboration}
+\end{figure}
+
+\begin{figure}[h]
+  \ottdefnTELNLabeled{}
+\end{figure}
+
+\begin{figure}[h]
+  \ottdefnTELAppLabeled{}
+\end{figure}
+
+\begin{figure}[h]
+  \ottdefnSFfPolLabeled{}
+  \caption{Polarization: translation from \systemf to \fexists}
+  \label{fig:systemf-polarization}
+\end{figure}
+
+% \lemmaDepolarSoundness*
+
+% \lemmaPolSubst
+
+% \lemmaPolRemovable
+
+% \lemmaTypPolWf*
+
+% \lemmaPolarSoundness
 
 \section{Algorithmic Type System}
 
@@ -1268,10 +1350,11 @@ Let us discuss the selected rules of the declarative system:
     This is because there might be multiple equivalent existential types 
     with a different order or even number of quantified variables, 
     and to bind them, the algorithm needs to fix the canonical one.
-  \item \ruleref{\ottdruleDTAppLetAnnLabel} allows us to accommodate the applications
-    with annotated let-bindings. The first premise infers the type of the head of the application,
+  \item \ruleref{\ottdruleDTAppLetAnnLabel} allows us to
+    type the \emph{annotated} applicative let-binders. 
+    The first premise infers the type of the head of the application,
     which must be a thunked computation. Then if after applying it 
-    to the arguments, the resulting type can be equated to the annotated one,
+    to the arguments, the resulting type can be instantiated to the annotated one,
     we infer the body of the let-binding in the context extended with the bound variable.
   \item \ruleref{\ottdruleDTAppLetLabel} is similar to \ruleref{\ottdruleDTAppLetAnnLabel},
     bus is used for unannotated let-bindings. In this case, 
@@ -1389,7 +1472,7 @@ Let us discuss the inference rules of the algorithm:
     to the application inference procedure,
     which returns the algorithmic type, whose
     instantiation to a declarative type must be associated with the bound variable 
-    $[[x]]$; then premise $[[Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2]]$
+    $[[x]]$; then premise $[[Γ; Θ ⊨ uM' ≤ ↑iP ⫤ SC2]]$
     together with $[[Θ ⊢ SC1 & SC2 = SC]]$
     check whether the instantiation to the annotated type $[[iP]]$ is possible,
     and if it is, the algorithm infers the type of the body in the extended context,
@@ -1442,7 +1525,7 @@ Finally, let us discuss the algorithmic rules of the application inference:
 \end{itemize}
 
 The correctness of the algorithm consists of its soundness and 
-completeness, which is by mutual
+completeness, which is proved by mutual
 induction in \cref{lemma:typing-soundness,lemma:typing-completeness}.
 The simplified result is the following.
 \begin{theorempreview}
@@ -1580,6 +1663,9 @@ The correctness of the singularity algorithm is formulated as follows:
 \section{Declarative Typing}
 \input{\genDir/tex/decl-typing-statements.tex}
 
+\section{Relation to \systemf}
+\input{\genDir/tex/translation-statements.tex}
+
 \section{Theorem Statements: Algorithmic}
 
 \subsection{Algorithmic Type Well-formedness}
@@ -1652,6 +1738,8 @@ The correctness of the singularity algorithm is formulated as follows:
 \subsection{Normaliztaion}
 \input{\genDir/tex/norm-lemmas.tex}
 
+\section{Relation to \systemf}
+\input{\genDir/tex/translation-proofs.tex}
 
 \section{Properties of the Algorithmic Type System}
 

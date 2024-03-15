@@ -920,12 +920,12 @@ Next, we discuss them in detail.
   ensuring that it is a \emph{thunked computation} $[[↓iM]]$.
   After that, it makes a recursive call
   to the application inference procedure,
-  returning an algorithmic type $[[↑uQ]]$, 
-  that must be instantiated to a subtype of 
-  the annotation $[[↑uP]]$.
-  Then premise $[[Γ; Θ ⊨ ↑uQ ≤ ↑iP ⫤ SC2]]$
+  returning an algorithmic type $[[iM']]$, 
+  that must be a subtype of the annotation $[[↑uP]]$.
+
+  Then premise $[[Γ; Θ ⊨ iM' ≤ ↑iP ⫤ SC2]]$
   together with $[[Θ ⊢ SC1 & SC2 = SC]]$
-  check whether the instantiation to the annotated type $[[↑iP]]$ is possible,
+  check that $[[iM']]$ can be instantiated to the annotated type $[[↑iP]]$,
   and if it is, the algorithm infers the type of the body in the extended context,
   and returns it as the result. 
 

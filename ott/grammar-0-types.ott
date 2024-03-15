@@ -13,7 +13,8 @@ embed {{ tex-preamble
 
 }}
 
-metavar a {{ tex \alpha }}, b {{ tex \beta }}, α {{ tex \alpha }}, β {{ tex \beta }},
+metavar a {{ tex \alpha }}, b {{ tex \beta }}, g {{ tex \gamma }}, d {{tex \delta}}, 
+ α {{ tex \alpha }}, β {{ tex \beta }},
  γ {{ tex \gamma }},  δ {{ tex \delta }} ::= {{ com type variables }}
 
 indexvar n , m, i , j ::= {{ com index variables }}
@@ -23,15 +24,46 @@ indexvar n , m, i , j ::= {{ com index variables }}
 % System F
 grammar 
 
+as {{ tex \vv{\alpha}  }},
+bs {{ tex \vv{\beta} }}
+:: 'as_' ::= {{ com systemf type variable list }}
+   | ·                   ::   :: empty   {{ com empty list }}
+   | a                   ::   :: Var      {{ com a variable }}
+   | </ asi // , // i /> ::   :: concat   {{ com concatenate lists }}
+
+fs {{ tex \sigma }}, 
+fσ {{ tex \sigma }}
+:: 'fs_' ::= {{ com systemf substitution }}
+   | ·                    ::   :: Empty
+   | fA / a               ::   :: Sub
+   | fAs / as             ::   :: Subs 
+   | ( fσ )               :: S :: paren
+   | | σ |                ::   :: depolarize
+   | </ fsi // , // i />  ::   :: concat  {{ com concatenate }}
+
+fTs {{ tex \vv{T} }},
+fAs {{ tex \vv{A} }},
+fBs {{ tex \vv{B} }}
+:: 'fTs_' ::= {{ com list of systemf types }}
+   | ·                    ::   :: empty   {{ com empty list }}
+   | fT                   ::   :: Single  {{ com a type }}
+   | </ fTi // , // i />  ::   :: concat  {{ com concatenate }}
+
 fT {{ tex T }}, fA {{ tex A }}, fB {{ tex B}} :: 'fT_' ::= {{ com System F types }}
    | a         :: :: Var
    | fT1 → fT2   :: :: Fun
-   | ∀ a . fT  :: :: Forall
-   | ∃ a . fT  :: :: Exists
-   | ( fT )    :: S :: Paren
+   | ∀ as . fT  :: :: Forall
+   | [ fσ ] fT  :: M :: Sub  
+   | ( fT )     :: S :: Paren
 
 grammar
+fG {{ tex \Theta }}, fΔ {{ tex \Theta }}, fΓ {{ tex \Theta }} :: F_Ctxt ::= {{ com systemF type context }}
+    | ·                   ::   :: empty   {{ com empty context }}
+    | as                  ::   :: vars    {{ com variables }}
+    | </ fGi // , // i /> ::   :: concat  {{ com concatenate contexts }}
 
+
+grammar
 coh {{ tex n }}, mcoh {{ tex m }} :: 'n_' ::= {{ com cohort index }}
     | Z     :: :: Zero {{ tex 0 }}
     | S coh :: :: Succ {{ tex [[coh]]+1 }}
@@ -271,7 +303,7 @@ iMs {{ tex \vv{ \mathcolor{negative}{M} } }}
 
 grammar
 
-G {{ tex T }}, Δ {{ tex \Theta }}, Γ {{ tex T }} :: DT_Ctxt ::= {{ com declarative type context }}
+G {{ tex \Theta }}, Δ {{ tex \Theta }}, Γ {{ tex \Theta }} :: DT_Ctxt ::= {{ com declarative type context }}
     | ·                  ::   :: empty   {{ com empty context }}
     | { pas }            ::   :: PList   {{ com list of variables }}
                                          {{ tex [[pas]] }}
@@ -288,7 +320,7 @@ G {{ tex T }}, Δ {{ tex \Theta }}, Γ {{ tex T }} :: DT_Ctxt ::= {{ com declara
 
 grammar
 
-T {{ tex \Sigma }}, Θ {{ tex \Sigma }}:: U_Ctxt ::= {{ com algorithmic variable context }}
+T {{ tex \Xi }}, Θ {{ tex \Xi }}:: U_Ctxt ::= {{ com algorithmic variable context }}
     | ·                  ::   :: empty     {{ com empty context }}
     | ordVars [ Δ ]      ::   :: FromVList {{ com from an ordered list of variables }}
                                            {{ tex [[ordVars]] \{[[Δ]]\} }}
@@ -301,7 +333,7 @@ T {{ tex \Sigma }}, Θ {{ tex \Sigma }}:: U_Ctxt ::= {{ com algorithmic variable
     | Θ1 ∪ Θ2            ::   :: union
 grammar
 
-Xi {{ tex \Upsilon }}, Ξ {{ tex \Upsilon }} :: AU_Ctxt ::= {{ com anti-unification type variable context }}
+Xi {{ tex \widehat{\Theta} }}, Ξ {{ tex \widehat{\Theta} }} :: AU_Ctxt ::= {{ com anti-unification type variable context }}
     | ·                  ::   :: empty   {{ com empty context }}
     | { puas }           ::   :: PAUList {{ com list of positive variables }}
                                          {{ tex [[puas]] }}
@@ -578,8 +610,29 @@ fun uv uP :: Ξ :: uPuv {{ tex \ottkw{fav} [[uP]] }} by
 fun bv iN :: Γ :: Pbv {{ tex \ottkw{fbv} [[iN]] }} by 
 
 fun | iP |  :: fT :: unpolP {{ tex | [[iP]] | }} by 
+   |α⁺| === a
+   |↓iN| === |iN|
+   |∃nas.iP| === ∃as.|iP|
 fun | iN | :: fT :: unpolN {{ tex | [[iN]] | }} by 
+   |α⁻| === a
+   |↑iP| === |iP|
+   |∀α⁺.iN| === ∀α.|iN|
+   |iP → iN| === |iP| → |iN|
+
+fun | Γ | :: fΓ :: unpolCtxt {{ tex | [[Γ]] | }} by 
+
 fun +| fT |+ Γ  :: iP :: polarP {{ tex \downharpoonlefttight [[fT]] \downharpoonrighttight^{[[Γ]]} }} by 
+
+fun +| fT |+  :: iP :: polarP {{ tex \downharpoonlefttight [[fT]] \downharpoonrighttight }} by 
+   +|a|+       === α⁺ 
+   +|∀a.fT|+   === ↓( ∀α⁺.↑+|fT|+ )
+   +|fA → fB|+ === ↓( +|fA|+ → ↑+|fB|+ )
+
 fun -| fT |- Γ :: iN :: polarN {{ tex \upharpoonlefttight [[fT]] \upharpoonrighttight^{[[Γ]]} }} by
 
-fun [ SC ] uP :: iP :: minInst by
+fun +| fΓ |+  :: Γ :: polarCtxt {{ tex \downharpoonlefttight [[fΓ]] \downharpoonrighttight }} by 
+   +| · |+     === ·
+   +| a, fΓ |+ === {α⁺} , +|fΓ|+ 
+
+fun ∃ as . fT'  :: fT :: existsSugar by 
+   ∃ as . fT' === ∀b.(∀as.(fT' → b)) → b

@@ -48,17 +48,32 @@ defns
   ---------------------------------------- :: Forall
   Γ ⊢ ∀pas.iN ≤ ∀pbs.iM
 
+  defn Γ ⊢ iP ≥ iQ :: :: Psup :: ''
+  {{ com Positive supertyping }}
+  {{ tex [[Γ]] [[⊢]] [[iP]] \supDOne [[iQ]] }} by
+
+  ------------- :: PVar
+  Γ ⊢ a⁺ ≥ a⁺ 
+
+  Γ ⊢ iN ≈ iM
+  -------------- :: ShiftD
+  Γ ⊢ ↓iN ≥ ↓iM
+
+  Γ, nbs ⊢ σ : {nas}    Γ, nbs ⊢ [σ]iP ≥ iQ
+  --------------------------------------- :: Exists
+  Γ ⊢ ∃nas.iP ≥ ∃nbs.iQ
+
+
   defn Γ ⊢ iN ≤ iM :: :: NsubRlx :: ''
-  {{ com Negative subtyping }}
+  {{ com Negative subtyping Relaxed }}
   {{ tex [[Γ]] [[⊢]] [[iN]] \subDOne [[iM]] }} by
 
   Γ ⊢ iQ ≥ iP
   ------------ :: ShiftURlx
   Γ ⊢ ↑iP ≤ ↑iQ
 
-
   defn Γ ⊢ iN ≤ iM :: :: Elemsub :: ''
-  {{ com Elementary Subtyping }}
+  {{ com Negative Elementary Subtyping }}
   {{ tex [[Γ]] [[⊢]] [[iN]] \subDOne [[iM]] }} by
 
   Γ, pas ⊢ iN ≤ iM
@@ -122,23 +137,8 @@ defns
   defn Γ ⊢ iP ≥* iQ :: :: PSupMulti :: ''
   {{ tex \vv{[[Γ]] [[⊢]] [[iP]] \supDOne [[iQ]]} }} by
 
-  defn Γ ⊢ iP ≥ iQ :: :: Psup :: ''
-  {{ com Positive supertyping }}
-  {{ tex [[Γ]] [[⊢]] [[iP]] \supDOne [[iQ]] }} by
-
-  ------------- :: PVar
-  Γ ⊢ a⁺ ≥ a⁺ 
-
-  Γ ⊢ iN ≈ iM
-  -------------- :: ShiftD
-  Γ ⊢ ↓iN ≥ ↓iM
-
-  Γ, nbs ⊢ σ : {nas}    Γ, nbs ⊢ [σ]iP ≥ iQ
-  --------------------------------------- :: Exists
-  Γ ⊢ ∃nas.iP ≥ ∃nbs.iQ
-
   defn Γ ⊢ iP ≥ iQ :: :: Elemsup :: ''
-  {{ com Elementary Supertyping }}
+  {{ com Positive Elementary Supertyping }}
   {{ tex [[Γ]] [[⊢]] [[iP]] \supDOne [[iQ]] }} by
 
   Γ, nas ⊢ iP ≥ iQ

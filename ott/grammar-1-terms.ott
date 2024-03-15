@@ -1,4 +1,24 @@
-metavar x, y, z ::= {{ com term variables }}
+metavar x, y, z, f ::= {{ com term variables }}
+
+% System F
+grammar
+ft {{ tex t }}, fe {{ tex e }} :: 'ft_' ::= {{ com System F terms }}
+  | x          ::   :: Var    % {{ com variable }}
+  | λ x . ft  ::   :: UnannLam    % {{ com unannotated abstraction }}
+  | Λ as . ft ::   :: BigLam % {{ com type abstraction }}
+  | ft1 ft2      ::  :: App    % {{ com application }}
+  | ( ft )      :: M :: Paren
+
+fvctx, fΦ {{ tex \Gamma }} :: 'fvctxt_' ::= {{ com variable context }}
+  | ·                     ::   :: Empty
+  | x : fT                ::   :: Single
+  | </ fΦi // , // i />   ::   :: Concat  {{ com concatenate contexts }}
+
+fargs {{ tex \vv{ t } }} :: 'fargs_' ::= {{ com list of arguments }}
+    | ·                     ::   :: Empty
+    | ft                     ::   :: Single
+    | ( fargs )              :: M :: Paren
+    | </ fargsi // , // i /> ::   :: Concat   {{ com concatenate }}
 
 
 grammar
@@ -46,10 +66,16 @@ c, d :: 'c_' ::= {{ com Computation Terms }}
   | c [ l ▷ iP ]                  :: M :: LblTypeApp   % {{ com type application }}
   | c [ l ▷* iP ]                 :: M :: LblTypeAppM {{ tex [[c]] [ \vv{ [[l]] [[▷]] [[iP]] } ] }}  
   | return v                      ::   :: Return    % {{ com computation embedding a value}}
-  | let x = v ; c                 ::   :: VarLet    % {{ com standard let-binding }}
+  | let x = v ; c                 ::   :: VarLet    % {{ com standard let-binding }} 
+                                                    {{ tex \ottkw{let}\, [[x]] = [[v]] ;~ [[c]] }}
+  | let x : iP = c ; c'           ::   :: CVarLet   % {{ com computation sequencing }}
+                                                    {{ tex \ottkw{let} [[x]] : [[iP]] = [[c]] ;\, [[c']] }}
   | let x : iP = v ( args ) ; c   ::   :: AppLetAnn % {{ com annotated applicative let }}
-  | let x     = v ( args ) ; c    ::   :: AppLet    % {{ com unannotated applicative let }}
+                                                    {{ tex \ottkw{let} [[x]] : [[iP]] = [[v]] ([[args]] ) ;\, [[c]] }}
+  | let x      = v ( args ) ; c    ::   :: AppLet    % {{ com unannotated applicative let }} 
+                                                    {{ tex \ottkw{let} [[x]] = [[v]] ([[args]] ) ;\, [[c]] }}
   | let∃ ( nas , x ) = v    ; c    ::   :: Unpack   % {{ com unpack }}
+                                                    {{ tex [[let∃]] ( [[nas]] , [[x]] ) = [[v]] ;\, [[c]] }}
 
 vctx, Φ {{ tex \Gamma }} :: 'vctxt_' ::= {{ com variable context }}
   | ·                     ::   :: Empty
@@ -65,3 +91,27 @@ vctxAl {{ tex \Gamma }} :: 'vctxtAl_' ::= {{ com variable context with algorithm
 funs TERMF ::=
 
 fun Φ ( x ) :: iP :: phiLookupN  by
+
+
+fun | Φ | :: fΦ :: unpolVCtxt {{ tex | [[Φ]] | }} by 
+  | · |         === ·
+  | x : iP, Φ | === x : |iP|, |Φ|
+
+fun ft' ●  fargs  :: ft :: multuAppSugar by 
+  ft ●  ·  === ft
+  ft ● ft', fargs === (ft ft') ● fargs
+
+fun let x = ft1 ; ft2 :: ft :: letSugar by 
+  let x = ft1 ; ft2 === (λx.ft2) ft1
+
+fun unpack ( as , x ) = ft1 ; ft2 :: ft :: unpackSugar by 
+  unpack ( as , x ) = ft1 ; ft2 === ft1 (Λ as. λx. ft2)
+
+fun pack ft' : fT :: ft :: packSugar 
+  {{ tex \ottkw{pack}\, [[ft']]\, \ottkw{as}\, [[fT]] }} by 
+  pack ft : fT === Λb. λf. f ft
+
+
+fun +| fΦ |+  :: Φ :: polVCtxt {{ tex \downharpoonlefttight [[fΦ]] \downharpoonrighttight }} by 
+  +| · |+  === ·                               
+  +| x : fT, fΦ |+ === x : +|fT|+, +|fΦ|+  

@@ -14,7 +14,7 @@ OTT_GEN := $(OTT)/_gen
 # Files
 OTTS := $(OTT)/*.ott
 PDFS := main.pdf
-TEXS := main.tex content.tex $(wildcard $(TEX)/*.tex)
+TEXS := main.tex $(wildcard $(TEX)/*.tex)
 GEN_TEXS := $(addprefix $(GEN)/,$(TEXS))
 
 CACHE := $(OTT_GEN)/ott.cache
@@ -39,12 +39,18 @@ $(DEFS): $(OTTS) $(CACHE)
 $(RENEW_DEFS) : $(DEFS) $(OTT)/renew-ott.tex
 	make -C $(OTT)
 
-# MAKE PROCESSED TEX FILES
-$(GEN_TEXS): $(TEXS) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
-	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
+# # MAKE PROCESSED TEX FILES
+# $(GEN_TEXS): $(TEXS) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+# 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
+
+# Pattern rule for gen_tex files
+$(GEN_TEX)/%.tex: $(TEX)/%.tex $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $< $@
+
+$(GEN)/main.tex: main.tex $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $< $@
 
 # MAIN
-
 main.pdf: $(GEN_TEXS)
 	rubber --force --pdf $(GEN)/main.tex
 
@@ -58,5 +64,7 @@ clean:
 	rm -f *.rubbercache 
 
 distclean: clean
+	rm -r $(GEN)
+	rm -r $(OTT_GEN)
 	rm $(PDFS)
 
