@@ -69,11 +69,11 @@ c, d :: 'c_' ::= {{ com Computation Terms }}
   | let x = v ; c                 ::   :: VarLet    % {{ com standard let-binding }} 
                                                     {{ tex \ottkw{let}\, [[x]] = [[v]] ;~ [[c]] }}
   | let x : iP = c ; c'           ::   :: CVarLet   % {{ com computation sequencing }}
-                                                    {{ tex \ottkw{let} [[x]] : [[iP]] = [[c]] ;\, [[c']] }}
+                                                    {{ tex \ottkw{let}\, [[x]] : [[iP]] = [[c]] ;\, [[c']] }}
   | let x : iP = v ( args ) ; c   ::   :: AppLetAnn % {{ com annotated applicative let }}
-                                                    {{ tex \ottkw{let} [[x]] : [[iP]] = [[v]] ([[args]] ) ;\, [[c]] }}
+                                                    {{ tex \ottkw{let}\, [[x]] : [[iP]] = [[v]] ([[args]] ) ;\, [[c]] }}
   | let x      = v ( args ) ; c    ::   :: AppLet    % {{ com unannotated applicative let }} 
-                                                    {{ tex \ottkw{let} [[x]] = [[v]] ([[args]] ) ;\, [[c]] }}
+                                                    {{ tex \ottkw{let}\, [[x]] = [[v]] ([[args]] ) ;\, [[c]] }}
   | let∃ ( nas , x ) = v    ; c    ::   :: Unpack   % {{ com unpack }}
                                                     {{ tex [[let∃]] ( [[nas]] , [[x]] ) = [[v]] ;\, [[c]] }}
 

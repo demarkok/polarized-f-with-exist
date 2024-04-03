@@ -1,3 +1,71 @@
+\newcommand{\ottdefnTELNLabeledTwoColumns}[1]{
+    \begin{ottdefnblock}[#1]{\ottdefnHeaderTELN}{\ottcom{Negative typing elaboration}}
+        \begin{minipage}[t]{0.5\textwidth}
+            \ottusedrule{\ottdruleTELtLamLabeled{}}
+            \ottusedrule{\ottdruleTELReturnLabeled{}}
+            \ottusedrule{\ottdruleTELNEquivLabeled{}}
+        \end{minipage}%
+        \begin{minipage}[t]{0.5\textwidth}
+            \ottusedrule{\ottdruleTELTLamLabeled{}}
+            \ottusedrule{\ottdruleTELVarLetLabeled{}}
+            \ottusedrule{\ottdruleTELNAnnotLabeled{}}
+        \end{minipage}
+        \ottusedrule{\ottdruleTELAppLetLabeled{}}
+        \ottusedrule{\ottdruleTELAppLetAnnLabeled{}}
+        \ottusedrule{\ottdruleTELUnpackLabeled{}}
+        \ottusedrule{\ottdruleTELCVarLetLabeled{}}
+    \end{ottdefnblock}
+}
+
+\newcommand{\ottdefnTELPAppLabeled}[1]{
+    \begin{minipage}[t]{0.45\textwidth}
+        \begin{ottdefnblock}[#1]{\ottdefnHeaderTELP}{\ottcom{Positive typing elaboration}}
+            \ottusedrule{\ottdruleTELVarLabeled{}}
+            \ottusedrule{\ottdruleTELThunkLabeled{}}
+            \ottusedrule{\ottdruleTELPAnnotLabeled{}}
+            \ottusedrule{\ottdruleTELPEquivLabeled{}}
+        \end{ottdefnblock}
+    \end{minipage}
+    \begin{minipage}[t]{0.5\textwidth}
+        \begin{ottdefnblock}[#1]{\ottdefnHeaderTELApp}{\ottcom{Application typing}}
+        \ottusedrule{\ottdruleTELEmptyAppLabeled{}}
+        \ottusedrule{\ottdruleTELArrowAppLabeled{}}
+        \ottusedrule{\ottdruleTELForallAppLabeled{}}
+        \end{ottdefnblock}
+    \end{minipage}
+}
+
+
+
+
+\newcommand{\ottdefnELLabeled}[0]{
+    \framebox{\mbox{\ottdefnHeaderELN}} \quad
+    \framebox{\mbox{\ottdefnHeaderELP}}
+    \begin{minipage}[t]{0.5\textwidth}
+        \ottusedrule{\ottdruleELNVarLabeled{}}
+        \ottusedrule{\ottdruleELShiftULabeled{}}
+    \end{minipage}%
+    \begin{minipage}[t]{0.5\textwidth}
+        \ottusedrule{\ottdruleELPVarLabeled{}}
+        \ottusedrule{\ottdruleELShiftDLabeled{}}
+    \end{minipage}
+    \ottusedrule{\ottdruleELArrowLabeled{}}
+    \ottusedrule{\ottdruleELExistsLabeled{}}
+    \ottusedrule{\ottdruleELForallLabeled{}}
+}
+
+\newcommand{\ottdefnSFtyLabeledTwoColumns}[0]{
+    \begin{minipage}{0.5\textwidth}
+        \ottusedrule{\ottdruleSFtyVarLabeled{}}
+        \ottusedrule{\ottdruleSFtytLamLabeled{}}
+        \ottusedrule{\ottdruleSFtyAppLabeled{}}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \ottusedrule{\ottdruleSFtyTLamLabeled{}}
+        \ottusedrule{\ottdruleSFtyTAppLabeled{}}
+    \end{minipage}
+}
+
 \newcommand{\ottdefnMININSTLabeled}[0]{
     \begin{minipage}{0.5\textwidth}
         \ottusedrule{\ottdruleSINGPUvarLabeled{}}
@@ -511,5 +579,47 @@
 \renewcommand{\ottdruleSINGExistsName}[0]{($[[∃]]^{\text{min}}$)}
 \renewcommand{\ottdruleSINGSingName}[0]{(sing$^{\text{min}}$)}
 
+% fΓ ; fΦ ⊢ ft : fT 
+\renewcommand{\ottdruleSFtyVarName}[0]{(Var$^{\mathsf{F}}$)}
+\renewcommand{\ottdruleSFtytLamName}[0]{($\lambda^{\mathsf{F}}$)}
+\renewcommand{\ottdruleSFtyTLamName}[0]{($\Lambda^{\mathsf{F}}$)}
+\renewcommand{\ottdruleSFtyAppName}[0]{($\mathsf{App}^{\mathsf{F}}$)}
+\renewcommand{\ottdruleSFtyTAppName}[0]{($\mathsf{TApp}^{\mathsf{F}}$)}
+\renewcommand{\ottdruleSFtyAUnpackName}[0]{($\mathsf{Unpack}^{\mathsf{F}}$)}
+\renewcommand{\ottdruleSFtyAPackName}[0]{($\mathsf{Pack}^{\mathsf{F}}$)}
+\renewcommand{\ottdruleSFtyALetName}[0]{($\mathsf{Let}^{\mathsf{F}}$)}
+
+% Γ ⊢ iN ≤ iM ⤳ ft
+\renewcommand{\ottdruleELNVarName}[0]{(Var$_{[[≤]]}^{\leadsto}$)}
+\renewcommand{\ottdruleELPVarName}[0]{(Var$_{[[≥]]}^{\leadsto}$)}
+\renewcommand{\ottdruleELShiftUName}[0]{($\uparrow_{[[≤]]}^{\leadsto}$)}
+\renewcommand{\ottdruleELShiftDName}[0]{($\downarrow_{[[≥]]}^{\leadsto}$)}
+\renewcommand{\ottdruleELExistsName}[0]{($\exists_{[[≥]]}^{\leadsto}$)}
+\renewcommand{\ottdruleELForallName}[0]{($\forall_{[[≤]]}^{\leadsto}$)}
+\renewcommand{\ottdruleELArrowName}[0]{($\rightarrow_{[[≤]]}^{\leadsto}$)}
+
+% Γ ; Φ ⊢ v : iP  ⤳  ft 
+\renewcommand{\ottdruleTELVarName}[0]{(Var$^{\PMelab}$)}
+\renewcommand{\ottdruleTELThunkName}[0]{($\{\}^{\PMelab}$)}
+\renewcommand{\ottdruleTELPAnnotName}[0]{(ann$_+^{\PMelab}$)}
+\renewcommand{\ottdruleTELPEquivName}[0]{($[[≈]]_+^{\PMelab}$)}
+\renewcommand{\ottdruleTELtLamName}[0]{($\lambda^{\PMelab}$)}
+\renewcommand{\ottdruleTELTLamName}[0]{($\Lambda^{\PMelab}$)}
+\renewcommand{\ottdruleTELReturnName}[0]{(ret$^{\PMelab}$)}
+\renewcommand{\ottdruleTELCVarLetName}[0]{(let$_{\text{c}}^{\PMelab}$)}
+\renewcommand{\ottdruleTELVarLetName}[0]{(let$^{\PMelab}$)}
+\renewcommand{\ottdruleTELAppLetName}[0]{(let$_@^{\PMelab}$)}
+\renewcommand{\ottdruleTELAppLetAnnName}[0]{(let$_{:@}^{\PMelab}$)}
+\renewcommand{\ottdruleTELUnpackName}[0]{(let$_{\exists}^{\PMelab}$)}
+\renewcommand{\ottdruleTELNAnnotName}[0]{(ann$_-^{\PMelab}$)}
+\renewcommand{\ottdruleTELNEquivName}[0]{($[[≈]]_-^{\PMelab}$)}
+\renewcommand{\ottdruleTELEmptyAppName}[0]{($\emptyset_{[[●]][[⇒>]]}^{\PMelab}$)}
+\renewcommand{\ottdruleTELArrowAppName}[0]{($\rightarrow_{[[●]][[⇒>]]}^{\PMelab}$)}
+\renewcommand{\ottdruleTELForallAppName}[0]{($\forall_{[[●]][[⇒>]]}^{\PMelab}$)}
 
 
+\renewcommand{\ottdruleELVarName}[0]{(Var$^{\elabPM}$)}
+\renewcommand{\ottdruleELtLamName}[0]{($\lambda^{\elabPM}$)}
+\renewcommand{\ottdruleELTLamName}[0]{($\Lambda^{\elabPM}$)}
+\renewcommand{\ottdruleELAppName}[0]{($\mathsf{App}^{\elabPM}$)}
+\renewcommand{\ottdruleELTAppName}[0]{($\mathsf{TApp}^{\elabPM}$)}

@@ -1,0 +1,496 @@
+\lemmaElabRemovable*
+\begin{proof}
+  We prove it separately in both directions of the implication.
+  both of the implications are proved by simple induction on the judgment.
+\end{proof}
+
+\lemmaDepolSubst*
+\begin{proof}
+  By mutual induction on the type $[[iN]]$ and $[[iP]]$.
+\end{proof}
+
+\lemmaSubtElabSoundness*
+\begin{proof}
+  We prove it by (mutual) induction on $[[Γ ⊢ iN ≤ iM ⤳ ft]]$ and 
+  $[[Γ ⊢ iP ≥ iQ ⤳ ft]]$.
+  Let us consider the last rule applied to infer this judgment.
+  \begin{caseof}
+    \item \ruleref{\ottdruleELNVarLabel} 
+      Notice that $[[|α⁻| = a]]$. Then
+      $[[|Γ| ; · ⊢ λx.x : a → a]]$ immediately by 
+      \ruleref{\ottdruleSFtytLamLabel} and \ruleref{\ottdruleSFtyVarLabel}.
+
+    \item \ruleref{\ottdruleELPVarLabel}
+      This case is symmetric to the previous one.
+
+    \item \ruleref{\ottdruleELShiftULabel}
+      Notice that $[[|↑iP| = |iP|]]$,
+      and by induction hypothesis $[[Γ ⊢ iQ ≥ iP ⤳ ft]]$ implies 
+      $[[|Γ| ; · ⊢ ft : |iP| → |iQ|]]$.
+
+    \item \ruleref{\ottdruleELShiftDLabel}
+      This case is symmetric to the previous one.
+
+    \item \ruleref{\ottdruleELArrowLabel}
+      We need to show that 
+      $[[|Γ|; · ⊢ λx. λy. ft' (x (ft y)) : (|iP| → |iN|) → |iQ| → |iM|]]$.
+      By induction hypothesis applied to the premises, we know that 
+      $[[|Γ|; · ⊢ ft : |iQ| → |iP|]]$ and 
+      $[[|Γ|; · ⊢ ft' : |iN| → |iM|]]$.
+      Then the required typing judgment follows from
+      standard rules of \systemf.
+
+    \item \ruleref{\ottdruleELForallLabel}
+      We need to show that 
+      $[[|Γ|; · ⊢ λx. Λbs. ft x : (∀as.|iN|) → ∀bs.|iM|]]$.
+      By the induction hypothesis applied to the premise, 
+      we know that $[[|Γ|; · ⊢ ft : |[σ]iN| → |iM|]]$, 
+      that we rewrite as $[[|Γ|; · ⊢ ft : [|σ|]|iN| → |iM|]]$
+      by \cref{lemma:depol-subst}.
+      Then the required typing judgment follows from
+      the standard rules of \systemf
+      notice that 
+      $[[|Γ|, bs; x : ∀as.|iN|  ⊢ x : ∀as.|iN|]]$
+      implies 
+      $[[|Γ|, bs; x : ∀as.|iN|  ⊢ x : [|σ|]|iN|]]$ by
+      \ruleref{\ottdruleSFtyTAppLabel}.
+
+    \item \ruleref{\ottdruleELExistsLabel}
+      We need to show that
+      $[[|Γ| ; · ⊢  λx. unpack(bs, y) = x; pack (ft y) : ∃as.|iP| : |∃nbs.iQ| → |∃nas.iP| ]]$.
+      By definition, 
+      $[[|∃nbs.iQ| → |∃nas.iP| = ∃bs.|iQ| → ∃as.|iP|]]$.
+      Then by applying \ruleref{\ottdruleSFtytLamLabel} and 
+      the admissible rules \ruleref{\ottdruleSFtyAUnpackLabel}
+      and \ruleref{\ottdruleSFtyAPackLabel}, 
+      it suffices to show
+      $[[|Γ|, bs; y : |iQ| ⊢ (ft y) : [|σ|]|iP|]]$
+      and that $[[|Γ|, bs ⊢ |σ| : as]]$. 
+      The latter follows from $[[Γ, nbs ⊢ σ : {nas}]]$.
+      The former holds by \ruleref{\ottdruleSFtyAppLabel} 
+      and the induction hypothesis applied to the premise
+      ($[[|Γ|; · ⊢ ft : |iQ| → |[σ]iP|]]$, and by \cref{lemma:depol-subst}, $[[|[σ]iP| = [|σ|]|iP|]]$).
+  \end{caseof}
+\end{proof}
+
+\lemmaDepolarSoundness*
+\begin{proof}
+  We prove it by (mutual) induction on the derivation of $[[Γ; Φ ⊢ v : iP ⤳ ft]]$ 
+  and $[[Γ; Φ ⊢ c : iN ⤳ ft]]$ .
+
+  \begin{caseof}
+    \item \ruleref{\ottdruleTELArrowAppLabel}
+      Suppose that $[[Γ ; Φ ⊢ iQ → iN ● v , args ⇒> iM ⤳ fe'; fe ft, fargs]]$.
+      Then we know 
+      \begin{itemize}
+        \item $[[Γ ; Φ ⊢ v : iP ⤳ ft]]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ| ⊢ ft : |iP|]]$;
+        \item $[[Γ ⊢ iQ ≥ iP ⤳ fe]]$, and then by the soundness of 
+          subtyping elaboration (\cref{lemma:subt-elab-soundness}),
+          $[[|Γ| ; · ⊢ fe : |iP| → |iQ|]]$;
+        \item \label{case:depolar-soundness-app-ih}
+          $[[Γ ; Φ ⊢ iN ● args ⇒> iM ⤳ fe'; fargs]]$, and then by the induction hypothesis, 
+          $[[|Γ| ; |Φ|, x:|iN| ⊢ fe' (x ● fargs) : |iM|]]$.
+      \end{itemize}
+      We wish to show that $[[|Γ| ; |Φ|, f : |iQ| → |iN| ⊢ fe' (f ● (fe ft, fargs)) : |iM|]]$,
+      that is $[[|Γ| ; |Φ|, f : |iQ| → |iN| ⊢ fe' (f (fe ft) ● fargs) : |iM|]]$.
+      By substitution applied to \cref{case:depolar-soundness-app-ih}, it suffices to show that 
+      $[[|Γ| ; |Φ|, f : |iQ| → |iN| ⊢ f (fe ft) : |iM|]]$,
+      which is inferred by multiple applications of  \ruleref{\ottdruleSFtyAppLabel} to the
+      judgments stated above.
+    \item \ruleref{\ottdruleTELForallAppLabel}
+      Then we know that 
+      $[[Γ ; Φ ⊢ ∀pas.iN ● args ⇒> iM  ⤳ fe ; fargs]]$, and by inversion:
+      $[[Γ ; Φ ⊢ [σ]iN ● args ⇒> iM  ⤳ fe ; fargs]]$,
+      where $[[σ]]$ is a substitution from $[[pas]]$ to $[[Γ]]$.
+      By the induction hypothesis, we know that
+      $[[|Γ| ; |Φ|, x : [|σ|]|iN| ⊢ fe (x ● fargs) : |iM|]]$.
+
+      We wish to show that 
+      $[[|Γ| ; |Φ|, x : ∀as.|iN| ⊢ fe (x ● fargs) : |iM| ]]$.
+      To do that, we can modify the inference tree of 
+      $[[|Γ| ; |Φ|, x : [|σ|]|iN| ⊢ fe (x ● fargs) : |iM|]]$
+      to infer 
+      $[[|Γ| ; |Φ|, x  : ∀as.|iN| ⊢ fe (x ● fargs) : |iM|]]$.
+      The only thing we need to change is every time 
+      the inference asks for the type of $[[x]]$ in the context
+      (\ie in the leaf rule \ruleref{\ottdruleSFtyVarLabel}), 
+      we use the combination of \ruleref{\ottdruleSFtyTAppLabel} and \ruleref{\ottdruleSFtyVarLabel}
+      instead of only \ruleref{\ottdruleSFtyVarLabel} to infer $[[|Γ| ; |Φ|, x : ∀as.|iN| ⊢ x : [|σ|]|iN| ]]$.
+
+    \item \ruleref{\ottdruleTELEmptyAppLabel}
+      Then we know $[[Γ ; Φ ⊢ iN ● · ⇒> iN'  ⤳  fe ; ·]]$.
+      By inversion, we have $[[Γ ⊢ iN' ≤ iN ⤳ fe]]$, 
+      which by the soundness of subtyping elaboration (\cref{lemma:subt-elab-soundness}),
+      means $[[|Γ| ; · ⊢ fe : |iN| → |iN'|]]$.
+
+      Then the desired $[[|Γ| ; |Φ|, x:|iN| ⊢ fe x : |iN'|]]$
+      follows from the standard rules of \systemf.
+
+    \item \ruleref{\ottdruleTELVarLabel}, 
+      which means we wish to prove that  $[[Γ ; Φ ⊢ x : iP ⤳ x]]$
+      implies $[[|Γ| ; |Φ| ⊢ x : |iP|]]$.
+      By inversion, $[[x : iP ∊ Φ]]$, and thus, 
+      by definition of context depolarization, $[[x : |iP| ∊ |Φ|]]$.
+      Then by \ruleref{\ottdruleSFtyVarLabel}, we infer $[[|Γ| ; |Φ| ⊢ x : |iP|]]$.
+
+    \item \ruleref{\ottdruleTELThunkLabel} 
+      Then we know that 
+      $[[Γ ; Φ ⊢ {c} : ↓iN ⤳ ft]]$ and by the inversion, 
+      $[[Γ ; Φ ⊢ c : iN ⤳ ft]]$.
+      Then the desired $[[|Γ| ; |Φ| ⊢ ft : |iN|]]$ follows from the induction hypothesis.
+    \item \ruleref{\ottdruleTELReturnLabel}
+      The proof is symmetric to the previous case.
+    
+    \item \ruleref{\ottdruleTELPAnnotLabel} 
+      Then we know that $[[Γ ; Φ ⊢ (v : iQ) : iQ ⤳ fe ft]]$
+      and by inversion: 
+      \begin{itemize}
+        \item $[[Γ ; Φ ⊢ v : iP ⤳ ft]]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ| ⊢ ft : |iP|]]$;
+        \item $[[Γ ⊢ iQ ≥ iP ⤳ fe]]$, and then by the soundness of 
+          subtyping elaboration (\cref{lemma:subt-elab-soundness}),
+          $[[|Γ| ; · ⊢ fe : |iP| → |iQ|]]$.
+      \end{itemize}
+
+      The desired $[[|Γ| ; |Φ| ⊢ fe ft : |iQ|]]$
+      follows by \ruleref{\ottdruleSFtyAppLabel} applied to the judgement stated above.
+
+    \item For \ruleref{\ottdruleTELNAnnotLabel}, \ruleref{\ottdruleTELPEquivLabel} and \ruleref{\ottdruleTELNEquivLabel}
+      the proof is analogous to the previous case.
+
+    \item \ruleref{\ottdruleTELtLamLabel}
+      We know that $[[Γ ; Φ ⊢ λx:iP . c : iP → iN  ⤳ λx.ft]]$ and by inversion:
+      $[[Γ ; Φ, x:iP ⊢ c : iN  ⤳ ft]]$, then by the induction hypothesis,
+      $[[|Γ| ; |Φ|, x:|iP| ⊢ ft : |iN|]]$.
+      By applying \ruleref{\ottdruleSFtytLamLabel} to this judgment, we infer
+      the desired $[[|Γ| ; |Φ| ⊢ λx.ft : |iP| → |iN|]]$.
+
+    \item \ruleref{\ottdruleTELTLamLabel}
+      We know that $[[Γ ; Φ ⊢ Λα⁺ . c : ∀α⁺.iN  ⤳  Λa.ft]]$ and by inversion:
+      $[[Γ, α⁺ ; Φ ⊢ c : iN  ⤳  ft]]$, then by the induction hypothesis,
+      $[[|Γ|, a ; |Φ| ⊢ ft : |iN|]]$.
+      By applying \ruleref{\ottdruleSFtyTLamLabel} to this judgment, we infer
+      $[[|Γ| ; |Φ| ⊢ Λa.ft : ∀a.|iN|]]$, that is 
+      $[[|Γ| ; |Φ| ⊢ Λa.ft : |∀α⁺.iN|]]$.
+
+    \item \ruleref{\ottdruleTELCVarLetLabel}
+      We know that $[[Γ; Φ ⊢ let x : iP = c; c' : iN  ⤳  let x = (fe ft) ; ft']]$ 
+      and by inversion:
+      \begin{itemize}
+        \item $[[Γ; Φ ⊢ c : iM ⤳ ft]]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ| ⊢ ft : |iM|]]$;
+        \item $[[Γ ⊢ iM ≤ ↑iP ⤳ fe]]$, and then by the soundness of 
+          subtyping elaboration (\cref{lemma:subt-elab-soundness}),
+          $[[|Γ| ; · ⊢ fe : |iM| → |iP|]]$;
+        \item $[[Γ; Φ, x:iP ⊢ c' : iN ⤳ ft']]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ|, x:|iP| ⊢ ft' : |iN|]]$.
+      \end{itemize}
+      To infer $[[|Γ| ; |Φ| ⊢ let x = (fe ft) ; ft' : |iN|]]$,
+      we apply the admissible \systemf rule \ruleref{\ottdruleSFtyALetLabel}.
+      Both premises hold: $[[|Γ| ; |Φ| ⊢ fe ft : |iP|]]$ follows form \ruleref{\ottdruleSFtyAppLabel},
+      and $[[|Γ| ; |Φ|, x:|iP| ⊢ ft' : |iN|]]$ holds as stated above.
+
+    \item \ruleref{\ottdruleTELVarLetLabel}
+      We know that 
+      $[[Γ; Φ ⊢ let x = v; c : iN  ⤳  let x = ft ; ft']]$
+      and by inversion:
+      \begin{itemize}
+        \item $[[Γ; Φ ⊢ v : iP ⤳ ft]]$ implying $[[|Γ| ; |Φ| ⊢ ft : |iP|]]$; and
+        \item $[[Γ; Φ, x:iP ⊢ c : iN ⤳ ft']]$ implying $[[|Γ| ; |Φ|, x:|iP| ⊢ ft' : |iN|]]$.
+      \end{itemize}
+      Then the desired $[[|Γ| ; |Φ| ⊢ let x = ft ; ft' : |iN|]]$
+      follows by the admissible \systemf rule \ruleref{\ottdruleSFtyALetLabel}
+      applied to the judgments above.
+
+    \item \ruleref{\ottdruleTELAppLetLabel}
+      We know that
+      $[[Γ ; Φ ⊢ let x = v(args); c : iN ⤳ let x = (fe (ft' ● fargs)) ; ft]]$
+      and by inversion, in particular, we have:
+      \begin{itemize}
+        \item $[[Γ ; Φ ⊢ v : ↓iM ⤳ ft']]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ| ⊢ ft' : |iM|]]$;
+        \item $[[Γ; Φ ⊢ iM ● args ⇒> ↑iQ ⤳ fe ; fargs]]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ|, x:|iM| ⊢ fe (x ● fargs) : |iQ|]]$;
+        \item $[[Γ; Φ, x:iQ ⊢ c : iN ⤳ ft]]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ|, x:|iQ| ⊢ ft : |iN|]]$.
+      \end{itemize}
+      We wish to show that 
+      $[[|Γ| ; |Φ| ⊢ let x = (fe (ft' ● fargs)) ; ft : |iN|]]$.
+      By applying \ruleref{\ottdruleSFtyALetLabel},
+      we reduce this to
+      $[[|Γ| ; |Φ| ⊢ fe (ft' ● fargs) : |iQ|]]$,
+      which holds by substitution $[[ft']]$ for $[[x]]$ in
+      $[[|Γ| ; |Φ|, x:|iM| ⊢ fe (x ● fargs) : |iQ|]]$
+      (which is possible since $[[|Γ| ; |Φ| ⊢ ft' : |iM|]]$).
+    \item \ruleref{\ottdruleTELAppLetAnnLabel}
+      By inversion of 
+      $[[Γ ; Φ ⊢ let x:iP = v(args); c : iN ⤳ let x = fe' (fe (ft' ● fargs)); ft]]$, 
+      we know that
+      \begin{itemize}
+        \item $[[Γ ; Φ ⊢ v : ↓iM ⤳ ft']]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ| ⊢ ft' : |iM|]]$;
+        \item $[[Γ; Φ ⊢ iM ● args ⇒> iM' ⤳ fe ; fargs]]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ|, x:|iM| ⊢ fe (x ● fargs) : |iM'|]]$. 
+          By substitution, it implies $[[|Γ| ; |Φ|⊢ fe (ft' ● fargs) : |iM'|]]$. 
+        \item $[[Γ ⊢ iM' ≤ ↑iP ⤳ fe']]$, and then by the soundness of 
+          subtyping elaboration (\cref{lemma:subt-elab-soundness}),
+          $[[|Γ| ; · ⊢ fe' : |iM'| → |iP|]]$;
+        \item $[[Γ; Φ, x:iP ⊢ c : iN ⤳ ft]]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ|, x:|iP| ⊢ ft : |iN|]]$.
+      \end{itemize}
+
+      To infer $[[|Γ| ; |Φ| ⊢ let x = fe' (fe (ft' ● fargs)) ; ft : |iN|]]$,
+      we apply \ruleref{\ottdruleSFtyALetLabel},
+      so it is left to show that $[[|Γ| ; |Φ| ⊢ fe' (fe (ft' ● fargs)) : |iP|]]$, 
+      which follows from \ruleref{\ottdruleSFtyAppLabel} and the judgments stated above.
+
+    \item \ruleref{\ottdruleTELUnpackLabel}
+      By inversion of 
+      $[[Γ ; Φ ⊢ let∃ (nas, x) = v; c : iN   ⤳  unpack (as, x) = ft; ft']]$, 
+      we have:
+      \begin{itemize}
+        \item $[[Γ ; Φ ⊢ v : ∃nas.iP ⤳ ft]]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ| ⊢ ft : ∃as.|iP|]]$;
+        \item $[[Γ; Φ, x:iP ⊢ c : iN ⤳ ft']]$, and then by the induction hypothesis,
+          $[[|Γ| ; |Φ|, x:|iP| ⊢ ft' : |iN|]]$; 
+        \item $[[Γ ⊢ iN]]$ implying $[[|Γ| ⊢ |iN|]]$.
+      \end{itemize}
+      To infer the desired
+      $[[|Γ| ; |Φ| ⊢ unpack (as, x) = ft; ft' : |iN|]]$,
+      we apply \ruleref{\ottdruleSFtyAUnpackLabel}:
+      all its premises hold, as noted above.
+  \end{caseof}
+\end{proof}
+
+\lemmaPolSubst*
+\begin{proof}
+  We prove it by induction on $[[fT]]$. Each congruent case is proven 
+  by congruent rewriting, and applying the induction hypothesis.
+  \begin{caseof}
+    \item $[[fT = a]]$. Then $[[ +|[fA/a]fT|+ ]] = [[ +|[fA/a]a|+ ]] = [[ +|fA|+ ]]$ and 
+    $[[ [+|fA|+ / α⁺] +|fT|+ ]] = [[ [+|fA|+ / α⁺] α⁺ ]] = [[ +|fA|+ ]]$. 
+    \item $[[fT = a0]] \neq [[a]]$.
+      Then $[[ +|[fA/a]fT|+ ]] = [[ +|[fA/a]a0|+ ]] = [[ +|a0|+ ]] = [[α0⁺]]$ and
+      $[[ [+|fA|+ / α⁺] +|fT|+ ]] = [[ [+|fA|+ / α⁺] α0⁺ ]] = [[ +|a0|+ ]]$.
+    \item $[[fT = fB1 → fB1]]$. 
+      By the induction hypothesis,
+      $[[ +|[fA/a]fBi|+ = [+|fA|+ / α⁺] +|fBi|+ ]]$ for $i = 1, 2$.
+      Then 
+      $[[ +|[fA/a]fT|+ ]] = 
+       [[ +|[fA/a](fB1 → fB2)|+ ]] = 
+       [[ +|[fA/a]fB1 → [fA/a]fB2|+ ]] = 
+       [[ ↓(+|[fA/a]fB1|+ → ↑+|[fA/a]fB2|+) ]] = 
+       [[ ↓([+|fA|+ / α⁺] +|fB1|+ → ↑[+|fA|+ / α⁺] +|fB2|+) ]] = 
+       [[ [+|fA|+ / α⁺] ↓(+|fB1|+ → ↑+|fB2|+) ]] = 
+       [[ [+|fA|+ / α⁺] +|fB1 → fB2|+ ]] = 
+       [[ [+|fA|+ / α⁺] +|fT|+ ]]$.
+    \item $[[fT = ∀a0.fT0]]$. 
+      By the induction hypothesis,
+      $[[ +|[fA/a]fT0|+ = [+|fA|+ / α⁺] +|fT0|+ ]]$.
+      Then 
+      $[[ +|[fA/a]fT|+ ]] = 
+       [[ +|[fA/a]∀a0.fT0|+ ]] = 
+       [[ +|∀a0.[fA/a]fT0|+ ]] = 
+       [[ ↓∀α0⁺.↑+|[fA/a]fT0|+ ]] = 
+       [[ ↓∀α0⁺.↑[+|fA|+ / α⁺] +|fT0|+ ]] = 
+       [[ [+|fA|+ / α⁺] ↓∀α0⁺.↑+|fT0|+ ]] = 
+       [[ [+|fA|+ / α⁺] +|∀a0.fT0|+ ]] = 
+       [[ [+|fA|+ / α⁺] +|fT|+ ]]$.
+  \end{caseof}
+\end{proof}
+
+\lemmaPolRemovable*
+\begin{proof}
+  We prove it separately in both directions of the implication. 
+
+  The erasure of the computation is proved by
+   induction on the derivation of $[[fΓ ; fΦ ⊢ ft : fT ⤳ c]]$.
+  Notice that the inference rules of \cref{fig:systemf-typing}
+  are obtained by removing the resulting computation from the judgement of the 
+  rules of \cref{fig:systemf-polarization}.
+
+  The other direction is proved by straightforward 
+  induction on the typing derivation $[[fΓ ; fΦ ⊢ ft : fT]]$.
+\end{proof}
+
+\lemmaTypPolWf*
+\begin{proof}
+  We prove it by induction on $[[fΓ ⊢ fT]]$.
+  Let us consider the last rule applied to infer this judgment.
+  \begin{caseof}
+    \item \ruleref{\ottdruleSFwfVarLabel}
+      By inversion, $[[a ∊ fΓ]]$, 
+      which implies $[[+|a|+]] = [[α⁺ ∊ +|fΓ|+]]$.
+      Then $[[+|fΓ|+ ⊢ +|a|+ ]]$
+      by \ruleref{\ottdruleWFTPVarLabel};
+    \item \ruleref{\ottdruleSFwfArrowLabel}
+      By inversion,  $[[fΓ ⊢ fA]]$ and $[[fΓ ⊢ fB]]$,
+      which by the induction hypothesis implies $[[+|fΓ|+ ⊢ +|fA|+]]$ and $[[+|fΓ|+ ⊢ +|fB|+]]$.
+      Then $[[+|fΓ|+ ⊢ ↓(+|fA|+ → ↑+|fB|+)]] = [[+|fA → fB|+]]$ by 
+      \ruleref{\ottdruleWFTShiftDLabel},
+      \ruleref{\ottdruleWFTShiftULabel}, and
+      \ruleref{\ottdruleWFTArrowLabel};
+    \item \ruleref{\ottdruleSFwfForallLabel}
+      By inversion, $[[fΓ, a ⊢ fT]]$,
+      which by the induction hypothesis implies $[[+|fΓ|+, α⁺ ⊢ +|fT|+]]$.
+      Then $[[+|fΓ|+ ⊢ ∀α⁺.↑+|fT|+]] = [[+|∀a.fT|+]]$ by 
+      \ruleref{\ottdruleWFTForallLabel}, and \ruleref{\ottdruleWFTShiftULabel}.
+  \end{caseof}
+\end{proof}
+
+\lemmaPolarSoundness*
+\begin{proof}
+  We prove it by induction on $[[fΓ ; fΦ ⊢ ft : fT ⤳ c]]$.
+  Let us consider the last rule applied to infer this judgment.
+  \begin{caseof}
+    \item \ruleref{\ottdruleELVarLabel},
+      in which case
+      we wish to prove that if
+      $[[ fΓ ; fΦ ⊢ x : fT  ⤳  return x]]$
+      then 
+      $[[+|fΓ|+ ; +|fΦ|+ ⊢ return x : ↑+|fT|+]]$.
+
+      By inversion of the given judgement, 
+      $[[x : fT ∊ fΦ]]$, and thus, 
+      $[[x : +|fT|+ ∊ +|fΦ|+]]$.
+      We apply \ruleref{\ottdruleDTVarLabel}
+      to infer $[[+|fΓ|+ ; +|fΦ|+  ⊢ x : +|fT|+]]$, 
+      and then \ruleref{\ottdruleDTReturnLabel}
+      to infer $[[+|fΓ|+ ; +|fΦ|+  ⊢ return x : ↑+|fT|+]]$.
+
+    \item \ruleref{\ottdruleELtLamLabel},
+      in which case we wish to prove that if
+      $[[ fΓ ; fΦ ⊢ λx. ft : fA → fB  ⤳  return {λx : +|fA|+. c}]]$
+      then
+      $[[+|fΓ|+ ; +|fΦ|+ ⊢ return {λx : +|fA|+. c} : ↑+|fA → fB|+]]$.
+
+      The premise of the given judgment is 
+      $[[fΓ; fΦ, x:fA  ⊢ ft : fB  ⤳ c]]$, which by the induction hypothesis
+      implies $[[+|fΓ|+ ; +|fΦ, x:fA|+  ⊢ c : ↑+|fB|+]]$,
+      which we rewrite as 
+      $[[+|fΓ|+ ; +|fΦ|+, x:+|fA|+  ⊢ c : ↑+|fB|+]]$.
+      Also, the soundness of \systemf typing (together with \cref{lemma:pol-removable}) 
+      imply that the inferred type $[[fA → fB]]$ is well-formed in $[[fΓ]]$,
+      which means that $[[+|fA|+]]$ is well-formed in 
+      $[[+|fΓ|+]]$ by \cref{lemma:typ-pol-wf-completeness}.
+      Then by \ruleref{\ottdruleDTtLamLabel} we infer 
+      $[[+|fΓ|+ ; +|fΦ|+  ⊢ λx : +|fA|+. c : +|fA|+ → ↑+|fB|+]]$,
+      and then by \ruleref{\ottdruleDTThunkLabel} and \ruleref{\ottdruleDTReturnLabel}, 
+      $[[+|fΓ|+ ; +|fΦ|+  ⊢ return {λx : +|fA|+. c} : ↑↓(+|fA|+ → ↑+|fB|+)]]$, 
+      which can be rewritten to the required judgment since
+      $[[↓(+|fA|+ → ↑+|fB|+) = +|fA → fB|+]]$ by definition.
+
+    \item \ruleref{\ottdruleELTLamLabel}.
+      The case is similar to the previous one.
+      We wish to prove that if
+      $[[ fΓ ; fΦ ⊢ Λa.ft : ∀a.fT  ⤳  return {Λα⁺.c}]]$
+      then
+      $[[ +|fΓ|+ ; +|fΦ|+ ⊢ return {Λα⁺.c} : ↑+|∀a.fT|+]]$.
+
+      By inversion of the given judgment, we have:
+      $[[fΓ, a ; fΦ ⊢ ft : fT  ⤳ c]]$, and by the induction hypothesis,
+      $[[+|fΓ|+, α⁺ ; +|fΦ|+ ⊢ c : ↑+|fT|+]]$,
+
+      Then we apply \ruleref{\ottdruleDTTLamLabel} to infer
+      $[[+|fΓ|+ ; +|fΦ|+  ⊢ Λα⁺.c : ∀α⁺.↑+|fT|+]]$,
+      and then 
+      \ruleref{\ottdruleDTThunkLabel} with
+      \ruleref{\ottdruleDTReturnLabel}
+      to infer
+      $[[+|fΓ|+ ; +|fΦ|+  ⊢ return {Λα⁺.c} : ↑↓∀α⁺.↑+|fT|+]]$.
+      Finally, notice that $[[↓∀α⁺.↑+|fT|+ = +|∀a.fT|+]]$ by definition.
+
+    \item \ruleref{\ottdruleELAppLabel}.
+      By inversion of the given judgment, we have:
+      \begin{itemize}
+        \item $[[fΓ ; fΦ ⊢ ft : fA → fB  ⤳  c]]$,
+          and by the induction hypothesis,
+          $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑+|fA → fB|+]]$,
+          which is equivalent to
+          $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑↓(+|fA|+ → ↑+|fB|+)]]$.
+        \item $[[fΓ ; fΦ ⊢ ft' : fA  ⤳  c']]$, 
+          and by the induction hypothesis,
+          $[[+|fΓ|+ ; +|fΦ|+ ⊢ c' : ↑+|fA|+]]$.
+      \end{itemize}
+      To infer 
+      $[[+|fΓ|+ ; +|fΦ|+ ⊢ let f : +|fA → fB|+ = c; let x : +|fA|+ = c'; let y:+|fB|+ = f(x); return y : ↑+|fB|+]]$, 
+      we gradually apply the corresponding rules of \fexists to construct the required typing inference tree:
+      \begin{enumerate}
+        \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+), x:+|fA|+, y:+|fB|+ ⊢ return y : ↑+|fB|+]]$ by 
+          \ruleref{\ottdruleDTVarLabel} and \ruleref{\ottdruleDTReturnLabel}.  
+        \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+), x:+|fA|+ ⊢ let y:+|fB|+ = f(x); return y : ↑+|fB|+]]$ by 
+          \ruleref{\ottdruleDTAppLetAnnLabel}. Let us show that the 
+          required premises hold. 
+          \begin{enumerate}
+            \item $[[+|fΓ|+ ⊢ +|fB|+]]$ by \cref{lemma:typ-pol-wf-completeness};
+            \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+), x:+|fA|+ ⊢ f : ↓(+|fA|+ → ↑+|fB|+)]]$ by 
+              \ruleref{\ottdruleDTVarLabel};
+            \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+), x:+|fA|+ ⊢ (+|fA|+ → ↑+|fB|+) ● x ⇒> ↑+|fB|+]]$
+              by \ruleref{\ottdruleDTArrowAppLabel};
+            \item $[[+|fΓ|+ ⊢ ↑+|fB|+ ≤ ↑+|fB|+]]$ by reflexivity (\cref{lemma:subtyping-reflexivity});
+            \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+), x:+|fA|+, y:+|fB|+ ⊢ return y : ↑+|fB|+]]$ 
+            as noted above;
+          \end{enumerate}
+        \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+) ⊢ let x:+|fA|+ = c'; let y:+|fB|+ = f(x); return y : ↑+|fB|+]]$ by 
+          \ruleref{\ottdruleDTCVarLetLabel}. Let us show that the 
+          required premises hold. 
+          \begin{enumerate}
+            \item $[[+|fΓ|+ ⊢ +|fA|+]]$ by \cref{lemma:typ-pol-wf-completeness};
+            \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+) ⊢ c' : ↑+|fA|+]]$
+              holds by weakening of $[[+|fΓ|+ ; +|fΦ|+ ⊢ c' : ↑+|fA|+]]$, which in turn holds by the induction hypothesis,
+              as noted above;
+            \item $[[+|fΓ|+  ⊢ ↑+|fA|+ ≤ ↑+|fA|+]]$ by reflexivity (\cref{lemma:subtyping-reflexivity});
+            \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+), x:+|fA|+ ⊢ let y:+|fB|+ = f(x); return y : ↑+|fB|+]]$ as noted above;
+          \end{enumerate}
+        \item $[[+|fΓ|+ ; +|fΦ|+ ⊢ let f : +|fA → fB|+ = c; let x : +|fA|+ = c'; let y:+|fB|+ = f(x); return y : ↑+|fB|+]]$ by 
+          \ruleref{\ottdruleDTCVarLetLabel}. Let us show that the 
+          required premises hold. 
+          \begin{enumerate}
+            \item $[[+|fΓ|+ ⊢ +|fA → fB|+]]$ by \cref{lemma:typ-pol-wf-completeness};
+            \item $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑+|fA → fB|+]]$ by the induction hypothesis, as noted above;
+            \item $[[+|fΓ|+  ⊢ ↑+|fA → fB|+ ≤ ↑+|fA → fB|+]]$ by reflexivity (\cref{lemma:subtyping-reflexivity});
+            \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+) ⊢ let x:+|fA|+ = c'; let y:+|fB|+ = f(x); return y : ↑+|fB|+]]$ 
+              as noted above (we rewrote $[[+|fA → fB|+]]$ as $[[↓(+|fA|+ → ↑+|fB|+)]]$).
+          \end{enumerate}
+      \end{enumerate}
+
+    \item \ruleref{\ottdruleELTAppLabel}
+      By inversion of this rule, we have
+      \begin{itemize}
+        \item $[[fΓ ; fΦ ⊢ ft : ∀a.fT  ⤳  c]]$, and thus, 
+          $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑+|∀a.fT|+]]$ by the induction hypothesis; and
+        \item $[[fΓ ⊢ fA]]$, which implies $[[+|fΓ|+ ⊢ +|fA|+]]$ by \cref{lemma:typ-pol-wf-completeness}.
+      \end{itemize}
+      We wish to infer
+      $[[+|fΓ|+ ; +|fΦ|+ ⊢ let f : +|∀a.fT|+ = c; let y : +|[fA/a]fT|+ = f(); return y : ↑+|[fA/a]fT|+]]$.
+      First, let us rewrite the polarized types by definition and \cref{lemma:pol-subst}:
+      $[[+|fΓ|+ ; +|fΦ|+ ⊢ let f : ↓∀α⁺.↑+|fT|+ = c; let y : [+|fA|+/α⁺]+|fT|+ = f(); return y : ↑[+|fA|+/α⁺]+|fT|+]]$.
+      Then we prove this judgment gradually by applying the corresponding rules of \fexists:
+      \begin{enumerate}
+        \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+, y : [+|fA|+/α⁺]+|fT|+ ⊢ return y : ↑[+|fA|+/α⁺]+|fT|+]]$
+          holds by \ruleref{\ottdruleDTVarLabel} and \ruleref{\ottdruleDTReturnLabel}.
+        \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+  ⊢ let y : [+|fA|+/α⁺]+|fT|+ = f(); return y : ↑[+|fA|+/α⁺]+|fT|+]]$
+          holds by \ruleref{\ottdruleDTAppLetAnnLabel}. Let us show that the 
+          required premises hold. 
+          \begin{enumerate}
+            \item $[[+|fΓ|+ ⊢ [+|fA|+/α⁺]+|fT|+]]$ holds since $[[+|fΓ|+ ⊢ +|fA|+]]$ and $[[+|fΓ|+ ⊢ +|fT|+]]$ by \cref{lemma:wf-subst}.
+            \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+  ⊢ f : ↓∀α⁺.↑+|fT|+]]$ by \ruleref{\ottdruleDTVarLabel}.
+            \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+  ⊢ ∀α⁺.↑+|fT|+ ● · ⇒> ∀α⁺.↑+|fT|+]]$ by \ruleref{\ottdruleDTEmptyAppLabel}.
+            \item $[[+|fΓ|+  ⊢ ∀α⁺.↑+|fT|+ ≤ ↑[+|fA|+/α⁺]+|fT|+ ]]$ by \ruleref{\ottdruleDOneForallLabel}:
+              $[[+|fΓ|+  ⊢ +|fA|+/α⁺ : {α⁺}]]$ since $[[+|fΓ|+  ⊢ +|fA|+]]$, as noted above.
+            \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+, y : [+|fA|+/α⁺]+|fT|+ ⊢ return y : ↑[+|fA|+/α⁺]+|fT|+]]$ as noted above.
+          \end{enumerate}
+        \item $[[+|fΓ|+ ; +|fΦ|+  ⊢ let f : ↓∀α⁺.↑+|fT|+ = c; let y : [+|fA|+/α⁺]+|fT|+ = f(); return y : ↑[+|fA|+/α⁺]+|fT|+]]$
+          holds by \ruleref{\ottdruleDTCVarLetLabel}. Let us show that the
+          required premises hold.
+          \begin{enumerate}
+            \item $[[+|fΓ|+ ⊢ ↓∀α⁺.↑+|fT|+]]$ by \cref{lemma:typ-pol-wf-completeness}.
+            \item $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑↓∀α⁺.↑+|fT|+]]$ by the induction hypothesis, as noted above.
+            \item $[[+|fΓ|+  ⊢ ↑↓∀α⁺.↑+|fT|+ ≤ ↑↓∀α⁺.↑+|fT|+]]$ by reflexivity (\cref{lemma:subtyping-reflexivity}).
+            \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+  ⊢ let y : [+|fA|+/α⁺]+|fT|+ = f(); return y : ↑[+|fA|+/α⁺]+|fT|+]]$ as noted above.
+          \end{enumerate}
+      \end{enumerate}
+  \end{caseof}
+\end{proof}
+

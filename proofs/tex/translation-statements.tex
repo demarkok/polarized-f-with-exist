@@ -1,0 +1,71 @@
+\begin{restatable}[Subtyping elaboration term can be removed]{lemma}{lemmaElabRemovable}
+  \label{lemma:elab-removable}
+  \hfill
+  \begin{itemize}
+    \item [$-$] For any $[[Γ]]$, $[[iN]]$, and $[[iM]]$, 
+      $[[Γ ⊢ iN ≤ iM]]$ holds if and only if 
+      there exists $[[ft]]$ such that $[[Γ ⊢ iN ≤ iM ⤳ ft]]$;
+    \item [$+$] For any $[[Γ]]$, $[[iP]]$, and $[[iQ]]$, 
+      $[[Γ ⊢ iP ≥ iQ]]$ holds if and only if
+      there exists $[[ft]]$ such that $[[Γ ⊢ iP ≥ iQ ⤳ ft]]$.
+  \end{itemize}
+\end{restatable}
+
+
+
+\begin{restatable}[Type depolarization distributes over substitution]{observation}{lemmaDepolSubst}
+  \label{lemma:depol-subst}
+  \hfill
+  \begin{itemize}
+    \item [$+$] $[[ |[σ]iN| = [|σ|]|iN| ]]$,
+    \item [$-$] $[[ |[σ]iP| = [|σ|]|iP| ]]$.
+  \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Soundness of Subtyping Elaboration]{lemma}{lemmaSubtElabSoundness}
+  \label{lemma:subt-elab-soundness}
+  \hfill
+  \begin{itemize}
+    \item [$-$] If $[[Γ ⊢ iN ≤ iM ⤳ ft]]$ then $[[|Γ| ; · ⊢ ft : |iN| → |iM| ]]$;
+    \item [$+$] if $[[Γ ⊢ iP ≥ iQ ⤳ ft]]$ then $[[|Γ| ; · ⊢ ft : |iQ| → |iP| ]]$.
+  \end{itemize}
+\end{restatable}
+
+
+\begin{restatable}[Soundness of \fexists \wrt \systemf]{lemma}{lemmaDepolarSoundness}
+  \label{lemma:depolar-soundness}
+  A judgment inferred by \fexists is derivable in \systemf.\\
+  \begin{itemize}
+    \item [$+$] If $[[Γ; Φ ⊢ v : iP ⤳ ft]]$ then $[[|Γ| ; |Φ| ⊢ ft : |iP|]]$;
+    \item [$-$] if $[[Γ; Φ ⊢ c : iN ⤳ ft]]$ then $[[|Γ| ; |Φ| ⊢ ft : |iN|]]$;
+    \item [$[[●]]$] if $[[Γ ; Φ ⊢ iN ● args ⇒> iM ⤳ fe; fargs]]$ then 
+      $[[|Γ| ; |Φ|, x:|iN| ⊢ fe (x ● fargs) : |iM|]]$.  
+  \end{itemize}
+\end{restatable}
+
+\begin{restatable}[Polarization commutes with substitution]{lemma}{lemmaPolSubst}
+  \label{lemma:pol-subst}
+  $[[ +|[fA/a]fT|+ = [+|fA|+ / α⁺] +|fT|+ ]]$
+\end{restatable}
+
+
+\begin{restatable}{observation}{lemmaPolRemovable}
+  \label{lemma:pol-removable}
+  For any $[[fΓ]]$, $[[fΦ]]$, $[[ft]]$, and $[[fT]]$,
+  there exists $[[c]]$ such that $[[fΓ ; fΦ ⊢ ft : fT ⤳ c]]$
+  if and only if $[[fΓ ; fΦ ⊢ ft : fT]]$.
+\end{restatable}
+
+\begin{restatable}[Type polarization agrees with well-formedness]{lemma}{lemmaTypPolWf}
+  \label{lemma:typ-pol-wf}
+  If $[[fΓ ⊢ fT]]$ then $[[+|fΓ|+ ⊢ +|fT|+]]$.
+\end{restatable}
+
+\begin{restatable}[Polarization preserves typing]{lemma}{lemmaPolarSoundness}
+  \label{lemma:polar-soundness}
+  If $[[fΓ ; fΦ ⊢ ft : fT ⤳ c]]$
+  then $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑+|fT|+]]$.
+\end{restatable}
+
+

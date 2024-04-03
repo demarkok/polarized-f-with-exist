@@ -258,87 +258,6 @@ The following observations about the declarative subtyping are worth noting:
 In the next section, we present the sound and complete algorithm
 checking whether one type is a subtype of another according to \cref{def:subDOne}. 
 
-\section{Relation to System F}
-
-The types and terms of \fexists have an additional polarization structure.
-Despite that, it is closely related to the well-known \systemf.
-To demonstrate that, we provide two translations in both ways:
-the polarization from \systemf to \fexists and the depolarization from 
-\fexists to \systemf. These translations are done at the level of types and terms,
-and the expected typing preservation properties are proved.
-
-\begin{figure}[h]
-  \ottdefnSFtyLabeled{}
-  \ottdefnSFtyALabeled{}
-  \caption{Typing rules of \systemf}
-  \label{fig:systemf-typing}
-\end{figure}
-
-\begin{figure}[h]
-  \ottdefnSFWFLabeled{}
-\end{figure}
-
-\subsection{Type-level Translation}
-
-\begin{figure}[h]
-  \ottfundefnunpolP{}
-  \ottfundefnunpolN{}
-\end{figure}
-
-\begin{figure}[h]
-  \ottdefnELNLabeled{}
-  \ottdefnELPLabeled{}
-  \caption{Subtyping elaboration from \fexists to \systemf}
-  \label{fig:subt-elaboration}
-\end{figure}
-
-
-% \lemmaSubtElabSoundness
-
-% \lemmaElabRemovable
-
-% \lemmaDepolSubst
-
-\subsection{Term-level Translation}
-
-The term-level translation is defined not solely for terms, but for typing
-derivations. The reason for that is that the terms of \systemf and \fexists
-contain different typing information that cannot be reconstructed without the
-appropriate derivation tree. For instance, the lambda expressions in \systemf do
-not have the bound variable annotation, while the lambda expressions in \fexists
-do; on the other hand, \fexists has rich subtyping, which cannot be expressed in
-in terms of polymorphic type instantiation of \systemf.
-
-\begin{figure}[h]
-  \ottdefnTELPLabeled{}
-  \caption{Typing elaboration from \fexists to \systemf}
-  \label{fig:typing-elaboration}
-\end{figure}
-
-\begin{figure}[h]
-  \ottdefnTELNLabeled{}
-\end{figure}
-
-\begin{figure}[h]
-  \ottdefnTELAppLabeled{}
-\end{figure}
-
-\begin{figure}[h]
-  \ottdefnSFfPolLabeled{}
-  \caption{Polarization: translation from \systemf to \fexists}
-  \label{fig:systemf-polarization}
-\end{figure}
-
-% \lemmaDepolarSoundness*
-
-% \lemmaPolSubst
-
-% \lemmaPolRemovable
-
-% \lemmaTypPolWf*
-
-% \lemmaPolarSoundness
-
 \section{Algorithmic Type System}
 
 \subsection{Grammar}
@@ -604,7 +523,6 @@ as the equality of their normal forms.
     \item [$+$] $[[Γ ⊢ iP ≈ iQ]]$ if and only if $[[nf(iP) = nf(iQ)]]$.
   \end{itemize}
 \end{theorempreview}
-
 
 
 \begin{algorithm}[Substitution Normalization]
@@ -1389,6 +1307,217 @@ Let us discuss the rules of the application inference:
 \end{itemize}
 
 
+\section{Relation to System F}
+
+Although based on \systemf, \fexists has an additional polarization structure.
+To demonstrate the relation between these systems we establish translations in
+both ways: the polarization from \systemf to \fexists and the depolarization
+from \fexists to \systemf. These translations are done at the level of types and
+terms, and the expected typing preservation properties are proved.
+
+First, let us agree on the variant of \systemf that we use to establish the
+relation with \fexists. At the type level, we have variables, functional arrows,
+and universal quantifiers, and define existential quantifiers as a syntactic
+sugar using standard encodings. At the term level, we have variables,
+unannotated lambda abstractions, type abstractions, and term-level applications,
+but not type applications (they can be done implicitly); for convenience, we
+introduce multi-argument application, let-blinders, and existential constructors
+and eliminators as syntactic sugar (see \cref{fig:systemf-grammar}).
+
+\begin{figure}
+  \begin{minipage}[t]{0.39\linewidth}
+    \vspace*{0pt}
+    \ottgrammartabular{
+      \ottfT\ottprodnewline
+      \ottprodline{}{}{}{}{}{}\ottprodnewline
+      \ottprodline{}{}{}{}{}{}\ottprodnewline
+      \ottprodline{|}{[[∃as.fT]]}{}{}{}{}\ottprodnewline
+      \ottprodline{}{\equiv [[∀b.(∀as.(fT → b)) → b]]}{}{}{}{}\ottinterrule
+    }
+  \end{minipage}
+  \begin{minipage}[t]{0.6\linewidth}
+    \vspace*{0pt}
+    \ottgrammartabular{
+      \ottft\ottprodnewline
+      \ottprodline{}{}{}{}{}{}\ottprodnewline
+      \ottprodline{|}{[[ft' ● fargs]]}{\equiv (([[ft']] [[ft1]])\, \dots )\,[[ftn]]}{}{}{}\ottprodnewline
+      \ottprodline{|}{[[let x = ft1 ; ft2]]} {\equiv [[(λx.ft2) ft1]]}{}{}{}\ottprodnewline
+      \ottprodline{|}{[[pack ft : fT]]}{\equiv [[Λb. λf. f ft]]}{}{}{}\ottprodnewline
+      \ottprodline{|}{[[unpack ( as , x ) = ft1 ; ft2]]}{\equiv [[ft1 (Λ as. λx. ft2)]]}{}{}{}\ottinterrule
+    }
+  \end{minipage}
+  \caption{Grammar of \systemf}
+  \label{fig:systemf-grammar}
+\end{figure}
+
+\begin{figure}
+  \ottdefnSFtyLabeledTwoColumns{}
+  \caption{Typing rules of \systemf}
+  \label{fig:systemf-typing}
+\end{figure}
+
+\begin{observation}
+  The following rules are admissible in \systemf: \hfill
+
+  \begin{minipage}{0.5\textwidth}
+    \ottusedrule{\ottdruleSFtyAUnpackLabeled{}}
+  \end{minipage}
+  \begin{minipage}{0.5\textwidth}
+    \ottusedrule{\ottdruleSFtyAPackLabeled{}}
+    \ottusedrule{\ottdruleSFtyALetLabeled{}}
+  \end{minipage}
+\end{observation}
+  
+% \begin{figure}[h]
+%   \ottdefnSFWFLabeled{}
+% \end{figure}
+
+\subsection{Type-level Translation}
+
+The translation between the types is defined in 
+\cref{fig:depolarization} and \cref{fig:polarization}.
+
+The depolarization---translation from \fexists to \systemf---is
+straightforward: it recursively
+\begin{enumerate*}
+  \item [(i)] removes the shift operators $[[↑]]$ and $[[↓]]$, and
+  \item [(ii)] removes the sign annotations from the type variables.
+\end{enumerate*}
+
+The polarization---translation from \systemf to \fexists---is more complex.
+There exist several ways to define it since any \systemf type can
+be polarized either positively or negatively.
+We chose the positive translation: every term of \systemf is translated
+into a value. Although this translation does not minimize the number of
+inserted shifts, it is more straightforward to consistently
+lift it to the level of terms.
+
+\begin{figure}[ht]
+  \begin{minipage}[t]{0.65\linewidth}
+    \centering
+      \begin{minipage}[t]{0.32\linewidth}
+      \ottfundefnunpolP{}
+      \end{minipage}
+      \begin{minipage}[t]{0.32\linewidth}
+      \ottfundefnunpolN{}
+      \end{minipage}
+    \caption{Type Depolarization}
+    \label{fig:depolarization}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{0.3\linewidth}
+    \centering
+    \ottfundefnpolarP{}
+    \caption{Type Polarization}
+    \label{fig:polarization}
+  \end{minipage}
+\end{figure}
+
+
+
+% \lemmaSubtElabSoundness
+
+% \lemmaElabRemovable
+
+% \lemmaDepolSubst
+
+\subsection{Term-level Translation}
+
+The term-level translation is defined not solely for terms, but for typing
+derivations (we call this translation \emph{elaboration}). 
+The reason for that is that the terms of \systemf and \fexists
+contain different typing information that cannot be reconstructed without the
+appropriate derivation tree. For instance, the lambda expressions in \systemf do
+not have the bound variable annotation, while the lambda expressions in \fexists
+do; on the other hand, \fexists has richer subtyping, which cannot be expressed in
+in terms of polymorphic type instantiation of \systemf.
+
+The elaboration \fexists $\leadsto$ \systemf
+annotates each judgment of an \fexists typing derivation tree
+with the corresponding \systemf term. This way, 
+we define elaboration for each kind of judgment:
+subtyping, positive typing, negative typing, and application typing.
+
+\paragraph{From \fexists to \systemf: Subtyping Elaboration}
+The subtyping elaboration is defined in \cref{fig:subt-elaboration}.
+The soundness property that is preserved by the elaboration is stated in
+\cref{lemma:subt-elab-soundness}. Informally, $[[Γ ⊢ iN ≤ iM ⤳ ft]]$
+guarantees that $[[ft]]$ is a \systemf term that represents 
+a conversion (\ie a function) from the depolarized $[[|iN|]]$ to $[[|iM|]]$.
+Symmetrically, $[[Γ ⊢ iP ≥ iQ ⤳ ft]]$ implies $[[|Γ| ; · ⊢ ft : |iQ| → |iP| ]]$.
+\begin{itemize}
+  \item Rules \ruleref{\ottdruleELNVarLabel} and \ruleref{\ottdruleELPVarLabel} 
+    are trivial: if the left-hand side and the right-hand side types are the 
+    same, the function converting one to another is the identity.
+  \item Rules \ruleref{\ottdruleELShiftULabel} and \ruleref{\ottdruleELShiftDLabel}
+    are symmetric. Since the shifts are removed during the depolarization,
+    the conversion function is obtained by the recursive call to the 
+    premise representing the subtyping of the required order
+    (the mutual subtyping equivalence is defined as two separate judgments).
+    Notice that the subtyping in the other order is still required
+    so that the removal of the elaboration produces a correct
+    subtyping inference tree in the original \fexists.
+  \item Rule \ruleref{\ottdruleELArrowLabel} allows us to
+    define elaboration between function. Since the subtyping is 
+    contravariant on the argument type and covariant on the result type,
+    we can use the elaboration functions acquired in the premises
+    (their types are $[[|iQ| → |iP|]]$ and $[[|iN| → |iM|]]$)
+    to construct the required elaboration term of type 
+    $[[(|iP| → |iN|) → |iQ| → |iM|]]$.
+  \item Rules 
+    \ruleref{\ottdruleELForallLabel}, and \ruleref{\ottdruleELExistsLabel}
+    are more involved. However, the soundness property is preserved
+    by \cref{lemma:depol-subst} allowing one to distribute
+    depolarization over the substitution whereby
+    translating the instantiation substitution $[[σ]]$ from \fexists to \systemf.
+\end{itemize}
+
+
+\paragraph{From \fexists to \systemf: Typing Elaboration}
+Using the subtyping elaboration, we define the elaboration for the
+positive/negative typing and application typing in
+\cref{fig:typing-elaboration}.
+The soundness property (\cref{lemma:depolar-soundness})
+guarantees that if the initial term $[[v]]$ has type $[[iP]]$ in \fexists,
+then the result of the elaboration of this judgment $[[ft]]$ has
+type $[[|iP|]]$ in \systemf. The negative typing has a symmetric property.
+As with the subtyping elaboration, 
+the rules in \cref{fig:typing-elaboration} are obtained from 
+the \fexists declarative typing rules (\cref{def:declarative-typing})
+by annotating each judgment with the elaboration term
+so that the typing is preserved.
+
+\begin{figure}[h]
+  \ottdefnELLabeled
+  \caption{Subtyping elaboration from \fexists to \systemf}
+  \label{fig:subt-elaboration}
+\end{figure}
+
+\clearpage % This command will start a new page
+\begin{figure}[t]
+  \ottdefnTELNLabeledTwoColumns{}
+
+  \hfill
+
+  \ottdefnTELPAppLabeled{}
+  \caption{Typing elaboration from \fexists to \systemf}
+  \label{fig:typing-elaboration}
+\end{figure}
+
+\paragraph{From \systemf to \fexists}
+
+The other direction of translation is also represented as an elaboration. The
+inference rules are defined in \cref{fig:systemf-polarization}, and constitute
+the rules of \systemf (\cref{fig:systemf-typing}). annotated with the
+elaboration terms. The elaborated term is chosen in such a way that
+the soundness property (\cref{lemma:polar-soundness}) holds: 
+$[[fΓ ; fΦ ⊢ ft : fT ⤳ c]]$ implies $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑+|fT|+]]$.
+
+\begin{figure}[h]
+  \ottdefnELfPolLabeled{}
+  \caption{Typing elaboration form from \systemf to \fexists}
+  \label{fig:systemf-polarization}
+\end{figure}
 
 \section{Algorithmic Typing}
 
