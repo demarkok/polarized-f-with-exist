@@ -621,14 +621,12 @@ fun | iN | :: fT :: unpolN {{ tex | [[iN]] | }} by
 
 fun | Γ | :: fΓ :: unpolCtxt {{ tex | [[Γ]] | }} by 
 
-% fun +| fT |+ Γ  :: iP :: polarPwC {{ tex \downharpoonlefttight [[fT]] \downharpoonrighttight^{[[Γ]]} }} by 
 
 fun +| fT |+  :: iP :: polarP {{ tex \downharpoonlefttight [[fT]] \downharpoonrighttight }} by 
    +|a|+       === α⁺ 
    +|∀a.fT|+   === ↓( ∀α⁺.↑+|fT|+ )
    +|fA → fB|+ === ↓( +|fA|+ → ↑+|fB|+ )
 
-% fun -| fT |- Γ :: iN :: polarNwC {{ tex \upharpoonlefttight [[fT]] \upharpoonrighttight^{[[Γ]]} }} by
 
 fun +| fΓ |+  :: Γ :: polarCtxt {{ tex \downharpoonlefttight [[fΓ]] \downharpoonrighttight }} by 
    +| · |+     === ·
@@ -636,3 +634,9 @@ fun +| fΓ |+  :: Γ :: polarCtxt {{ tex \downharpoonlefttight [[fΓ]] \downharp
 
 fun ∃ as . fT'  :: fT :: existsSugar by 
    ∃ as . fT' === ∀b.(∀as.(fT' → b)) → b
+
+fun +| fT |+ ^ Γ  :: iP :: pPwC {{ tex \downharpoonlefttight [[fT]] \downharpoonrighttight^{[[Γ]]} }} by 
+   +|a|+^Γ       === α⁺
+
+fun -| fT |- ^ Γ :: iN ::  pNwC {{ tex \upharpoonlefttight [[fT]] \upharpoonrighttight^{[[Γ]]} }} by
+   -|a|-^Γ       === α⁻

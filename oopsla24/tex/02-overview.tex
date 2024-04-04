@@ -20,10 +20,10 @@ is a computation (\ie negative).
 
 \subsection{Examples}
 
-The standard \systemf types and terms must be polarized to be used in \fexists, 
-we present the embedding formally in \cref{fig:polarization}.
-For instance, the following types and terms of \systemf 
-can be polarized in the given way:
+In general, any term and type of \systemf can be embedded into \fexists.
+This embedding---polarization---will be covered in more details in \cref{sec:rel-to-systemf}.
+Now, we discuss a number of examples of standard \systemf terms and types
+and their polarization in \fexists.
 
 \begin{figure}[h]
   \begin{align*}
@@ -37,7 +37,6 @@ can be polarized in the given way:
   \caption{Polarization of standard \systemf terms}
   \label{fig:polarization-examples}
 \end{figure}
-
 
 Let us assume that $[[Φ]]$ is a context containing the terms from \cref{fig:polarization-examples}.
 Then the following types are inferrable in \fexists:
@@ -179,4 +178,25 @@ In \cref{sec:extensions}, we discuss the way to modify the system to introduce \
 \end{figure}
 
 \subsection{The key ideas of the algorithm}
+
+The inference algorithm for \fexists is \emph{local}: it has a limited scope of
+the inference information and does not propagate it between far-apart branches
+of the syntax tree. Nevertheless, many difficulties appear in the inference of
+polymorphic and existential types. Next, we discuss the most challenging of
+these difficulties and how they are addressed in the algorithm.
+
+\paragraph{Subtyping} One of the hardest parts of the inference is subtyping,
+because this is where the polymorphic instantiation happens. In particular, it
+is the subtyping relation that allows us to use the polymorphic terms in the
+context where their concrete instantiations are expected: 
+$[[Γ ⊢ ∀α⁺.↑α⁺ ≤ ↑Int]]$.
+
+We are able to concentrate most of the difficulty in the subtyping relation 
+and then use the polarization to make it decidable. 
+
+\paragraph{Impredicativity}
+Impredicativity is another difficulty. Even with forall, the natural subtyping is undecidable. We have to find the restrictions that make it decidable. Unification allows us to solve equality constraints, and the LUB has to be solved with anti-unification. We have to design the system carefully to maintain decidability.
+
+\paragraph{Least Upper Bound}
+Now the LUB (Least Upper Bound) is not necessarily the syntactic equality. Examples, types don't have a LUB. How do we decide? The answer is anti-unification, which we explain at a high level. Now we have both forall and exists, and mixing unification and anti-unification.
 

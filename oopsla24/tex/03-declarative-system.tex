@@ -391,15 +391,66 @@ Let us discuss the rules of the declarative system in more detail.
 \end{property}
 
 \subsection{Relation to \systemf}
+\label{sec:rel-to-systemf}
 
 To establish a correspondence between \fexists and standard unpolarized \systemf,
-we present a translation between them. The translation of
-\systemf to \fexists is given in \cref{fig:polarization}, and the backward translation
-is given in \cref{fig:depolarization}. 
+we present a translation in both ways: the polarization from \systemf to \fexists
+and the depolarization from \fexists to \systemf. 
 
-\begin{figure}[h]
-  
+\paragraph{Type-level Translation}
+
+The type depolarization (\cref{fig:depolarization}) simply forgets the polarization structure of types:
+it removes the shift operators and the polarities of the free type variables.
+
+The type polarization (\cref{fig:polarization}) is more involved, as there are multiple
+ways to polarize a type: for instance, a variable $[[α]]$ can be polarized to $[[α⁺]]$ or $[[α⁻]]$.
+The choice of polarization affects the execution strategy of the program.
+We chose the positive polarization: every \systemf type is translated to a \emph{positive} type of \fexists.
+This choice makes it smoother to lift the translation to the term level, which will be disused next.
+
+\begin{figure}[ht]
+  \begin{minipage}[t]{0.65\linewidth}
+    \centering
+      \begin{minipage}[t]{0.32\linewidth}
+      \ottfundefnunpolP{}
+      \end{minipage}
+      \begin{minipage}[t]{0.32\linewidth}
+      \ottfundefnunpolN{}
+      \end{minipage}
+    \caption{Type Depolarization}
+    \label{fig:depolarization}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{0.3\linewidth}
+    \centering
+    \ottfundefnpolarP{}
+    \caption{Type Polarization}
+    \label{fig:polarization}
+  \end{minipage}
 \end{figure}
+
+\paragraph{Term-level Translation}
+
+The term-level translations between systems are more complex.
+They are defined as \emph{elaborations} of the typing derivations.
+In other words, the input of the translation is not a term, 
+but a whole typing derivation of this term in the corresponding system.
+For brevity, we omit the formal definition of the term-level translation,
+referring the reader to the appendix (\cref{sec:term-translation}). 
+
+We prove the soundness of the translation (\cref{lemma:translation-soundness}),
+which in particular guarantees that the translation preserves typing. 
+
+\begin{property}[Soundness of the Translation]
+    \label{lemma:translation-soundness}
+    \begin{align*}
+      & [[Γ ⊢ iN ≤ iM ⤳ ft]]  \text{ implies }  [[|Γ| ; · ⊢ ft : |iN| → |iM| ]], \\
+      & [[Γ ⊢ iP ≥ iQ ⤳ ft]]  \text{ implies }  [[|Γ| ; · ⊢ ft : |iQ| → |iP| ]], \\
+      & [[Γ; Φ ⊢ v : iP ⤳ ft]]  \text{ implies }  [[|Γ| ; |Φ| ⊢ ft : |iP|]], \\
+      & [[Γ; Φ ⊢ c : iN ⤳ ft]] \text{ implies }  [[|Γ| ; |Φ| ⊢ ft : |iN|]], \\
+      & [[fΓ ; fΦ ⊢ ft : fT ⤳ c]]  \text{ implies }  [[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑+|fT|+]].
+    \end{align*}
+\end{property}
 
 
 % \begin{figure}[h]
@@ -428,25 +479,25 @@ is given in \cref{fig:depolarization}.
 % execution strategy \ilyam{how?}.
 % Moreover, the translation procedure depends on the \emph{polarity} of the
 % free type variables. Thus, the translation functions 
-% $[[-| fT |-Γ]]$ and $[[+| fT |+Γ]]$ are indexed by a context $[[Γ]]$, 
+% $[[-| fT |-^Γ]]$ and $[[+| fT |+^Γ]]$ are indexed by a context $[[Γ]]$, 
 % containing either $[[α⁺]]$ or $[[α⁻]]$ for each variable $[[α]]$ free in $[[fT]]$.
 
 % \begin{figure}[h]
 %   \begin{equation*}
 %   \begin{aligned}
-%     [[-| a |-Γ]] &= [[α⁻]]  \text{,~if $[[α⁻ ∊ Γ]]$}\\
-%     [[-| a |-Γ]] &= [[↑α⁺]] \text{,~if $[[α⁺ ∊ Γ]]$}\\
-%     [[-| fA → fB |-Γ]] &= [[ +|fA|+Γ → -|fB|-Γ  ]] \\
-%     [[-| ∀α.fT |-Γ]] &= [[ ∀α⁺.-|fT|-Γ,α⁺ ]] \\
-%     [[-| ∃α.fT |-Γ]] &= [[ ↑ ∃α⁻.+|fT|+Γ,α⁻ ]] \\
+%     [[-| a |-^Γ]] &= [[α⁻]]  \text{,~if $[[α⁻ ∊ Γ]]$}\\
+%     [[-| a |-^Γ]] &= [[↑α⁺]] \text{,~if $[[α⁺ ∊ Γ]]$}\\
+%     [[-| fA → fB |-^Γ]] &= [[ +|fA|+^Γ → -|fB|-^Γ  ]] \\
+%     [[-| ∀α.fT |-^Γ]] &= [[ ∀α⁺.-|fT|-^Γ,α⁺ ]] \\
+%     [[-| ∃α.fT |-^Γ]] &= [[ ↑ ∃α⁻.+|fT|+^Γ,α⁻ ]] \\
 %   \end{aligned}
 %   \qquad
 %   \begin{aligned}
-%     [[+| a |+Γ]] &= [[α⁺]]  \text{,~if $[[α⁺ ∊ Γ]]$}\\
-%     [[+| a |+Γ]] &= [[↓α⁻]] \text{,~if $[[α⁻ ∊ Γ]]$}\\
-%     [[+| fA → fB |+Γ]] &= [[ ↓ +|fA|+Γ → -|fB|-Γ  ]] \\
-%     [[+| ∀α.fT |+Γ]] &= [[ ↓∀α⁺.-|fT|-Γ,α⁺ ]] \\
-%     [[+| ∃α.fT |+Γ]] &= [[ ∃α⁻.+|fT|+Γ,α⁻ ]] \\
+%     [[+| a |+^Γ]] &= [[α⁺]]  \text{,~if $[[α⁺ ∊ Γ]]$}\\
+%     [[+| a |+^Γ]] &= [[↓α⁻]] \text{,~if $[[α⁻ ∊ Γ]]$}\\
+%     [[+| fA → fB |+^Γ]] &= [[ ↓ +|fA|+^Γ → -|fB|-^Γ  ]] \\
+%     [[+| ∀α.fT |+^Γ]] &= [[ ↓∀α⁺.-|fT|-^Γ,α⁺ ]] \\
+%     [[+| ∃α.fT |+^Γ]] &= [[ ∃α⁻.+|fT|+^Γ,α⁻ ]] \\
 %   \end{aligned}
 %   \end{equation*}
 %   \caption{Type polarization}

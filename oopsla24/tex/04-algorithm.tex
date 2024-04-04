@@ -920,12 +920,12 @@ Next, we discuss them in detail.
   ensuring that it is a \emph{thunked computation} $[[↓iM]]$.
   After that, it makes a recursive call
   to the application inference procedure,
-  returning an algorithmic type $[[iM']]$, 
-  that must be a subtype of the annotation $[[↑uP]]$.
+  returning an algorithmic type $[[uM']]$, 
+  that must be a subtype of the annotation $[[↑iP]]$.
 
-  Then premise $[[Γ; Θ ⊨ iM' ≤ ↑iP ⫤ SC2]]$
+  Then premise $[[Γ; Θ ⊨ uM' ≤ ↑iP ⫤ SC2]]$
   together with $[[Θ ⊢ SC1 & SC2 = SC]]$
-  check that $[[iM']]$ can be instantiated to the annotated type $[[↑iP]]$,
+  check that $[[uM']]$ can be instantiated to the annotated type $[[↑iP]]$,
   and if it is, the algorithm infers the type of the body in the extended context,
   and returns it as the result. 
 
@@ -935,7 +935,7 @@ Next, we discuss them in detail.
   the algorithm must ensure that the inferred $[[uQ]]$
   has the `canonical' minimal instantiation.
   To find it, it makes a call to the minimal instantiation algorithm 
-  (\cref{sec:minimal-instantiation})
+  (\cref{sec:constraint-singularity})
   that finds the substitution that satisfies the inferred constraints $[[SC]]$ and
   instantiates $[[uQ]]$ to the minimal (among other such instantiations)
   type $[[ [uσ]uQ ]]$.

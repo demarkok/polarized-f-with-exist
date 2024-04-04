@@ -56,6 +56,9 @@ continuous:
 clean:
 	rm -f *.aux *.lof *.log *.lot *.out *.toc *.nav *.snm *.bcf *.bbl *.blg *.xml *.tdo *.dvi
 	rm -f *~ \#*\# *.spl *.fls *.fdb_latexmk *.bcf
+	rm -f *.rubbercache 
 
 distclean: clean
+	rm -r $(GEN)
+	rm -r $(OTT_GEN)
 	rm $(PDFS)
