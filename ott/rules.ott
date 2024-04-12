@@ -67,6 +67,12 @@ grammar
     | | nas | + | nbs | > 0                    ::   :: nas_nbs_gt0
     | | pas | + | pbs | > 0                    ::   :: pas_pbs_gt0
     | ft1 = ft2                                ::   :: ft_eq
+    | uP ≤ iQ                                  ::   :: uPleq
+    | uP ≥ iQ                                  ::   :: uPgeq
+    | iP ≥ iQ                                  ::   :: iPgeq
+    | uN ≤ iM                                  ::   :: uNleq
+    | iN ≤ iM                                  ::   :: iNleq
+    | uN ≥ iM                                  ::   :: uNgeq
     % | xs = vars                              ::   :: xs_assignment
     % | arity f = [ arn1 ,.., arnn ]           ::   :: arity
     % | judgement etc                          ::   :: etc  {{ tex [[ judgement ]]... }}

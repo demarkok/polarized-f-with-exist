@@ -20,48 +20,79 @@ is a computation (\ie negative).
 
 \subsection{Examples}
 
-In general, any term and type of \systemf can be embedded into \fexists.
-This embedding---polarization---will be covered in more details in \cref{sec:rel-to-systemf}.
-Now, we discuss a number of examples of standard \systemf terms and types
-and their polarization in \fexists.
+In general, any term and type of \systemf can be embedded into \fexists in
+several ways, because at each moment one can choose the positive or negative
+polarity of the subterm. The consistent term-level and type-level embeddings
+(that preserve typing) will be covered in detail in
+\cref{sec:rel-to-systemf}. Now, we discuss several examples of standard
+\systemf terms and types and their polarization in \fexists.
 
 \begin{figure}[h]
   \begin{align*}
-    [[map]] &: [[↓∀α⁺.∀β⁺.↓(α⁺ → ↑β⁺) → List α⁺ → ↑List β⁺]] \\
-    [[len]] &: [[↓∀α⁺.List α⁺ → ↑Int]] \\
-    [[choose]] &: [[↓∀α⁺.α⁺ → α⁺ → ↑α⁺]] \\
-    [[id]] &: [[↓∀α⁺.α⁺ → ↑α⁺]] \\
-    [[auto]] &: [[↓(∀α⁺.α⁺ → ↑α⁺) → (∀α⁺.α⁺ → ↑α⁺)]]\\
-    [[autoP]] &: [[↓(∀α⁺.α⁺ → ↑α⁺) → (∀α⁺.α⁺ → ↑α⁺)]]\\
+    [[map]] &: [[↓(∀α⁺.∀β⁺.↓(α⁺ → ↑β⁺) → List α⁺ → ↑List β⁺)]] \\
+    [[len]] &: [[↓(∀α⁺.List α⁺ → ↑Int)]] \\
+    [[choose]] &: [[↓(∀α⁺.α⁺ → α⁺ → ↑α⁺)]] \\
+    [[id]] &: [[↓(∀α⁺.α⁺ → ↑α⁺)]] \\
+    [[auto]] &: [[↓(↓(∀α⁺.α⁺ → ↑α⁺) → (∀α⁺.α⁺ → ↑α⁺))]]
   \end{align*}
   \caption{Polarization of standard \systemf terms}
   \label{fig:polarization-examples}
 \end{figure}
 
 Let us assume that $[[Φ]]$ is a context containing the terms from \cref{fig:polarization-examples}.
-Then the following types are inferrable in \fexists:
+Then the following types are inferrable in \fexists.
 
-\begin{align*}
-  % &[[· ; Φ ⊢ [two, three, nine] : List Int]]\\
-  &[[· ; Φ, x1:↓(↓iN → iN), x2:↓(↓iM → iM) ⊢ let x = choose (x1, x2); return x : ↑ ∃γ⁻.↓(↓γ⁻ → γ⁻)]]\\
-  &[[· ; Φ ⊢ let x = choose (id, auto); return x : ↑ ∃γ⁻.↓γ⁻]]\\
-  &[[· ; Φ ⊢ let x = choose (id, autoP); return x : ↑ ∃γ⁻.↓γ⁻]]\\
-\end{align*}
+\paragraph{Application of a Polymorphic Function}
+  A polymorphic function can be applied to a value of a concrete type.
+  In this case, the quantified variables are instantiated to make the application type-check.
+  For instance, the polymorphic $[[id]]$ can be applied to any positive type, 
+  and the resulting type will be inferred by the algorithm:
+  $$[[· ; Φ ⊢ let x = id(fortyTwo); return x : ↑Int]]$$
 
+
+\paragraph{Polymorphic Self-application}
+  Unlike predicative systems, \fexists
+  permits self-application of polymorphic functions.
+  For instance, $[[id]]$ can be applied to itself
+  resulting in a polymorphic type $[[↓(∀α⁺.α⁺ → ↑α⁺)]]$:
+  $$[[· ; Φ ⊢ let x = id(id); let y = x(x); return y : ↑↓(∀α⁺.α⁺ → ↑α⁺)]]$$
+
+
+\paragraph{Non-example: Polymorphic Arguments}
 The focus of our system is the \emph{local} type inference \cite{pierce2000:local},
 which has certain limitations.
 In particular, if an argument of a function is polymorphic,
-its polymorphic variables are not instantiated by the inference algorithm. 
+its polymorphic variables are \emph{not} instantiated by the inference algorithm. 
 For example, one would expect the following to be inferrable:
-$[[· ; Φ ⊢ let x = map(id, [two, three, nine]); return x : ↑ List Int]]$.
-However, to infer this, the $[[id]]$ must be instantiated to $[[Int → ↑Int]]$, 
+\mbox{$[[· ; Φ ⊢ let x = map(id, [two, three, nine]); return x : ↑ List Int]]$}.
+However, to infer this, $[[id]]$ must be instantiated to \mbox{$[[Int → ↑Int]]$}
 which requires the information to be propagated from the neighboring branch 
-of the syntax tree ($[[ [two, three, nine] ]]$), \ie bypass the locality. 
+of the syntax tree (\mbox{$[[ [two, three, nine] ]]$}), \ie bypass the locality. 
 
-However, the polymorphic arguments of the function are instantiated, 
-and thus, the annotated version of the same term infers the type successfully:
-$[[· ; Φ ⊢ let x = map((id : ↓(Int → ↑Int)), [two, three, nine]); return x : ↑ List Int]]$.
+The annotated version of the same term infers the type successfully, 
+since all the polymorphic variables of the arguments are instantiated:
+$$[[· ; Φ ⊢ let x = map((id : ↓(Int → ↑Int)), [two, three, nine]); return x : ↑ List Int]]$$
 
+\paragraph{Inferring the Common Supertype}
+  The function $[[choose]]$ takes two arguments of the same
+  polymorphic type. To apply it to two values of different (concrete) types, 
+  the inference algorithm must find the minimal type they can be coerced 
+  to---the least common supertype.
+
+  Let us assume that in $[[Φ]]$, we have two identity-like functions 
+  \mbox{$[[id_iM]] : [[↓(↓iM → iM)]]$} and \mbox{$[[id_iN]] : [[↓(↓iN → iN)]]$}.
+  Then their least common supertype---the existential $[[∃γ⁻.↓(↓γ⁻ → γ⁻)]]$
+  is inferrable:
+  $$[[· ; Φ ⊢ let x = choose (id_iN, id_iM); return x : ↑ ∃γ⁻.↓(↓γ⁻ → γ⁻)]]$$
+
+\paragraph{Inferring a general type}
+  As mentioned before, the local inference does not instantiate the polymorphic
+  types in the argument position.
+  Because of that, the application 
+  \mbox{$[[let x = choose (id, auto); return x ]]$} cannot infer 
+  $[[↑↓(↓(∀α⁺.α⁺ → ↑α⁺) → (∀α⁺.α⁺ → ↑α⁺))]]$.
+  However, the inference succeeds and infers a less informative type:
+  $$[[· ; Φ ⊢ let x = choose (id, auto); return x : ↑ ∃γ⁻.↓γ⁻]]$$
 
 \subsection{The Language of Types}
 
@@ -85,15 +116,17 @@ similar to the values and computations in the \CBPV system \cite{levy2006:cbpv}.
 \end{itemize}
 
 \begin{figure}[h]
-  \begin{multicols}{2}
-    \ottgrammartabular{
-      \ottiN\ottinterrule
-    }\\
-    \ottgrammartabular{
-      \ottiP\ottinterrule
-    }
-    \columnbreak
-  \end{multicols}
+  \begin{minipage}[t]{0.6\textwidth}
+    \begin{supertabular}{ll p{0.8\textwidth}}
+      \ottiNInline\\
+    \end{supertabular}
+  \end{minipage}
+  \begin{minipage}[t]{0.35\textwidth}
+    \begin{supertabular}{ll p{0.8\textwidth}}
+      \ottiPInline\\
+    \end{supertabular}
+  \end{minipage}
+
   \caption{Declarative Types of \fexists}
   \label{fig:declarative-types}
 \end{figure}
@@ -164,15 +197,10 @@ In \cref{sec:extensions}, we discuss the way to modify the system to introduce \
 
 
 \begin{figure}[h]
-  \begin{multicols}{2}
-    \ottgrammartabular{
-      \ottc\ottinterrule
-    }
-
-    \ottgrammartabular{
-      \ottv\ottinterrule
-    }
-  \end{multicols}
+  \begin{supertabular}{ll p{0.8\textwidth}}
+    \ottcInline\\
+    \ottvInline\\
+  \end{supertabular}
   \caption{Declarative Terms of \fexists}
   \label{fig:declarative-terms}
 \end{figure}
@@ -185,18 +213,80 @@ of the syntax tree. Nevertheless, many difficulties appear in the inference of
 polymorphic and existential types. Next, we discuss the most challenging of
 these difficulties and how they are addressed in the algorithm.
 
-\paragraph{Subtyping} One of the hardest parts of the inference is subtyping,
-because this is where the polymorphic instantiation happens. In particular, it
-is the subtyping relation that allows us to use the polymorphic terms in the
-context where their concrete instantiations are expected: 
-$[[Γ ⊢ ∀α⁺.↑α⁺ ≤ ↑Int]]$.
+\paragraph{Subtyping} Most of the difficulty of the inference algorithm is
+concentrated in the subtyping relation. This is the part of the system where
+most of the polymorphic instantiation happens. In particular, it is the
+subtyping relation that allows us to use the polymorphic terms in the context
+where their concrete instantiations are expected.
 
-We are able to concentrate most of the difficulty in the subtyping relation 
-and then use the polarization to make it decidable. 
+To check whether one type is a subtype of another, the algorithm introduces
+\emph{algorithmic} type variables ($[[α̂±]], [[β̂±]], \dots$)--- the
+`placeholders' representing the polymorphic variables whose instantiation is
+postponed. This way, the problem of $[[∀α⁺.↑α⁺ ≤ ↑Int]]$ becomes the problem
+of finding $[[α̂⁺]]$ such that $[[↑α̂⁺ ≤ ↑Int]]$.
 
-\paragraph{Impredicativity}
-Impredicativity is another difficulty. Even with forall, the natural subtyping is undecidable. We have to find the restrictions that make it decidable. Unification allows us to solve equality constraints, and the LUB has to be solved with anti-unification. We have to design the system carefully to maintain decidability.
+\newcommand{\defiff}{%
+  \mathrel{\vbox{\offinterlineskip\ialign{%
+    \hfil##\hfil\cr
+    $\scriptscriptstyle\text{def}$\cr
+    %\noalign{\kern0ex}
+    $\iff$\cr
+}}}}
+
+\paragraph{Equivalence}
+Our system introduces another complexity: the equivalence induced by subtyping
+($[[Γ ⊢ iN ≈ iM]] \defiff [[Γ ⊢ iN ≤ iM]] \text{ and } [[Γ ⊢ iM ≤ iN]]$) is not
+straightforward. This relation extends beyond just alpha-equivalent types. As
+the neighboring polymorphic quantifiers can be instantiated in arbitrary order,
+the equivalence relation must permit the permutations of the quantifiers. For
+example, we have $[[· ⊢ ∀α⁺.∀β⁺.iN ≈ ∀β⁺.∀α⁺.iN]]$. Similarly, the
+equivalence permits the removal/addition of the unused quantifiers: $[[· ⊢
+∀α⁺.↑Int ≈ ↑Int]]$.
+
+In order to manage the complexity of non-trivial equivalence, we implement
+a type normalization algorithm. It effectively reduces the mutual subtyping to
+a simpler alpha-equivalence. The normalization works by recursively
+eliminating unused quantifiers and reordering the remaining ones into a
+canonical permutation.
 
 \paragraph{Least Upper Bound}
-Now the LUB (Least Upper Bound) is not necessarily the syntactic equality. Examples, types don't have a LUB. How do we decide? The answer is anti-unification, which we explain at a high level. Now we have both forall and exists, and mixing unification and anti-unification.
+Eventually, the subtyping algorithm reduces the initial subtyping problem to a set of
+constraints that need to be resolved. At this moment, another problem arises:
+as one variable can occur in multiple constraints, the resolution becomes non-trivial.
+In particular, to resolve the conjunction of $[[α̂⁺ ≥ iP]]$ and $[[α̂⁺ ≥ iQ]]$,
+we would need to find the least upper bound of $[[iP]]$ and $[[iQ]]$.
+
+In many type systems, the least upper bound boils down to the trivial syntactic equality.
+Because of that, the set of constraints is typically resolved using \emph{unification}.
+However, this problem is trickier in the presence of existential types. For example, 
+in \fexists, the least upper bound of $[[↓↑Int]]$ and $[[↓↑Bool]]$ is $[[∃α⁻.↓α⁻]]$,
+because the quantified $[[α⁻]]$ can be instantiated to either $[[↑Int]]$ or $[[↑Bool]]$.
+
+To find this least upper bound, we use \emph{anti-unification}---the dual of
+unification. While unification finds \emph{the most general instance} of two
+given patterns, the anti-unification finds \emph{the most detailed} (under the
+restrictions of the system) \emph{pattern} that matches two given types. In the
+example above, the anti-unifier of $[[↓↑Int]]$ and $[[↓↑Bool]]$ is $[[↓α̂⁻]]$,
+and in \fexists, this unifier is the most specific (in particular because
+$[[↓↑α̂⁺]]$ is not considered as only \emph{negative} variables are
+existentially quantified).
+
+\paragraph{Impredicativity}
+Another difficulty that hinders the constraint resolution arises from the
+impredicativity of the system---the ability to quantify over the types that are 
+themselves polymorphic. In the impredicative polymorphic system (even
+with only $[[∀]]$-quantifiers), the naturally formulated subtyping is
+undecidable, which follows from the undecidability of second-order unification.
+All the more the undecidability is evident in the presence of existential types
+and subtyping constraints. For instance, in \fexists the constraint 
+$[[α̂⁺ :≥ ↓↑α̂⁺]]$ would have a surprising impredicative solution $[[α̂⁺]] = [[∃α⁻.↓α⁻]]$. 
+
+To maintain the decidability in the presence of impredicativity, we carefully
+restrict the system using the polarity stratification. One of the main
+constraints that we put on subtyping is the invariance of the shift operators:
+the subtyping $[[↑iP ≤ ↑iQ]]$ is only allowed if $[[iQ ≥ iP]]$
+\emph{and} $[[iP ≥ iQ]]$. These constraints do not trivialize the system: we
+still have non-trivial upper bounds, and thus, need to use anti-unification to
+find them. However, it prevents such examples as $[[α̂⁺ :≥ ↓↑α̂⁺]]$, and in
+fact, makes the constraint resolution decidable.
 

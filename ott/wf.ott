@@ -112,7 +112,7 @@ defns
   defn Γ ⊢ ucE :: :: UEWF :: '' {{ com Unification constraint entry well-formedness }}  by
   defn Γ ⊢ scE :: :: SEWF :: '' {{ com Subtyping constraint entry well-formedness }}  by
 
-  defn  Γ ⊢ iP : ucE :: :: PUCWF :: '' {{ com Positive type satisfies unification constraint }} by
+  defn Γ ⊢ iP : ucE :: :: PUCWF :: '' {{ com Positive type satisfies unification constraint }} by
   defn Γ ⊢ iN : ucE :: :: NUCWF :: '' {{ com Negative type satisfies unification constraint }} by
 
   defn Γ ⊢ iP : scE  :: :: PSCWF :: '' {{ com Positive type satisfies subtyping constraint }} by

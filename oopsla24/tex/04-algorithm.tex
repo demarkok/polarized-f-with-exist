@@ -35,7 +35,7 @@ First, let us discuss the syntax of the algorithmic system.
    $[[Ξ]] = \{[[α1̂±]], \dots, [[αn̂±]]\}$ where $[[α1̂±]], \dots, [[αn̂±]]$ are pairwise distinct \\
   \hfill\\
   Constraint Type Context\\
-   $[[Θ]] ::= \{[[ α1̂±[Γ1] ]], \dots, [[ αn̂±[Γn] ]]\}$ where $[[α1̂±]], \dots, [[αn̂±]]$ are pairwise distinct \\
+   $[[Θ]] \Coloneqq \{[[ α1̂±[Γ1] ]], \dots, [[ αn̂±[Γn] ]]\}$ where $[[α1̂±]], \dots, [[αn̂±]]$ are pairwise distinct \\
   \caption{Algorithmic Syntax}
   \label{fig:algo-syntax}
 \end{figure}
@@ -142,7 +142,7 @@ and thus, simplify the inductive proofs.
       \ottscE 
       \ottinterrule
       \ottruleheadOneLine
-        {[[SC]]}{::=} {\ottcom{Constraint Set}}
+        {[[SC]]}{\Coloneqq} {\ottcom{Constraint Set}}
         {\{[[scE1]], \dots, [[scEn]]\}}\ottprodnewline
       }
 
@@ -153,7 +153,7 @@ and thus, simplify the inductive proofs.
       \ottprodnewline
       \ottinterrule
       \ottruleheadOneLine
-        {[[UC]]}{::=} {\ottcom{Unification Constraint Set}}
+        {[[UC]]}{\Coloneqq} {\ottcom{Unification Constraint Set}}
         {\{[[ucE1]], \dots, [[ucEn]]\}}\ottprodnewline
       }
     \end{multicols}

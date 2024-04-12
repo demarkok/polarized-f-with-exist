@@ -288,7 +288,7 @@ iQs {{ tex \vv{ \mathcolor{positive}{Q} } }}
    | ·                    ::   :: empty   {{ com empty list }}
    | iP                   ::   :: Var     {{ com a singel type }}
    | [ s ] iPs            :: M :: AppSub
-   | </ iPsi // , // i /> ::   :: concat  {{ com concatenate lists }}
+   | iP1 , iP2            ::   :: concat  {{ com concatenate lists }}
    | ( iPs )              :: S :: paren
 
 iNs {{ tex \vv{ \mathcolor{negative}{N} } }},
@@ -297,7 +297,7 @@ iMs {{ tex \vv{ \mathcolor{negative}{M} } }}
    | ·                    ::   :: empty   {{ com empty list }}
    | iN                   ::   :: Var     {{ com a singel type }}
    | [ s ] iNs            :: M :: AppSub
-   | </ iNsi // , // i /> ::   :: concat  {{ com concatenate lists }}
+   | iN1 , iN2            ::   :: concat  {{ com concatenate lists }}
    | ( iNs )              :: S :: paren
 
 
@@ -310,13 +310,13 @@ G {{ tex \Theta }}, Δ {{ tex \Theta }}, Γ {{ tex \Theta }} :: DT_Ctxt ::= {{ c
     | { nas }            ::   :: NList   {{ com list of variables }}
                                          {{ tex [[nas]] }}         
     | { pnas }           ::   :: PNList  {{ com list of variables }}
-    | </ Gi // , // i /> ::   :: concat  {{ com concatenate contexts }}
     | ( G )              :: S :: paren
     | G , pas            :: M :: appendP {{ com append a list of variables }}
     | G , nas            :: M :: appendN {{ com append a list of variables }}
     | G , pnas           :: M :: appendPN {{ com append a list of variables }}
     | Γ1 ∪ Γ2            ::   :: union
     | Γ1 ∩ varset        ::   :: intersect
+    | Γ1 , Γ2            ::   :: concat  {{ com concatenate contexts }}
 
 grammar
 
@@ -326,7 +326,7 @@ T {{ tex \Xi }}, Θ {{ tex \Xi }}:: U_Ctxt ::= {{ com algorithmic variable conte
                                            {{ tex [[ordVars]] \{[[Δ]]\} }}
     | pua * [ Δ ]        ::   :: FromVarS  {{ com from a variable to a list }}
                                            {{ tex \vv{ [[pua]] \{[[Δ]]\} } }}
-    | </ Θi // , // i /> ::   :: concat    {{ com concatenate contexts }}
+    | Θ1 , Θ2            ::   :: concat    {{ com concatenate contexts }}
     | ( Θ )              :: S :: paren
     | Θ | varset         ::   :: restr   {{ com leave only those variables that are in the set }}
                                          {{ tex [[Θ]]|_{[[varset]]} }}
@@ -341,7 +341,7 @@ Xi {{ tex \widehat{\Theta} }}, Ξ {{ tex \widehat{\Theta} }} :: AU_Ctxt ::= {{ c
                                          {{ tex [[nuas]] }}
     | Ξ , puas           :: M :: appendP {{ com append a list of variables }}
     | Ξ , nuas           :: M :: appendN {{ com append a list of variables }}
-    | </ Ξi // , // i /> ::   :: concat  {{ com concatenate contexts }}
+    | Ξ1 , Ξ2            ::   :: concat  {{ com concatenate contexts }}
     | ( Ξ )              :: S :: paren
     | Ξ1 ∪ Ξ2            ::   :: union
     | Ξ1 ∩ varset        ::   :: intersect

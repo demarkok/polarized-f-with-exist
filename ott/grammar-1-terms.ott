@@ -24,9 +24,9 @@ fargs {{ tex \vv{ t } }} :: 'fargs_' ::= {{ com list of arguments }}
 grammar
 
 args {{ tex \vv{ v } }} :: 'args_' ::= {{ com list of arguments }}
-    | ·                     ::   :: Empty
+    | ·                     ::   :: Empty    {{ tex }}
     | v                     ::   :: Single
-    | </ argsi // , // i /> ::   :: Concat   {{ com concatenate }}
+    | args1 , args2         ::   :: Concat   {{ com concatenate }}
 
 v, w :: 'v_' ::= {{ com Value Terms }}
   | x          ::   :: Var    % {{ com variable }}
@@ -46,7 +46,8 @@ const :: 'const_' ::= {{ com constants }}
   | [ bareList ]  ::   :: Lst
   | choose    ::   :: Choose
   | auto      ::   :: Auto
-  | autoP     ::   :: AutoPrime {{ tex auto' }}
+  | autoP     ::   :: AutoPrime {{ tex \ottkw{auto'} }}
+  | id _ iM   ::   :: IdM {{ tex \ottkw{id}_{[[iM]]} }}
 
 bareList :: 'bareList_' ::= {{ com bare list }}
   | ·                     ::   :: Empty
@@ -80,7 +81,7 @@ c, d :: 'c_' ::= {{ com Computation Terms }}
 vctx, Φ {{ tex \Gamma }} :: 'vctxt_' ::= {{ com variable context }}
   | ·                     ::   :: Empty
   | x : iP                ::   :: Single
-  | </ Φi // , // i />    ::   :: Concat  {{ com concatenate contexts }}
+  | Φ1 , Φ2               ::   :: Concat  {{ com concatenate contexts }} 
 
 vctxAl {{ tex \Gamma }} :: 'vctxtAl_' ::= {{ com variable context with algorithmic types }}
   | ·                          ::   :: Empty

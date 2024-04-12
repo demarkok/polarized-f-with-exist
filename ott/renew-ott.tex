@@ -1,3 +1,7 @@
+% \renewcommand{\ottprodinline}[4]{\multicolumn{3}{l}{#1} \\ $#2$ &$#3$& $#4$}
+% \renewcommand{\ottcInline}{\ottprodinline{\ottcom{Computation Terms}}{\ottnt{c} ,\ \ottnt{d}}{\Coloneqq}
+% {\mbox{\ottsym{(}  \ottnt{c}  \ottsym{:} \mathcolor{negative}{N}  \ottsym{)}}}}
+
 \newcommand{\ottdefnTELNLabeledTwoColumns}[1]{
     \begin{ottdefnblock}[#1]{\ottdefnHeaderTELN}{\ottcom{Negative typing elaboration}}
         \begin{minipage}[t]{0.5\textwidth}
@@ -93,13 +97,13 @@
 \newcommand{\ottuNShort}[0]
     {\ottuGrammarExt{\ottcom{Negative Algorithmic Types}}
                    {\ngbox{ \mathcolor{negative}{N} }  ,\ \ngbox{ \mathcolor{negative}{M} }}
-                   {::=}
+                   {\Coloneqq}
                    {\widehat{ \mathcolor{negative}{\alpha} }^{-}}}
 
 \newcommand{\ottuPShort}[0]
     {\ottuGrammarExt{\ottcom{Positive Algorithmic Types}}
                    {\ngbox{ \mathcolor{positive}{P} }  ,\ \ngbox{ \mathcolor{positive}{Q} }}
-                   {::=}
+                   {\Coloneqq}
                    {\widehat{ \mathcolor{positive}{\alpha} }^{+}}}
 
 % \ottrulehead{}{::=}{\ottcom{Negative algorithmic type}}
