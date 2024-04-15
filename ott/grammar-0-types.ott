@@ -55,6 +55,9 @@ fT {{ tex T }}, fA {{ tex A }}, fB {{ tex B}} :: 'fT_' ::= {{ com System F types
    | ∀ as . fT  :: :: Forall
    | [ fσ ] fT  :: M :: Sub  
    | ( fT )     :: S :: Paren
+   | fA × fB    :: M :: Prod
+   | ConstT     :: M :: Const
+   | List fT    :: :: List
 
 grammar
 fG {{ tex \Theta }}, fΔ {{ tex \Theta }}, fΓ {{ tex \Theta }} :: F_Ctxt ::= {{ com systemF type context }}
@@ -233,11 +236,11 @@ iR {{ tex \mathcolor{positive}{R} }} :: 'iP_' ::= {{ com Positive declarative ty
    | [ mu ] iP  :: M :: AppMoving 
    | ( iP )     :: S :: Paren
    | ConstT     :: M :: Const
+   | List iP    :: :: List
 
 ConstT :: 'ConstT_' ::= {{ com constant type }}
    | Int     :: :: Int
    | Bool    :: :: Bool
-   | List iP :: :: List
 
 
 ii {{ tex i }}, 
@@ -477,7 +480,7 @@ auSol :: 'auSOL_' ::=
 
 terminals :: 'terminals_' ::=
   | ∃  :: :: exists    {{ tex \exists }}
-  | .  :: :: dot       {{ tex .~ }}
+  | .  :: :: dot       {{ tex .\, }}
   | ;  :: :: semi      {{ tex \mathbin{;} }}
   | ∀  :: :: forall    {{ tex \forall }}
   | ↑  :: :: upShift   {{ tex \mathord{\uparrow} }}
@@ -524,6 +527,7 @@ terminals :: 'terminals_' ::=
   | <=<  :: :: compM     {{ tex \mathord{< \hspace{-5.3pt} = \hspace{-4.2pt} <} }}
   | &    :: :: ampersand {{ tex \mathbin{\&} }}
   | ▷    :: :: triangle {{ tex \triangleright }}
+  | ×    :: :: times     {{ tex \times }}
 
 
 

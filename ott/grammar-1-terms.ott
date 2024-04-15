@@ -3,11 +3,15 @@ metavar x, y, z, f ::= {{ com term variables }}
 % System F
 grammar
 ft {{ tex t }}, fe {{ tex e }} :: 'ft_' ::= {{ com System F terms }}
-  | x          ::   :: Var    % {{ com variable }}
-  | λ x . ft  ::   :: UnannLam    % {{ com unannotated abstraction }}
-  | Λ as . ft ::   :: BigLam % {{ com type abstraction }}
-  | ft1 ft2      ::  :: App    % {{ com application }}
+  | x           ::   :: Var    % {{ com variable }}
+  | λ x . ft    ::   :: UnannLam    % {{ com unannotated abstraction }}
+  | Λ as . ft   ::   :: BigLam % {{ com type abstraction }}
+  | ft1 ft2     ::   :: App    % {{ com application }}
+  | ft1 [ fT ]  :: M :: TApp    % {{ com type application }}
+                                {{ tex [[ft1]] \, [[ [ ]] [[fT]] [[ ] ]]}}
   | ( ft )      :: M :: Paren
+  | const       :: M :: Constant
+  | [ fargs ]  ::   :: Lst
 
 fvctx, fΦ {{ tex \Gamma }} :: 'fvctxt_' ::= {{ com variable context }}
   | ·                     ::   :: Empty
@@ -34,20 +38,21 @@ v, w :: 'v_' ::= {{ com Value Terms }}
   | ( v : iP ) ::   :: PAnnot % {{ com annotated value }}
   | ( v )      :: M :: Paren
   | const      :: M :: Constant
+  | id _ iM    ::   :: IdM {{ tex \ottkw{id}_{[[iM]]} }}
+  | [ bareList ]  ::   :: Lst
 
 const :: 'const_' ::= {{ com constants }}
   | map       ::   :: Map
   | len       ::   :: Len
   | id        ::   :: Id
   | fortyTwo  ::   :: FortyTwo {{ tex 42 }}
-  | two       ::   :: One {{ tex 2 }}
+  | one       ::   :: One {{ tex 1 }}
+  | two       ::   :: Two {{ tex 2 }}
   | three     ::   :: Trhee {{ tex 3 }}
   | nine      ::   :: Nine {{ tex 9 }}
-  | [ bareList ]  ::   :: Lst
   | choose    ::   :: Choose
   | auto      ::   :: Auto
   | autoP     ::   :: AutoPrime {{ tex \ottkw{auto'} }}
-  | id _ iM   ::   :: IdM {{ tex \ottkw{id}_{[[iM]]} }}
 
 bareList :: 'bareList_' ::= {{ com bare list }}
   | ·                     ::   :: Empty

@@ -1,45 +1,146 @@
-% How we should frame this:
+Over the last half-century, there has been considerable work on developing type
+inference algorithms for programming languages,  mostly aimed at solving the
+problem of \emph{type polymorphism}.
 
-Over the last half-century, there has been considerable work on developing type inference algorithms for programming languages,  mostly aimed at solving the problem of \emph{type polymorphism}.
+That is, in pure polymorphic lambda
+calculus---\systemf\cite{girard-system-f,jcr-system-f}---the polymorphic type
+$[[∀a.fA]]$ has a big lambda $[[Λa.fe]]$ as an introduction form, and an
+explicit type application $[[ fe[fA] ]]$ as an elimination form. This is an
+extremely simple and compact type system, whose rules fit on a single page, but
+whose semantics are sophisticated enough to model things like parametricity and
+representation independence. However, System F by itself is unwieldy as a
+programming language. The fact that the universal type $[[∀a.fA]]$ has explicit
+eliminations means that programs written using polymorphic types will need to be
+stuffed to the gills with type annotations explaining how and when to
+instantiate the quantifiers.
 
-That is, in pure polymorphic lambda calculus (system F), the polymorphic type $\forall a.\,A$ has a big lambda $\Lambda a.\,e$ as an introduction form, and an explicit type application $e\,[A]$ as an elimination form. This is an extremely simple and compact type system, whose rules fit on a single page, but whose semantics are sophisticated enough to model things like parametricity and representation independence. However, System F by itself is unwieldy as a programming language. The fact that the universal type $\forall a.\,A$ has explicit eliminations means that programs written using polymorphic types will need to be stuffed to the gills with type annotations explaining how and when to instantiate the quantifiers.
+Therefore, most work on type inference has been aimed at handling type
+instantiations implicitly---we want to be able to use a polymorphic function
+like $[[len : ∀a.List a → Int]]$ at any concrete list type without explicitly
+instantiating the quantifier in $[[len]]$'s type. That is, we want to write
+$[[ len [one,two,three] ]]$ instead of writing
+$[[ len [Int] [one,two,three] ]]$.
 
-Therefore, most work on type inference has been aimed at handling type instantiations implicitly -- we want to be able to use a polymorphic function like $\mathsf{len} : \forall a.\, \mathsf{List}\,a \to \mathsf{int}$ at any concrete list type without explicitly instantiating the quantifier in $\mathsf{len}$'s type. That is, we want to write $\mathsf{len}\,[1,2,3]$ instead of writing $\mathsf{len}\,[\mathsf{int}]\,[1,2,3]$. 
-
-The most famous of the algorithms for solving these constraints is the Damas-Hindley-Milner algorithm. The idea is that type instantiation induces a subtype ordering: the type $\forall a.\,A$ is a subtype of all of its instantiations. So we wish to be free to use the same function $\mathsf{len}$ at many different types such as
-$\mathsf{List}\,\mathsf{int} \to \mathsf{int}$,
-$\mathsf{List}\,\mathsf{bool} \to \mathsf{int}$,
-$\mathsf{List}\,(\mathsf{int \times bool}) \to \mathsf{int}$, and so on. However, the subtype relation is nondeterministic: it tells us that whenever we see a polymorphic type $\forall a.\, A$, we know it is a subtype of \emph{any} of its instantiations. To turn this into an algorithm, we have to actually make some choices, and DHM works by using \emph{unification}. Whenever we would have had to introduce a particular concrete type in the specification, the DHM algorithm introduces a unification variable, and incrementally instantiates this variable as more and more type constraints are observed.
-
-However, the universal quantifier is not the only quantifier! Dual to the universal quantifer $\forall$ is the existential quantifier $\exists$. Even though existential types have an equal logical status to universal types, they have been studied much less frequently in the literature. The most widely-used algorithm for handling existentials is the algorithm of Odersky and Laufer. This algorithm treats existentials in a second-class fashion: they are not explicit connectives of the logic, but rather are tied to datatype declarations. As a result, packing and unpacking existential types is tied to constructor introductions and constructor eliminations in pattern matches. This allows Damas-Milner inference to continue to work almost unchanged, but it does come at the cost of losing first-class existentials and also of restricting the witness types to monomorphic types.
-
-There has been a limited amount of work on support for existential types as a first-class concept. In an unpublished draft, \citet{leijen06} studied an extension of Damas-Milner inference in which type schemes contain alternating universal and existential quantifiers. Quantifiers still range over monotypes, and higher-rank polymorphism is not permitted. More recently, \citet{dk19} studed type inference for existential types in the context of GADT type inference, which, while still predicative, supported higher-rank types (i.e., quantifiers can occur anywhere inside of a type scheme). \citet{existential-crisis} propose a system which only permits types of the form forall-exists, but which permits projective elimination in the style of ML modules. 
-
-All of these papers are restricted to \emph{predicative} quantification, where quantifiers can only be instantiated with monotypes (i.e., types without any occurences of quantifiers). However, existential types in full System F are \emph{impredicative} -- that is, quantifiers can be instantiated with arbitrary types, specifically including types containing quantifiers.
-
-Historically, inference for impredicative quantification has been neglected, due to results by \citet{tiuryn-urzczyn-96} and \citet{chrzaszcz-98} which show that not only is full type inference for System F undecidable, but even that the subtyping relation induced by type instantiation is undecidable. However, in recent years, interest in impredicative inference has revived (for example, the work of \citet{serrano-2020}), with a focus on avoiding the undecidabilty barriers by doing \emph{partial} type inference. That is, we no longer try to do full type inference, but rather accept that the programmer will need to write annotations in cases where inference would be too difficult. Unfortunately, it is often difficult to give a specification for what the partial algorithm does -- for example, \citet{existential-crisis} observe that their algorithm lacks a declarative specification, and explain why existential types make this particularly difficult to do. 
-
-One especially well-behaved form of partial type inference is \emph{local type inference}, introduced by \citet{pierce-local-2000}. In this approach, quantifiers in a polymorphic function are instantiated using only the type information available in the arguments at each call site. While this infers fewer quantifiers than global algorithms such as Damas-Milner can, it has the twin benefits that it is easy to give a mathematical specification to, and that failures of type inference are easily explained in terms of local features of the call site. In fact, many production programming languages such as C\# and Java use a form of local type inference, due to the ease of extending this style of inference to support OO features. 
-
-In this paper, we extend the local type inference algorithm to a language with both universal and existential quantifiers, which can both be instantiated impredicatively. This combination of features broke a number of the invariants which traditional type inference algorithms depend on, and required us to invent new algorithms which combine both unification and (surprisingly) anti-unification. 
-
-
-\paragraph{Contributions} Our contributions are as follows: 
-\begin{itemize}
-\item We give a declarative type system (again, based on call-by-push-value) to serve as a specification of our algorithm, and we we prove our algorithm is sound and complete with respect to the declarative type system. The specification makes it easy to see that all type applications (for $\forall$-elimination) and all packs (for $\exists$-introdution) are inferred. 
-
-\item We give a local type inference algorithm which supports both first-class existential and universal quantifiers, both of which can be instantiated impredicatively. To evade the undecidability results surrounding type inference for System F, we work in a variant of call-by-push-value, which lets us formulate a subtyping relation which is still decidable. 
+The most famous of the algorithms for solving these constraints is the
+Damas-Hindley-Milner (HDM) algorithm
+\cite{hindley69:principal,milner78:theory,damas82:principal}. The idea is that
+type instantiation induces a subtype ordering: the type $[[∀a.fA]]$ is a subtype
+of all of its instantiations. So we wish to be free to use the same function
+$[[len]]$ at many different types such as 
+$[[List Int → Int]]$, $[[List Bool → Int]]$,
+$[[List (Int × Bool) → Int]]$, and so on.
+However, the subtype relation is nondeterministic: it tells us that whenever we
+see a polymorphic type $[[∀a.fA]]$, we know it is a subtype of \emph{any}
+of its instantiations. To turn this into an algorithm, we have to actually make
+some choices, and DHM works by using \emph{unification}. Whenever we would have
+had to introduce a particular concrete type in the specification, the DHM
+algorithm introduces a unification variable, and incrementally instantiates this
+variable as more and more type constraints are observed.
 
 
-\item Our algorithm breaks some of the fundamental invariants of
-  HM-style type inference. As a result, it needs to mix unification
-  and anti-unification, uses the call-by-push-value structure to
-  control function arities and how quantifiers can be instantiated. 
+                 
 
-\item The original local type inference paper combined local type inference
-  with bidirectional typechecking to minimize the number of needed
-  annotations, but we show how existential types complicate the integration
-  of bidirectionality with local type inference, and we explore the design space
-  to show how the same scheme could be applied to work with different
-  type systems. 
-\end{itemize}
+
+However, the universal quantifier is not the only quantifier! Dual to the
+universal quantifier $\forall$ is the existential quantifier $\exists$. Even
+though existential types have an equal logical status to universal types, they
+have been studied much less frequently in the literature. The most widely-used
+algorithm for handling existentials is the algorithm of Odersky and Laufer
+\cite{laufer94:polymorphic}. This algorithm treats existentials in a
+second-class fashion: they are not explicit connectives of the logic but rather
+are tied to datatype declarations. As a result, packing and unpacking
+existential types is tied to constructor introductions and constructor
+eliminations in pattern matches. This allows Damas-Milner inference to continue
+to work almost unchanged, but it does come at the cost of losing first-class
+existentials and also of restricting the witness types to monomorphic types.
+
+There has been a limited amount of work on support for existential types as a
+first-class concept. In an unpublished draft, \citet{leijen06:first-class}
+studied an extension of Damas-Milner inference in which type schemes contain
+alternating universal and existential quantifiers. Quantifiers still range over
+monotypes, and higher-rank polymorphism is not permitted. More recently,
+\citet{dunfield16:existential} studied type inference for existential types in
+the context of GADT type inference, which, while still predicative, supported
+higher-rank types (i.e., quantifiers can occur anywhere inside of a type
+scheme). \citet{eisenberg21:existential} propose a system which only permits
+types of the form forall-exists, but which permits projective elimination in the
+style of ML modules. 
+
+All of these papers are restricted to \emph{predicative} quantification, where
+quantifiers can only be instantiated with monotypes (i.e., types without any
+occurences of quantifiers). However, existential types in full System F are
+\emph{impredicative}---that is, quantifiers can be instantiated with arbitrary
+types, specifically including types containing quantifiers.
+
+Historically, inference for impredicative quantification has been neglected, due
+to results by \citet{tiuryn-urzczyn-96} and \citet{chrzaszcz-98} which show that
+not only is full type inference for \systemf undecidable, but even that the
+subtyping relation induced by type instantiation is undecidable. However, in
+recent years, interest in impredicative inference has revived (for example, the
+work of \citet{serrano-2020}), with a focus on avoiding the undecidability
+barriers by doing \emph{partial} type inference. That is, we no longer try to do
+full type inference, but rather accept that the programmer will need to write
+annotations in cases where inference would be too difficult. Unfortunately, it
+is often difficult to give a specification for what the partial algorithm
+does--for example, \citet{eisenberg21:existential} observe that their algorithm
+lacks a declarative specification, and explain why existential types make this
+particularly difficult to do. 
+
+One especially well-behaved form of partial type inference is \emph{local type
+inference}, introduced by \citet{pierce2000:local}. In this approach,
+quantifiers in a polymorphic function are instantiated using only the type
+information available in the arguments at each call site. While this infers
+fewer quantifiers than global algorithms such as Damas-Milner can, it has the
+twin benefits that it is easy to give a mathematical specification to, and that
+failures of type inference are easily explained in terms of local features of
+the call site. In fact, many production programming languages such as C\# and
+Java use a form of local type inference, due to the ease of extending this style
+of inference to support OO features. 
+
+In this paper, we extend the local type inference algorithm to a language with
+both universal and existential quantifiers, which can both be instantiated
+impredicatively. This combination of features broke a number of the invariants
+which traditional type inference algorithms depend on, and required us to invent
+new algorithms which combine both unification and (surprisingly)
+anti-unification. 
+
+To research the type inference in impredicative polymorphic systems
+in the presence of existential types, we make the following \emph{contributions}.
+
+\paragraph{Type Inference Algorithm} We give a local type inference algorithm
+    which supports both first-class existential and universal quantifiers, both
+    of which can be instantiated impredicatively. To evade the undecidability
+    results surrounding type inference for \systemf, we work in a variant of
+    \CBPV \cite{levy2006:cbpv}, which lets us formulate a subtyping relation
+    which is still decidable. 
+
+\paragraph{Declarative Specification}
+    We give a declarative type system (again, based on \CBPV) to
+    serve as a specification of our algorithm, and we prove our algorithm is
+    sound and complete with respect to the declarative type system. The
+    specification makes it easy to see that all type applications (for
+    $\forall$-elimination) and all packs (for $\exists$-introdution) are
+    inferred. 
+
+\paragraph{Employment of the Anti-unification}
+    The introduction of impredicative existentials breaks some of the
+    fundamental invariants of HM-style type inference. As a result, it needs to
+    mix unification with \emph{anti-unification}---a dual operation which has
+    been used in the literature on term rewriting systems, but which has never
+    appeared in the context of polymorphic type inference.
+
+\paragraph{Extrapolation of the Inference Framework to Other Type Systems}
+    We explore the design space further to show how the
+    same type inference scheme could be applied to
+    work with different type systems. In particular,
+    \begin{enumerate*}
+      \item[(i)] in combination with \emph{bidirectional} typechecking---
+        the approach used in the original local type inference paper of \citet{pierce2000:local}
+        that minimizes the number of needed annotations;
+      \item[(ii)] in systems with different subtyping rules, such as  
+        the one used in \citet{zhao22:elementary}---a system that
+        permits explicit type applications;
+      \item[(iii)] in systems with \emph{bounded} polymorphic quantifiers.
+        That is, one can only instantiate a quantifier with a 
+        type that is a subtype of a given bound.
+    \end{enumerate*}

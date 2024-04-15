@@ -73,6 +73,7 @@ grammar
     | uN ≤ iM                                  ::   :: uNleq
     | iN ≤ iM                                  ::   :: iNleq
     | uN ≥ iM                                  ::   :: uNgeq
+    | ft : fT                                  ::   :: fTyping
     % | xs = vars                              ::   :: xs_assignment
     % | arity f = [ arn1 ,.., arnn ]           ::   :: arity
     % | judgement etc                          ::   :: etc  {{ tex [[ judgement ]]... }}
