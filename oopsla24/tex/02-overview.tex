@@ -10,22 +10,24 @@ The type variables are annotated with their polarities
 via the shift operators $[[↑]]$ (positive to negative) and
 $[[↓]]$ (negative to positive).
 
-Positive expressions correspond to values in the \CBPV system
-\cite{levy2006:cbpv}, and negative expressions correspond to computations.
-The difference between the computations and values is intuitively described 
-in the slogan of \CBPV: ``a value is, a computation does''. 
-In particular, an argument of a function is always a value (\ie positive), 
-and the resulting type, as well as the function itself, 
-is a computation (\ie negative).
+Positive expressions correspond to \emph{values} in the \CBPV system, and
+negative expressions correspond to \emph{computations}. The difference between
+the computations and values is intuitively described in the motto of \CBPV: ``a
+value is, a computation does''. In particular, an argument of a function is
+always a value (\ie positive), and the resulting type, as well as the function
+itself, is a computation (\ie negative). Analogously, the polymorphic
+$\forall$ quantifies a computation over positive types. 
 
 \subsection{Examples}
 
-In general, any term and type of \systemf can be embedded into \fexists in
-several ways, because at each moment one can choose the positive or negative
-polarity of the subterm. The consistent term-level and type-level embeddings
-(that preserve typing) will be covered in detail in
-\cref{sec:rel-to-systemf}. Now, we discuss several examples of standard
-\systemf terms and types and their polarization in \fexists.
+Generally, any term and type of \systemf can be embedded into \fexists in
+multiple ways. This is because at any given point, one can opt for either the
+positive or negative polarity of the subterm. We will delve into the consistent
+term-level and type-level embeddings (\ie preserving typing) in more detail in
+\cref{sec:rel-to-systemf}. \Cref{fig:polarization-examples} showcases the
+polarized versions of the standard \systemf terms. Next, we will discuss several
+examples (using the terms from \cref{fig:polarization-examples}) to illustrate
+what can and cannot be inferred in \fexists.
 
 \begin{figure}[h]
   \begin{align*}
@@ -39,35 +41,32 @@ polarity of the subterm. The consistent term-level and type-level embeddings
   \label{fig:polarization-examples}
 \end{figure}
 
-Let us assume that $[[Φ]]$ is a context containing the terms from \cref{fig:polarization-examples}.
-Then the following types are inferrable in \fexists.
-
 \paragraph{Application of a Polymorphic Function}
-  A polymorphic function can be applied to a value of a concrete type.
-  In this case, the quantified variables are instantiated to make the application type-check.
-  For instance, the polymorphic $[[id]]$ can be applied to any positive type, 
-  and the resulting type will be inferred by the algorithm:
-  $$[[· ; Φ ⊢ let x = id(fortyTwo); return x : ↑Int]]$$
+  A polymorphic function can be applied to a value of a concrete type. In this
+  case, the quantified variables are instantiated to make the application
+  type-check. For instance, the polymorphic $[[len]]$ can be applied to a list
+  of any positive type, and the resulting type will be inferred by the
+  algorithm:
+  $$[[· ; Φ ⊢ let x = len([one,two,three]); return x : ↑Int]]$$
 
 
 \paragraph{Polymorphic Self-application}
-  Unlike predicative systems, \fexists
-  permits self-application of polymorphic functions.
-  For instance, $[[id]]$ can be applied to itself
-  resulting in a polymorphic type $[[↓(∀α⁺.α⁺ → ↑α⁺)]]$:
+  Unlike predicative systems, \fexists permits self-application of polymorphic
+  functions. For instance, $[[id]]$ can be applied to itself resulting in a
+  suspended polymorphic computation of type $[[↓(∀α⁺.α⁺ → ↑α⁺)]]$, which, in
+  turn, can be applied to itself:
   $$[[· ; Φ ⊢ let x = id(id); let y = x(x); return y : ↑↓(∀α⁺.α⁺ → ↑α⁺)]]$$
 
 
 \paragraph{Non-example: Polymorphic Arguments}
-The focus of our system is the \emph{local} type inference \cite{pierce2000:local},
-which has certain limitations.
-In particular, if an argument of a function is polymorphic,
-its polymorphic variables are \emph{not} instantiated by the inference algorithm. 
-For example, one would expect the following to be inferrable:
+The focus of our system is the \emph{local} type inference
+\cite{pierce2000:local}, which has certain limitations. In particular, the
+instantiation does not happen when the polymorphic term is in the argument
+position. For example, one would expect the following to be inferrable:
 \mbox{$[[· ; Φ ⊢ let x = map(id, [two, three, nine]); return x : ↑ List Int]]$}.
 However, to infer this, $[[id]]$ must be instantiated to \mbox{$[[Int → ↑Int]]$}
-which requires the information to be propagated from the neighboring branch 
-of the syntax tree (\mbox{$[[ [two, three, nine] ]]$}), \ie bypass the locality. 
+which requires the information to be propagated from the neighboring branch of
+the syntax tree (\mbox{$[[ [two, three, nine] ]]$}), \ie bypass the locality. 
 
 The annotated version of the same term infers the type successfully, 
 since all the polymorphic variables of the arguments are instantiated:
@@ -99,23 +98,9 @@ $$[[· ; Φ ⊢ let x = map((id : ↓(Int → ↑Int)), [two, three, nine]); ret
 The types of \fexists are given in \cref{fig:declarative-types}.
 They are stratified into two syntactic 
 categories (polarities): positive and negative,  
-similar to the values and computations in the \CBPV system \cite{levy2006:cbpv}.
-\begin{itemize}
-\item [$-$] $[[na]]$ is a negative type variable, which can be taken from a context or introduced by $[[∃]]$.
-\item [$-$] a function $[[iP → iN]]$ takes a value as input and returns a computation; 
-\item [$-$] a polymorphic abstraction $[[∀pas.iN]]$ quantifies a computation over
-  a list of positive type variables 
-  $[[pas]]$. The polarities are chosen to follow the definition of functions.
-\item [$-$] a shift $[[↑iP]]$ allows a value to be used as a computation, 
-  which at the term level corresponds to a pure computation $[[return v]]$.
-\item [$+$] $[[pa]]$ is a positive type variable, taken from a context or introduced by $[[∀]]$.
-\item [$+$] $[[∃nas.iP]]$, symmetrically to $[[∀]]$, 
-  binds negative variables in a positive type $[[iP]]$. 
-\item [$+$] a shift $[[↓iN]]$, symmetrically to the up-shift, 
-  thunks a computation, which at the term level corresponds to $[[ {c} ]]$.
-\end{itemize}
+similar to the values and computations in the \CBPV system.
 
-\begin{figure}[h]
+\begin{figure}
   \begin{minipage}[t]{0.6\textwidth}
     \begin{supertabular}{ll p{0.8\textwidth}}
       \ottiNInline\\
@@ -131,14 +116,28 @@ similar to the values and computations in the \CBPV system \cite{levy2006:cbpv}.
   \label{fig:declarative-types}
 \end{figure}
 
+\begin{itemize}
+\item [$\pm$] $[[na]]$ and $[[pa]]$
+  denote negative and positive type variables, respectively.
+  The variables are either introduced by the corresponding quantifiers ($[[∀]]$ and $[[∃]]$)
+  or declared in the type context;
+\item [$-$] a function $[[iP → iN]]$ takes a value as input and returns a computation; 
+\item [$-$] similarly to functions, a polymorphic abstraction $[[∀pas.iN]]$ quantifies a computation over
+  a list of positive type variables $[[pas]]$;
+\item [$+$] dually, $[[∃nas.iP]]$, binds negative variables in a positive type $[[iP]]$;
+\item [$-$] an upshift $[[↑iP]]$ allows a value to be used as a computation, 
+  which at the term level corresponds to a pure computation $[[return v]]$;
+\item [$+$] dually, a downshift $[[↓iN]]$ thunks a computation, which at the
+  term level corresponds to $[[ {c} ]]$.
+\end{itemize}
+
+
 \paragraph{Definitional Equalities}
 For simplicity, we assume that alpha-equivalent terms are equal.
 This way, we assume that substitutions do not capture bound variables.
-Besides, we equate
-$[[∀pas.∀pbs.iN]]$ with $[[∀pas,pbs.iN]]$, 
-as well as $[[∃nas.∃nbs.iP]]$ with $[[∃nas,nbs.iP]]$,
-and lift these equations transitively and congruently 
-to the whole system.
+Besides, we assume the quantification is associative by
+(congruently) equating $[[∀pas.∀pbs.iN]]$ with $[[∀pas,pbs.iN]]$, 
+as well as $[[∃nas.∃nbs.iP]]$ with $[[∃nas,nbs.iP]]$.
 
 \paragraph{Type Context and Type Well-formedness}
 
@@ -152,6 +151,15 @@ done, we represent it as a system of inference rules, that correspond to a
 recursive algorithm taking the context and the type as input. 
 
 \subsection{The Language of Terms}
+
+\begin{figure}
+  \begin{supertabular}{ll p{0.8\textwidth}}
+    \ottcInline\\
+    \ottvInline\\
+  \end{supertabular}
+  \caption{Declarative Terms of \fexists}
+  \label{fig:declarative-terms}
+\end{figure}
 
 In \cref{fig:declarative-terms}, we define the language of terms of 
 \fexists. The language combines \systemf with the \CBPV approach.
@@ -170,15 +178,19 @@ In \cref{fig:declarative-terms}, we define the language of terms of
         the type annotation for the argument of $[[λ]]$;
     \item [$-$] $[[ let x = v ; c]]$ is a standard let, binding
         a value $[[v]]$ to a variable $[[x]]$ in a computation $[[c]]$;
-    \item [$-$] Applicative let forms $[[let x : iP = v ( args ) ; c]]$ and
-        $[[let x = v ( args ) ; c]]$ operate similarly to 
-        the bind of a monad: they take a suspended computation $[[v]]$,
-        apply it to a list of arguments, bind the result 
-        (which is expected to be pure) to a variable $[[x]]$,
-        and continue with a computation $[[c]]$.
-        If the resulting type of the application is unique, 
-        one can omit the type annotation, as in the second form:
-        it will be inferred by the algorithm;
+    \item [$-$] computational let form $[[ let x : iP = c; c']]$ 
+      operates similarly to a monadic bind.
+      It binds the result of a computation $[[c : ↑iP]]$ 
+      to a variable $[[x : iP]]$, and continues with a computation $[[c']]$;
+    \item [$-$] applicative let forms $[[let x : iP = v ( args ) ; c]]$ and
+        $[[let x = v ( args ) ; c]]$ can be viewed as a special case of the
+        computational let, when the first computation is a function application
+        $[[v]] ([[args]])$.
+        They take a suspended computation $[[v]]$, apply it to a list of
+        arguments, bind the result (which is expected to be pure) to a variable
+        $[[x]]$, and continue with a computation $[[c]]$. If the resulting type
+        of the application is unique, one can omit the type annotation, as in
+        the second form: it will be inferred by the algorithm;
     \item [$-$] $[[let∃ ( nas , x ) = v ; c]]$
         is the standard unpack of an existential type:
         expecting $[[v]]$ to be an existential type,
@@ -196,14 +208,6 @@ This is because the instantiation of polymorphic and existential types is inferr
 In \cref{sec:extensions}, we discuss the way to modify the system to introduce \emph{explicit} type applications.
 
 
-\begin{figure}[h]
-  \begin{supertabular}{ll p{0.8\textwidth}}
-    \ottcInline\\
-    \ottvInline\\
-  \end{supertabular}
-  \caption{Declarative Terms of \fexists}
-  \label{fig:declarative-terms}
-\end{figure}
 
 \subsection{The key ideas of the algorithm}
 

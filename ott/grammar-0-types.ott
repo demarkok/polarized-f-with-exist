@@ -57,7 +57,7 @@ fT {{ tex T }}, fA {{ tex A }}, fB {{ tex B}} :: 'fT_' ::= {{ com System F types
    | ( fT )     :: S :: Paren
    | fA × fB    :: M :: Prod
    | ConstT     :: M :: Const
-   | List fT    :: :: List
+   | List fT    :: :: List {{ tex [ [[fT]] ] }}
 
 grammar
 fG {{ tex \Theta }}, fΔ {{ tex \Theta }}, fΓ {{ tex \Theta }} :: F_Ctxt ::= {{ com systemF type context }}
@@ -236,7 +236,8 @@ iR {{ tex \mathcolor{positive}{R} }} :: 'iP_' ::= {{ com Positive declarative ty
    | [ mu ] iP  :: M :: AppMoving 
    | ( iP )     :: S :: Paren
    | ConstT     :: M :: Const
-   | List iP    :: :: List
+   | List iP    :: M :: List {{ tex [ [[iP]] ] }}
+
 
 ConstT :: 'ConstT_' ::= {{ com constant type }}
    | Int     :: :: Int

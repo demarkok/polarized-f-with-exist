@@ -38,8 +38,8 @@ v, w :: 'v_' ::= {{ com Value Terms }}
   | ( v : iP ) ::   :: PAnnot % {{ com annotated value }}
   | ( v )      :: M :: Paren
   | const      :: M :: Constant
-  | id _ iM    ::   :: IdM {{ tex \ottkw{id}_{[[iM]]} }}
-  | [ bareList ]  ::   :: Lst
+  | id _ iM    :: M  :: IdM {{ tex \ottkw{id}_{[[iM]]} }}
+  | [ bareList ]  :: M  :: Lst
 
 const :: 'const_' ::= {{ com constants }}
   | map       ::   :: Map

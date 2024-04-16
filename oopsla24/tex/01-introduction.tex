@@ -104,15 +104,23 @@ which traditional type inference algorithms depend on, and required us to invent
 new algorithms which combine both unification and (surprisingly)
 anti-unification. 
 
+In this paper, we extend the local type inference algorithm to a language with
+both universal and existential quantifiers, which can both be instantiated
+impredicatively. This extended system is referred to as \fexists. The
+combination of features in \fexists  broke a number of the invariants which
+traditional type inference algorithms depend on and required us to invent
+new algorithms which combine both unification and (surprisingly)
+anti-unification.
+
 To research the type inference in impredicative polymorphic systems
 in the presence of existential types, we make the following \emph{contributions}.
 
 \paragraph{Type Inference Algorithm} We give a local type inference algorithm
     which supports both first-class existential and universal quantifiers, both
     of which can be instantiated impredicatively. To evade the undecidability
-    results surrounding type inference for \systemf, we work in a variant of
-    \CBPV \cite{levy2006:cbpv}, which lets us formulate a subtyping relation
-    which is still decidable. 
+    results surrounding type inference for \systemf, we introduce \fexists---a
+    variant of \CBPV \cite{levy2006:cbpv}, which lets us formulate a subtyping
+    relation which is still decidable. 
 
 \paragraph{Declarative Specification}
     We give a declarative type system (again, based on \CBPV) to
