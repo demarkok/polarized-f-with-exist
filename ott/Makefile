@@ -32,3 +32,6 @@ $(GEN_TEXS): $(TEXS) $(CACHE) | $(GEN)
 
 clean: 
 	rm -f $(CACHE) $(GEN_TEXS) 
+
+distclean: clean
+	rm -rf $(GEN)

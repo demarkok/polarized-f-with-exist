@@ -78,7 +78,7 @@ defn Γ ; Φ ⊢ iN ● args ⇒> iM :: :: SpinInf :: ''
 
 Γ ⊢ iN ≈ iN'
 ---------------------- :: EmptyApp
-Γ ; Φ ⊢ iN ● · ⇒> iN' 
+Γ ; Φ ⊢ iN ● ∅ ⇒> iN' 
 
 Γ ; Φ ⊢ v : iP   Γ ⊢ iQ ≥ iP  
 Γ ; Φ ⊢ iN ● args ⇒> iM

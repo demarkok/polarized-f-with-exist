@@ -1,14 +1,19 @@
-% Imprediicative
-% CBPV, monadic control
-% Local Inference
-% Two ways to translate
+\label{sec:overview}
 
-The language of \fexists is different from standard \systemf:
-every term and type has either positive or negative polarity.
-The type variables are annotated with their polarities
-(e.g. $[[α⁺]]$ or $[[β⁻]]$), and the types can change polarity
-via the shift operators $[[↑]]$ (positive to negative) and
-$[[↓]]$ (negative to positive).
+In the presence of impredicative polymorphism, the standard \systemf has
+undecidable subtyping and type inference. It means that any inference algorithm
+is incomplete: it only infers the types for a \emph{fragment} of \systemf. 
+
+To tackle this issue, we restrict \systemf by employing the ideas from the \CBPV
+system \cite{levy2006:cbpv}. We introduce a new language, \fexists, which
+stratifies the syntax of \systemf into positive and negative parts. It provides
+the structure that allows us to restrict the typing specification to make it
+decidable.
+
+Every term and type fo \fexists has either \emph{positive} or \emph{negative}
+polarity. The type variables are annotated with their polarities (e.g. $[[α⁺]]$
+or $[[β⁻]]$), and the types can change polarity via the shift operators $[[↑]]$
+(positive to negative) and $[[↓]]$ (negative to positive).
 
 Positive expressions correspond to \emph{values} in the \CBPV system, and
 negative expressions correspond to \emph{computations}. The difference between
@@ -62,7 +67,7 @@ what can and cannot be inferred in \fexists.
 The focus of our system is the \emph{local} type inference
 \cite{pierce2000:local}, which has certain limitations. In particular, the
 instantiation does not happen when the polymorphic term is in the argument
-position. For example, one would expect the following to be inferrable:
+position. For example, one could expect the following to be inferrable:
 \mbox{$[[· ; Φ ⊢ let x = map(id, [two, three, nine]); return x : ↑ List Int]]$}.
 However, to infer this, $[[id]]$ must be instantiated to \mbox{$[[Int → ↑Int]]$}
 which requires the information to be propagated from the neighboring branch of
@@ -119,36 +124,40 @@ similar to the values and computations in the \CBPV system.
 \begin{itemize}
 \item [$\pm$] $[[na]]$ and $[[pa]]$
   denote negative and positive type variables, respectively.
-  The variables are either introduced by the corresponding quantifiers ($[[∀]]$ and $[[∃]]$)
-  or declared in the type context;
-\item [$-$] a function $[[iP → iN]]$ takes a value as input and returns a computation; 
-\item [$-$] similarly to functions, a polymorphic abstraction $[[∀pas.iN]]$ quantifies a computation over
-  a list of positive type variables $[[pas]]$;
-\item [$+$] dually, $[[∃nas.iP]]$, binds negative variables in a positive type $[[iP]]$;
-\item [$-$] an upshift $[[↑iP]]$ allows a value to be used as a computation, 
-  which at the term level corresponds to a pure computation $[[return v]]$;
-\item [$+$] dually, a downshift $[[↓iN]]$ thunks a computation, which at the
-  term level corresponds to $[[ {c} ]]$.
+  The variables are either introduced by the corresponding quantifiers 
+  ($[[∀]]$ and $[[∃]]$, respectively) or declared in the type context;
+\item [$-$] a function $[[iP → iN]]$ takes a \emph{positive} input $[[iP]]$ and
+returns a \emph{negative} output $[[iN]]$; the function type itself is
+\emph{negative}, so the `arrow' operator is right-associative: 
+$[[iP → iQ → iN]]$ is equivalent to $[[iP → (iQ → iN)]]$;
+\item [$-$] similarly to functions, a polymorphic abstraction $[[∀pas.iN]]$
+  quantifies a negative type $[[iN]]$ over a list of positive type variables $[[pas]]$;
+\item [$+$] dually, $[[∃nas.iP]]$ binds negative variables in a positive type $[[iP]]$;
+\item [$\pm$] an upshift $[[↑iP]]$ and a downshift $[[↓iN]]$ change the polarity of a type
+  from positive to negative and vice versa.
+  At the level of terms, the constructors for shift types are
+  $[[return v]]$ and $[[{c}]]$ (thunked computation), respectively.
 \end{itemize}
 
 
-\paragraph{Definitional Equalities}
-For simplicity, we assume that alpha-equivalent terms are equal.
-This way, we assume that substitutions do not capture bound variables.
-Besides, we assume the quantification is associative by
-(congruently) equating $[[∀pas.∀pbs.iN]]$ with $[[∀pas,pbs.iN]]$, 
-as well as $[[∃nas.∃nbs.iP]]$ with $[[∃nas,nbs.iP]]$.
+\paragraph{Syntactic Conventions}
+We always consider terms and types up to alpha-equivalence, and capture-avoiding
+substitution. Besides, we assume the quantification is associative,
+for example, $[[∀pas.∀pbs.iN]]$ and $[[∀pas,pbs.iN]]$
+represent the same type.
 
 \paragraph{Type Context and Type Well-formedness}
 
 In the construction of \fexists, a type context (denoted as $[[Γ]]$) is
-represented as a \emph{set} of positive and negative type variables and it is used to
-assert the well-formedness of types. The well-formedness of a type is denoted as
-$[[Γ ⊢ iP]]$ and $[[Γ ⊢ iN]]$ and it asserts that all type variables are either
-bound by a quantifier ($[[∀]]$ and $[[∃]]$) or declared in the context $[[Γ]]$.
-The well-formedness checking is an \emph{algorithmic} procedure. As commonly
-done, we represent it as a system of inference rules, that correspond to a
-recursive algorithm taking the context and the type as input. 
+represented as a \emph{set} of positive and negative type variables and it is
+used to assert the well-formedness of types. The well-formedness (or
+well-scopeness) of a type is denoted as $[[Γ ⊢ iP]]$ and $[[Γ ⊢ iN]]$ and it
+asserts that all type variables are either bound by a quantifier ($[[∀]]$ and
+$[[∃]]$) or declared in the context $[[Γ]]$. The well-formedness checking is an
+\emph{algorithmic} procedure. We represent it as a system of inference rules,
+that correspond to a recursive algorithm taking the context and the type as
+input. For brevity, we omit these rules, as they are standard binder scoping
+rules.
 
 \subsection{The Language of Terms}
 
@@ -161,8 +170,11 @@ recursive algorithm taking the context and the type as input.
   \label{fig:declarative-terms}
 \end{figure}
 
-In \cref{fig:declarative-terms}, we define the language of terms of 
-\fexists. The language combines \systemf with the \CBPV approach.
+In \cref{fig:declarative-terms}, we define the language of terms of \fexists.
+The language is a combination of \systemf and \CBPV constructs: the
+terms are stratified into values and computations; there are return 
+and thunk constructors, as well as several forms of let bindings to
+sequentialize the computation/application with or without type annotation; 
 
 \begin{itemize}
     \item [$+$] $[[x]]$ denotes a term variable.
@@ -187,13 +199,13 @@ In \cref{fig:declarative-terms}, we define the language of terms of
         computational let, when the first computation is a function application
         $[[v]] ([[args]])$.
         They take a suspended computation $[[v]]$, apply it to a list of
-        arguments, bind the result (which is expected to be pure) to a variable
-        $[[x]]$, and continue with a computation $[[c]]$. If the resulting type
+        arguments, bind the (pure) result to a variable
+        $[[x]]$, and continues with a computation $[[c]]$. If the resulting type
         of the application is unique, one can omit the type annotation, as in
         the second form: it will be inferred by the algorithm;
     \item [$-$] $[[let∃ ( nas , x ) = v ; c]]$
-        is the standard unpack of an existential type:
-        expecting $[[v]]$ to be an existential type,
+        is the standard eliminator of an existential type (unpack):
+        expecting $[[v]]$ to be of an existential type,
         it binds the packed negative types to a list of 
         variables $[[nas]]$, binds the body of the existential
         to $[[x]]$, and continues with a computation $[[c]]$.
@@ -209,19 +221,19 @@ In \cref{sec:extensions}, we discuss the way to modify the system to introduce \
 
 
 
-\subsection{The key ideas of the algorithm}
+\subsection{The Key Ideas of the Algorithm}
 
 The inference algorithm for \fexists is \emph{local}: it has a limited scope of
 the inference information and does not propagate it between far-apart branches
 of the syntax tree. Nevertheless, many difficulties appear in the inference of
-polymorphic and existential types. Next, we discuss the most challenging of
-these difficulties and how they are addressed in the algorithm.
+the combination of polymorphic and existential types. Next, we discuss the most
+challenging of these difficulties and how they are addressed in the algorithm.
 
-\paragraph{Subtyping} Most of the difficulty of the inference algorithm is
-concentrated in the subtyping relation. This is the part of the system where
-most of the polymorphic instantiation happens. In particular, it is the
-subtyping relation that allows us to use the polymorphic terms in the context
-where their concrete instantiations are expected.
+\paragraph{Subtyping} 
+The inference algorithm's complexity mainly lies in the subtyping relation,
+which is, in particular, responsible for polymorphic instantiation. It's this
+subtyping relation that enables us to apply polymorphic terms in situations
+where their specific instantiations are anticipated.
 
 To check whether one type is a subtype of another, the algorithm introduces
 \emph{algorithmic} type variables ($[[α̂±]], [[β̂±]], \dots$)--- the
@@ -238,20 +250,20 @@ of finding $[[α̂⁺]]$ such that $[[↑α̂⁺ ≤ ↑Int]]$.
 }}}}
 
 \paragraph{Equivalence}
-Our system introduces another complexity: the equivalence induced by subtyping
+The system introduces another complexity: the equivalence induced by subtyping
 ($[[Γ ⊢ iN ≈ iM]] \defiff [[Γ ⊢ iN ≤ iM]] \text{ and } [[Γ ⊢ iM ≤ iN]]$) is not
 straightforward. This relation extends beyond just alpha-equivalent types. As
 the neighboring polymorphic quantifiers can be instantiated in arbitrary order,
-the equivalence relation must permit the permutations of the quantifiers. For
-example, we have $[[· ⊢ ∀α⁺.∀β⁺.iN ≈ ∀β⁺.∀α⁺.iN]]$. Similarly, the
-equivalence permits the removal/addition of the unused quantifiers: $[[· ⊢
-∀α⁺.↑Int ≈ ↑Int]]$.
+the equivalence relation must permit the \emph{permutations} of the quantifiers.
+For example, we have $[[· ⊢ ∀α⁺.∀β⁺.iN ≈ ∀β⁺.∀α⁺.iN]]$. Similarly, the
+equivalence permits the \emph{removal/addition} of the unused quantifiers: $[[·
+⊢ ∀α⁺.↑Int ≈ ↑Int]]$.
 
-In order to manage the complexity of non-trivial equivalence, we implement
-a type normalization algorithm. It effectively reduces the mutual subtyping to
-a simpler alpha-equivalence. The normalization works by recursively
-eliminating unused quantifiers and reordering the remaining ones into a
-canonical permutation.
+To handle the complexity of non-trivial equivalence, we employ a type
+normalization algorithm. This approach simplifies mutual subtyping to a more
+manageable alpha-equivalence by eliminating unused quantifiers and reordering
+the rest into a canonical permutation, effectively replacing subtyping-induced
+equivalence on terms with alpha-equivalence on their normal forms.
 
 \paragraph{Least Upper Bound}
 Eventually, the subtyping algorithm reduces the initial subtyping problem to a set of
@@ -291,6 +303,6 @@ constraints that we put on subtyping is the invariance of the shift operators:
 the subtyping $[[↑iP ≤ ↑iQ]]$ is only allowed if $[[iQ ≥ iP]]$
 \emph{and} $[[iP ≥ iQ]]$. These constraints do not trivialize the system: we
 still have non-trivial upper bounds, and thus, need to use anti-unification to
-find them. However, it prevents such examples as $[[α̂⁺ :≥ ↓↑α̂⁺]]$, and in
-fact, makes the constraint resolution decidable.
+find them. However, it prevents such examples as $[[α̂⁺ :≥ ↓↑α̂⁺]]$, and 
+as we prove, makes the constraint resolution decidable.
 

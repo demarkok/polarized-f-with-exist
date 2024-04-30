@@ -58,7 +58,10 @@ clean:
 	rm -f *~ \#*\# *.spl *.fls *.fdb_latexmk *.bcf
 	rm -f *.rubbercache 
 
-distclean: clean
+ottdistclean:
+	make -C $(OTT) distclean
+
+distclean: clean ottdistclean
 	rm -r $(GEN)
 	rm -r $(OTT_GEN)
 	rm $(PDFS)

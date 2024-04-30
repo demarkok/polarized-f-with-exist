@@ -8,7 +8,7 @@ ft {{ tex t }}, fe {{ tex e }} :: 'ft_' ::= {{ com System F terms }}
   | Λ as . ft   ::   :: BigLam % {{ com type abstraction }}
   | ft1 ft2     ::   :: App    % {{ com application }}
   | ft1 [ fT ]  :: M :: TApp    % {{ com type application }}
-                                {{ tex [[ft1]] \, [[ [ ]] [[fT]] [[ ] ]]}}
+                                {{ tex [[ft1]] \, \{ [[fT]] \} }}
   | ( ft )      :: M :: Paren
   | const       :: M :: Constant
   | [ fargs ]  ::   :: Lst
@@ -29,6 +29,8 @@ grammar
 
 args {{ tex \vv{ v } }} :: 'args_' ::= {{ com list of arguments }}
     | ·                     ::   :: Empty    {{ tex }}
+    | ∅                     :: M :: EmptyVis {{ tex \cdot }}
+                                             {{ com empty (visible in Latex) }}
     | v                     ::   :: Single
     | args1 , args2         ::   :: Concat   {{ com concatenate }}
 
@@ -69,8 +71,10 @@ c, d :: 'c_' ::= {{ com Computation Terms }}
   | Λ pa . c                      ::   :: BigLam    % {{ com annotated type abstraction }}
   | Λ l ▷ pa . c                  :: M :: BigLamLbl 
   | c [ iPs ]                     :: M :: TypeApp   % {{ com type application }}
+                                                    {{ tex [[c]] \{ [[iPs]] \} }}
   | c [ l ▷ iP ]                  :: M :: LblTypeApp   % {{ com type application }}
-  | c [ l ▷* iP ]                 :: M :: LblTypeAppM {{ tex [[c]] [ \vv{ [[l]] [[▷]] [[iP]] } ] }}  
+                                                    {{ tex [[c]] \{ [[l]] [[▷]] [[iP]] \} }}                  
+  | c [ l ▷* iP ]                 :: M :: LblTypeAppM {{ tex [[c]] \{ [[l]] [[▷*]] [[iP]] \}  }}  
   | return v                      ::   :: Return    % {{ com computation embedding a value}}
   | let x = v ; c                 ::   :: VarLet    % {{ com standard let-binding }} 
                                                     {{ tex \ottkw{let}\, [[x]] = [[v]] ;~ [[c]] }}
@@ -106,6 +110,10 @@ fun | Φ | :: fΦ :: unpolVCtxt {{ tex | [[Φ]] | }} by
 fun ft' ●  fargs  :: ft :: multuAppSugar by 
   ft ●  ·  === ft
   ft ● ft', fargs === (ft ft') ● fargs
+
+
+fun ft' ● fe *  :: ft :: multuAppStarSugar {{tex (([[ft']] \, [[fe]]_1)\cdots)\,[[fe]]_n }} by 
+
 
 fun let x = ft1 ; ft2 :: ft :: letSugar by 
   let x = ft1 ; ft2 === (λx.ft2) ft1

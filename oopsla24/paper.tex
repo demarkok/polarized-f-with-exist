@@ -155,7 +155,24 @@
 %% The abstract is a short summary of the work to be presented in the
 %% article.
 \begin{abstract}
-  % {\color{red}CHANGE!!}
+  {\color{red}Change!}
+  Type inference for polymorphic types has been extensively studied, with the
+  Damas-Hindley-Milner algorithm being the most well-known approach for handling
+  parametric polymorphism. However, supporting impredicative existential types
+  has remained an open challenge due to undecidability barriers. This paper
+  presents \fexists, a type system extending the \CBPV calculus with
+  first-class existential and universal quantifiers that can be instantiated
+  impredicatively. We give a local type inference algorithm for \fexists that avoids
+  the undecidability issues through a novel combination of unification and
+  anti-unification techniques. A key contribution is providing a declarative
+  specification of the inference algorithm based on the \fexists type system and
+  proving the algorithm's soundness and completeness. We also explore extending
+  the inference framework to bidirectional typechecking, different subtyping
+  regimes, and bounded polymorphism. This work opens up new avenues for bringing
+  the benefits of impredicative existential types to programming languages
+  through principled type inference.
+
+
   % This paper addresses the challenging problem of type inference for
   % Impredicative System F with existential types, a critical aspect of many
   % programming languages. While System F serves as the basis for type systems in
@@ -222,7 +239,6 @@
 \maketitle
 
 \section{Introduction}
-
 \input{\genDir/tex/01-introduction.tex}
 
 \section{Overview}

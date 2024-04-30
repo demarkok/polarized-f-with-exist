@@ -11,6 +11,14 @@ embed {{ tex-preamble
   {\colorbox{black!8}{$\scriptstyle       \mathit{ #1 } $} }%
   {\colorbox{black!8}{$\scriptscriptstyle \mathit{ #1 } $} } }%
 
+\newcommand{\posAlgType}[1]{%
+   \ngbox{ \mathcolor{positive}{ #1 } }
+}
+
+\newcommand{\negAlgType}[1]{%
+   \ngbox{ \mathcolor{negative}{ #1 } } 
+}
+
 }}
 
 metavar a {{ tex \alpha }}, b {{ tex \beta }}, g {{ tex \gamma }}, d {{tex \delta}}, 
@@ -120,7 +128,7 @@ scE {{ tex e }} :: 'scE_' ::= {{ com Constraint Entry }}
    | pua :≈ iP            ::   :: PEq 
    | nua :≈ iN            ::   :: NEq
    | pua :≥ iP            ::   :: Sup 
-   | pua :≥* iP           ::   :: MSup {{tex \vv{[[pua]] [[:≥]] [[iP]]}  }}
+   | pua :≥* iP           :: M :: MSup {{tex \vv{[[pua]] [[:≥]] [[iP]]}  }}
    | ( scE )              :: S :: paren
    | SC ( nua )           :: M :: NSelect
 
@@ -133,7 +141,6 @@ scEF {{ tex e }} :: 'scEF_' ::= {{ com Constraint Entry (Full) }}
    | pua :≤ iP            ::   :: Sub 
    | pua :≤* iP           ::   :: MSub {{tex \vv{[[pua]] [[:≤]] [[iP]]}  }}
    | ( scEF )              :: S :: paren
-
 
 ucE  {{ tex ue }} :: 'ucE_' ::= {{ com Unification Constraint Entry }}
    | pua :≈ iP            ::   :: PEq 
@@ -307,7 +314,7 @@ iMs {{ tex \vv{ \mathcolor{negative}{M} } }}
 
 grammar
 
-G {{ tex \Theta }}, Δ {{ tex \Theta }}, Γ {{ tex \Theta }} :: DT_Ctxt ::= {{ com declarative type context }}
+G {{ tex \Theta }}, Δ {{ tex \Theta_0 }}, Γ {{ tex \Theta }} :: DT_Ctxt ::= {{ com declarative type context }}
     | ·                  ::   :: empty   {{ com empty context }}
     | { pas }            ::   :: PList   {{ com list of variables }}
                                          {{ tex [[pas]] }}
@@ -441,10 +448,8 @@ nubs {{ tex \vv{ \widehat{ \mathcolor{negative}{\beta} }^{-} } }}
                                             {{ tex \vv{ [[nua]]  } }}
    | </ nuasi // , // i /> ::   :: concat   {{ com concatenate lists }}
 
-
-
-uP {{ tex \ngbox{ \mathcolor{positive}{P} } }}, 
-uQ {{ tex \ngbox{ \mathcolor{positive}{Q} } }}:: 'uP_' ::= {{ com Positive algorithmic type }}
+uP {{ tex \posAlgType{P} }}, 
+uQ {{ tex \posAlgType{Q} }}:: 'uP_' ::= {{ com Positive algorithmic type }}
                                                             {{ tex \ngbox{[[uP]]} }} 
    | pua           ::   :: UnifVar 
    | pa            ::   :: Var 
@@ -457,8 +462,8 @@ uQ {{ tex \ngbox{ \mathcolor{positive}{Q} } }}:: 'uP_' ::= {{ com Positive algor
    | [ umu ] iP    :: M :: AppAUNSub
    | ( uP )        :: S :: Paren
 
-uN {{ tex \ngbox{ \mathcolor{negative}{N} } }}, 
-uM {{ tex \ngbox{ \mathcolor{negative}{M} } }} :: 'uN_' ::= {{ com Negative algorithmic type }}
+uN {{ tex \negAlgType{N} }},
+uM {{ tex \negAlgType{M} }} :: 'uN_' ::= {{ com Negative algorithmic type }}
                                                              {{ tex \ngbox{[[uN]]} }}
    | nua            ::   :: UnifVar
    | na             ::   :: Var

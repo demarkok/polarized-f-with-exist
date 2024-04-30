@@ -98,13 +98,13 @@
 
 \newcommand{\ottuNShort}[0]
     {\ottuGrammarExt{\ottcom{Negative Algorithmic Types}}
-                   {\ngbox{ \mathcolor{negative}{N} }  ,\ \ngbox{ \mathcolor{negative}{M} }}
+                   { \negAlgType{N}  ,\ \negAlgType{M} }
                    {\Coloneqq}
                    {\widehat{ \mathcolor{negative}{\alpha} }^{-}}}
 
 \newcommand{\ottuPShort}[0]
     {\ottuGrammarExt{\ottcom{Positive Algorithmic Types}}
-                   {\ngbox{ \mathcolor{positive}{P} }  ,\ \ngbox{ \mathcolor{positive}{Q} }}
+                   { \posAlgType{P}  ,\ \posAlgType{Q} }
                    {\Coloneqq}
                    {\widehat{ \mathcolor{positive}{\alpha} }^{+}}}
 
@@ -168,37 +168,47 @@
 % \end{figure}
 
 
-\renewcommand{\ottdefnDTNInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderDTNInf}{\ottcom{Negative typing}}
-    \begin{multicols}{2}
-        \ottusedrule{\ottdruleDTtLamLabeled{}}
-        \ottusedrule{\ottdruleDTTLamLabeled{}}
-        \ottusedrule{\ottdruleDTReturnLabeled{}}
-        \ottusedrule{\ottdruleDTVarLetLabeled{}}
-        \ottusedrule{\ottdruleDTCVarLetLabeled{}}
-        \ottusedrule{\ottdruleDTAppLetLabeled{}}
-        \ottusedrule{\ottdruleDTAppLetAnnLabeled{}}
-        \ottusedrule{\ottdruleDTUnpackLabeled{}}
-        \ottusedrule{\hspace{-.5cm}\ottdruleDTNAnnotLabeled{}}
-        \ottusedrule{\ottdruleDTNEquivLabeled{}}
-    \end{multicols}
-\end{ottdefnblock}}
+\renewcommand{\ottdefnDTNInfLabeled}[1]{
+    \begin{ottdefnblock}[#1]{\ottdefnHeaderDTNInf}{\ottcom{Negative typing}}
+        \begin{minipage}[t]{0.49\textwidth}
+            \ottusedrule{\ottdruleDTtLamLabeled{}}
+            \ottusedrule{\ottdruleDTTLamLabeled{}}
+            \ottusedrule{\ottdruleDTReturnLabeled{}}
+            \ottusedrule{\ottdruleDTVarLetLabeled{}}
+            \ottusedrule{\ottdruleDTCVarLetLabeled{}}
+            \ottusedrule{\ottdruleDTNEquivLabeled{}}
+        \end{minipage}
+        \begin{minipage}[t]{0.49\textwidth}
+            \ottusedrule{\ottdruleDTAppLetLabeled{}}
+            \ottusedrule{\ottdruleDTAppLetAnnLabeled{}}
+            \ottusedrule{\ottdruleDTUnpackLabeled{}}
+            \ottusedrule{\hspace{-.5cm}\ottdruleDTNAnnotLabeled{}}
+        \end{minipage}
+    \end{ottdefnblock}}
 
-\renewcommand{\ottdefnDTSpinInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderDTSpinInf}{\ottcom{Application typing}}
-    \begin{multicols}{2}
-        \ottusedrule{\ottdruleDTEmptyAppLabeled{}}
-        \ottusedrule{\ottdruleDTArrowAppLabeled{}}
-        \ottusedrule{\ottdruleDTForallAppLabeled{}}
-    \end{multicols}
-\end{ottdefnblock}}
+\renewcommand{\ottdefnDTSpinInfLabeled}[1]{
+    \begin{ottdefnblock}[#1]{\ottdefnHeaderDTSpinInf}{\ottcom{Application typing}}
+        \begin{minipage}{0.49\textwidth}
+            \ottusedrule{\ottdruleDTEmptyAppLabeled{}}
+            \ottusedrule{\ottdruleDTArrowAppLabeled{}}
+        \end{minipage}
+        \begin{minipage}{0.49\textwidth}
+            \ottusedrule{\ottdruleDTForallAppLabeled{}}
+        \end{minipage}
+    \end{ottdefnblock}}
 
-\renewcommand{\ottdefnDTPInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderDTPInf}{\ottcom{Positive typing}}
-    \begin{multicols}{2}
-        \ottusedrule{\ottdruleDTVarLabeled{}}
-        \ottusedrule{\ottdruleDTThunkLabeled{}}
-        \ottusedrule{\ottdruleDTPAnnotLabeled{}}
-        \ottusedrule{\ottdruleDTPEquivLabeled{}}
-    \end{multicols}
-\end{ottdefnblock}}
+\renewcommand{\ottdefnDTPInfLabeled}[1]{
+    \begin{ottdefnblock}[#1]{\ottdefnHeaderDTPInf}{\ottcom{Positive typing}}
+        \begin{minipage}{0.49\textwidth}
+            \ottusedrule{\ottdruleDTVarLabeled{}}
+            \ottusedrule{\ottdruleDTThunkLabeled{}}
+        \end{minipage}
+        \begin{minipage}{0.49\textwidth}
+            \ottusedrule{\ottdruleDTPAnnotLabeled{}}
+            \ottusedrule{\ottdruleDTPEquivLabeled{}}
+        \end{minipage}
+    \end{ottdefnblock}
+}
 
 
 \renewcommand{\ottdefnATPInf}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATPInf}{\ottcom{Positive typing}}

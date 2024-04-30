@@ -7,12 +7,12 @@ calculus---\systemf\cite{girard-system-f,jcr-system-f}---the polymorphic type
 $[[∀a.fA]]$ has a big lambda $[[Λa.fe]]$ as an introduction form, and an
 explicit type application $[[ fe[fA] ]]$ as an elimination form. This is an
 extremely simple and compact type system, whose rules fit on a single page, but
-whose semantics are sophisticated enough to model things like parametricity and
-representation independence. However, System F by itself is unwieldy as a
-programming language. The fact that the universal type $[[∀a.fA]]$ has explicit
-eliminations means that programs written using polymorphic types will need to be
-stuffed to the gills with type annotations explaining how and when to
-instantiate the quantifiers.
+whose semantics are advanced enough to accurately represent concepts such as
+parametricity and representation independence. However, \systemf by itself is
+unwieldy as a programming language. The fact that the universal type $[[∀a.fA]]$
+has explicit eliminations means that programs written using polymorphic types
+will need to be stuffed to the gills with type annotations explaining how and
+when to instantiate the quantifiers.
 
 Therefore, most work on type inference has been aimed at handling type
 instantiations implicitly---we want to be able to use a polymorphic function
@@ -21,25 +21,21 @@ instantiating the quantifier in $[[len]]$'s type. That is, we want to write
 $[[ len [one,two,three] ]]$ instead of writing
 $[[ len [Int] [one,two,three] ]]$.
 
-The most famous of the algorithms for solving these constraints is the
-Damas-Hindley-Milner (HDM) algorithm
-\cite{hindley69:principal,milner78:theory,damas82:principal}. The idea is that
-type instantiation induces a subtype ordering: the type $[[∀a.fA]]$ is a subtype
-of all of its instantiations. So we wish to be free to use the same function
-$[[len]]$ at many different types such as 
-$[[List Int → Int]]$, $[[List Bool → Int]]$,
-$[[List (Int × Bool) → Int]]$, and so on.
-However, the subtype relation is nondeterministic: it tells us that whenever we
-see a polymorphic type $[[∀a.fA]]$, we know it is a subtype of \emph{any}
-of its instantiations. To turn this into an algorithm, we have to actually make
-some choices, and DHM works by using \emph{unification}. Whenever we would have
-had to introduce a particular concrete type in the specification, the DHM
-algorithm introduces a unification variable, and incrementally instantiates this
-variable as more and more type constraints are observed.
+The way this is typically done is by using a \emph{subtyping} relation, induced
+by the polymorphic instantiation: the type $[[∀a.fA]]$ is a \emph{subtype} of
+all of its instantiations. So we wish to be free to use the same polymorphic
+function $[[len]]$ at many different types such as $[[List Int → Int]]$, $[[List
+Bool → Int]]$, $[[List Int × Bool → Int]]$, and so on. However, the subtyping
+can be used nondeterministically: whenever we see a polymorphic type
+$[[∀a.fA]]$, we know it is a subtype of \emph{any} of its instantiations. To
+turn this into an algorithm, we have to actually make some choices. 
 
-
-                 
-
+The most famous of the algorithms for handling this is the Damas-Hindley-Milner
+(DHM) algorithm \cite{hindley69:principal,milner78:theory,damas82:principal}.
+DHM deals with this choice using \emph{unification}. Whenever we would have had
+to introduce a particular concrete type in the specification, the DHM algorithm
+introduces a \emph{unification variable}, and incrementally instantiates this variable
+as more and more type constraints are observed.
 
 However, the universal quantifier is not the only quantifier! Dual to the
 universal quantifier $\forall$ is the existential quantifier $\exists$. Even
@@ -58,7 +54,10 @@ There has been a limited amount of work on support for existential types as a
 first-class concept. In an unpublished draft, \citet{leijen06:first-class}
 studied an extension of Damas-Milner inference in which type schemes contain
 alternating universal and existential quantifiers. Quantifiers still range over
-monotypes, and higher-rank polymorphism is not permitted. More recently,
+monotypes (\ie types with no quantifiers inside of them), and higher-rank 
+polymorphism is not permitted: one cannot instantiate a quantifier with a type
+that itself contains quantifiers.
+More recently,
 \citet{dunfield16:existential} studied type inference for existential types in
 the context of GADT type inference, which, while still predicative, supported
 higher-rank types (i.e., quantifiers can occur anywhere inside of a type
@@ -67,10 +66,10 @@ types of the form forall-exists, but which permits projective elimination in the
 style of ML modules. 
 
 All of these papers are restricted to \emph{predicative} quantification, where
-quantifiers can only be instantiated with monotypes (i.e., types without any
-occurences of quantifiers). However, existential types in full System F are
-\emph{impredicative}---that is, quantifiers can be instantiated with arbitrary
-types, specifically including types containing quantifiers.
+quantifiers can only be instantiated with monotypes. However, existential types
+in full System F are \emph{impredicative}---that is, quantifiers can be
+instantiated with arbitrary types, specifically including types containing
+quantifiers.
 
 Historically, inference for impredicative quantification has been neglected, due
 to results by \citet{tiuryn-urzczyn-96} and \citet{chrzaszcz-98} which show that
@@ -78,13 +77,13 @@ not only is full type inference for \systemf undecidable, but even that the
 subtyping relation induced by type instantiation is undecidable. However, in
 recent years, interest in impredicative inference has revived (for example, the
 work of \citet{serrano-2020}), with a focus on avoiding the undecidability
-barriers by doing \emph{partial} type inference. That is, we no longer try to do
-full type inference, but rather accept that the programmer will need to write
-annotations in cases where inference would be too difficult. Unfortunately, it
-is often difficult to give a specification for what the partial algorithm
-does--for example, \citet{eisenberg21:existential} observe that their algorithm
-lacks a declarative specification, and explain why existential types make this
-particularly difficult to do. 
+barriers by doing \emph{partial} type inference. That is, we no longer try to
+infer the type of any term in the language, but rather accept that the
+programmer will need to write annotations in cases where inference would be too
+difficult. Unfortunately, it is often difficult to give a specification for when
+the partial algorithm succeeds---for example, \citet{eisenberg21:existential}
+observe that their algorithm lacks a declarative specification, and explain why
+existential types make this particularly difficult to do. 
 
 One especially well-behaved form of partial type inference is \emph{local type
 inference}, introduced by \citet{pierce2000:local}. In this approach,
@@ -95,14 +94,14 @@ twin benefits that it is easy to give a mathematical specification to, and that
 failures of type inference are easily explained in terms of local features of
 the call site. In fact, many production programming languages such as C\# and
 Java use a form of local type inference, due to the ease of extending this style
-of inference to support OO features. 
+of inference to support object-oriented features. 
 
 In this paper, we extend the local type inference algorithm to a language with
 both universal and existential quantifiers, which can both be instantiated
 impredicatively. This combination of features broke a number of the invariants
 which traditional type inference algorithms depend on, and required us to invent
 new algorithms which combine both unification and (surprisingly)
-anti-unification. 
+the dual---anti-unification.
 
 In this paper, we extend the local type inference algorithm to a language with
 both universal and existential quantifiers, which can both be instantiated
@@ -113,16 +112,17 @@ new algorithms which combine both unification and (surprisingly)
 anti-unification.
 
 To research the type inference in impredicative polymorphic systems
-in the presence of existential types, we make the following \emph{contributions}.
+in the presence of existential types, we make the following \emph{\textbf{contributions}}.
 
-\paragraph{Type Inference Algorithm} We give a local type inference algorithm
+\paragraph{Type Inference Algorithm (\cref{sec:algorithm})}
+    We give a local type inference algorithm
     which supports both first-class existential and universal quantifiers, both
     of which can be instantiated impredicatively. To evade the undecidability
     results surrounding type inference for \systemf, we introduce \fexists---a
     variant of \CBPV \cite{levy2006:cbpv}, which lets us formulate a subtyping
     relation which is still decidable. 
 
-\paragraph{Declarative Specification}
+\paragraph{Declarative Specification (\cref{sec:declarative-system,sec:proofs})}
     We give a declarative type system (again, based on \CBPV) to
     serve as a specification of our algorithm, and we prove our algorithm is
     sound and complete with respect to the declarative type system. The
@@ -130,21 +130,22 @@ in the presence of existential types, we make the following \emph{contributions}
     $\forall$-elimination) and all packs (for $\exists$-introdution) are
     inferred. 
 
-\paragraph{Employment of the Anti-unification}
+\paragraph{Employment of the Anti-unification (\cref{sec:antiunification})}
     The introduction of impredicative existentials breaks some of the
     fundamental invariants of HM-style type inference. As a result, it needs to
     mix unification with \emph{anti-unification}---a dual operation which has
     been used in the literature on term rewriting systems, but which has never
     appeared in the context of polymorphic type inference.
 
-\paragraph{Extrapolation of the Inference Framework to Other Type Systems}
+\paragraph{Extrapolation of the Inference Framework to Other Type Systems
+          (\cref{sec:extensions})}
     We explore the design space further to show how the
-    same type inference scheme could be applied to
+    same type inference scheme can be applied to
     work with different type systems. In particular,
     \begin{enumerate*}
-      \item[(i)] in combination with \emph{bidirectional} typechecking---
-        the approach used in the original local type inference paper of \citet{pierce2000:local}
-        that minimizes the number of needed annotations;
+      \item[(i)] in combination with \emph{bidirectional} typechecking---the 
+        approach used in the original local type inference paper of 
+        \citet{pierce2000:local} that minimizes the number of needed annotations;
       \item[(ii)] in systems with different subtyping rules, such as  
         the one used in \citet{zhao22:elementary}---a system that
         permits explicit type applications;
@@ -152,3 +153,22 @@ in the presence of existential types, we make the following \emph{contributions}
         That is, one can only instantiate a quantifier with a 
         type that is a subtype of a given bound.
     \end{enumerate*}
+  
+\ilyam{Is the following needed since we have the contributions? I just wanted to introduce the appendix somewhere...}
+\paragraph{\textbf{Structure of this Paper}}
+In \cref{sec:overview}, we discuss the language of the \fexists system, providing
+examples, outlining limitations, and summarizing the main ideas behind the
+algorithm. \Cref{sec:declarative-system} presents a formal definition of the
+declarative specification and its key properties. In \cref{sec:algorithm}, the
+type inference algorithm is introduced, detailing a hierarchy of subroutines;
+upon perusing this section, one could \emph{implement} the type inference
+algorithm. \Cref{sec:proofs} overviews the algorithm's correctness proof,
+explaining its structure and how the declarative system's features make it
+decidable. \Cref{sec:extensions} covers potential \fexists extensions and future
+work directions. Finally, \cref{appendix} contains comprehensive formal
+definitions and proofs of lemmas and theorems used in the paper; in instances
+where the full definitions might not be of immediate interest, we direct the
+reader to the appendix.
+
+% \paragraph{\textbf{Acknowledgments}} We would like to thank Meven
+% Lennon-Bertrand for his extremely helpful comments and suggestions. 
