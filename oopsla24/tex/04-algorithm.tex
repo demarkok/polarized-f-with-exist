@@ -187,6 +187,17 @@ decompose the algorithm's structure, thus simplifying the inductive proofs.
     a subcontext (subset) of $[[Γ]]$.
 \end{itemize}
 
+\paragraph{Equivalent Substitutions}
+In the proofs of the algorithm correctness, 
+we often state or require that two substitutions are equivalent
+on a given set of algorithmic variables.
+We denote it as $[[Θ ⊢ uσ' ≈ uσ : Ξ]]$ meaning that
+for each $[[α̂±]]$ in $[[Ξ]]$, substitutions $[[uσ]]$ and $[[uσ']]$
+map $[[α̂±]]$ to types equivalent in the corresponding context:
+$[[ Θ(α̂±) ⊢ [uσ']α̂± ≈ [uσ]α̂± ]]$.
+
+
+
 \paragraph{Constraint well-formedness and satisfaction}
 Suppose that $[[Θ]]$ is an instantiation context. 
 We say that constraint set $[[SC]]$ is well-formed in $[[Θ]]$ 
@@ -200,7 +211,7 @@ algorithmic variable $[[α̂±]]$ if
 $[[ [σ]α̂± ]]$ can be validly substituted for $[[α̂±]]$ in $[[scE]]$ 
 (so that the corresponding equivalence or subtyping holds).
 
-Substitution $[[uσ]]$ satisfies a constraint \emph{set}
+Substitution $[[uσ]]$ satisfies a constraint \emph{set} $[[SC]]$
 if $[[Θ ⊢ SC]]$ and \emph{each entry} of $[[SC]]$ is satisfied by $[[uσ]]$.
 
 %%%%%%%%%%%%%%%%%
