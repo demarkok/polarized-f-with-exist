@@ -1,30 +1,37 @@
 \label{sec:proofs}
-The central results ensuring the correctness of the inference algorithm are its soundness and completeness with respect to the declarative specification.
-The soundness means the algorithm will always
-produce a typing \emph{allowed} by the declarative system;
-Dually, the completeness says that once a term has some type declaratively, the inference algorithm succeeds. 
+The central results ensuring the correctness of the inference algorithm are its
+soundness and completeness with respect to the declarative specification. The
+soundness means the algorithm will always produce a typing \emph{allowed} by the
+declarative system; dually, the completeness says that once a term has some type
+declaratively, the inference algorithm succeeds. 
 
-The formulation of soundness and completeness of \emph{application inference} is more complex.
-Both of them assume that the input head type $[[uN]]$ is free from \emph{negative}
-algorithmic variables (it is achieved by polarization invariants preserved by the inference rules).
-The soundness states that the output of the algorithm---$[[uM]]$ and $[[SC]]$ is viable. 
-Specifically, that the constraint set $[[SC]]$ provides a sufficient set of restrictions that 
-a substitution $[[uσ]]$ must satisfy to ensure the \emph{declarative} inference of the output type $[[uM]]$, that is 
+The formal statements of soundness and completeness are given in the theorems
+below. Notice that the theorems also include the soundness and completeness of
+\emph{application inference} (labeled as $\bullet$), which is more complex. As
+such, let us discuss it in more detail.
+
+Both soundness and completeness of application inference assume that the input
+head type $[[uN]]$ is free from \emph{negative} algorithmic variables---it is
+achieved by polarization invariants preserved by the inference rules. The
+soundness states that the output of the algorithm---$[[uM]]$ and $[[SC]]$---is
+viable. Specifically, that the constraint set $[[SC]]$ provides a sufficient set
+of restrictions that any substitution $[[uσ]]$ must satisfy to ensure the
+\emph{declarative} inference of the output type $[[uM]]$, that is 
 $[[ Γ ; Φ ⊢ [uσ]uN ● args ⇒> [uσ]uM ]]$.
 
-The application inference completeness means that if 
-there exists a substitution $[[uσ]]$ and the resulting type $[[iM]]$
-ensuring the declarative inference $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$ then the algorithm succeeds
-and gives the most general result $[[uM0]]$ and $[[SC0]]$.
-The property of `being the most general' is specified in pt. (\ref{point:mostGeneral}).
-Intuitively, it means that for any other solution---substitution $[[uσ]]$ and the resulting type $[[iM]]$,
-if it ensures the declarative inference, then $[[uσ]]$ can be extended in a $[[SC0]]$-complying way to equate 
-$[[uM0]]$ with $[[iM]]$.
+The application inference completeness means that if there exists a substitution
+$[[uσ]]$ and the resulting type $[[iM]]$ ensuring the declarative inference
+$[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$ then the algorithm succeeds and gives the most
+general result $[[uM0]]$ and $[[SC0]]$. The property of `being the most general'
+is specified in pt. (\ref{point:mostGeneral}). Intuitively, it means that for
+any other solution---substitution $[[uσ]]$ and the resulting type $[[iM]]$, if
+it ensures the declarative inference, then $[[uσ]]$ can be extended in a
+$[[SC0]]$-complying way to equate $[[uM0]]$ with $[[iM]]$.
 
 \footnotetext[1]{The presented properties hold, 
             but the actual inductive proof requires strengthening 
             of the statement and the corresponding theorem is more involved. 
-            See the appendix for details.}
+            See the appendix (\cref{sec:appendix}) for details.}
 
 \begin{theorem*}[Soundness of Typing]
     \label{thm:soundness-typing}
@@ -34,8 +41,8 @@ $[[uM0]]$ with $[[iM]]$.
         \item [$+$] $[[Γ; Φ ⊨ v : iP]]$ implies $[[Γ; Φ ⊢ v : iP]]$,
         \item [$-$] $[[Γ; Φ ⊨ c : iN]]$ implies $[[Γ; Φ ⊢ c : iN]]$,
         \item [$\bullet$] $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$ implies $[[ Γ ; Φ ⊢ [uσ]uN ● args ⇒> [uσ]uM ]]$, 
-            for any instantiation of $[[uσ]]$ satisfying constraints $[[SC]]$,
-            assuming $[[Γ ⊢ Θ]]$ and $[[Γ; dom(Θ) ⊢ uN]]$ and that $[[uN]]$ is free from 
+            for any instantiation of $[[uσ]]$ satisfying constraints $[[SC]]$.
+            All of it under assumptions that $[[Γ ⊢ Θ]]$ and $[[Γ; dom(Θ) ⊢ uN]]$ and that $[[uN]]$ is free from 
             \emph{negative} algorithmic variables.
     \end{itemize}
 \end{theorem*}
@@ -82,9 +89,9 @@ bottom-up. Next, we discuss the main of these results.
 \subsection{Normalization}
     The point of type normalization is factoring out non-trivial equivalence 
     by selecting a representative from each equivalence class.
-    This way, the correctness of normalization means that
+    This way, \emph{the correctness of normalization} means that
     checking for equivalence of two types is the same as checking for equality of their normal forms.
-    \begin{lemma*}[Normalization Correctness]
+    \begin{lemma*}[Normalization correctness]
         Assuming all types are well-formed in $[[Γ]]$, we have
             $[[Γ ⊢ iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$ and 
             $[[Γ ⊢ iP ≈ iQ]] \iff [[nf(iP) = nf(iQ)]]$.
@@ -137,21 +144,28 @@ bottom-up. Next, we discuss the main of these results.
 
 \subsection{Anti-Unification}
 
-The anti-unifier of the two types is the most specific pattern that matches against both of them. 
-In our setting, the anti-unifiers are restricted further: first, the pattern might only contain placeholders at 
-\emph{negative} positions (because eventually, the placeholders become variables abstracted by the existential quantifier);
-second, the anti-unification is parametrized with a context $[[Γ]]$, in which the pattern instantiations must be well-formed.
+The anti-unifier of the two types is the most specific pattern that matches
+against both of them. In our setting, the anti-unifiers are restricted further:
+first, the pattern might only contain `holes' at \emph{negative} positions
+(because eventually, the `holes' become variables abstracted by the
+existential quantifier); second, the anti-unification is parametrized with a
+context $[[Γ]]$, in which the pattern instantiations must be well-formed.
 
-This way, the correctness properties of the anti-unification algorithm are refined accordingly.
-The soundness of anti-unification not only ensures that the resulting pattern matches with 
-the input types, but also that the pattern instantiations are well-formed in the corresponding context, and 
-that all the `placeholder' variables are negative. In turn, completeness states that if there exists a solution 
-satisfying the soundness criteria, then the algorithm succeeds.
+This way, the correctness properties of the anti-unification algorithm are
+refined accordingly. The soundness of anti-unification not only ensures that the
+resulting pattern matches with the input types, but also that the pattern
+instantiations are well-formed in the corresponding context, and that all the
+`hole' variables are negative. In turn, completeness states that if there
+exists a solution satisfying the soundness criteria, then the algorithm
+succeeds.
 
-The correctness properties are formulated by the following lemmas. For brevity, we only provide the statements for 
-the positive case, since the negative case is symmetric.
 
-\begin{lemma*}[Soundness of (Positive) Anti-Unification]
+The correctness properties are formulated by the following lemmas. For brevity,
+we only provide the statements for the positive case, since the negative case is
+symmetric. 
+
+
+\begin{lemma*}[Soundness of (positive) anti-unification]
     \label{lemma:au-soundness}
      Assuming $[[iP1]]$ and $[[iP2]]$ are normalized,
     if $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$
@@ -164,7 +178,7 @@ the positive case, since the negative case is symmetric.
     \end{enumerate*}
 \end{lemma*}
 
-\begin{lemma*}[Completeness of (Positive) Anti-Unification]
+\begin{lemma*}[Completeness of (positive) anti-unification]
     \label{lemma:au-completeness}
     Assuming that $[[iP1]]$ and $[[iP2]]$ are normalized terms well-formed in $[[Γ]]$
     and there exist  $[[(Ξ', uQ', aus'1, aus'2)]]$ such that
@@ -179,17 +193,22 @@ the positive case, since the negative case is symmetric.
     $[[(Ξ, uQ, aus1, aus2)]]$ such that $[[Γ ⊨ iP1 ≈au iP2 ⫤ (Ξ, uQ, aus1, aus2)]]$.
 \end{lemma*}
 
-The anti-unification is used to find the least upper bound (LUB).
-To guarantee that the result of the LUB algorithm is indeed the least, 
-we also need to show the corresponding property of anti-unification.
-We prove that the anti-unifier that the algorithm provides 
-is the most specific (or the most `detailed'). Specifically, 
-it means that any other sound anti-unification solution 
-can be `refined' to the result of the algorithm.  
-The `refinement' is represented as an instantiation of the anti-unifier---a 
-substitution $[[Γ ; Ξ2 ⊢ ausr : Ξ1]]$ replacing the placeholders $[[Ξ1]]$ with
-types that themselves can contain placeholders from $[[Ξ2]]$.
+Notice that for the anti-unification substitution $[[aus]]$ we use a separate
+signature specifying the domain and the range. $[[Γ ; Ξ2 ⊢ aus : Ξ1]]$ means
+that $[[aus]]$ maps the `holes' (\ie algorithmic variables) from $[[Ξ1]]$
+to \emph{algorithmic} types well-formed in $[[Γ]]$ and $[[Ξ2]]$. To put it
+formally, $[[Γ ; Ξ2 ⊢ [aus]α̂⁻]]$ for any $[[α̂⁻ ∊ Ξ1]]$.
+Although in the formulation of soundness and completeness, the resulting types are declarative
+(\ie $[[Ξ2]]$ is always empty), we need the possibility of mapping the
+`holes' to types with `holes' to formulate the \emph{initiality} of
+anti-unification.
 
+The initiality shows that the anti-unifier that the algorithm provides is the
+most specific (or the most `detailed'). Specifically, it means that any other
+sound anti-unification solution can be `refined' to the result of the algorithm.  
+The `refinement' is represented as an instantiation of the anti-unifier---a 
+substitution $[[Γ ; Ξ2 ⊢ ausr : Ξ1]]$ replacing the `holes' from $[[Ξ1]]$ with
+types that themselves can contain `holes' from $[[Ξ2]]$.
 
 \begin{lemma*}[Initiality of Anti-Unification]
         Assume that $[[iP1]]$ and $[[iP2]]$ are normalized types well-formed in $[[Γ]]$, 
@@ -210,14 +229,14 @@ types that themselves can contain placeholders from $[[Ξ2]]$.
 To prove the correctness properties of the anti-unification algorithm,
 one extra observation is essential. The algorithm relies on the fact that
 in the resulting tuple $[[(Ξ, uQ, aus1, aus2)]]$,
-there are no two different placeholders $[[β̂⁻]]$
+there are no two different `holes' $[[β̂⁻]]$
 mapped to the same pair of types by $[[aus1]]$ and $[[aus2]]$.
-This is important to guarantee that, for example, 
+This is used to ensure that, for example, 
 the anti-unifier of $[[↓↑Int → ↑Int]]$ and 
 $[[↓↑Bool → ↑Bool]]$ is $[[↓â⁻ → â⁻]]$, but not
 (less specific) $[[↓â⁻ → b̂⁻]]$.
 To preserve this property, we arrange the algorithm in such a way 
-that the name of the placeholder is determined by the types it is mapped to.
+that the name of the `hole' is determined by the types it is mapped to.
 The following lemma specifies this observation.
 
 \begin{lemma*}[Uniqueness of Anti-unification Variable Names]
@@ -233,11 +252,11 @@ The following lemma specifies this observation.
 \label{sec:proof-lub-upgrade}
 
     The Least Upper Bound algorithm finds the least type that is a supertype of two given types.
-    The \emph{soundness} means that the returned type is indeed a supertype of the given ones;
+    Its \emph{soundness} means that the returned type is indeed a supertype of the given ones;
     the \emph{completeness} means that the algorithm succeeds if the least upper bound exists;
     and the \emph{initiality} means that the returned type is the least among common supertypes. 
 
-    \begin{lemma*}[Least Upper Bound Soundness]
+    \begin{lemma*}[Least Upper Bound soundness]
         For types $[[Γ ⊢ iP1]]$, and $[[Γ ⊢ iP2]]$,
         if $[[Γ ⊨ iP1 ∨ iP2 = iQ]]$ then
         \begin{enumerate}
@@ -247,22 +266,22 @@ The following lemma specifies this observation.
     \end{lemma*}
 
 
-    \begin{lemma*}[Least Upper Bound Completeness and Initiality]
+    \begin{lemma*}[Least Upper Bound completeness and initiality]
         For types $[[Γ ⊢ iP1]]$, $[[Γ ⊢ iP2]]$, and $[[Γ ⊢ iQ]]$
         such that $[[Γ ⊢ iQ ≥ iP1]]$ and $[[Γ ⊢ iQ ≥ iP2]]$,
         there exists $[[iQ']]$ s.t. $[[Γ ⊨ iP1 ∨ iP2 = iQ']]$ 
         and $[[Γ ⊢ iQ ≥ iQ']]$.
     \end{lemma*}
 
-    The key observation that allows us to prove these properties is
-    the characterization of positive supertypes. 
-    The following lemma justifies the cases of the Least Upper Bound algorithm
-    (\cref{sec:lub}). In particular, it establishes
-    the correspondence between the upper bounds of shifted types $[[↓iM]]$ and
-    \emph{patterns} fitting $[[iM]]$ (represented by existential types), which 
-    explains the usage of anti-unification as a way to find a common pattern. 
+    The key observation that allows us to prove these properties is the
+    characterization of positive supertypes. The following lemma justifies the
+    case analysis used in the Least Upper Bound algorithm (in \cref{sec:lub}).
+    In particular, it establishes the correspondence between the upper bounds of
+    shifted types $[[↓iM]]$ and \emph{patterns} fitting $[[iM]]$ (represented by
+    existential types), which explains the usage of anti-unification as a way to
+    find a common pattern. 
 
-    \begin{lemma*}[Characterization of Normalized Supertypes]
+    \begin{lemma*}[Characterization of normalized supertypes]
         \label{lemma:char-supertypes}
         For a normalized positive type $[[iP]]$ well-formed in $[[Γ]]$,
         the set of normalized $[[Γ]]$-formed supertypes of $[[iP]]$ is the following:
@@ -281,13 +300,13 @@ The following lemma specifies this observation.
     (this time the set of considered upper bounds consists of supertypes well-formed in a \emph{smaller} context).
     This way, we also use the supertype characterization to prove the following properties of the Upgrade algorithm. 
 
-    \begin{lemma*}[Upgrade Soundness]
+    \begin{lemma*}[Upgrade soundness]
         Assuming $[[iP]]$ is well-formed in $[[Γ = Δ, pnas]]$,
         if $[[upgrade Γ ⊢ iP to Δ = iQ]]$
         then
         \begin{enumerate*}
-            \item $[[Δ ⊢ iQ]]$
-            \item $[[Γ ⊢ iQ ≥ iP]]$
+            \item $[[Δ ⊢ iQ]]$ and
+            \item $[[Γ ⊢ iQ ≥ iP]]$.
         \end{enumerate*}
     \end{lemma*}
 
@@ -298,31 +317,31 @@ The following lemma specifies this observation.
             \item $[[Δ ⊢ iQ']]$ and
             \item $[[Γ ⊢ iQ' ≥ iP]]$,
         \end{enumerate*}
-        there exists$[[iQ]]$ such that
+        there exists $[[iQ]]$ such that
         ($[[upgrade Γ ⊢ iP to Δ = iQ]]$) and $[[Δ ⊢ iQ' ≥ iQ]]$.
     \end{lemma*}
 
 \subsection{Subtyping}
     \label{sec:proof-subtyping}
 
-    As for other properties, the correctness of subtyping means that
-    the algorithm produces a valid result (soundness) 
-    whenever it exists (completeness).
-    In \cref{fig:alg-subtyping}, one can see that the positive and 
-    negative subtyping relations are not \emph{mututally} recursive: 
-    negative subtyping algorithm uses the positive subtyping, 
-    but not vice versa. 
-    Because of that, the inductive proofs of the \emph{positive} subtyping correctness are done independently.
+    As for other properties, the correctness of subtyping means that the
+    algorithm produces a valid result (soundness) whenever it exists
+    (completeness). In the rules defining the subtyping algorithm
+    (\cref{fig:alg-subtyping}), one can see that the positive and negative
+    subtyping relations are not \emph{mututally} recursive: negative subtyping
+    algorithm uses the positive subtyping, but not vice versa. Because of that,
+    the inductive proofs of the \emph{positive} subtyping correctness are done
+    independently.
 
-    The soundness of positive subtyping states that
-    the output constraint $[[SC]]$ provides a sufficient set of restrictions.
-    In other words, any substitution satisfying $[[SC]]$, 
-    ensures the desired declarative subtyping: $[[Γ ⊢ [uσ]uP ≥ iQ]]$.
-    Notice that the soundness requires that only the left-hand side input 
-    type ($[[uP]]$) can have algorithmic variables. This is one of the invariants of the algorithm
-    that significantly simplifies the unification and constraint resolution.
+    The soundness of positive subtyping states that the output constraint
+    $[[SC]]$ provides a sufficient set of restrictions. In other words, any
+    substitution satisfying $[[SC]]$ ensures the desired declarative subtyping:
+    $[[Γ ⊢ [uσ]uP ≥ iQ]]$. Notice that the soundness formulation assumes that
+    only the left-hand side input type ($[[uP]]$) can contain algorithmic
+    variables. This is one of the invariants of the algorithm that significantly
+    simplifies the unification and constraint resolution.
 
-\begin{lemma*}[Soundness of the Positive Subtyping]
+\begin{lemma*}[Soundness of Positive Subtyping]
     If $[[Γ ⊢ Θ]]$ and $[[Γ ⊢ iQ]]$ and $[[Γ ; dom(Θ) ⊢  uP]]$ and 
     $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$,
     then $[[Θ ⊢ SC : uv uP]]$ and
@@ -331,16 +350,16 @@ The following lemma specifies this observation.
 \end{lemma*}
 
     The completeness of subtyping says that if the substitution 
-    ensuring the declarative subtyping exists, then the algorithm terminates.
+    ensuring the declarative subtyping exists, then the subtyping algorithm 
+    succeeds (terminates).
 
-\begin{lemma*}[Completeness of the Positive Subtyping]
+\begin{lemma*}[Completeness of Positive Subtyping]
     Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iQ]]$ and $[[Γ ; dom(Θ) ⊢  uP]]$.
     Then if there exists $[[uσ]]$ such that $[[Θ ⊢ uσ : uv(uP)]]$ and $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$,
     then the subtyping algorithm succeeds: $[[Γ; Θ ⊨ uP ≥ iQ ⫤ SC]]$.
 \end{lemma*}
 
-
-After the correctness properties of the positive subtyping are established,
+After the correctness properties of positive subtyping are established,
 they are used to prove the correctness of the negative subtyping.
 The soundness is formulated symmetrical to the positive case,
 however, the completeness requires an additional invariant to be preserved.
@@ -349,7 +368,7 @@ In particular, it ensures that the constraint restricting a \emph{negative} algo
 variable will never be generated, and thus, we do not need the 
 Greatest Common Subtype procedure to resolve the constraints.
 
-\begin{lemma*}[Completeness of the Negative Subtyping]
+\begin{lemma*}[Completeness of Negative Subtyping]
     Suppose that $[[Γ ⊢ Θ]]$ and $[[Γ ⊢ iM]]$ and $[[Γ ; dom(Θ) ⊢ uN]]$
     and $[[uN]]$ does not contain negative unification variables ($[[α̂⁻]] \notin [[uv uN]]$).
     Then for any $[[Θ ⊢ uσ : uv(uN)]]$ such that $[[Γ ⊢ [uσ]uN ≤ iM]]$,
@@ -359,7 +378,6 @@ Greatest Common Subtype procedure to resolve the constraints.
 \subsection{Minimal Instantiation and Singularity}
 \label{sec:singularity-proof}
 
-\paragraph{Minimal Instantiation}
 Algorithmic typing relies on the \emph{minimal instantiation} procedure.
 For a given positive type $[[uP]]$ and a set of constraints $[[SC]]$
 it returns a substitution $[[Θ ⊢ uσ : SC]]$ such that
@@ -367,12 +385,13 @@ $[[ [uσ]uP ]]$ is a subtype of all the other instantiations of $[[uP]]$ satisfy
 This way, the correctness of minimal instantiation is formulated as the following two lemmas.
 
 \begin{lemma*}[Soundness of Minimal Instantiation]
+    \label{lemma:minimal-instantiation-soundness}
     Suppose that $[[Γ ⊢ Θ]]$, $[[Θ ⊢ SC]]$, and $[[Γ; dom(Θ) ⊢ uP]]$.
-    Then $[[Γ ⊢ uP SC minby uσ ]]$ implies that 
+    Then `$[[Γ ⊢ uP SC minby uσ ]]$' implies that 
     $[[Θ ⊢ uσ : uv uP]]$ is a normalized substitution satisfying $[[SC]]$
     (\ie $[[Θ ⊢ uσ : SC]]$)
     and for any other substitution $[[Θ ⊢ uσ' : uv uP ]]$ satisfying $[[SC]]$,
-    $[[Γ ⊢ [uσ']uP ≥ [uσ]uP ]]$ holds
+    we have $[[Γ ⊢ [uσ']uP ≥ [uσ]uP ]]$.
 \end{lemma*}
 
 \begin{lemma*}[Completeness of Minimal Instantiation]
@@ -381,7 +400,7 @@ This way, the correctness of minimal instantiation is formulated as the followin
     such that for any other $[[Θ ⊢ uσ' : uv uP ]]$
     satisfying $[[SC]]$, we have
     $[[Γ ⊢ [uσ']uP ≥ [uσ]uP ]]$.  Then the minimal instantiation procedure  
-    succeeds, specifically, $[[Γ ⊢ uP SC minby nf(uσ) ]]$ holds.
+    succeeds; specifically, $[[Γ ⊢ uP SC minby nf(uσ) ]]$ holds.
 \end{lemma*}
 
 The soundness is rather straightforwardly proved by induction on the 
@@ -390,9 +409,7 @@ The proof of completeness is done by induction on the structure of the type $[[u
 It uses the fact that $[[ Γ ⊢ ∃nas.[uσ']uP ≥ ∃nas.[uσ]uP]]$ implies
 $[[ Γ, nas ⊢ [uσ']uP ≥ [uσ]uP]]$.
 
-
-\paragraph{Singularity}
-The soundness of singularity states that $[[SC singular with uσ]]$
+The soundness of \emph{singularity} states that $[[SC singular with uσ]]$
 implies that any substitution satisfying $[[SC]]$ is equivalent to $[[uσ]]$ 
 on the domain.  The completeness states that if all the 
 $[[SC]]$-compliant substitutions are equivalent, then the singularity procedure succeeds. 
@@ -408,13 +425,13 @@ $[[SC]]$-compliant substitutions are equivalent, then the singularity procedure 
 
 \begin{lemma*}[Completeness of Singularity]
     \label{lemma:singularity-completeness}
-    For a given $[[Θ ⊢ SC]]$,
+    For a given set of constraints $[[Θ ⊢ SC]]$,
     suppose that all the substitutions satisfying $[[SC]]$ are equivalent
     on $[[dom(SC)]]$.
     In other words, suppose that there exists $[[Θ ⊢ uσ1 : dom(SC)]]$ such that
     for any $[[Θ ⊢ uσ : dom(SC)]]$, $[[Θ ⊢ uσ : SC]]$ implies 
     $[[Θ ⊢ uσ ≈ uσ1 : dom(SC)]]$.
-    Then\footnotemark[1] $[[SC singular with uσ0]]$ for some $[[uσ0]]$.
+    Then $[[SC singular with uσ0]]$ for some $[[uσ0]]$.
 \end{lemma*}
 
 \subsection{Typing}
@@ -452,25 +469,27 @@ the non-trivial inductive metric that we use.
 \paragraph{Mutuality of the Soundness and Completeness Proofs}
 
 Typically in our inductive proofs, the soundness is proven before completeness,
-as the completeness requires certain properties of the premise subtrees.
-However, in the case of the typing algorithm, the soundness and completeness proofs
-cannot be separated: the inductive proof of one requires another, and vice versa. 
+as the completeness requires the premise subtrees to satisfy certain properties
+(which can be given by the soundness). However, in the case of the typing algorithm,
+the soundness and completeness proofs cannot be separated: the inductive proof
+of one requires another, and vice versa. 
 
-
-The soundness proof can be viewed as a mapping from an algorithmic tree to a
-declarative one. We show that each algorithmic inference rule can
-be transformed into the corresponding declarative rule, as long as the premises
-are transformed accordingly, and apply the induction principle. 
+The proof of soundness can be viewed as a mapping from an algorithmic tree to a
+declarative one. We show that each algorithmic inference rule can be transformed
+into the corresponding declarative rule, as long as the premises are transformed
+accordingly, and apply the induction principle. 
 
 The soundness requires completeness in the case of
-\ruleref{\ottdruleATAppLetLabel}. To prove the soundness, 
-in other words, to transform this rule into its
-declarative counterpart \ruleref{\ottdruleDTAppLetLabel}, one needs
-to prove \emph{uniqueness} of the inferred application type $[[↑iQ]]$. 
-To show the uniqueness, we need to conclude that any other \emph{declarative} tree
-(which is given by the induction hypothesis) infers an equivalent type. 
-The only way to do so is by applying the soundness of singularity (\cref{sec:singularity-proof}), 
-however, first, the declarative tree must be converted to the algorithmic one (by completeness!).
+\ruleref{\ottdruleATAppLetLabel}. To prove the soundness, in other words, to
+transform this rule into its declarative counterpart
+\ruleref{\ottdruleDTAppLetLabel}, one needs to prove the \emph{principality} of
+the inferred application type $[[↑[uσ]uQ]]$. In other words, we need to conclude
+that any other \emph{declarative} tree infers for the application a supertype of
+$[[ [uσ]uQ ]]$. 
+
+The only way to do so is by applying the soundness of minimal instantiation
+(\cref{lemma:minimal-instantiation-soundness}). However, first, the declarative
+tree must be converted to the corresponding algorithmic one (by completeness!).
 This way, the soundness and completeness proofs are mutually dependent.
 
 \paragraph{Inductive Metric}
@@ -489,7 +508,7 @@ This way, the soundness and completeness proofs are mutually dependent.
     it is equal to the number of prenex quantifiers of the head type $[[iN]]$.
     We need this adjustment to ensure the monotonicity of the metric, since the rules 
     \ruleref{\ottdruleATForallAppLabel} and \ruleref{\ottdruleDTForallAppLabel}
-    only reduce the quantifiers in the head type but not change the list of arguments.
+    only reduce the quantifiers in the head type but they do not change the list of arguments.
 
 \begin{definition*}[Judgement Size]
     \label{def:decl-typing-size}
@@ -530,10 +549,12 @@ However, the \emph{declarative} inference system has rules
 `step to' an equivalent type, and thus, technically, might keep the judgment
 unchanged altogether.
 
-To deal with this issue, we introduce the metric on the entire 
-\emph{inference trees} rather than on judgments, and plug into this metric the
-parameter that certainly decreases in rules \ruleref{\ottdruleDTNEquivLabel} and \ruleref{\ottdruleDTPEquivLabel}---the number of these rules in the inference tree. We
-denote this number as $\eqNodes{T}$.  Then the final metric is defined as a pair in the following way.
+To deal with this issue, we introduce the metric on the entire \emph{inference
+trees} rather than on judgments, and plug into this metric the parameter that
+certainly decreases in rules \ruleref{\ottdruleDTNEquivLabel} and
+\ruleref{\ottdruleDTPEquivLabel}---the number of such nodes in the inference
+tree. We denote this number as $\eqNodes{T}$. Then the final metric is defined
+as a pair in the following way.
 
 \begin{definition*}[Inference Tree Metric]
     For a tree $T$, inferring a declarative or an algorithmic judgement $J$, we define $\metric{T}$ as follows:

@@ -26,9 +26,9 @@ defns
   --------------------------------- :: SupVar
   pua :≥ ∃nas.pa singular with pa
 
-           nf(iN) = αi⁻
+           nf(iN) = αi⁻ ∊ {nas}
   ----------------------------------- :: SupShift
-  pua :≥ ∃nas.↓iN singular with ∃α⁻.↓α⁻
+  pua :≥ ∃nas.↓iN singular with ∃β⁻.↓β⁻
 
   defn scE singular with iN :: :: scEN :: '' by
 

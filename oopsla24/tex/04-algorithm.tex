@@ -49,12 +49,13 @@ The algorithmic variables represent unknown types,
 which cannot be inferred immediately but are promised to be instantiated
 as the algorithm proceeds.
 
-We denote algorithmic variables as $[[α̂⁺]]$, $[[β̂⁻]]$, \dots to distinguish them from
-normal variables $[[α⁺]]$, $[[β⁻]]$.
-In a few places, we replace the quantified variables $[[pas]]$ 
-with their algorithmic counterpart $[[puas]]$.
-The procedure of replacing declarative variables with algorithmic ones we call 
-\emph{algorithmization} and denote as $[[ nuas/nas ]]$ and $[[ puas/pas ]]$.
+We denote algorithmic variables as $[[α̂⁺]]$, $[[β̂⁻]]$, \dots to distinguish
+them from normal variables $[[α⁺]]$, $[[β⁻]]$. In a few places, we replace the
+quantified variables $[[pas]]$ with their algorithmic counterpart $[[puas]]$.
+The procedure of replacing declarative variables with algorithmic ones we call
+\emph{algorithmization} and denote as $[[ nuas/nas ]]$ and $[[ puas/pas ]]$. The
+converse operation---\emph{dealgorithmization}---is denoted as $[[ nas/nuas ]]$ and 
+is used in the least upper bound procedure (\cref{sec:lub}).
 
 \paragraph{Algorithmic Types}
 The syntax of algorithmic types extends the declarative syntax by adding
@@ -95,6 +96,15 @@ When one instantiates an algorithmic variable, one may only use type variables
 the context at the moment when it was introduced. In our algorithm, this
 information is represented by an \emph{instantiation context} $[[Θ]]$---a set of
 pairs associating algorithmic variables and declarative contexts.
+
+\paragraph{Algorithmic Substitution}
+We define the algorithmic substitution $[[uσ]]$ as a mapping from algorithmic
+variables to \emph{declarative} types. The signature $[[Θ ⊢ uσ : Ξ]]$
+specifies the domain and the range of $[[uσ]]$: for each variable $[[α̂±]]$
+in $[[Ξ]]$, there exists an corresponding entry in $[[Θ]]$ associating 
+$[[α̂±]]$ with a declarative context $[[Γ]]$ such that $[[ [uσ]α̂± ]]$
+is well-formed in $[[Γ]]$. In addition, we assume that $[[uσ]]$
+acts as the identity on the variables not in $[[Ξ]]$.
 
 
 \paragraph{Algorithmic Normalization}
@@ -160,12 +170,38 @@ decompose the algorithm's structure, thus simplifying the inductive proofs.
     \caption{Constraint Entries and Sets}
   \end{figure}
 
-\paragraph{Auxiliary Functions}
-We define $[[dom(SC)]]$---the domain of constraint set $[[SC]]$---as a set of algorithmic variables
-that it restricts. Similarly, we define $[[dom(Θ)]]$---the domain of instantiation context
----as a set of algorithmic variables that $[[Θ]]$ associates with their contexts.
-We write $[[Θ(α̂±)]]$ to denote the declarative context associated with $[[α̂±]]$ in $[[Θ]]$.
 
+\paragraph{Auxiliary Functions}
+\begin{itemize}
+  \item
+    We define $[[dom(SC)]]$---the domain of constraint set $[[SC]]$---as a set of
+    algorithmic variables that it restricts. Similarly, we define $[[dom(Θ)]]$---the
+    domain of instantiation context---as a set of algorithmic variables that
+    $[[Θ]]$ associates with their contexts.  
+  \item We write $[[Θ(α̂±)]]$ to denote the
+    declarative context associated with $[[α̂±]]$ in $[[Θ]]$. 
+  \item $[[uv(uN)]]$ and $[[uv(uP)]]$ denote the set of free algorithmic variables in $[[uN]]$ and
+    $[[uP]]$ respectively.
+  \item We write $[[Γ ⊢ Θ]]$ to denote that each
+    declarative context associated with an algorithmic variable in $[[Θ]]$ is 
+    a subcontext (subset) of $[[Γ]]$.
+\end{itemize}
+
+\paragraph{Constraint well-formedness and satisfaction}
+Suppose that $[[Θ]]$ is an instantiation context. 
+We say that constraint set $[[SC]]$ is well-formed in $[[Θ]]$ 
+(denoted as $[[Θ ⊢ SC]]$) 
+if for every every constrain entry $[[scE ∊ SC]]$
+associating a variable $[[α̂±]]$ with a type $[[iP]]$,
+this type is well-formed in the corresponding declarative context $[[Θ(α̂±)]]$.
+
+Substitution $[[uσ]]$ satisfies a constraint \emph{entry} $[[scE]]$ restricting
+algorithmic variable $[[α̂±]]$ if
+$[[ [σ]α̂± ]]$ can be validly substituted for $[[α̂±]]$ in $[[scE]]$ 
+(so that the corresponding equivalence or subtyping holds).
+
+Substitution $[[uσ]]$ satisfies a constraint \emph{set}
+if $[[Θ ⊢ SC]]$ and \emph{each entry} of $[[SC]]$ is satisfied by $[[uσ]]$.
 
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
@@ -182,8 +218,8 @@ We write $[[Θ(α̂±)]]$ to denote the declarative context associated with $[[�
   anti-unification) assume that the input types are normalized. Therefore, we
   call the normalization procedure before invoking them, indicating this by the
   `$\ottkw{nf}$' annotation on the arrows in \cref{fig:alg-subtyping-graph}.
-  Alternatively, one could normalize the input types in the very beginning,
-  as the normalization is preserved throughout the algorithm. However, we
+  Alternatively, one could normalize the input types in the very beginning
+  and preserve the normalization throughout the algorithm. However, we
   delay the normalization to the places where it is required to show that
   normalization is needed only at these stages to maintain consistent
   invariants.
@@ -592,7 +628,7 @@ In general, we must
 \end{itemize*}
 The algorithm that finds the most detailed common pattern is called \emph{anti-unification}.
 As output, it returns $[[(Ξ, uP, aus1, aus2)]]$, where important for us is
-$[[uP]]$---the pattern and $[[Ξ]]$---the set of `holes' represented by negative algorithmic variables.
+$[[uP]]$---the pattern---and $[[Ξ]]$--the set of `holes' represented by negative algorithmic variables.
 We discuss the anti-unification algorithm in detail in the following section.
 
 
@@ -601,27 +637,26 @@ We discuss the anti-unification algorithm in detail in the following section.
 \subsection{Anti-Unification}
 \label{sec:antiunification}
 
-The anti-unification algorithm \cite{plotkin1970:generalization,reynolds1970:transform}, 
-is a procedure dual to unification
-For two given (potentially different) expressions, 
-it finds the most specific generalizer---the most detailed pattern that 
-matches both of the input expressions. As evidence, it can also return 
-two substitutions that instantiate the `holes' of the pattern to the input expressions.
+The anti-unification algorithm
+\cite{plotkin1970:generalization,reynolds1970:transform}, is a procedure dual to
+unification. For two given (potentially different) expressions, it finds the most
+specific generalizer---the most detailed pattern that matches both of the input
+expressions. As evidence, it can also return two substitutions that instantiate
+the `holes' of the pattern to the input expressions.
 
 In our case, we have to be more demanding on the anti-unification algorithm.
-Since we use it to construct an existential type, whose (negative) quantified variables
-can only be instantiated with negative types, we must make sure that the pattern 
-has `holes' only at negative positions. Moreover, we must make sure that
-the resulting substitutions for the `holes' are well-formed in the initial contest, 
-and do not contain variables bound later. For example, 
-the anti-unification of $[[iN1 = ∀β⁺.α1⁺ → ↑β⁺]]$ and
-$[[iN2 = ∀β⁺.α2⁺ → ↑β⁺]]$
-must result in a `hole', which we model as an algorithmic type variable $[[γ̂⁻]]$, 
-with a pair of substitutions $[[γ̂⁻ ↦ iN1]]$ and $[[γ̂⁻ ↦ iN2]]$.
-But it cannot be more specific such as
-$[[∀β⁺.γ̂⁺ → ↑β⁺]]$ (since the hole cannot be positive)
-or $[[∀β⁺.γ̂⁻]]$ 
-(since the instantiation cannot capture the bound variable $[[β⁺]]$).
+Since we use it to construct an existential type, whose (negative) quantified
+variables can only be instantiated with negative types, we must make sure that
+the pattern has `holes' only at negative positions. Moreover, we must make sure
+that the resulting substitutions for the `holes' are well-formed in the context
+from the past---at the moment when the corresponding polymorphic variables were
+introduced---and do not contain variables bound later. For example, the
+anti-unification of $[[iN1 = ∀β⁺.α1⁺ → ↑β⁺]]$ and $[[iN2 = ∀β⁺.α2⁺ → ↑β⁺]]$ is a
+singleton `hole', which we model as an algorithmic type variable $[[γ̂⁻]]$, with
+a pair of substitutions $[[γ̂⁻ ↦ iN1]]$ and $[[γ̂⁻ ↦ iN2]]$. But it
+\emph{cannot} be more specific such as $[[∀β⁺.γ̂⁺ → ↑β⁺]]$ (since the hole
+cannot be positive) or $[[∀β⁺.γ̂⁻]]$ (since \emph{the instantiation of $~[[γ̂⁻]]$ cannot capture the
+bound variable $[[β⁺]]$}).
 
 The algorithm that finds the most specific generalizer of two types
 under required conditions is given in \cref{fig:anti-unification}.
@@ -744,63 +779,54 @@ Let us discuss the specific rules of the algorithm in detail.
   and thus, the only option is to create a `hole'. 
   There are three important aspects of this rule that we would like to discuss.
 
-  First, as mentioned earlier, the freshly created `hole' has a name
-  that is uniquely defined by the pair of input types.
-  It is ensured by the following invariant:
-  all the `holes' in the algorithm have name $[[α̂⁻]]$ 
-  indexed by the pair of negative types it is mapped to.
-  This way, the returning set of `holes' is a singleton set
-  $\{ [[ â⁻_{iN, iM} ]]\}$; the resulting 
-  pattern is the `hole' $[[â⁻_{iN, iM}]]$,
-  and the mappings simply send it to the corresponding types:
-  $[[â⁻_{iN, iM} ↦ iN]]$ and $[[â⁻_{iN, iM} ↦ iM]]$.
+  First, as mentioned earlier, the freshly created `hole' has a name that is
+  uniquely defined by the pair of input types. It is ensured by the following
+  invariant: all the `holes' in the algorithm have name $[[α̂⁻]]$ indexed by the
+  pair of negative types it is mapped to. This way, the returning set of `holes'
+  is a singleton set $\{ [[ â⁻_{iN, iM} ]]\}$; the resulting pattern is the
+  `hole' $[[â⁻_{iN, iM}]]$, and the mappings simply send it to the
+  corresponding types: $[[â⁻_{iN, iM} ↦ iN]]$ and $[[â⁻_{iN, iM} ↦ iM]]$.
 
-  Second, this rule is only applicable to negative types, 
-  moreover, the input types are checked to be well-formed 
-  in the outer context $[[Γ]]$. This is required by the 
-  usage of anti-unification: we 
-  call it to build an existential type that would be 
-  an upper bound of two input types via abstracting
-  some of their subexpressions under existential quantifiers.
-  The existentials quantify over \emph{negative} variables,
-  and they must be instantiated in the context
+  Second, this rule is only applicable to negative types; moreover, the input
+  types are checked to be well-formed in the outer context $[[Γ]]$. This is
+  required by the usage of anti-unification: we call it to build an existential
+  type that would be an upper bound of two input types via abstracting some of
+  their subexpressions under existential quantifiers. The existentials quantify
+  over \emph{negative} variables, and they must be instantiated in the context
   available at that moment.
 
-  Third, the rule is only applicable if all other rules fail. 
-  Notice that it could happen even when the input types have matching constructors. 
-  For example, the generalizer of $[[↑α⁺]]$ and
-  $[[↑β⁺]]$ is $[[γ̂⁻]]$ (with mappings $[[γ̂⁻ ↦ ↑α⁺]]$ and $[[γ̂⁻ ↦ ↑β⁺]]$),
-  rather than $[[↑γ̂⁺]]$. This way, the algorithm must try to 
-  apply the congruent rules first, and only if they fail,
-  apply \ruleref{\ottdruleAUAULabel}.
-  This principle makes the inference system not syntax-directed:
-  it is not known a priori (before the recursive call) 
-  whether the corresponding congruent rule or rule \ruleref{\ottdruleAUAULabel} 
-  will be applied.
+  Third, the rule is only applicable if all other rules fail. Notice that it
+  could happen even when the input types have matching constructors. For
+  example, the generalizer of $[[↑α⁺]]$ and $[[↑β⁺]]$ is $[[γ̂⁻]]$ (with
+  mappings $[[γ̂⁻ ↦ ↑α⁺]]$ and $[[γ̂⁻ ↦ ↑β⁺]]$), rather than $[[↑γ̂⁺]]$. This
+  way, the algorithm must try to apply the congruent rules first, and only if
+  they fail, apply \ruleref{\ottdruleAUAULabel}. As it is not known a priori
+  whether the congruent rules will be applicable, the implementation must use 
+  backtracking.
 
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Type Inference}
 \label{sec:typing}
 
-Finally, we present the type inference algorithm. 
-Similarly to the subtyping algorithm, it structurally corresponds to the declarative
-inference specification, meaning that most of the algorithmic rules have
-declarative counterparts, with respect to which they are sound and complete.
+Finally, we present the type inference algorithm. Similarly to the subtyping
+algorithm, it structurally corresponds to the declarative inference
+specification, meaning that most of the algorithmic rules have declarative
+counterparts, with respect to which they are sound and complete.
 
-This way, the inference algorithm also consists of three mutually recursive procedures: 
-the positive type inference, the negative type inference, and the
+This way, the inference algorithm also consists of three mutually recursive
+procedures: the positive type inference, the negative type inference, and the
 application type inference. As subroutines, the inference algorithm uses
-subtyping, constraint merge, and normalization.  
-The corresponding graph is shown in \cref{fig:alg-typing-graph}.
+subtyping, constraint merge, and minimal instantiation. The corresponding
+dependency is shown in \cref{fig:alg-typing-graph}.
 
-\begin{figure}[h]
+\begin{figure}
   \centering
   \begin{tikzpicture}
     [>={Stealth[scale=2]},node distance=2.2cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
     % Define nodes
     \node[] (1) {Positive Inference\\$[[Γ; Φ ⊨ v : iP]]$};
-    \node[right=1.2cm of 1] (2) {Negative Inference\\$[[Γ; Φ ⊨ c : iN]]$};
+    \node[right=1.4cm of 1] (2) {Negative Inference\\$[[Γ; Φ ⊨ c : iN]]$};
     \node[right=1.2cm of 2] (3) {Application Inference\\$[[Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC]]$};
     \node[below=0.6cm of 2] (7) {Minimal Instantiation\\$[[Γ ⊢ uP SC minby uσ]]$\\(\cref{sec:constraint-singularity})};
     \node[below=0.5cm of 7] (8) {Constraint Singularity\\$[[SC singular with uσ]]$\\(\cref{sec:constraint-singularity})};
@@ -907,10 +933,17 @@ Next, we discuss them in detail.
   by checking well-formedness $[[Γ ⊢ iN]]$.
 
 \paragraph{Let Binders}
-  Rule \ruleref{\ottdruleATVarLetLabel}
-  represents the type inference of a standard let binder.
-  It infers the type of the bound value $[[v]]$, and
-  makes a recursive call to infer the type of the body in the extended context.
+  Rule \ruleref{\ottdruleATVarLetLabel} represents the type inference of a
+  standard let binder. It infers the type of the bound value $[[v]]$, and makes
+  a recursive call to infer the type of the body in the extended context.
+
+  Rule \ruleref{\ottdruleATCVarLetLabel} infers a type of computational let
+  binder. It follows the corresponding declarative rule
+  \ruleref{\ottdruleDTCVarLetLabel} but uses algorithmic judgments instead of
+  declarative ones. It is worth noting that when calling the subtyping 
+  $[[Γ ; · ⊨ uM ≤ ↑iP ⫤ ·]]$, both $[[uM]]$ and $[[iP]]$ are free of algorithmic
+  variables: $[[uM]]$ is a type inferred for $[[c]]$, and $[[iP]]$ is given as
+  an annotation.
 
   Rule \ruleref{\ottdruleATAppLetAnnLabel}
   infers a type of \emph{annotated} applicative let binder.
@@ -938,6 +971,7 @@ Next, we discuss them in detail.
   instantiates $[[uQ]]$ to the minimal (among other such instantiations)
   type $[[ [uσ]uQ ]]$.
 
+
 \paragraph{Application to an Empty List of Arguments}
   Rule \ruleref{\ottdruleATEmptyAppLabel}
   is the base case of application inference. 
@@ -954,11 +988,9 @@ Next, we discuss them in detail.
   $[[pas]]$ with fresh algorithmic variables $[[puas]]$,
   and makes a recursive call in the extended context.
 
-  To ensure that this step does not cause infinite recursion, 
-  we also check that the head type has at least one 
-  $[[∀]]$-quantifier. Also, to force the algorithm to
-  apply rule \ruleref{\ottdruleATEmptyAppLabel} when  
-  there are no arguments, we require $[[args ≠ ·]]$.
+  To ensure the rule precedence, we also require
+  the head type to have at least one $[[∀]]$-quantifier, 
+  and the list of arguments to be non-empty.
 
 \paragraph{Application of an Arrow Type}
   Rule \ruleref{\ottdruleATArrowAppLabel}
@@ -966,7 +998,7 @@ Next, we discuss them in detail.
   It is applied when the head has an arrow type $[[uQ → uN]]$.
   First, it infers the type of the first argument $[[v]]$,
   and then, calling the algorithmic subtyping,
-  finds $[[SC1]]$---the minimal constraint ensuring that 
+  finds $[[SC1]]$---the \emph{minimal} constraint ensuring that 
   $[[uQ]]$ is a supertype of the type of $[[v]]$.
   Then it makes a recursive call applying $[[uN]]$ to the rest of the arguments 
   and merges the resulting constraint with $[[SC1]]$.
@@ -982,29 +1014,38 @@ minimal among other all types $[[iP']]$ that can be inferred
 for the application $[[Γ ; Φ ⊢ iN ● args ⇒> ↑iP']]$.
 Algorithmically, the inference returns an
 \emph{algorithmic} type $[[uP]]$ 
-together with a set of necessary and sufficient constraints $[[SC]]$
-that any instantiation of $[[uP]]$ must satisfy.
-This way, to guarantee principality, we must minimize the instantiation of $[[uP]]$,
-while ensuring that it satisfies the given constraints $[[SC]]$. 
+together with a set of \emph{necessary and sufficient} 
+constraints $[[SC]]$ that any instantiation of $[[uP]]$ must satisfy.
+This way, the principal type is the minimal instantiation of $[[uP]]$,
+obtained by a substitution satisfying the given constraints $[[SC]]$. 
 
-The minimal instantiation judgment `$[[Γ ⊢ uP SC minby uσ]]$'
-means that $[[uσ]]$ is the minimum among all the substitutions satisfying $[[SC]]$,
-that is $[[uσ]]$ instantiates $[[uP]]$ to a subtype of any other 
-instantiation of $[[uP]]$. The algorithm is given in \cref{fig:minimal-instantiation}.
+To find this substitution, we use the minimal instantiation
+algorithm (\cref{fig:minimal-instantiation}). The judgment `$[[Γ ⊢ uP SC minby uσ]]$'
+$[[uσ]]$ instantiates $[[uP]]$ to a subtype of any other 
+instantiation of $[[uP]]$ that satisfies $[[SC]]$. 
 First, it removes the existential quantifiers by \ruleref{\ottdruleSINGExistsLabel}.
-Then it considers two cases. If the type is an algorithmic variable $[[α̂⁺]]$
-restricted by a constraint $[[(α̂⁺ :≥ iP) ∊ SC]]$,
-its minimal instantiation is the type $[[nf(iP)]]$, 
-and \ruleref{\ottdruleSINGPUvarLabel} is applied.
-Otherwise, \ruleref{\ottdruleSINGSingLabel} is applied,
-meaning that all the instantiations of the type must be equivalent.
-The algorithm ensures that by two premises:
-\begin{enumerate*}
-  \item[(i)] checking that all the algorithmic variables of the type are restricted by the constraint set; and
-  \item[(ii)] building the substitution that satisfies the constraint set on these variables 
-    (and simultaneously checking that such substitution is unique up-to-equivalence)
-    using the constraint singularity algorithm.
-\end{enumerate*}
+Then it considers two cases. 
+\begin{enumerate}
+  \item If the type $[[uP]]$ is an algorithmic variable $[[α̂⁺]]$
+    restricted by a \emph{subtyping} constraint $[[(α̂⁺ :≥ iQ) ∊ SC]]$,
+    its minimal instantiation is the type $[[nf(iQ)]]$, and 
+    \ruleref{\ottdruleSINGPUvarLabel} is applied.
+  \item Otherwise, the type $[[uP]]$ is either a shifted computation, a
+    declarative variable, an unrestricted algorithmic variable, or an
+    algorithmic variable restricted by an \emph{equivalence} constraint. In all
+    of these cases, the minimal instantiation exists if and only if there is
+    only one possible instantiation of $[[uP]]$ that satisfies $[[SC]]$.
+    
+    The algorithm finds this instantiation by two premises:
+    \begin{enumerate*}
+      \item[(i)] checking that all the algorithmic variables of the type are
+      restricted by the constraint set; and
+      \item[(ii)] building the substitution that satisfies the constraint set on
+        these variables (and simultaneously checking that such substitution is
+        unique up to equivalence) using the \emph{constraint singularity algorithm}.
+    \end{enumerate*}
+  \end{enumerate}
+
 
 \begin{figure}[h]
   \hfill\\
@@ -1013,49 +1054,57 @@ The algorithm ensures that by two premises:
   \label{fig:minimal-instantiation}
 \end{figure}
 
-
 The singularity algorithm 
 performs two tasks: it checks that a
 \emph{constraint set} has a single substitution satisfying it, 
 and if it does, it builds this substitution.
 
-To implement the singularity algorithm, we define a partial function $[[SC
-singular with uσ]]$, taking a subtyping constraint $[[SC]]$ as an argument and
-returning a substitution $[[uσ]]$---the only solution of $[[SC]]$. The
-constraint $[[SC]]$ consists of constraint entries. Thus, we define the
-singularity using the singularity of constraint entries: each entry of $[[SC]]$
-must have a unique instantiation and the resulting substitution $[[uσ]]$ must be
-the combination of these instantiations (see \cref{fig:constraint-singularity}).
-
-\begin{figure}[h]
-  For a constraint set $[[SC]]$, we write $[[SC singular with uσ]]$ if and only if:
-  \begin{itemize}
-    \item for any \emph{positive} constraint entry $[[scE ∊ SC]]$, there exists $[[iP]]$ such that $[[scE singular with iP]]$,
-      and for the variable $[[β̂⁺]]$ restricted by $[[scE]]$, $[[ [uσ]β̂⁺ = iP ]]$;
-    \item the symmetric property holds for all \emph{negative} $[[scE ∊ SC]]$; and
-    \item for any $[[α̂± ∉ dom(SC)]]$, $[[ [uσ]α̂± = α̂± ]]$.
-  \end{itemize}
-  \caption{Constraint Singularity}
-  \label{fig:constraint-singularity}
+\begin{figure}
+  \begin{minipage}{0.49\textwidth}
+    `$[[SC singular with uσ]]$' means:
+    \begin{itemize}[leftmargin=*]
+      \item[$+$] for any \emph{positive} constraint entry $[[scE ∊ SC]]$ restricting 
+        a variable $[[β̂⁺]]$, there exists $[[iP]]$ such that $[[scE singular with iP]]$
+        (as defined in \cref{fig:constraint-entry-singularity}),
+        and $[[ [uσ]β̂⁺ = iP ]]$; and
+      \item[$-$] the symmetric property holds for all \emph{negative} $[[scE ∊ SC]]$; and
+      \item[$\notin$] for any $[[α̂± ∉ dom(SC)]]$, $[[ [uσ]α̂± = α̂± ]]$.
+    \end{itemize}
+    \caption{Singular Constraint}
+    \label{fig:constraint-singularity}
+  \end{minipage}
+  \begin{minipage}{0.48\textwidth}
+    \ottdefnSINGLabeled
+    \caption{Singular Constraint Entry}
+    \label{fig:constraint-entry-singularity}
+  \end{minipage}
 \end{figure}
+
+To implement the singularity algorithm, we define a partial function 
+`$[[SC singular with uσ]]$', taking a subtyping constraint $[[SC]]$ as an argument and
+returning a substitution $[[uσ]]$---the only solution of $[[SC]]$. 
+
+The constraint $[[SC]]$ is composed of constraint entries. Therefore, we define
+singularity by combining the singularity of each constraint entry
+(\cref{fig:constraint-singularity}). In order for $[[SC]]$ to be singular, each
+entry must have a unique instantiation, and the resulting substitution $[[uσ]]$
+must be a union of these instantiations. In addition, $[[uσ]]$ must act as an
+identity on the variables not restricted by $[[SC]]$.
 
 The singularity of constraint \emph{entries} is defined in
-\cref{fig:constraint-entry-singularity}. The \emph{equivalence} entries are
-always singular, as the only possible type satisfying them is the one given in
-the constraint itself, which is reflected in \ruleref{\ottdruleSINGNEqLabel} and
-\ruleref{\ottdruleSINGPEqLabel}. The \emph{subtyping} constraints are trickier.
-As will be discussed in \cref{sec:proof-lub-upgrade}, variables 
-(and equivalent types such as $[[∃nas.pa]]$) do not have 
-\emph{proper} supertypes, and thus, the constraints of a form 
-$[[pua :≥ ∃nas.pa]]$ are singular with the only possible normalized solution $[[pa]]$
-\ruleref{\ottdruleSINGSupVarLabel}. However, if the body of the existential type
-is guarded by a shift $[[∃nas.↓iN]]$, it is singular if and only if $[[iN]]$ is
-equivalent to some $[[αi⁻ ∊ {nas}]]$ bound by the quantifier, see the rule
-\ruleref{\ottdruleSINGSupShiftLabel}.
+\cref{fig:constraint-entry-singularity}. 
+\begin{itemize}
+  \item The \emph{equivalence} entries are
+    always singular, as the only possible type satisfying them is the one given in
+    the constraint itself, which is reflected in rules \ruleref{\ottdruleSINGNEqLabel} and
+    \ruleref{\ottdruleSINGPEqLabel}. 
+  \item The \emph{subtyping} constraints are trickier.
+    As will be discussed in \cref{sec:proof-lub-upgrade}, variables (and equivalent
+    them $[[∃nas.pa]]$) do not have proper supertypes, and thus, the
+    constraints of a form $[[pua :≥ ∃nas.pa]]$ are singular with the only possible
+    normalized solution $[[pa]]$---see rule \ruleref{\ottdruleSINGSupVarLabel}. 
+  \item However, if the body of the existential type is guarded by a shift $[[∃nas.↓iN]]$, it is
+    singular if and only if $[[iN]]$ is equivalent to some $[[αi⁻ ∊ {nas}]]$ bound
+    by the quantifier---see rule \ruleref{\ottdruleSINGSupShiftLabel}.
+\end{itemize}
 
-\begin{figure}[h]
-  \hfill\\
-  \ottdefnSINGLabeled
-  \caption{Singular Constraint Entry}
-  \label{fig:constraint-entry-singularity}
-\end{figure}

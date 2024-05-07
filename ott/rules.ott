@@ -46,6 +46,7 @@ grammar
     | scE1 = scE2                            ::   :: scE_eq
     | uσ1 = uσ2                              ::   :: us_eq
     | uN = uM                                ::   :: uN_eq_uM
+    | iN = na ∊ varset                       ::  :: uN_eq_na
     | Θ ⊆ Θ'                                 ::   :: theta_subset
     | args1 = args2                          ::   :: args_eq
     % | xs ⊆ T                                 ::   :: xs_in_T

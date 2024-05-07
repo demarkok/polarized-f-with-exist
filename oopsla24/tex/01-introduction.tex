@@ -85,8 +85,8 @@ the partial algorithm succeeds---for example, \citet{eisenberg21:existential}
 observe that their algorithm lacks a declarative specification, and explain why
 existential types make this particularly difficult to do. 
 
-One especially well-behaved form of partial type inference is \emph{local type
-inference}, introduced by \citet{pierce2000:local}. In this approach,
+One especially well-behaved form of partial type inference is 
+\emph{local type inference}, introduced by \citet{pierce2000:local}. In this approach,
 quantifiers in a polymorphic function are instantiated using only the type
 information available in the arguments at each call site. While this infers
 fewer quantifiers than global algorithms such as Damas-Milner can, it has the
@@ -98,63 +98,71 @@ of inference to support object-oriented features.
 
 In this paper, we extend the local type inference algorithm to a language with
 both universal and existential quantifiers, which can both be instantiated
-impredicatively. This combination of features broke a number of the invariants
-which traditional type inference algorithms depend on, and required us to invent
-new algorithms which combine both unification and (surprisingly)
-the dual---anti-unification.
-
-In this paper, we extend the local type inference algorithm to a language with
-both universal and existential quantifiers, which can both be instantiated
 impredicatively. This extended system is referred to as \fexists. The
 combination of features in \fexists  broke a number of the invariants which
 traditional type inference algorithms depend on and required us to invent
 new algorithms which combine both unification and (surprisingly)
 anti-unification.
 
-To research the type inference in impredicative polymorphic systems
-in the presence of existential types, we make the following \emph{\textbf{contributions}}.
+To research the type inference in impredicative polymorphic systems in the
+presence of existential types, we make the following
+\emph{\textbf{contributions}}.
 
-\paragraph{Type Inference Algorithm (\cref{sec:algorithm})}
-    We give a local type inference algorithm
-    which supports both first-class existential and universal quantifiers, both
-    of which can be instantiated impredicatively. To evade the undecidability
-    results surrounding type inference for \systemf, we introduce \fexists---a
-    variant of \CBPV \cite{levy2006:cbpv}, which lets us formulate a subtyping
-    relation which is still decidable. 
+\paragraph{Declarative Type System Specification (\cref{sec:declarative-system,sec:proofs})} 
+    We devise \fexists---a second-order polymorphic type system that supports first-class
+    existential and universal quantifiers, both of which can be instantiated
+    impredicatively. To evade the undecidability results surrounding subtyping
+    for \systemf, we base the system on \CBPV \cite{levy2006:cbpv}: we
+    use \emph{polarization} of types and terms to formulate the restrictions
+    that make typing decidable. 
 
-\paragraph{Declarative Specification (\cref{sec:declarative-system,sec:proofs})}
-    We give a declarative type system (again, based on \CBPV) to
-    serve as a specification of our algorithm, and we prove our algorithm is
-    sound and complete with respect to the declarative type system. The
-    specification makes it easy to see that all type applications (for
-    $\forall$-elimination) and all packs (for $\exists$-introdution) are
-    inferred. 
+    We give a \emph{declarative} specification of local type inference in this
+    system (\ie the typing information is only available at a limited scope)
+    based on \emph{subtyping} relation. The specification makes it easy to see
+    what is and what is not inferrable in the system. 
 
-\paragraph{Employment of the Anti-unification (\cref{sec:antiunification})}
-    The introduction of impredicative existentials breaks some of the
-    fundamental invariants of HM-style type inference. As a result, it needs to
-    mix unification with \emph{anti-unification}---a dual operation which has
-    been used in the literature on term rewriting systems, but which has never
-    appeared in the context of polymorphic type inference.
+    To show that our restrictions do not unduly limit the expressiveness of the
+    language, we prove that every \fexists term can be embedded into \systemf
+    and vice versa.
 
-\paragraph{Extrapolation of the Inference Framework to Other Type Systems
-          (\cref{sec:extensions})}
-    We explore the design space further to show how the
-    same type inference scheme can be applied to
-    work with different type systems. In particular,
-    \begin{enumerate*}
-      \item[(i)] in combination with \emph{bidirectional} typechecking---the 
-        approach used in the original local type inference paper of 
-        \citet{pierce2000:local} that minimizes the number of needed annotations;
-      \item[(ii)] in systems with different subtyping rules, such as  
-        the one used in \citet{zhao22:elementary}---a system that
-        permits explicit type applications;
-      \item[(iii)] in systems with \emph{bounded} polymorphic quantifiers.
-        That is, one can only instantiate a quantifier with a 
-        type that is a subtype of a given bound.
-    \end{enumerate*}
+\paragraph{Type Inference Algorithm (\cref{sec:algorithm})} We give a type
+  inference algorithm implementing the declarative specification. Because our
+  system supports both existential and universal quantifiers, our implementation
+  of the subtyping relation requires the use of \emph{anti-unification}---a dual
+  to unification that finds the most specific generalization rather than the
+  most general unifier. To our knowledge, anit-unification has never been used
+  in the context of polymorphic type inference.
+
+  The type inference algorithm itself is a purely local one, in the style of
+  \citet{pierce2000:local}. The locality can be seen from the fact that 
+  none of the unification variables introduced as part of type inference
+  escape the scope of a single function application.
+
+\paragraph{Theoretical results: correctness of the algorithm (\cref{sec:proofs})}
+  We prove that our algorithm is terminating and both sound and complete with
+  respect to the declarative specification. This proof of soundness and completeness
+  of the algorithm required us to introduce an intermediate system in-between
+  the declarative and the algorithmic systems, and furthermore, the
+  soundness and completeness proofs are mutually recursive with each other.
   
-\ilyam{Is the following needed since we have the contributions? I just wanted to introduce the appendix somewhere...}
+% \paragraph{Extrapolation of the inference framework to other type systems (\cref{sec:extensions})}
+%     We explore the design space further to show how the
+%     same type inference scheme can be applied to
+%     work with different type systems. In particular,
+%     \begin{enumerate*}
+%       \item[(i)] in combination with \emph{bidirectional} typechecking---the 
+%         approach used in the original local type inference paper of 
+%         \citet{pierce2000:local} that minimizes the number of needed annotations;
+%       \item[(ii)] in systems with different subtyping rules, such as  
+%         the one used in \citet{zhao22:elementary}---a system that
+%         permits explicit type applications;
+%       \item[(iii)] in systems with \emph{bounded} polymorphic quantifiers.
+%         That is, one can only instantiate a quantifier with a 
+%         type that is a subtype of a given bound.
+%     \end{enumerate*}
+  
+
+% \ilyam{Is the following needed since we have the contributions? I just wanted to introduce the appendix somewhere...}
 \paragraph{\textbf{Structure of this Paper}}
 In \cref{sec:overview}, we discuss the language of the \fexists system, providing
 examples, outlining limitations, and summarizing the main ideas behind the
