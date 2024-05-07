@@ -10,15 +10,14 @@ are beyond the scope of this work, and thus are left for future research.
 
 In our system, all type applications are inferred implicitly: the algorithm
 automatically instantiates the variables abstracted by $\forall$. 
-The implicit type application can be added to the declarative system by the following rule:
+The \emph{explicit} type application can be added to the declarative system by the following rule:
 $$\ottdruleDTTypeAppLabeled{}$$
 
-However, this rule alone would cause ambiguity.
-The declarative system does not fix the order of the quantifiers, 
-which means that $[[∀α⁺.∀β⁺.iN]]$ and $[[∀β⁺.∀α⁺.iN]]$ can be inferred 
-as a type of $[[c]]$ interchangeably. But then explicit instantiation
-$([[ c[iP] ]])$ would be ambiguous, as it is unclear whether $[[α⁺]]$ or
-$[[β⁺]]$ should be instantiated with $[[iP]]$.
+However, this rule alone would cause ambiguity. The declarative system does not
+fix the order of the quantifiers, which means that $[[∀α⁺.∀β⁺.iN]]$ and
+$[[∀β⁺.∀α⁺.iN]]$ can be inferred as a type of $[[c]]$ interchangeably. But that
+would make explicit instantiation $[[ c[iP] ]]$ ambiguous, as it is unclear
+whether $[[α⁺]]$ or $[[β⁺]]$ should be instantiated with $[[iP]]$.
 
 \paragraph{Solution 1: Declarative Normalization}
 One way to resolve this ambiguity is to fix the order of quantifiers.  
@@ -27,10 +26,9 @@ This way, we could require the inferred type to be normalized
 to specify the order of the quantifiers:
 $$\ottdruleDTTypeAppOrderedLabeled{}$$
 
-The drawback of this approach is that it 
-would cause the `leakage' of the internal algorithmic 
-concept of type normalization into the `surface' declarative 
-system. 
+The drawback of this approach is that it adds another point where the internal
+algorithmic concept---normalization---is exposed to the `surface' declarative
+system.
 
 \paragraph{Solution 2: Elementary Type Inference}
 An alternative approach to provide explicit type application
@@ -68,7 +66,7 @@ $$ \ottdruleDOneEExistsLR{} $$
 \end{minipage}
 \vskip 0.5em
 
-According to these rules, if two polymorphic ($[[∀]]$ or $[[∃]]$) types are
+According to these rules, if two quantified ($[[∀]]$ or $[[∃]]$) types are
 subtypes of each other, they must have the same top-level quantifiers. Moreover,
 the equivalence on types (mutual subtyping) degenerates to \emph{equality} up to
 alpha-conversion. 
@@ -76,7 +74,7 @@ alpha-conversion.
 To accommodate these changes in the \emph{algorithm}, 
 it suffices to 
     (i) replace the normalization procedure with identity: $[[nf(iN)]] \defeq [[iN]]$, $[[nf(iP)]] \defeq [[iP]]$,
-        since the new equivalence classes consist of singletons;
+        since the new equivalence classes are singletons;
     (ii) modify the least upper bound polymorphic rule \ruleref{\ottdruleLUBExistsLabel}
         so that it requires the quantifiers to be equal (and performs alpha-conversion if necessary):
         $$\ottdruleLUBEExists{}$$ 
@@ -97,11 +95,10 @@ which \emph{disallows}, for example, $[[· ⊢ ∀α⁺.↑α⁺ ≤ ∀α⁺.�
 On the other hand, the elementary subtyping system
 can be smoothly extended with bounded quantification, which we discuss later.
 
-\paragraph{Solution 3: Labeled Quantifiers}
+\paragraph{Solution 3: labeled quantifiers}
 
-A compromise solution that resolves the ambiguity of 
-explicit the instantiation without fixing the order of
-quantifiers is using \emph{labeled} quantifiers.
+A compromise solution that resolves the ambiguity of explicit instantiation
+without fixing the order of quantifiers is by using \emph{labeled} quantifiers.
 Let us discuss how to introduce them to the \emph{negative} part of the system,
 since the positive subsystem is symmetric. 
 
@@ -123,7 +120,7 @@ $$\ottdruleDTTypeAppLbLabeled{}$$
 \vskip 0.5em
 
 
-The subtyping rule allows the quantifiers to have an arbitrary order. 
+The subtyping rule permits an arbitrary order of the quantifiers.
 However, similarly to the elementary subtyping, 
 each of the right-hand side quantifiers must have 
 a matching left-hand side quantifier with the same label. These
@@ -141,7 +138,7 @@ However, the right-hand side quantifiers are removed synchronously with
 the matching left-hand side quantifiers, which means that
 $[[· ⊢ ∀l▷α⁺.↑α⁺ ≤ ∀l▷α⁺.↑↓↑α⁺]]$ is still not allowed.
 
-\subsection{Weakening of the Subtyping Invariant}
+\subsection{Weakening of the subtyping invariants}
 \label{sec:weakening-invariant}
 
 In order to make the subtyping relation decidable,
@@ -221,13 +218,13 @@ This way, the algorithm can be extended to support the \emph{covariant} up-shift
 subtyping. This, for example, enriches the relation with such subtypes as $[[· ⊢
 ∀α⁺.α⁺→↑α⁺ ≤ ↓↑Int → ↑∃β⁻.↓β⁻]]$, which does not hold in the original system.
 Moreover, this extension also increases the expressiveness of the \emph{type
-inference}. Namely, when inferring a type of an annotated let binding 
-$[[let x:iP = v(args); c]]$, we require $[[↑iP]]$ to be a supertype of 
-$[[↑iQ]]$---the resulting type of the application $[[v]]([[args]])$. 
-Now, it is equivalent to the requirement that $[[iP]]$ is a supertype of $[[iQ]]$
+inference}. Namely, when inferring a type of an annotated let binding $[[let
+x:iP = v(args); c]]$, we require $[[↑iP]]$ to be a supertype of $[[↑iQ]]$---the
+resulting type of the application $[[v]]([[args]])$. In the relaxed system, it
+can be replaced with the requirement that $[[iP]]$ is a supertype of $[[iQ]]$
 (without the up-shift), which is more permissive.
 
-In addition, the enhancement of the unification algorithm described above
+In addition, the refinement of the unification algorithm described above
 makes possible another improvement to the system---bounded quantification.
 
 \subsection{Bounded Quantification}
@@ -270,8 +267,8 @@ in the quantifiers of $[[iN]]$ at any depth):
 $$\ottdruleWFTForallUbLabeled{}$$
 
 For brevity, we do not discuss in detail the combination of bounded and
-unbounded quantification in one system. However, this update is straightforward:
-the unbounded quantifiers are treated as the weakest bound, which is trivially
+unbounded quantification in one system. We believe this update is straightforward:
+the unbounded quantifiers are treated as the weakest constraints, which are trivially
 satisfied. Analogously, it is possible to extend the system with \emph{lower}
 bound $[[∀]]$-quantifiers: $[[∀(pa ≥* iP). iN]]$. 
 Then the generated constraints will change to $[[βî⁺ :≥ iQi]]$, which 
@@ -308,8 +305,8 @@ The algorithm we provide requires that all lambda functions are annotated.
 This restriction significantly simplifies the type inference by making the 
 terms uniquely define their types. However, it leads to certain redundancies
 in typing, in particular, the type of a lambda expression cannot be inferred 
-from the context it is used in: $[[((λ x . return x) : (Int → ↑Int))]]$
-is not allowed.
+from the context it is used in: the annotated $[[((λ x . return x) : (Int → ↑Int))]]$
+does not infer $[[Int → ↑Int]]$.
 
 The well-known way to incorporate this expressiveness into the system
 is to make the typing bidirectional \cite{dunfield2020:bidirectional}.
@@ -398,11 +395,11 @@ and $[[Γ ⊢ iQ ≥ iP]]$.
     with respect to the declarative system. 
  
     For brevity, we omit the details of the bidirectional algorithm.
-    However, let us discuss one especially important rule---arrow application inference. 
+    Let us discuss one especially important rule---arrow application inference. 
     An intuitive way to bidirectionalize this rule is the following:
-    $$ \ottdruleATArrowAppBidirLabeled{} $$\\
+    $$ \ottdruleATArrowAppBidirLabeled{} $$
     % \paragraph{Reaching Undecidability}
-    However, this rule is too allowing. 
+    However, this rule is too permissive. 
     The judgement $[[Γ ; Φ ⊨ v ⇐ uQ ⫤ SC1]]$
     requires us to check a term against an \emph{algorithmic} 
     type $[[uQ]]$. Further, through the
@@ -417,14 +414,14 @@ and $[[Γ ⊢ iQ ≥ iP]]$.
      sides of the subtyping relation.
 
     We believe that the relaxation of this invariant brings the 
-    constraint resolution too close to the second-order pattern 
+    constraint resolution too close to second-order pattern 
     unification, which is undecidable \cite{goldfarb81:undecidability}.
     In particular, the constraint $[[(α̂⁺ :≥ ↓↑α̂⁺)]]$ is solvable with 
     $[[α̂⁺]] = [[∃β⁻.↓β⁻]]$, 
     since by \ruleref{\ottdruleDOneExistsLabel}, 
     the existential $[[β⁻]]$ can be impredicatively instantiated to $[[↑∃β⁻.↓β⁻]]$. 
 
-    The constraints such as $[[(α̂⁺ :≥ ↓↑α̂⁺)]]$ are not merely hypothetical. 
+    Constraints such as $[[(α̂⁺ :≥ ↓↑α̂⁺)]]$ are not merely hypothetical. 
     It occurs, for example, when we infer the type of the following application:
     $$[[· ; · ⊢ ∀α⁺ . ↓(α⁺ → ↑Int) → ↓↑α⁺ → ↑Int ● {λx.λy.let y' = x(y); return y'} ⇒> ↑Int]]$$
     For $[[x]]$ to be applicable to $[[y]]$,
