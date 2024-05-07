@@ -1,0 +1,239 @@
+embed {{ tex-preamble
+
+\newcommand{\elabPM}{ \leadsto^{\pm} }
+\newcommand{\PMelab}{ \leadsto }
+
+}}
+
+defns
+  SF :: 'SF' ::=
+
+  defn fΓ2 ⊢ fσ : fΓ1 :: :: WFSub :: 'wfsub'
+  {{ tex [[fΓ2]] \vdash [[fσ]] \colon [[fΓ1]] }} by
+
+  defn fΓ ⊢ fTs :: :: WFs :: 'wfs'
+  {{ tex [[fΓ]] \vdash [[fTs]] }} by
+
+  defn fΓ ⊢ fT :: :: WF :: 'wf'
+  {{ tex [[fΓ]] \vdash [[fT]] }} by
+
+  a ∊ fΓ
+  ------- :: Var
+  fΓ ⊢ a
+
+  fΓ ⊢ fA    fΓ ⊢ fB
+  -------------------- :: Arrow
+  fΓ ⊢ fA → fB
+
+  fΓ, as ⊢ fT
+  ------------ :: Forall
+  fΓ ⊢ ∀as.fT
+
+  defn fΓ ⊢ fT :: :: WFA :: 'wfA'
+  {{com Admissible Well-formedness rules }} by
+
+  fΓ, as ⊢ fT
+  ------------- :: Exixts
+  fΓ ⊢ ∃as.fT
+
+  defn fΓ ; fΦ ⊢ ft : fT :: :: ty :: 'ty'
+  {{ tex [[fΓ]] ; [[fΦ]] \vdash [[ft]] \colon [[fT]] }} by 
+
+  x : fT ∊ fΦ   
+  --------------- :: Var
+  fΓ ; fΦ ⊢ x : fT 
+
+  fΓ; fΦ, x:fA  ⊢ ft : fB 
+  --------------------------- :: tLam 
+  fΓ ; fΦ ⊢ λx.ft : fA → fB 
+
+  fΓ ; fΦ ⊢ ft : fA → fB     fΓ ; fΦ ⊢ ft' : fA
+  ----------------------------------------------- :: App
+  fΓ ; fΦ ⊢ ft ft' : fB
+
+
+  fΓ, a ; fΦ ⊢ ft : fT    
+  ------------------------- :: TLam
+  fΓ ; fΦ ⊢ Λa.ft : ∀a.fT
+
+
+  fΓ ; fΦ ⊢ ft : ∀a.fT     fΓ ⊢ fA
+  --------------------------------- :: TApp
+  fΓ ; fΦ ⊢ ft : [fA/a]fT
+
+  defn fΓ ; fΦ ⊢ ft : fT :: :: tyA :: 'tyA'
+  {{ com Admissible Typing Rules }}
+  {{ tex [[fΓ]] ; [[fΦ]] \vdash [[ft]] \colon [[fT]] }} by 
+
+  fΓ; fΦ ⊢ ft1 : ∃as.fT
+  fΓ, as; fΦ, x:fT ⊢ ft2 : fT'
+  fΓ ⊢ fT'
+  --------------------------------------------- :: Unpack
+  fΓ ; fΦ ⊢ unpack (as, x) = ft1; ft2 : fT'
+
+  fΓ, as ⊢ fT    fΓ ⊢ fAs
+  fΓ; fΦ ⊢ ft : [fAs/as]fT
+  -------------------------------------- :: Pack
+  fΓ ; fΦ ⊢ pack ft : ∃as.fT : ∃as.fT
+
+
+  fΓ; fΦ ⊢ ft : fA    fΓ ; fΦ, x:fA ⊢ ft' : fB
+  ----------------------------------------------- :: Let
+  fΓ; fΦ ⊢ let x = ft; ft' : fB
+
+
+defns
+  EL :: 'EL' ::=
+
+  defn fΓ ; fΦ ⊢ ft : fT ⤳ c :: :: fPol :: ''
+  {{ tex [[fΓ]] ; [[fΦ]] \vdash [[ft]] \colon [[fT]] \elabPM [[c]] }} by 
+
+  x : fT ∊ fΦ   
+  ------------------------------ :: Var
+  fΓ ; fΦ ⊢ x : fT  ⤳  return x
+
+  fΓ; fΦ, x:fA  ⊢ ft : fB  ⤳ c 
+  ---------------------------------------------------- :: tLam 
+  fΓ ; fΦ ⊢ λx.ft : fA → fB  ⤳  return {λx:+|fA|+. c}
+
+  fΓ ; fΦ ⊢ ft : fA → fB   ⤳  c     fΓ ; fΦ ⊢ ft' : fA  ⤳  c'
+  ----------------------------------------------------------- :: App
+  fΓ ; fΦ ⊢ ft ft' : fB  ⤳  let f : +|fA → fB|+ = c; let x : +|fA|+ = c'; let y:+|fB|+ = f(x); return y
+
+  fΓ, a ; fΦ ⊢ ft : fT  ⤳  c   
+  ------------------------------------------- :: TLam
+  fΓ ; fΦ ⊢ Λa.ft : ∀a.fT  ⤳  return {Λα⁺. c}
+
+  ----------------------------------------- :: TApp
+  fΓ ; fΦ ⊢ ft : [fA/a]fT  ⤳   let f : +|∀a.fT|+ = c; let y : +|[fA/a]fT|+ = f(·); return y
+
+  defn Γ ⊢ iN ≤ iM ⤳ ft :: :: N :: ''
+  {{ com Negative subtyping elaboration }}
+  {{ tex [[Γ]] [[⊢]] [[iN]] \subDOne [[iM]] \leadsto [[ft]] }} by
+
+  --------------------:: NVar
+  Γ ⊢ a⁻ ≤ a⁻  ⤳  λx.x
+
+  Γ ⊢ iQ ≥ iP ⤳ ft     Γ ⊢ iP ≥ iQ
+  --------------------------------- :: ShiftU
+  Γ ⊢ ↑iP ≤ ↑iQ ⤳ ft
+
+  Γ ⊢ iP ≥ iQ ⤳ ft    Γ ⊢ iN ≤ iM ⤳ ft' 
+  -----------------------------------------------:: Arrow
+  Γ ⊢ iP → iN ≤ iQ → iM ⤳ λx. λy. ft' (x (ft y))
+
+  Γ, pbs ⊢ σ : {pas}    Γ, pbs  ⊢ [σ] iN ≤ iM ⤳ ft
+  ----------------------------------------------- :: Forall
+  Γ ⊢ ∀pas.iN ≤ ∀pbs.iM ⤳ λx. Λbs. ft x
+
+  defn Γ ⊢ iP ≥ iQ ⤳ ft :: :: P :: ''
+  {{ com Positive supertyping elaboration }}
+  {{ tex [[Γ]] [[⊢]] [[iP]] \supDOne [[iQ]] \leadsto [[ft]] }} by
+
+  ------------- :: PVar
+  Γ ⊢ a⁺ ≥ a⁺ ⤳ λx.x
+
+  Γ ⊢ iN ≤ iM     Γ ⊢ iM ≤ iN ⤳ ft
+  ---------------------------------:: ShiftD
+  Γ ⊢ ↓iN ≥ ↓iM ⤳ ft
+
+  Γ, nbs ⊢ σ : {nas}    Γ, nbs ⊢ [σ]iP ≥ iQ ⤳ ft
+  ----------------------------------------------------------------------- :: Exists
+  Γ ⊢ ∃nas.iP ≥ ∃nbs.iQ ⤳ λx. unpack(bs, y) = x; pack (ft y) : ∃as.|iP|
+
+
+
+defns
+  TEL :: 'TEL' ::=
+
+  defn Γ ; Φ ⊢ v : iP  ⤳  ft :: :: P :: ''
+  {{ com Positive typing elaboration }}
+  {{ tex [[Γ]] ; [[Φ]] \vdash [[v]] \colon [[iP]] \PMelab [[ft]] }} by
+
+  x : iP ∊ Φ   
+  ------------------- :: Var
+  Γ ; Φ ⊢ x : iP ⤳ x
+
+  Γ ; Φ ⊢ c : iN ⤳ ft
+  ----------------------- :: Thunk
+  Γ ; Φ ⊢ {c} : ↓iN ⤳ ft
+
+  Γ⊢ iQ   Γ ; Φ ⊢ v : iP ⤳ ft     
+  Γ ⊢ iQ ≥ iP ⤳ fe
+  ------------------------------- :: PAnnot
+  Γ ; Φ ⊢ (v : iQ) : iQ ⤳ fe ft
+
+  Γ ; Φ ⊢ v : iP ⤳ ft      
+  Γ ⊢ iP ≥ iP'    Γ ⊢ iP' ≥ iP ⤳ fe
+  ---------------------------------- :: PEquiv
+  Γ ; Φ ⊢ v : iP' ⤳ fe ft
+
+  defn Γ ; Φ ⊢ c : iN  ⤳  ft :: :: N :: ''
+  {{ com Negative typing elaboration }}
+  {{ tex [[Γ]] ; [[Φ]] \vdash [[c]] \colon [[iN]] \PMelab [[ft]] }} by
+
+  Γ ⊢ iP    Γ ; Φ, x:iP ⊢ c : iN  ⤳ ft
+  ------------------------------- :: tLam
+  Γ ; Φ ⊢ λx:iP . c : iP → iN  ⤳ λx.ft
+
+  Γ, α⁺ ; Φ ⊢ c : iN  ⤳  ft
+  ---------------------------------- :: TLam
+  Γ ; Φ ⊢ Λα⁺ . c : ∀α⁺.iN  ⤳  Λa.ft
+
+  Γ ; Φ ⊢ v : iP  ⤳  ft    
+  ----------------------- :: Return
+  Γ ; Φ ⊢ return v : ↑iP ⤳  ft
+
+  Γ ⊢ iP    Γ; Φ ⊢ c : iM ⤳ ft   Γ ⊢ iM ≤ ↑iP ⤳ fe    Γ; Φ, x:iP ⊢ c' : iN ⤳ ft'
+  -------------------------------------------------- :: CVarLet
+  Γ; Φ ⊢ let x : iP = c; c' : iN  ⤳  let x = (fe ft) ; ft'
+
+  Γ; Φ ⊢ v : iP ⤳ ft    Γ; Φ, x:iP ⊢ c : iN ⤳ ft'
+  ------------------------------------------------ :: VarLet
+  Γ; Φ ⊢ let x = v; c : iN  ⤳  let x = ft ; ft'
+
+  Γ ; Φ ⊢ v : ↓iM ⤳ ft'  Γ ; Φ ⊢ iM ● args ⇒> ↑iQ principal   
+  Γ ; Φ ⊢ iM ● args ⇒> ↑iQ ⤳ fe; fargs   Γ; Φ, x:iQ ⊢ c : iN ⤳ ft
+  ---------------------------------- :: AppLet
+  Γ ; Φ ⊢ let x = v(args); c : iN ⤳ let x = (fe (ft' ● fargs)) ; ft
+
+
+  Γ ⊢ iP   Γ ; Φ ⊢ v : ↓iM ⤳ ft'  Γ ; Φ ⊢ iM ● args ⇒> iM' ⤳ fe; fargs   
+  Γ ⊢ iM' ≤ ↑iP ⤳ fe'   Γ; Φ, x:iP ⊢ c : iN ⤳ ft
+  ---------------------------------------------------------------------- :: AppLetAnn
+  Γ ; Φ ⊢ let x:iP = v(args); c : iN ⤳ let x = fe' (fe (ft' ● fargs)); ft
+
+
+  Γ ; Φ ⊢ v : ∃nas.iP ⤳ ft    nf(∃nas.iP) = ∃nas.iP    Γ, nas ; Φ, x:iP ⊢ c : iN ⤳ ft' Γ ⊢ iN
+  --------------------------------------------------------------- :: Unpack
+  Γ ; Φ ⊢ let∃ (nas, x) = v; c : iN   ⤳  unpack (as, x) = ft; ft'
+
+  Γ ⊢ iM    Γ ; Φ ⊢ c : iN ⤳ ft    
+  Γ ⊢ iN ≤ iM ⤳ fe
+  ------------------------------- :: NAnnot
+  Γ ; Φ ⊢ (c : iM) : iM ⤳ fe ft
+
+  Γ ; Φ ⊢ c : iN ⤳ ft   
+  Γ ⊢ iN' ≤ iN   Γ ⊢ iN ≤ iN' ⤳ fe   
+  ---------------------------------- :: NEquiv
+  Γ ; Φ ⊢ c : iN' ⤳ fe ft
+
+
+defn Γ ; Φ ⊢ iN ● args ⇒> iM ⤳ fe ; fargs :: :: App :: ''
+{{ tex [[Γ]] ; [[Φ]] \vdash [[iN]] [[●]] [[args]] [[⇒>]] [[iM]] \PMelab [[fe]] ; [[fargs]] }} 
+{{ com Application typing }} by
+
+Γ ⊢ iN ≤ iN'   Γ ⊢ iN' ≤ iN ⤳ fe
+------------------------------------ :: EmptyApp
+Γ ; Φ ⊢ iN ● · ⇒> iN'  ⤳  fe ; ·
+
+Γ ; Φ ⊢ v : iP ⤳ ft  Γ ⊢ iQ ≥ iP ⤳ fe
+Γ ; Φ ⊢ iN ● args ⇒> iM ⤳ fe' ; fargs
+-------------------------------- :: ArrowApp
+Γ ; Φ ⊢ iQ → iN ● v , args ⇒> iM  ⤳ fe' ; fe ft, fargs
+
+args ≠ ·           pas ≠ ·   Γ ⊢ σ : {pas}      
+Γ ; Φ ⊢ [σ]iN ● args ⇒> iM  ⤳ fe ; fargs
+------------------------------------------------ :: ForallApp
+Γ ; Φ ⊢ ∀pas.iN ● args ⇒> iM  ⤳ fe ; fargs
+
