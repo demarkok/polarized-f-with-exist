@@ -1114,8 +1114,15 @@ The singularity of constraint \emph{entries} is defined in
     them $[[∃nas.pa]]$) do not have proper supertypes, and thus, the
     constraints of a form $[[pua :≥ ∃nas.pa]]$ are singular with the only possible
     normalized solution $[[pa]]$---see rule \ruleref{\ottdruleSINGSupVarLabel}. 
-  \item However, if the body of the existential type is guarded by a shift $[[∃nas.↓iN]]$, it is
-    singular if and only if $[[iN]]$ is equivalent to some $[[αi⁻ ∊ {nas}]]$ bound
-    by the quantifier---see rule \ruleref{\ottdruleSINGSupShiftLabel}.
+  \item However, if the body of the existential type is guarded by a shift
+    $[[∃nas.↓iN]]$, it is singular if and only if $[[iN]]$ is equivalent to some
+    $[[αi⁻ ∊ {nas}]]$ bound by the quantifier---see rule
+    \ruleref{\ottdruleSINGSupShiftLabel}. The completeness of this criterion is
+    justified by the fact that if $[[iN]]$ is \emph{not} equivalent to any
+    $[[αi⁻]]$, then there are two non-equivalent solutions of constraint $[[(pua :≥
+    ∃nas.↓iN)]]$: the trivial $[[∃nas.↓iN]]$ and $[[∃nas.↓a1⁻]]$ (which is a
+    supertype of $[[∃nas.↓iN]]$ since $[[a1⁻]]$ can be instantiated to
+    $[[iN]]$).
+
 \end{itemize}
 
