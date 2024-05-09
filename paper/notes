@@ -1,0 +1,7 @@
+* Explain the things that are difficult and how we resolve them. For example, now the LUB (Least Upper Bound) is not necessarily the syntactic equality. Examples, types don't have a LUB. How do we decide? The answer is anti-unification, which we explain at a high level. Now we have both forall and exists, and mixing unification and anti-unification.
+
+* Impredicativity is another difficulty. Even with forall, the natural subtyping is undecidable. We have to find the restrictions that make it decidable. Unification allows us to solve equality constraints, and the LUB has to be solved with anti-unification. We have to design the system carefully to maintain decidability.
+
+* When doing type inference, subtyping is the hardest part because that's where the inference happens. We are able to concentrate most of the difficulty in the subtyping relation and use polarization and groundness constraints to make everything decidable.
+
+* The inference we're doing is similar to the one in object-oriented programming languages because it's local.

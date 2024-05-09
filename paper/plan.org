@@ -1,0 +1,271 @@
+* Abstract
+* Introduction
+** What is the problem?
+    - System F is the basis for the types in many languages.
+    - The type inference for Impredicative System F is undecidable:
+      Examples instantiating ∀-s.
+    - Existential Types are useful, but the type inference for ∃ is under-researched.
+** What Good in Solving it?
+    - Fundamental duality in logic: forall vs exists 
+    - Useful for data abstraction, modules/components, coinductive type encodings, etc
+    - Reveals new ways of understanding type inference: usual algorithms for forall rely
+      on relationship between specialisation and unification which break in the presence
+      of exists
+    - As a consequence, the algorithms are ad-hoc and sub-optimal (ML?).
+      
+** Contributions
+    *** Type Inference Algorithm
+        Local Type Inference Algorithm for impredicative SystemF with existential types
+        - No ∃pack/∀inst anywhere but λ and some let-bindings are annotated 
+        - Algorithm is fundamentally novel
+            - ∃ brakes the standard invariants that justify using unification
+            - Mix UNIF and ANTIUNIF
+            - Full correctness proof
+            - Exploits CBPV to control 
+                quantifiers/arities
+        - Subtyping permits
+    *** Type Inference Framework
+        We discuss the design alternatives
+        that allow us to apply the same 
+        general scheme of the algorithm 
+        to different type systems. 
+        - Our work gives a deeper understanding on the inference for impredicative ∃
+        - The algorithm as it presented here, cannot be used in practice without modifications.
+* Overview
+    ** Informal Explanation of our approach
+        - subtyping is the driver of the inference: examples
+        - Where does the complexity come from?: ∀ and ∃ rules (in a simplified way)
+    ** Examples: 
+        with syntax explained informally, but reasonably close to the real level of annotations
+    ** Introduce the language
+        - ±-stratification of the language
+        - Language of Types
+        - Language of Terms
+    ** Examples, Key Ideas
+        - System = Declarative + Algorithmic Counterparts 
+        *** Types
+            - Non-trivial equivalence
+            - Type normalization 
+            - Algorithmic Variables => Constraints
+            - Merging constraints requires Unification.
+            - Merging constraints require Least Upper Bound, 
+                which is is non-trivial: Anti-Unification
+        *** Terms
+            - Interface to Subtyping: Annotations, Type applications. 
+            - Inference in let bindings: uniqueness
+* Declarative System
+    ** Subtyping 
+        - Explain ∀/∃ Rules
+        - Explain substitution specification notation 
+        - Explain ↑/↓ Rules
+    *** Subtyping Properties
+        - Subtyping is Reflexive and Transitive, and is preserved by substitution
+        - Subtyping forms a preorder, and positive subtyping forms a semi-lattice
+            (with the least-common-supertype operation)
+        - However, greatest common negative subtype is not defined (examples?),
+            and thus, the subtyping algorithm cannot be simply reduced to meet/join.
+    ** Equivalence and Normalization
+        - informal Explanation
+        - formal definition 
+        - properties: correctness
+    ** Typing
+        - explain the meaning 
+        - Variable Context Φ
+        - All the rules are inferring
+        - up-to-equivalence class
+        - Non-Algorithmic rules: ∀-app
+        - unpack: requires normalization, checks the wf of the resulting types
+        - applicative lets
+        - - both invoke application typing
+        - - unannotated let: checks uniqueness
+        - - annotated let: requires equivalence of the types, which can be relaxed (see extensions)
+        - application typing:
+        - - non-algorithmic ∀-inf rule
+        - where subtyping is invoked: annotations, application typing. 
+    *** Typing Properties
+        - defined up-to-equivalence
+* The Algorithm
+    [Goal: people can implement it]
+    ** Overview
+        - Justify Adding α̂± 
+        - algorithmic type contexts Ξ and constraint context Θ
+        - Describe how wf, nf,... are changed
+        - Constraints -- important part of the algorithm
+    ** Subtyping algorithm
+        - Dependency Graph
+        - fig
+        - it takes ... and returns constraint
+        - explain the rules
+        - - ↑/↓ invoke unification up-to-equivalence, 
+            which is implemented by unification of the normal forms up-to-equality.
+        - - → makes two recursive calls, and thus, it merges the resulting constraints
+        - - ∀/∃ introduce new variables as discussed
+        - - the base case calls the upgrade
+    ** Unification
+    ** Constraint Merge
+    ** Upgrade and LUB 
+    ** Anti-Unification
+    ** Inference
+        - Overview (Dependency Graph)
+        *** The Inference Algorithm
+        *** Constraint Singularity
+* Correctness of the Algorithm 
+
+** Soundness and Completeness
+
+    The main theorem we prove is the correctness of the algorithm.
+    It consists of two properties:
+    the soundness and the completeness with respect to the declarative specification.
+    The soundness means that given a term e, 
+    the algorithm will always return a type that is allowed to be a type of e 
+    by the declarative specification.
+    The completeness says that once a term e has a some type declaratively, 
+    the type inference algorithm succeeds. 
+
+    The soundness and completeness are proved gradually for each
+    component of the algorithm, following its dependency graph. 
+    The statement are formulated in the following way:
+
+    
+
+
+
+    ** Type Well-formedness
+        WF = fv are in the context
+        weakening, strengthening, agrees with substitution 
+    ** Substitution
+        Strengthening, range and domain weakening
+        normal and monadic composition and its properties: commutativity.
+        interaction with free variables: equivalence. 
+    ** Declarative Subtyping
+        - FV propagate left-to-right
+        - Type equivalence agrees with WF
+        - The quantifier rules can be decomposed into sequential 
+          application of the Right and the Left rule
+        - subtyping is not affected by redundant quantifiers
+        - sub/supertype of a variable is equivalent to the variable.
+        - subtyping is not affected by context as long as the types are well-formed in it
+        subtyping preserves substitution, 
+        - reflexivity, transitivity 
+    ** Declarative Equivalence
+        - Equivalence is stable under renaming. 
+        - Declarative equivalence is transitive. 
+        - Type well-formedness is preserved under equivalence.
+        - (Soundness) Equivalence implies mutual subtyping
+        - Substitution cannot induce proper subtypes or supertypes
+        - [σ1]P ≥ Q and [σ2]Q ≥ P implies that σ1 and σ2 are mutually inverse bijections. 
+        - Equivalence of top-level polymorphic types implies one step of normalization (ordering).
+        - (Completeness) mutual subtyping implies equivalence
+        - Algoirhmization = soundness + completeness
+    ** Variable Ordering
+        - Soundness: ord vars in iN returns a list of variables form vars ∩ fv(iN)
+        - Completeness: Ordering is an invariant of an equivalence class
+    ** Normalization 
+        - Determinacy 
+        - Soundness wrt declarative normalization: normalization preserves the equivalence class 
+        - Completeness wrt declarative normalization: equivalent types have equal normal forms
+        - Soundness and Completeness wrt mutual subtyping = Algorithmization of mutual subtyping:
+            mutual subtyping means equality of normal forms. 
+    ** Declarative Typing
+        - Type Application inference is invariant under equivalence
+        - All typing judtements are invariant under equivalent context replacement. 
+    ** Algorithmic well-formedness
+        - WF = fv are in the context (declarative or algorithmic)
+    ** Algorithmic Substitution
+        Interaction with algorithmic variables. 
+    ** Algorithmic Equivalence
+        - preserves algorithmic type well-formedness
+        - Substitution equivalence
+    ** Unification Constraint Merge
+        - Soundness: normalized constraint merge is a union.
+        - Completeness: an instantiation
+          satisfying constraints UC1, UC2, 
+          must satisfy their merge.
+    ** Unification
+        - Deterministic
+        - Soundness and Completeness: 
+            The unification gives a 
+            set of constraints on the unification variable,
+            so that it is necessarry and sufficient for an
+            instantiation to satisfy this set to 
+            make the given types equal. 
+    ** Anti-unnification     
+        - Determinism 
+        - Soundness. For normalized types, 
+            the AU algorithm returns a pattern and two substitutions
+            that instantiate the pattern into the given types.
+        - Completeness. 
+            If it is possible to anti-unify two types, 
+            then the AU algorithm succeeds.
+        - Initiality
+         AU returns the most specific pattern.
+    ** Upper Bounds
+        - What positive normalized supertypes look like?
+            For β+ the only supertype is β+ itself.
+            For ∃β⁺.P the supertypes are the supertypes of 
+                P free of β.
+            For ↓M, any supertype 
+            must have form ∃α⁺...↓M' such that
+            it is possible to instantiate α⁺ in M' to make it equal to M.
+        - Soundness of LUB: 
+            LUB returns an upper bound, 
+        - Completeness and initiality:
+            if upper bound U exists, LUB succeeds
+            and returns an upper bound not greater than U.
+    ** Upgrade
+        - Determinism
+        - Soundness and Completeness:
+            The upgrade algorithm returns 
+            the least Γ-well-typed upper bound of a given type.
+    ** Constraint Satisfaction
+    ** Positive Subtyping
+        - Determinism
+        - Soundness and Completeness:
+            The subtyping returns a set of constraints
+            such that it is necessary and sufficient
+            for an instantiation to satisfy them
+            in order to ensure the given subtyping declaratively.
+    ** Subtyping Constraint Merge
+        - Determinism
+        -  Soundness and Completeness:
+            The merge of C1 and C2 
+            is the weakest Constraint implying both
+            C1 and C2
+    ** Negative Subtyping
+        - Determinism
+        - Soundness and Completeness:
+            same as for positive. 
+            Negative subt. requires no negative 
+            algorithmic variables.
+    ** Singularity 
+        - Determinism
+        - Soundness:
+            C singular with σ
+            returns σ that satisfies C and
+            any other σ' satisfying C is equivalent to σ
+            on the domain of C.
+        - Completeness:
+            if all substitutions satisfying C
+            are equivalent on Ξ - superset of dom(C)
+            then C singular with σ succeeds and 
+            Ξ = dom(C)
+    ** Typing 
+        - Determinacy
+        - Soundness
+        - Completeness
+
+* Extensions and Modifications
+    ** Elementary Type Theory
+    ** Explicit type application
+    ** Bounded quantifiers
+    ** Bidirectionalization 
+    ** Relaxing ↑
+* Related Work
+    ** Local Type Inference
+    ** A quick look at impredicativity
+    ** Existential Crisis Resolved
+* Conclusion
+
+
+
+
