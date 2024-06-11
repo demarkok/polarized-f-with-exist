@@ -45,6 +45,7 @@ v, w :: 'v_' ::= {{ com Value Terms }}
 
 const :: 'const_' ::= {{ com constants }}
   | map       ::   :: Map
+  | double    ::   :: Double
   | len       ::   :: Len
   | id        ::   :: Id
   | fortyTwo  ::   :: FortyTwo {{ tex 42 }}

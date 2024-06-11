@@ -3,51 +3,56 @@
 SHELL:=/bin/bash
 
 # Directories
-ROOT := ..
-TEX := tex
-GEN := _gen
-GEN_TEX := $(GEN)/$(TEX)
-OTT := $(ROOT)/ott
-OTT_GEN := $(OTT)/_gen
+ROOT_DIR := ..
+ROOTPAPER_DIR := $(ROOT_DIR)/paper
+ROOT_TEX_DIR := $(ROOTPAPER_DIR)/tex
+ROOT_GEN_DIR := $(ROOTPAPER_DIR)/_gen
+ROOT_GEN_TEX_DIR := $(ROOT_GEN_DIR)/tex
+OTT_DIR := $(ROOT_DIR)/ott
+OTT_GEN_DIR := $(OTT_DIR)/_gen
 
 
 # Files
-OTTS := $(OTT)/*.ott
-PDFS := paper.pdf
-TEXS := paper.tex $(wildcard $(TEX)/*.tex) 
-GEN_TEXS := $(addprefix $(GEN)/,$(TEXS))
+OTTS := $(OTT_DIR)/*.ott
 
-CACHE := $(OTT_GEN)/ott.cache
-DEFS := $(OTT_GEN)/defs.tex
-RENEW_DEFS := $(OTT_GEN)/renew-ott.tex
-STY := $(ROOT)/*.sty
-BIBLIO := $(ROOT)/bibliography.sty $(ROOT)/biblio.bib
+CACHE := $(OTT_GEN_DIR)/ott.cache
+DEFS := $(OTT_GEN_DIR)/defs.tex
+RENEW_DEFS := $(OTT_GEN_DIR)/renew-ott.tex
+STY := $(ROOT_DIR)/*.sty
+BIBLIO := $(ROOT_DIR)/bibliography.sty $(ROOT_DIR)/biblio.bib
+
+# Local files
+PDFS := paper.pdf
+LOCAL_TEXS := paper.tex
+LOCAL_GEN_DIR := _gen
+LOCAL_GEN_TEXS := $(addprefix $(LOCAL_GEN_DIR)/,$(TEXS))
 
 all: $(PDFS)
 
+ott:
+	make -C $(OTT_DIR)
+
+rootpaper:
+	make -C $(ROOTPAPER_DIR)
+
 # MAKE DIRECTORIES
-$(GEN) $(GEN_TEX): %:
+$(GEN_DIR) $(GEN_TEX_DIR): %:
+	make -C $(ROOTPAPER)
+
+$(LOCAL_GEN_DIR): %:
 	mkdir -p $@
 
 # MAKE OTT DEFITIONS
 
-$(CACHE): $(OTTS) 
-	make -C $(OTT)
-
-$(DEFS): $(CACHE)
-	make -C $(OTT)
-
-$(RENEW_DEFS) : $(DEFS) $(OTT)/renew-ott.tex
-	make -C $(OTT)
-
 # MAKE PROCESSED TEX FILES
-$(GEN_TEXS): $(TEXS) $(CACHE) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+$(LOCAL_GEN_TEXS): ott $(LOCAL_TEXS) | $(LOCAL_GEN_DIR) 
+	make -C $(ROOTPAPER)
 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
 
 # MAIN
 
-paper.pdf: $(GEN_TEXS) $(BIBLIO)
-	rubber --pdf -f $(GEN)/paper.tex
+paper.pdf: ott rootpaper $(LOCAL_GEN_TEXS)
+	rubber --pdf -f paper.tex
 
 continuous:
 	make & fswatch -o .. | xargs -n1 -I{} make
@@ -59,9 +64,9 @@ clean:
 	rm -f *.rubbercache 
 
 ottdistclean:
-	make -C $(OTT) distclean
+	make -C $(OTT_DIR) distclean
 
 distclean: clean ottdistclean
-	rm -r $(GEN)
-	rm -r $(OTT_GEN)
 	rm $(PDFS)
+	rm -r $(LOCAL_GEN_DIR)
+	rm -r $(OTT_GEN_DIR)

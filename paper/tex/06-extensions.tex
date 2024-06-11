@@ -19,7 +19,7 @@ $[[∀β⁺.∀α⁺.iN]]$ can be inferred as a type of $[[c]]$ interchangeably.
 would make explicit instantiation $[[ c[iP] ]]$ ambiguous, as it is unclear
 whether $[[α⁺]]$ or $[[β⁺]]$ should be instantiated with $[[iP]]$.
 
-\paragraph{Solution 1: Declarative Normalization}
+\paragraph*{Solution 1: Declarative Normalization}
 One way to resolve this ambiguity is to fix the order of quantifiers.  
 The algorithm already performs the ordering of the quantifiers in the normalization procedure.
 This way, we could require the inferred type to be normalized
@@ -30,7 +30,7 @@ The drawback of this approach is that it adds another point where the internal
 algorithmic concept---normalization---is exposed to the `surface' declarative
 system.
 
-\paragraph{Solution 2: Elementary Type Inference}
+\paragraph*{Solution 2: Elementary Type Inference}
 An alternative approach to provide explicit type application
  was proposed by \cite{zhao22:elementary}.
 In this work, the subtyping relation is restricted 
@@ -95,7 +95,7 @@ which \emph{disallows}, for example, $[[· ⊢ ∀α⁺.↑α⁺ ≤ ∀α⁺.�
 On the other hand, the elementary subtyping system
 can be smoothly extended with bounded quantification, which we discuss later.
 
-\paragraph{Solution 3: labeled quantifiers}
+\paragraph*{Solution 3: labeled quantifiers}
 
 A compromise solution that resolves the ambiguity of explicit instantiation
 without fixing the order of quantifiers is by using \emph{labeled} quantifiers.
@@ -389,7 +389,7 @@ powerful and potentially leads to undecidability.
 Instead, this check is approximated by the combination of $[[Γ; Φ ⊢ v ⇒ iP]]$
 and $[[Γ ⊢ iQ ≥ iP]]$.
 
-\paragraph{The Algorithm}
+\paragraph*{The Algorithm}
 
     The algorithmic system is bidirectionalized in a similar way. 
     Each typing premise and the conclusion of the rule is oriented
@@ -400,7 +400,7 @@ and $[[Γ ⊢ iQ ≥ iP]]$.
     Let us discuss one especially important rule---arrow application inference. 
     An intuitive way to bidirectionalize this rule is the following:
     $$ \ottdruleATArrowAppBidirLabeled{} $$
-    % \paragraph{Reaching Undecidability}
+    % \paragraph*{Reaching Undecidability}
     However, this rule is too permissive. 
     The judgement $[[Γ ; Φ ⊨ v ⇐ uQ ⫤ SC1]]$
     requires us to check a term against an \emph{algorithmic} 
@@ -435,7 +435,7 @@ and $[[Γ ⊢ iQ ≥ iP]]$.
     whose resolution significantly relies on second-order pattern unification.
     Thus, we leave the resolution of this type of constraints beyond the scope of this work.
 
-    % \paragraph{Restricting Inference}
+    % \paragraph*{Restricting Inference}
     Instead, we strengthen
     \ruleref{\ottdruleATArrowAppBidirLabel}
     in such a way that it never checks a term against an algorithmic type.

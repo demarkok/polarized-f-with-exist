@@ -35,7 +35,7 @@ proposed type system and the standard \systemf.
 The inference rules representing declarative subtyping are shown in
 \cref{fig:declarative-subtyping}. Let us discuss them in more detail.
 
-\paragraph{Quantifiers}  
+\paragraph*{Quantifiers}  
 Symmetric rules \ruleref{\ottdruleDOneForallLabel} and 
 \ruleref{\ottdruleDOneExistsLabel} specify 
 subtyping between top-level quantified types.
@@ -57,7 +57,7 @@ well-formed in $[[Γ, pbs]]$.
 This way, application $[[ [σ]iN ]]$ instantiates (replaces) every
 $[[αi⁻]]$ in $[[iN]]$ with $[[σ]]([[αi⁻]])$.
 
-\paragraph{Invariant Shifts}
+\paragraph*{Invariant Shifts}
 As mentioned above, an important restriction that we put on the subtyping system
 is that subtyping of shifted types requires their equivalence, as shown in
 \ruleref{\ottdruleDOneShiftDLabel} and \ruleref{\ottdruleDOneShiftULabel}. The
@@ -68,11 +68,11 @@ suggested after certain changes \ruleref{\ottdruleDOneShiftULabel} can be
 relaxed to the covariant form, thereby increasing the expressiveness of the
 system. These changes are discussed in \cref{sec:weakening-invariant}.
 
-\paragraph{Functions}
+\paragraph*{Functions}
 Standardly, subtyping of function types is covariant in the return type
 and contravariant in the argument type.
 
-\paragraph{Variables}
+\paragraph*{Variables}
 Subtyping of variables is defined reflexively, which is enough to ensure the
 reflexivity of subtyping in general. The algorithm---specifically the least
 upper bound procedure---will use the fact that the subtypes of a variable
@@ -141,7 +141,7 @@ algorithmically, which we will discuss in the next section.
   \end{itemize}
 \end{property}
 
-\paragraph{Negative greatest lower bound might not exist}
+\paragraph*{Negative greatest lower bound might not exist}
 The symmetric construction---the greatest lower bound of two negative types---does 
 not always exist, as the following counterexample shows.
 Consider the following types: 
@@ -264,7 +264,7 @@ which reads ``under the type context $[[Γ]]$ and variable context $[[Φ]]$,
 the application of a function of type $[[iN]]$ to the list of arguments $[[args]]$
 is allowed to infer type $[[iM]]$''.
 
-\begin{figure}[h]
+\begin{figure}[t!]
   \ottdefnsDTLabeled
   \caption{Declarative Inference}
   \label{fig:declarative-inference}
@@ -272,7 +272,7 @@ is allowed to infer type $[[iM]]$''.
 
 Let us discuss the rules of the declarative system in more detail.
 
-\paragraph{Variables}
+\paragraph*{Variables}
   Rule \ruleref{\ottdruleDTVarLabel} allows us to infer
   the type of a variable from the context. 
   In literature, one can find another version of this rule,
@@ -281,13 +281,13 @@ Let us discuss the rules of the declarative system in more detail.
   In our case, the inference of equivalent types
   is admissible in general case by \ruleref{\ottdruleDTPEquivLabel}.
 
-\paragraph{Annotations}
+\paragraph*{Annotations}
   The annotation rules \ruleref{\ottdruleDTNAnnotLabel}
   and \ruleref{\ottdruleDTPAnnotLabel} use subtyping.
   The annotation is only valid if the
   inferred type is a subtype of the annotation type.
 
-\paragraph{Abstractions}
+\paragraph*{Abstractions}
   The typing of lambda abstraction is standard. 
   Rule \ruleref{\ottdruleDTtLamLabel} first checks
   that the given type annotating the argument is well-formed,
@@ -299,12 +299,12 @@ Let us discuss the rules of the declarative system in more detail.
   infers the type of the body. As a result, it returns a polymorphic type
   quantifying the abstracted variable $[[pa]]$ over the type of the body.
 
-\paragraph{Return and thunk}
+\paragraph*{Return and thunk}
   Rules \ruleref{\ottdruleDTReturnLabel} 
   and \ruleref{\ottdruleDTThunkLabel}
   simply add the corresponding shift constructors to the type of the body.
 
-\paragraph{Unpack}
+\paragraph*{Unpack}
   Rule \ruleref{\ottdruleDTUnpackLabel} types elimination of $[[∃]]$.
   First, it infers the normalized type of the existential package.
   The normalization is required to fix the order of the quantifying variables
@@ -314,7 +314,7 @@ Let us discuss the rules of the declarative system in more detail.
   and checks that it does not use the bound variables so that they do not 
   escape the scope.
 
-\paragraph{Let binders}
+\paragraph*{Let binders}
   Rule \ruleref{\ottdruleDTVarLetLabel} is a standard rule for typing let
   binders: we infer the type of the bound value and continue the typing of the
   computation in the extended context.
@@ -325,7 +325,7 @@ Let us discuss the rules of the declarative system in more detail.
   variable $[[x]]$ to type the let binder's body. Like all annotated
   constructors, we also verify the annotation type $[[iP]]$'s well-formedness. 
   
-\paragraph{Applicative let binders}
+\paragraph*{Applicative let binders}
   Rules \ruleref{\ottdruleDTAppLetLabel} and \ruleref{\ottdruleDTAppLetAnnLabel}
   infer the type of the applicative let binders.
   Both of them infer the type of the head $[[v]]$ 
@@ -355,7 +355,7 @@ Let us discuss the rules of the declarative system in more detail.
   % more detail, and in \cref{sec:weakening-invariant} we suggest 
   % a way to relax them.
 
-\paragraph{Typing up to equivalence}
+\paragraph*{Typing up to equivalence}
   As discussed in \cref{sec:decl-equivalence}, the subtyping, as a preorder, 
   induces a non-trivial equivalence relation on types. 
   The system must not distinguish between equivalent types,
@@ -364,7 +364,7 @@ Let us discuss the rules of the declarative system in more detail.
   and \ruleref{\ottdruleDTNEquivLabel}.
   They allow one to replace the inferred type with an equivalent one.  
 
-\paragraph{Application to an empty list of arguments}
+\paragraph*{Application to an empty list of arguments}
   The base case of the application type inference is 
   represented by rule \ruleref{\ottdruleDTEmptyAppLabel}.
   If the head of the type $[[iN]]$ is applied to no arguments, 
@@ -376,7 +376,7 @@ Let us discuss the rules of the declarative system in more detail.
   \ruleref{\ottdruleDTPEquivLabel}, however, 
   the local relaxation is sufficient to prove the global property.
 
-\paragraph{Application of a polymorphic type $[[∀]]$}
+\paragraph*{Application of a polymorphic type $[[∀]]$}
   The complexity of the system lives in the rules whose output type is not
   immediately defined by their input and the output of their premises (\aka not
   mode-correct \cite{dunfield2020:bidirectional}). In our typing system,
@@ -389,7 +389,7 @@ Let us discuss the rules of the declarative system in more detail.
   \ruleref{\ottdruleDTEmptyAppLabel}, we also check that 
   the list of arguments is not empty.
 
-\paragraph{Application of an arrow type}
+\paragraph*{Application of an arrow type}
   Another application rule is \ruleref{\ottdruleDTArrowAppLabel}.
   This is where the subtyping is used to check that the type of the argument
   is convertible to (a subtype of) the type of the function parameter.
@@ -425,7 +425,7 @@ and the depolarization from \fexists to \systemf.
 
 
 
-\paragraph{Type-level Translation}
+\paragraph*{Type-level Translation}
 
 The type depolarization (\cref{fig:depolarization}) simply forgets the polarization structure of types:
 it removes the shift operators and the polarities of the free type variables.
@@ -472,7 +472,7 @@ The context translation is used to formulate the soundness of the
 
 \footnotetext{Here the \systemf existential $[[∃ as . fT]]$ is a syntax sugar for its standard encoding $[[∀b.(∀as.(fT → b)) → b]]$}
 
-\paragraph{Term-level Translation}
+\paragraph*{Term-level Translation}
 
 The term-level translations between the systems are more complex. They are
 defined as \emph{elaborations} of the typing derivations. In other words, the
