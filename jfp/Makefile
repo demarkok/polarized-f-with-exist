@@ -52,7 +52,7 @@ $(LOCAL_GEN_TEXS): ott $(LOCAL_TEXS) | $(LOCAL_GEN_DIR)
 # MAIN
 
 paper.pdf: ott rootpaper $(LOCAL_GEN_TEXS)
-	rubber --pdf -f paper.tex
+	rubber --pdf -f  paper.tex
 
 continuous:
 	make & fswatch -o .. | xargs -n1 -I{} make

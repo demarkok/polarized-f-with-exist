@@ -16,20 +16,24 @@ which simplifies reasoning about the algorithm and its correctness proofs.
 
 First, let us discuss the syntax of the algorithmic system. 
 
-\begin{figure}
-  \begin{multicols}{2}
+\begin{figure}[t]
+
+  \begin{minipage}[t]{0.49\textwidth}
       Negative Algorithmic Variables\\
       $[[α̂⁻]]$, $[[β̂⁻]]$, $[[γ̂⁻]]$, \dots\\
-      \columnbreak
+  \end{minipage}%
+  \begin{minipage}[t]{0.49\textwidth}
       Positive Algorithmic Variables\\
       $[[α̂⁺]]$, $[[β̂⁺]]$, $[[γ̂⁺]]$, \dots\\
-  \end{multicols}
+  \end{minipage}
+
   \hfill\\
-  \begin{multicols}{2}
+  \begin{minipage}[t]{0.49\textwidth}
       \ottuNShort
-      \columnbreak
+  \end{minipage}
+  \begin{minipage}[t]{0.49\textwidth}
       \ottuPShort
-  \end{multicols}
+  \end{minipage}
   \hfill\\
   Algorithmic Type Context\\
    $[[Ξ]] \Coloneqq \{[[α1̂±]], \dots, [[αn̂±]]\}$ where $[[α1̂±]], \dots, [[αn̂±]]$ are pairwise distinct \\

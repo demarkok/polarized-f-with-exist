@@ -108,7 +108,7 @@ fun | Φ | :: fΦ :: unpolVCtxt {{ tex | [[Φ]] | }} by
   | · |         === ·
   | x : iP, Φ | === x : |iP|, |Φ|
 
-fun ft' ●  fargs  :: ft :: multuAppSugar by 
+fun ft' ●  fargs  :: ft :: multuAppSugar {{tex [[ft']] [[fargs]]}} by 
   ft ●  ·  === ft
   ft ● ft', fargs === (ft ft') ● fargs
 

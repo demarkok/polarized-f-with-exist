@@ -43,9 +43,8 @@ becomes $[[↓(Int → ↑Int)]]$---a \emph{suspended} function (indicated by th
 downshift) that accepts an integer $[[Int]]$ and yields an integer
 \emph{computation} (indicated by the upshift) $[[↑Int]]$. 
 
-Moving on to the examples in \cref{fig:polarization-examples}, we will delve
-into several cases that demonstrate the capabilities of type inference within
-\fexists.
+Using the examples provided in \cref{fig:polarization-examples}, we now showcase 
+the type inference capabilities and restrictions of \fexists
 
 \begin{figure}[h]
   \begin{align*}
@@ -62,14 +61,13 @@ into several cases that demonstrate the capabilities of type inference within
 
 \paragraph*{Application of a Polymorphic Function}
   A polymorphic function can be applied to a value of a concrete type. In this
-  case, the quantified variables are instantiated to make the application
-  type-check. For instance, the polymorphic $[[len]]$ can be applied to a list
-  of any positive type, and the resulting type will be inferred by the
-  algorithm:
+  case, the explicit type application is not required: the inference algorithm
+  automatically instantiates the quantified variables. For instance, the
+  polymorphic $[[len]]$ can be applied to a list of any positive type, and the
+  resulting type will be inferred by the algorithm:
   $$[[· ; Φ ⊢ let x = len([one,two,three]); return x : ↑Int]]$$
 
-
-\paragraph*{Polymorphic Self-application}
+\paragraph*{Polymorphic Self-application.}
   Unlike predicative systems, \fexists permits self-application of polymorphic
   functions. For instance, $[[id]]$ can be applied to itself resulting in a
   suspended polymorphic computation of type $[[↓(∀α⁺.α⁺ → ↑α⁺)]]$, which, in

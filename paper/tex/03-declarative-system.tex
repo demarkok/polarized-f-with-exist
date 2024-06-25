@@ -272,22 +272,22 @@ is allowed to infer type $[[iM]]$''.
 
 Let us discuss the rules of the declarative system in more detail.
 
-\paragraph*{Variables}
-  Rule \ruleref{\ottdruleDTVarLabel} allows us to infer
-  the type of a variable from the context. 
-  In literature, one can find another version of this rule,
-  that enables inferring a type \emph{equivalent}
-  to the type from the context. 
-  In our case, the inference of equivalent types
-  is admissible in general case by \ruleref{\ottdruleDTPEquivLabel}.
+\subparagraph*{Variables}
+    Rule \ruleref{\ottdruleDTVarLabel} allows us to infer
+    the type of a variable from the context. 
+    In literature, one can find another version of this rule,
+    that enables inferring a type \emph{equivalent}
+    to the type from the context. 
+    In our case, the inference of equivalent types is admissible by \ruleref{\ottdruleDTPEquivLabel}.
 
-\paragraph*{Annotations}
+
+\subparagraph*{Annotations}
   The annotation rules \ruleref{\ottdruleDTNAnnotLabel}
   and \ruleref{\ottdruleDTPAnnotLabel} use subtyping.
   The annotation is only valid if the
   inferred type is a subtype of the annotation type.
 
-\paragraph*{Abstractions}
+\subparagraph*{Abstractions}
   The typing of lambda abstraction is standard. 
   Rule \ruleref{\ottdruleDTtLamLabel} first checks
   that the given type annotating the argument is well-formed,
@@ -299,12 +299,12 @@ Let us discuss the rules of the declarative system in more detail.
   infers the type of the body. As a result, it returns a polymorphic type
   quantifying the abstracted variable $[[pa]]$ over the type of the body.
 
-\paragraph*{Return and thunk}
+\subparagraph*{Return and thunk}
   Rules \ruleref{\ottdruleDTReturnLabel} 
   and \ruleref{\ottdruleDTThunkLabel}
   simply add the corresponding shift constructors to the type of the body.
 
-\paragraph*{Unpack}
+\subparagraph*{Unpack}
   Rule \ruleref{\ottdruleDTUnpackLabel} types elimination of $[[∃]]$.
   First, it infers the normalized type of the existential package.
   The normalization is required to fix the order of the quantifying variables
@@ -314,7 +314,7 @@ Let us discuss the rules of the declarative system in more detail.
   and checks that it does not use the bound variables so that they do not 
   escape the scope.
 
-\paragraph*{Let binders}
+\subparagraph*{Let binders}
   Rule \ruleref{\ottdruleDTVarLetLabel} is a standard rule for typing let
   binders: we infer the type of the bound value and continue the typing of the
   computation in the extended context.
@@ -325,7 +325,7 @@ Let us discuss the rules of the declarative system in more detail.
   variable $[[x]]$ to type the let binder's body. Like all annotated
   constructors, we also verify the annotation type $[[iP]]$'s well-formedness. 
   
-\paragraph*{Applicative let binders}
+\subparagraph*{Applicative let binders}
   Rules \ruleref{\ottdruleDTAppLetLabel} and \ruleref{\ottdruleDTAppLetAnnLabel}
   infer the type of the applicative let binders.
   Both of them infer the type of the head $[[v]]$ 
@@ -447,26 +447,26 @@ The context translation is used to formulate the soundness of the
  term-level translation, which we discuss next.
 
 
-\begin{figure}[ht]
-  \begin{minipage}[t]{0.65\linewidth}
+\begin{figure}[t]
+  \begin{minipage}[t]{0.60\linewidth}
     \centering
-      \begin{minipage}[t]{0.32\linewidth}
+      \begin{minipage}[t]{0.30\linewidth}
       \ottfundefnunpolP{}
       \end{minipage}
-      \begin{minipage}[t]{0.32\linewidth}
+      \hspace{0.5cm}
+      \begin{minipage}[t]{0.30\linewidth}
       \ottfundefnunpolN{}
       \end{minipage}
     \caption{Type Depolarization \protect\footnotemark}
     \label{fig:depolarization}
   \end{minipage}
-  \hspace{0.5cm}
+  \hspace{0.3cm}
   \begin{minipage}[t]{0.3\linewidth}
     \centering
     \ottfundefnpolarP{}
     \caption{Type Polarization}
     \label{fig:polarization}
   \end{minipage}
-
 \end{figure}
 
 
@@ -498,7 +498,7 @@ Negative Subtyping & $[[Γ ⊢ iN ≤ iM ⤳ ft]]$ & $[[|Γ| ; · ⊢ ft : |iN| 
 Positive Subtyping & $[[Γ ⊢ iP ≥ iQ ⤳ ft]]$ & $[[|Γ| ; · ⊢ ft : |iQ| → |iP| ]]$ \\
 Negative Typing & $[[Γ; Φ ⊢ c : iN ⤳ ft]]$ & $[[|Γ| ; |Φ| ⊢ ft : |iN|]]$ \\
 Positive Typing & $[[Γ; Φ ⊢ v : iP ⤳ ft]]$ & $[[|Γ| ; |Φ| ⊢ ft : |iP|]]$ \\
-Application Typing & $[[Γ ; Φ ⊢ iN ● args ⇒> iM ⤳ fe; fargs]]$ & $[[|Γ| ; |Φ|, x:|iN| ⊢ fe (x ● ft *) : |iM|]]$ \\
+Application Typing & $[[Γ ; Φ ⊢ iN ● args ⇒> iM ⤳ fe; fargs]]$ & $[[|Γ| ; |Φ|, x:|iN| ⊢ fe (x ● fargs) : |iM|]]$ \\
 \hline
 \systemf Typing & $[[fΓ ; fΦ ⊢ ft : fT ⤳ c]]$ & $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑+|fT|+]]$ \\
 \hline

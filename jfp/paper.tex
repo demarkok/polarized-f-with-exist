@@ -10,7 +10,16 @@
 \input{\ottDir/defs.tex}
 \input{\ottDir/renew-ott.tex}
 
+\renewcommand{\cite}{\citep}
+
+% \renewcommand{\paragraph}[1]{\paragraph{#1~}}
+
+
 % \usepackage{../bibliography}
+
+% \renewcommand{\paragraph}[1]{
+%   \textit{#1.} 
+% }
 
 \bibliographystyle{jfplike}
 
@@ -31,13 +40,18 @@
 
 \begin{authgrp}
 
+
 \author{Ilya Kaysin}
 % \orcid{0000-0002-6301-152X}
-\affiliation{University of Cambridge \email{ik404@cam.ac.uk}}
+\affiliation{
+  University of Cambridge\\
+  (\email{\elink{ik404@cam.ac.uk}})
+}
 
 \author{Neel Krishnaswami}
 % \orcid{0000-0003-2838-5865}
-\affiliation{University of Cambridge \email{nk480@cl.cam.ac.uk}}
+\affiliation{University of Cambridge\\(\email{\elink{nk480@cl.cam.ac.uk}})}
+
 \end{authgrp}
 
 % \renewcommand{\shortauthors}{Kaysin et al.}
