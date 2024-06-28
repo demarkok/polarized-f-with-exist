@@ -82,15 +82,16 @@ well-formed congruently. As we extend the syntax with algorithmic variables, we
 also add two base-case rules for them: \ruleref{\ottdruleWFATPUVarLabel} and
 \ruleref{\ottdruleWFATNUVarLabel} (see \cref{fig:algo-wf}).
 
-\begin{figure}
-\begin{multicols}{2}
-  $\vcenter{\hbox{\vdots}}$\\
+\begin{figure}[t]
+  \begin{minipage}{0.49\textwidth}
+  $$\vcenter{\hbox{\vdots}}$$
   \ottusedrule{\ottdruleWFATPUVarLabeled{}}
-  \columnbreak\\
-  $\vcenter{\hbox{\vdots}}$\\
+  \end{minipage}
+  \begin{minipage}{0.49\textwidth}
+  $$\vcenter{\hbox{\vdots}}$$
   \ottusedrule{\ottdruleWFATNUVarLabeled{}}
-\end{multicols}
-\caption{Well-formedness of Algorithmic Types}
+  \end{minipage}
+\caption{Well-formedness of Algorithmic Types extends Declarative Well-formedness}
 \label{fig:algo-wf}
 \end{figure}
 
@@ -117,15 +118,17 @@ by extending the declarative definition (\cref{fig:type-nf}) with the
 algorithmic variables. To the rules repeating the declarative normalization, we
 add rules saying that normalization is trivial on algorithmic variables.
 
-\begin{figure}
-\begin{multicols}{2}
-  $\vcenter{\hbox{\vdots}}$\\
+\begin{figure}[t]
+\begin{minipage}{0.49\textwidth}
+  $$\vcenter{\hbox{\vdots}}$$
   \ottusedrule{\ottdruleNrmPUVar{}}
-  \columnbreak\\
-  $\vcenter{\hbox{\vdots}}$\\
+\end{minipage}
+\hfill
+\begin{minipage}{0.49\textwidth}
+  $$\vcenter{\hbox{\vdots}}$$
   \ottusedrule{\ottdruleNrmNUVar{}}
-\end{multicols}
-\caption{Normalization of Algorithmic Types}
+\end{minipage}
+\caption{Normalization of Algorithmic Types extends Declarative Normalization}
 \label{fig:algo-nf}
 \end{figure}
 
@@ -148,8 +151,8 @@ unification constraints. A resolution of unification constraints is simpler than
 that of a general constraint set. This way, this separation allows us to better
 decompose the algorithm's structure, thus simplifying the inductive proofs.
 
-  \begin{figure}[h]
-    \begin{multicols}{2}
+  \begin{figure}[t]
+    \begin{minipage}{0.49\textwidth}
       \ottgrammartabular { 
       \ottscE 
       \ottinterrule
@@ -157,9 +160,8 @@ decompose the algorithm's structure, thus simplifying the inductive proofs.
         {[[SC]]}{\Coloneqq} {\ottcom{Constraint Set}}
         {\{[[scE1]], \dots, [[scEn]]\}}\ottprodnewline
       }
-
-    \columnbreak
-
+    \end{minipage}
+    \begin{minipage}{0.49\textwidth}
       \ottgrammartabular { 
       \ottucE 
       \ottprodnewline
@@ -168,8 +170,7 @@ decompose the algorithm's structure, thus simplifying the inductive proofs.
         {[[UC]]}{\Coloneqq} {\ottcom{Unification Constraint Set}}
         {\{[[ucE1]], \dots, [[ucEn]]\}}\ottprodnewline
       }
-    \end{multicols}
-
+    \end{minipage}
     \label{fig:syntax-e-sc}
     \caption{Constraint Entries and Sets}
   \end{figure}
@@ -239,7 +240,7 @@ if $[[Θ ⊢ SC]]$ and \emph{each entry} of $[[SC]]$ is satisfied by $[[uσ]]$.
   normalization is needed only at these stages to maintain consistent
   invariants.
 
-\begin{figure}[h]
+\begin{figure}[t]
   \centering
   \begin{tikzpicture}
     [>={Stealth[scale=2]},node distance=2.4cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
@@ -271,9 +272,9 @@ if $[[Θ ⊢ SC]]$ and \emph{each entry} of $[[SC]]$ is satisfied by $[[uσ]]$.
   \label{fig:alg-subtyping-graph}
 \end{figure}
 
-In the remainder of this section, we will delve into each of these procedures in
-detail, following the top-down order of the dependency graph. First, 
-we present the subtyping algorithm itself.
+In the remainder of this section, we will discuss each of these procedures in
+detail, following the top-down order of the dependency graph. First, we present
+the subtyping algorithm itself.
 
 As an input, the subtyping algorithm takes
 a type context $[[Γ]]$, an instantiation context $[[Θ]]$,
@@ -291,7 +292,7 @@ a set of constraints $[[SC]]$ restricting the algorithmic
 variables of the first type. If the subtyping does not hold, 
 there will be no inference tree with such inputs. 
 
-\begin{figure}[h]
+\begin{figure}[t]
   \hfill\\
   \begin{multicols}{2}
     \ottdefnANsubLabeled{}
@@ -407,7 +408,7 @@ As the output, the unification algorithm returns \emph{the weakest} set of
 unification constraints $[[UC]]$ such that \emph{any} instantiation satisfying
 these constraints unifies the input types.
 
-\begin{figure}[h]
+\begin{figure}[t]
   \hfill
   \begin{multicols}{2}
   \ottdefnUNUnifLabeled{}
@@ -492,7 +493,7 @@ Suppose that $[[scE1]]$ and $[[scE2]]$ are input entries.
 The result of the merge $[[scE1 & scE2]]$ is 
 \emph{the weakest entry which implies both $[[scE1]]$ and $[[scE2]]$}.
 
-\begin{figure}[h]
+\begin{figure}[t]
   \ottdefnSCMELabeled\\
   \caption{Merge of Matching Constraint Entries}
   \label{fig:merge-entries}
@@ -531,7 +532,7 @@ is discussed in \cref{sec:lub}.
   \end{enumerate*}
 
 
-\begin{figure}[h]
+\begin{figure}[t]
   Suppose that $[[Θ ⊢ SC1]]$ and $[[Θ ⊢ SC2]]$.\\
   Then $[[Θ ⊢ SC1 & SC2 = SC]]$
   defines a set of constraints $[[SC]]$ such that $[[scE]] \in [[SC]]$ iff either:
@@ -567,7 +568,7 @@ the \emph{least upper bound} operation finds the least among
 common supertypes of $[[iP1]]$ and $[[iP2]]$ well-formed in $[[Γ]]$.
 These algorithms are shown in \cref{fig:type-upgrade}.
 
-\begin{figure}[h]
+\begin{figure}[t]
   \begin{multicols}{2}
     \ottdefnLUBUpLabeled{}
     \columnbreak\\
@@ -694,7 +695,7 @@ and two substitutions $[[aus1]]$ and $[[aus2]]$
 instantiating the variables from $[[Ξ]]$ such that
 $[[ [aus1]uQ = iP1 ]]$ and $[[ [aus2]uQ = iP2 ]]$. 
 
-\begin{figure}[h]
+\begin{figure}[t]
     \ottdefnAUAUPLabeled{}
     \hfill\\
     \hfill\\
@@ -835,7 +836,7 @@ application type inference. As subroutines, the inference algorithm uses
 subtyping, constraint merge, and minimal instantiation. The corresponding
 dependency is shown in \cref{fig:alg-typing-graph}.
 
-\begin{figure}
+\begin{figure}[t]
   \centering
   \begin{tikzpicture}
     [>={Stealth[scale=2]},node distance=2.2cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
@@ -887,7 +888,7 @@ Together $[[Θ2]]$  and $[[SC]]$ specify how the algorithmic variables
 must be instantiated.
 
 
-\begin{figure}
+\begin{figure}[t]
   \ottdefnATPInfLabeled{}
   \hfill \\
   \ottdefnATNInfLabeled{}
@@ -1062,7 +1063,7 @@ Then it considers two cases.
   \end{enumerate}
 
 
-\begin{figure}[h]
+\begin{figure}[t]
   \hfill\\
   \ottdefnMININSTLabeled
   \caption{Minimal Instantiation}
@@ -1074,7 +1075,7 @@ performs two tasks: it checks that a
 \emph{constraint set} has a single substitution satisfying it, 
 and if it does, it builds this substitution.
 
-\begin{figure}
+\begin{figure}[t]
   \begin{minipage}{0.49\textwidth}
     `$[[SC singular with uσ]]$' means:
     \begin{itemize}[leftmargin=*]

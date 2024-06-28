@@ -37,11 +37,34 @@ which we will cover in more detail in \cref{sec:rel-to-systemf}.
 \Cref{fig:polarization-examples} illustrates how standard \systemf types are
 polarized when call-by-value evaluation is presumed.
 
-Observe the consistent polarization pattern of types. Consider the type for
-$[[double]]$, which in \systemf would be $[[Int → Int]]$. In polarized form, it
-becomes $[[↓(Int → ↑Int)]]$---a \emph{suspended} function (indicated by the
-downshift) that accepts an integer $[[Int]]$ and yields an integer
-\emph{computation} (indicated by the upshift) $[[↑Int]]$. 
+Observe the consistent pattern of the type polarization. Consider the type for
+$[[double]]$---a function multiplying an input integer by two. In \systemf, it
+would be $[[Int → Int]]$. In call-by-value polarized form, it becomes $[[↓(Int →
+↑Int)]]$---a \emph{suspended} function (indicated by the downshift) that accepts
+an integer $[[Int]]$ and yields an integer \emph{computation} (indicated by the
+upshift) $[[↑Int]]$. 
+
+The type of $[[map]]$ is more complex. Similar to $[[double]]$, the
+entire type is a suspended function, hence $[[↓]]$. The function takes two implicit type
+arguments: $[[α⁺]]$ and $[[β⁺]]$, which indicated by the $[[∀]]$s.
+The third argument of $[[map]]$---the applied function---has type $[[α⁺ → ↑β⁺]]$,
+which is suspended by $[[↓]]$ since it is in a (positive) argument position. 
+The last argument---$[[List α⁺]]$---represents a list of $[[α⁺]]$s and does not need
+to be suspended as it is already a value. Finally, the positive return type,
+$[[List β⁺]]$, is lifted to computations using $[[↑]]$.
+
+The types of $[[len]]$---the length function for lists, $[[choose]]$---a
+function that chooses between two input values, and $[[id]]$---the identity
+function, are similarly polarized. A slightly more complex function $[[auto]]$
+takes as an argument and returns something of the same identity type. However,
+since the argument position is positive, the argument type is suspended by
+$[[↓]]$.
+
+The types of $[[len]]$ (the length function for lists), $[[choose]]$ (a function
+that chooses between two input values), and $[[id]]$ (the identity function) are
+polarized in a similar way. Another function, $[[auto]]$, takes an argument and returns
+a function of the same identity type. However, since the argument position is
+positive, the argument type is suspended using $[[↓]]$.
 
 Using the examples provided in \cref{fig:polarization-examples}, we now showcase 
 the type inference capabilities and restrictions of \fexists
@@ -134,7 +157,7 @@ similar to the values and computations in the \CBPV system.
 \end{figure}
 
 \begin{itemize}
-\item [$\pm$] $[[na]]$ and $[[pa]]$
+\item [$\pm$] $[[pa]]$ and $[[na]]$
   denote negative and positive type variables, respectively.
   The variables are either introduced by the corresponding quantifiers 
   ($[[∀]]$ and $[[∃]]$, respectively) or declared in the type context;
@@ -153,8 +176,8 @@ $[[iP → iQ → iN]]$ is equivalent to $[[iP → (iQ → iN)]]$;
 
 
 \paragraph*{Syntactic Conventions}
-We always consider terms and types up to alpha-equivalence, and capture-avoiding
-substitution. Besides, we assume the quantification is associative,
+We always consider terms and types up to alpha-equivalence, 
+and substitution is capture-avoiding. In addition, we assume the quantification is associative,
 for example, $[[∀pas.∀pbs.iN]]$ and $[[∀pas,pbs.iN]]$
 represent the same type.
 
@@ -185,8 +208,9 @@ rules.
 In \cref{fig:declarative-terms}, we define the language of terms of \fexists.
 The language is a combination of \systemf and \CBPV constructs: the
 terms are stratified into values and computations; there are return 
-and thunk constructors, as well as several forms of let bindings to
-sequentialize the computation/application with or without type annotation; 
+and thunk constructors, as well as several forms of let bindings
+to sequence computations, bind function applications, 
+and eliminate existentials, all with or without type annotations.
 
 \begin{itemize}
     \item [$+$] $[[x]]$ denotes a term variable.
@@ -200,7 +224,7 @@ sequentialize the computation/application with or without type annotation;
     \item [$-$] $[[λ x : iP . c]]$ and $[[Λ pa . c]]$
         are standard lambda abstractions. Notice that we require
         the type annotation for the argument of $[[λ]]$;
-    \item [$-$] $[[ let x = v ; c]]$ is a standard let, binding
+    \item [$-$] $[[ let x = v ; c]]$ is a standard let form, binding
         a value $[[v]]$ to a variable $[[x]]$ in a computation $[[c]]$;
     \item [$-$] computational let form $[[ let x : iP = c; c']]$ 
       operates similarly to a monadic bind.
@@ -210,7 +234,7 @@ sequentialize the computation/application with or without type annotation;
         $[[let x = v ( args ) ; c]]$ can be viewed as a special case of the
         computational let, when the first computation is a function application
         $[[v]] ([[args]])$.
-        They take a suspended computation $[[v]]$, apply it to a list of
+        They take a function $[[v]]$, apply it to a list of
         arguments, bind the (pure) result to a variable
         $[[x]]$, and continues with a computation $[[c]]$. If the resulting type
         of the application is unique, one can omit the type annotation, as in
@@ -243,7 +267,7 @@ challenging of these difficulties and how they are addressed in the algorithm.
 
 \paragraph*{Subtyping} 
 The inference algorithm's complexity mainly lies in the subtyping relation,
-which is, in particular, responsible for polymorphic instantiation. It's this
+which is responsible for polymorphic instantiation. It is this
 subtyping relation that enables us to apply polymorphic terms in situations
 where their specific instantiations are anticipated.
 
@@ -265,7 +289,7 @@ of finding $[[α̂⁺]]$ such that $[[↑α̂⁺ ≤ ↑Int]]$.
 The system introduces another complexity: the equivalence induced by subtyping
 ($[[Γ ⊢ iN ≈ iM]] \defiff [[Γ ⊢ iN ≤ iM]] \text{ and } [[Γ ⊢ iM ≤ iN]]$) is not
 straightforward. This relation extends beyond just alpha-equivalent types. As
-the neighboring polymorphic quantifiers can be instantiated in arbitrary order.
+the neighboring polymorphic quantifiers can be instantiated in arbitrary order,
 the equivalence relation must permit the \emph{permutations} of the quantifiers.
 For example, we have $[[· ⊢ ∀α⁺.∀β⁺.iN ≈ ∀β⁺.∀α⁺.iN]]$. Similarly, the
 equivalence permits the \emph{removal/addition} of the unused quantifiers: $[[·
@@ -284,7 +308,7 @@ as one variable can occur in multiple constraints, the resolution becomes non-tr
 In particular, to resolve the conjunction of $[[α̂⁺ ≥ iP]]$ and $[[α̂⁺ ≥ iQ]]$,
 we would need to find the least upper bound of $[[iP]]$ and $[[iQ]]$.
 
-In many type systems, the least upper bound boils down to the trivial syntactic equality.
+In Damas Milner type inference, the least upper bound boils down to the trivial syntactic equality.
 Because of that, the set of constraints is typically resolved using \emph{unification}.
 However, this problem is trickier in the presence of existential types. For example, 
 in \fexists, the least upper bound of $[[↓↑Int]]$ and $[[↓↑Bool]]$ is $[[∃α⁻.↓α⁻]]$,
@@ -295,7 +319,7 @@ unification. While unification finds \emph{the most general instance} of two
 given patterns, the anti-unification finds \emph{the most detailed} (under the
 restrictions of the system) \emph{pattern} that matches two given types. In the
 example above, the anti-unifier of $[[↓↑Int]]$ and $[[↓↑Bool]]$ is $[[↓α̂⁻]]$,
-and in \fexists, this unifier is the most specific (in particular because
+and in \fexists, this anti-unifier is the most specific (in particular because
 $[[↓↑α̂⁺]]$ is not considered as a candidate since only \emph{negative} variables are
 existentially quantified).
 

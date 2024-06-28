@@ -5,9 +5,9 @@ which serves as a specification of the type inference algorithm.
 The declarative system is represented as a set of inference rules
 and consists of two main subsystems: subtyping and type inference.
 First, we present the declarative subtyping rules specifying 
-when one type is a subtype of another; next, we discuss 
-the equivalence relation induced by mutual subtyping;
-finally, we present the type inference rules,
+when one type is a subtype of another. Next, we discuss 
+the equivalence relation induced by mutual subtyping.
+Finally, we present the type inference rules,
 that refer to the subtyping and equivalence relation.
 We conclude this section by discussing the relation between the
 proposed type system and the standard \systemf.
@@ -46,10 +46,11 @@ First, our rule extends context $[[Γ]]$ with the quantified variables
 from the right-hand side ($[[pbs]]$ or $[[nbs]]$), 
 as these variables must remain abstract.
 Second, it verifies that the left-hand side quantifiers
-($[[pas]]$ or $[[nas]]$) can be instantiated to continue subtyping recursively. 
-This is the point of non-determinism as the instantiation can be chosen arbitrarily
+($[[pas]]$ or $[[nas]]$) can be instantiated 
+with an arbitrary substitution to continue subtyping recursively,
+which introduces non-determinism. 
 
-The instantiation of quantifiers is modeled by substitution $[[σ]]$.
+The instantiation of quantifiers is modeled by a substitution $[[σ]]$.
 The notation $[[Γ2 ⊢ σ : Γ1]]$ specifies its domain and range.
 For instance, $[[Γ, pbs ⊢ σ : {pas}]]$ means that 
 $[[σ]]$ maps the variables from $[[pas]]$ to (positive) types
@@ -63,10 +64,13 @@ is that subtyping of shifted types requires their equivalence, as shown in
 \ruleref{\ottdruleDOneShiftDLabel} and \ruleref{\ottdruleDOneShiftULabel}. The
 reason for this is that if both of these rules were relaxed to the covariant
 form, the subtyping relation would become equivalent to the standard subtyping
-of \systemf, which is undecidable \cite{tiuryn-urzczyn-96}. However, it is
-suggested after certain changes \ruleref{\ottdruleDOneShiftULabel} can be
-relaxed to the covariant form, thereby increasing the expressiveness of the
-system. These changes are discussed in \cref{sec:weakening-invariant}.
+of \systemf, which is undecidable \cite{tiuryn-urzczyn-96}. 
+Relaxations of this condition are discussed in \cref{sec:weakening-invariant}.
+
+% However, it is
+% suggested after certain changes \ruleref{\ottdruleDOneShiftULabel} can be
+% relaxed to the covariant form, thereby increasing the expressiveness of the
+% system.  These changes are discussed in \cref{sec:weakening-invariant}.
 
 \paragraph*{Functions}
 Standardly, subtyping of function types is covariant in the return type
@@ -79,7 +83,7 @@ upper bound procedure---will use the fact that the subtypes of a variable
 coincide with its supertypes (\cref{prop:var-no-subtypes}),
 which however does not hold for arbitrary types.
 
-\subsubsection{Properties of Declarative Subtyping}
+\subsection{Properties of Declarative Subtyping}
 \label{sec:decl-subtyping-properties}
 
 A property that is important for the subtyping algorithm, 
@@ -133,7 +137,7 @@ algorithmically, which we will discuss in the next section.
 \begin{property}[Positive least upper bound exists]
   Suppose that $[[iP1]]$ and $[[iP2]]$ are positive types
   well-formed in $[[Γ]]$.
-  Then there exists a least common supertype--- a type $[[iP]]$ such that
+  Then there exists a least common supertype---a type $[[iP]]$ such that
   \begin{itemize}
     \item $[[Γ ⊢ iP ≥ iP1]]$ and $[[Γ ⊢ iP ≥ iP2]]$, and 
     \item for any $[[iQ]]$ such that $[[Γ ⊢ iQ ≥ iP1]]$ and $[[Γ ⊢ iQ ≥ iP2]]$,
@@ -210,7 +214,7 @@ This way, to normalize the type, one must
 
 The normalization algorithm is shown in \cref{fig:type-nf}. The steps (i-ii) are
 implemented by the \emph{ordering} function `$[[ord varset in iN]]$' and `$[[ord
-varset in iP]]$'. For a set of variables $[[varset]]$, and a type, it returns a
+varset in iP]]$'. For a set of variables $[[varset]]$ and a type, it returns a
 list of variables from $[[varset]]$ that occur in the type in the \emph{order of
 their first occurrence}. For brevity, we omit the formal definition of ordering
 referring the reader to the appendix (\cref{appendix}).
@@ -250,13 +254,14 @@ we prove soundness and completeness \wrt the equivalence relation.
 
 The declarative specification of the type inference is given in 
 \cref{fig:declarative-inference}.
+It consists of three main judgments: the positive typing judgment,
+the negative typing judgment, and the application typing judgment.
 The positive typing judgment $[[Γ ; Φ ⊢ v : iP]]$ is read as 
 ``under the type context $[[Γ]]$ and variable context $[[Φ]]$,
 the term $[[v]]$ is allowed to infer type $[[iP]]$'',
 where $[[Φ]]$---the variable context---is defined standardly as
 a set of pairs of the form $[[x : iP]]$. 
 The negative typing judgment is read similarly.
-
 The \emph{Application typing} judgment
 infers the type of the application of a function to a list of arguments.
 It has form $[[Γ ; Φ ⊢ iN ● args ⇒> iM]]$, 
@@ -290,14 +295,13 @@ Let us discuss the rules of the declarative system in more detail.
 \subparagraph*{Abstractions}
   The typing of lambda abstraction is standard. 
   Rule \ruleref{\ottdruleDTtLamLabel} first checks
-  that the given type annotating the argument is well-formed,
-  and then infers the type of the body in the extended context.
-  As a result, it returns an arrow type of function from the
-  annotated type of the argument to the type of the body.
+  that the given type $[[iP]]$ annotating the argument is well-formed,
+  and then infers the type $[[iN]]$ of the body in the extended context.
+  As a result, it returns an arrow type $[[iP → iN]]$.
   Rule \ruleref{\ottdruleDTTLamLabel} infers polymorphic $[[∀]]$-type. 
   It extends the type context with the quantifying variable $[[pa]]$ and 
-  infers the type of the body. As a result, it returns a polymorphic type
-  quantifying the abstracted variable $[[pa]]$ over the type of the body.
+  infers the type $[[iN]]$ of the body. As a result, it returns a polymorphic type
+  $[[∀pa.iN]]$.
 
 \subparagraph*{Return and thunk}
   Rules \ruleref{\ottdruleDTReturnLabel} 
@@ -311,8 +315,7 @@ Let us discuss the rules of the declarative system in more detail.
   to bind them. Alternative approaches that do not require normalization
   will be discussed in \cref{sec:explicit-type-application}.
   After the bind, the rule infers the type of the body 
-  and checks that it does not use the bound variables so that they do not 
-  escape the scope.
+  and ensures that the bound variables do not escape the scope.
 
 \subparagraph*{Let binders}
   Rule \ruleref{\ottdruleDTVarLetLabel} is a standard rule for typing let
@@ -383,7 +386,7 @@ Let us discuss the rules of the declarative system in more detail.
   \ruleref{\ottdruleDTForallAppLabel} is such a rule: the instantiation of the
   quantifying variables is not known a priori. The algorithm we present in
   \cref{sec:algorithm} delays this instantiation until more information about it
-  (in particular, typing constraints) is collected.
+  (in particular, the set of typing constraints) is collected.
 
   To ensure the priority of application between this rule and 
   \ruleref{\ottdruleDTEmptyAppLabel}, we also check that 
@@ -434,8 +437,8 @@ The type polarization (\cref{fig:polarization}) is more involved, as there are
 multiple ways to polarize a type: for instance, a variable $[[α]]$ can be
 polarized to $[[α⁺]]$ or $[[α⁻]]$. The choice of polarization affects the
 execution strategy of the program. 
-In particular, a functional type can be represented in either positive (thunked, call-by-name) way:
-$[[↓(iP → ↑iQ)]]$ or negative (call-by-value): $[[↓iN → iM]]$.
+In particular, a functional type can be represented in either positive (thunked, call-by-value) way:
+$[[↓(iP → ↑iQ)]]$ or negative (call-by-name): $[[↓iN → iM]]$.
 We chose the positive polarization: every \systemf type is translated to a
 \emph{positive} type of \fexists. This choice makes it smoother to lift the
 translation to the term level, which will be discussed next.
@@ -479,7 +482,7 @@ defined as \emph{elaborations} of the typing derivations. In other words, the
 input of the translation is not a term, but a whole typing derivation in the
 corresponding system. For example, the subtyping elaboration $[[Γ ⊢ iN ≤ iM ⤳
 ft]]$ constructs a \systemf function $[[ft]]$ of type $[[|iN| → |iM|]]$ that
-witnesses the given \fexists-subtyping $[[Γ ⊢ iN ≤ iM]]$; a typing elaboration
+witnesses the given \fexists-subtyping $[[Γ ⊢ iN ≤ iM]]$. A typing elaboration
 $[[Γ; Φ ⊢ v : iP ⤳ ft]]$ builds a term $[[ft]]$---a \systemf counterpart of
 $[[v]]$---of type $[[|iP|]]$.
 
