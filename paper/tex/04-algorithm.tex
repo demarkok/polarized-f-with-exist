@@ -5,16 +5,15 @@ The algorithmic system follows the structure of the declarative specification cl
 First, it is also given by a set of inference rules, which, however,
 are mode-correct (\cite{dunfield2020:bidirectional}), \ie
 the output of each rule is always uniquely defined by its input.
-And second, most of the declarative rules 
-(except for the rules \ruleref{\ottdruleDTPEquivLabel} and \ruleref{\ottdruleDTNEquivLabel})
-have a unique algorithmic counterpart, 
-which simplifies reasoning about the algorithm and its correctness proofs.
+And second, the rules of the algorithmic system mirrors the declarative rules 
+(except for the rules \ruleref{\ottdruleDTPEquivLabel} and \ruleref{\ottdruleDTNEquivLabel}), 
+which simplifies the correctness proof. 
 
 
 \subsection{Algorithmic Syntax}
 \label{sec:algo-syntax}
 
-First, let us discuss the syntax of the algorithmic system. 
+First, let us discuss the syntax of the algorithmic system (\cref{fig:algo-syntax}).
 
 \begin{figure}[t]
 
@@ -77,7 +76,7 @@ algorithmic terms defined as expected. Informally, they check that all free
 declarative variables are in $[[Γ]]$, and all free algorithmic variables are in
 $[[Ξ]]$. Most of the rules are inherited from the well-formedness of
 \emph{declarative} types: the declarative variables are checked to belong to the
-context $[[Γ]]$, the quantifiers extend the context, type constructors are
+context $[[Γ]]$, the quantifiers extend the context $[[Γ]]$, type constructors are
 well-formed congruently. As we extend the syntax with algorithmic variables, we
 also add two base-case rules for them: \ruleref{\ottdruleWFATPUVarLabel} and
 \ruleref{\ottdruleWFATNUVarLabel} (see \cref{fig:algo-wf}).
@@ -140,14 +139,14 @@ constraints}. As preserved by the algorithm, each subtyping constraint has a
 positive shape $[[α̂⁺ :≥ iP]]$, meaning it confines a positive algorithmic
 variable to be the supertype of a positive declarative type. Unification
 constraints can take a positive $[[α̂⁺ :≈ iP]]$ or negative $[[α̂⁻ :≈ iN]]$
-form, but algorithmic type variables cannot occur on their right-hand side. The
-constraints \emph{set} is denoted as $[[SC]]$, and we presume that each
+form. Algorithmic variables cannot occur in the right-hand side of the
+constraints.  The constraint \emph{set} is denoted as $[[SC]]$, and we presume that each
 algorithmic variable can be restricted by at most one constraint.
 
 We define $[[UC]]$ separately as a set solely containing \emph{unification}
 constraints for simpler algorithm representation. The unification algorithm,
 which we use as a subroutine of the subtyping algorithm, can only produce
-unification constraints. A resolution of unification constraints is simpler than
+unification constraints. The resolution of unification constraints is simpler than
 that of a general constraint set. This way, this separation allows us to better
 decompose the algorithm's structure, thus simplifying the inductive proofs.
 
@@ -181,7 +180,7 @@ decompose the algorithm's structure, thus simplifying the inductive proofs.
   \item
     We define $[[dom(SC)]]$---the domain of constraint set $[[SC]]$---as a set of
     algorithmic variables that it restricts. Similarly, we define $[[dom(Θ)]]$---the
-    domain of instantiation context---as a set of algorithmic variables that
+    domain of instantiation context $[[Θ]]$---as a set of algorithmic variables that
     $[[Θ]]$ associates with their contexts.  
   \item We write $[[Θ(α̂±)]]$ to denote the
     declarative context associated with $[[α̂±]]$ in $[[Θ]]$. 
@@ -207,7 +206,7 @@ $[[ Θ(α̂±) ⊢ [uσ']α̂± ≈ [uσ]α̂± ]]$.
 Suppose that $[[Θ]]$ is an instantiation context. 
 We say that constraint set $[[SC]]$ is well-formed in $[[Θ]]$ 
 (denoted as $[[Θ ⊢ SC]]$) 
-if for every every constrain entry $[[scE ∊ SC]]$
+if for every constrain entry $[[scE ∊ SC]]$
 associating a variable $[[α̂±]]$ with a type $[[iP]]$,
 this type is well-formed in the corresponding declarative context $[[Θ(α̂±)]]$.
 
