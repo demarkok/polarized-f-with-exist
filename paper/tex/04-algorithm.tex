@@ -223,8 +223,7 @@ if $[[Θ ⊢ SC]]$ and \emph{each entry} of $[[SC]]$ is satisfied by $[[uσ]]$.
 \subsection{Subtyping Algorithm}
 \label{sec:subtyping-algorithm}
   
-  For convenience and scalability, 
-  we decompose the subtyping algorithm 
+  We decompose the subtyping algorithm 
   into several procedures. \Cref{fig:alg-subtyping-graph}
   shows these procedures and the dependencies between them:
   arrows denote the invocation of one procedure from another.
@@ -408,12 +407,13 @@ unification constraints $[[UC]]$ such that \emph{any} instantiation satisfying
 these constraints unifies the input types.
 
 \begin{figure}[t]
+  \begin{minipage}[t]{0.50\textwidth}
+    \ottdefnUNUnifLabeled{}
+  \end{minipage}
   \hfill
-  \begin{multicols}{2}
-  \ottdefnUNUnifLabeled{}
-  \columnbreak\\
-  \ottdefnUPUnifLabeled{}
-  \end{multicols}
+  \begin{minipage}[t]{0.49\textwidth}
+    \ottdefnUPUnifLabeled{}
+  \end{minipage}
   \caption{Unification Algorithm}
   \label{fig:unification}
 \end{figure}
@@ -562,7 +562,7 @@ to find a minimal supertype under certain conditions.
 For a given type $[[iP]]$ well-formed in $[[Γ]]$, the \emph{upgrade} operation 
 finds the least among those supertypes of $[[iP]]$ that are well-formed
 in a smaller context $[[Δ ⊆ Γ]]$.
-For given two types $[[iP1]]$ and $[[iP2]]$ well-formed in $[[Γ]]$,
+When given two types $[[iP1]]$ and $[[iP2]]$ well-formed in $[[Γ]]$,
 the \emph{least upper bound} operation finds the least among
 common supertypes of $[[iP1]]$ and $[[iP2]]$ well-formed in $[[Γ]]$.
 These algorithms are shown in \cref{fig:type-upgrade}.
@@ -577,7 +577,7 @@ These algorithms are shown in \cref{fig:type-upgrade}.
   \label{fig:type-upgrade}
 \end{figure}
 
-\paragraph*{The Type Upgarde}
+\paragraph*{The Type Upgrade}
 The type upgrade algorithm uses the least upper bound algorithm as a subroutine.
 It exploits the idea that the free variables of a positive type $[[iQ]]$
 cannot disappear in its subtypes (see \cref{prop:subtyping-preserves-fv}). 
@@ -589,7 +589,7 @@ This way, any supertype of $[[iP]]$
 not containing certain variables $[[pnas]]$ must also be 
 a supertype of $[[iP' = [pnbs/pnas]iP ]]$, where $[[pnbs]]$ are fresh;
 and vice versa: any common supertype of $[[iP]]$ and $[[iP']]$
-does not contain $[[pnas]]$ nor $[[pnbs]]$.
+does not contain $[[pnas]]$ or $[[pnbs]]$.
 
 This way, to find the least supertype of $[[iP]]$ well-formed in $[[Δ]] = [[Γ \ {pnas}]]$
 (\ie not containing $[[pnas]]$), we can do the following.
@@ -597,7 +597,7 @@ First, construct a new type $[[iP']]$ by renaming $[[pnas]]$ in $[[iP]]$ to fres
 and second, find \emph{the least upper bound} of $[[iP]]$ and $[[iP']]$ in the appropriate
 context. However, for reasons of symmetry, in rule
 \ruleref{\ottdruleLUBUpgradeLabel} we employ a different but equivalent approach:
-we create \emph{two} types $[[iP1]]$ and $[[iP2]]$ constructed by renaming $[[pnas]]$ in $[[iP]]$
+we create \emph{two} types $[[iP1]]$ and $[[iP2]]$ by renaming $[[pnas]]$ in $[[iP]]$
 to fresh disjoint variables $[[pnbs]]$ and $[[pncs]]$ respectively, and then 
 find the least upper bound of $[[iP1]]$ and $[[iP2]]$.
 
@@ -766,7 +766,7 @@ Let us discuss the specific rules of the algorithm in detail.
   must result in $[[↓γ̂⁻ → γ̂⁻]]$,
   rather than $[[↓γ1̂⁻ → γ2̂⁻]]$.
 
-  In our representation of the anti-unification algorithm, this `merge' happens
+  In our representation of the anti-unification algorithm, this `merging' happens
   automatically:
   following the rule \ruleref{\ottdruleAUAULabel},
   the name of the `hole' is uniquely defined by the pair of types it is mapped to.  
@@ -783,7 +783,7 @@ Let us discuss the specific rules of the algorithm in detail.
       --- a union (in a relational sense)
       of the substitutions returned by the recursive calls. 
       It is worth noting that the union is well-defined because
-      the result of the substation on a `hole' is determined by the 
+      the result of the substitution on a `hole' is determined by the 
       name of the `hole'.
   \end{itemize}
 
@@ -815,10 +815,8 @@ Let us discuss the specific rules of the algorithm in detail.
   example, the generalizer of $[[↑α⁺]]$ and $[[↑β⁺]]$ is $[[γ̂⁻]]$ (with
   mappings $[[γ̂⁻ ↦ ↑α⁺]]$ and $[[γ̂⁻ ↦ ↑β⁺]]$), rather than $[[↑γ̂⁺]]$. This
   way, the algorithm must try to apply the congruent rules first, and only if
-  they fail, apply \ruleref{\ottdruleAUAULabel}. As it is not known a priori
-  whether the congruent rules will be applicable, the implementation must use 
-  backtracking.
-
+  they fail, apply \ruleref{\ottdruleAUAULabel}.
+  
 %%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%
 \subsection{Type Inference}
@@ -864,14 +862,14 @@ dependency is shown in \cref{fig:alg-typing-graph}.
   \label{fig:alg-typing-graph}
 \end{figure}
 
-The positive and the negative type inference judgments have symmetric forms:
+The positive and the negative type inference judgments have the symmetric forms:
 $[[Γ; Φ ⊨ v : iP]]$ and $[[Γ; Φ ⊨ c : iN]]$. Both of these algorithms
 take as an input typing context $[[Γ]]$, a variable context $[[Φ]]$, and 
 a term (a value or a computation) taking its type variables from $[[Γ]]$, 
 and term variables from $[[Φ]]$. As an output, they return a type
 of the given term, which we guarantee to be normalized. 
 
-The application type inference judgment has form 
+The application type inference judgment has the form 
 $[[Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC]]$.
 As an input, it takes three contexts: typing context $[[Γ]]$, a variable context $[[Φ]]$,
 and an instantiation context $[[Θ1]]$. It also takes a head type $[[uN]]$ and 
@@ -883,11 +881,11 @@ $[[uM]]$---a normalized type of the result of the application.
 Type $[[uM]]$ may contain new algorithmic variables, and thus, 
 the judgment also returns $[[Θ2]]$---an updated instantiation context
 and $[[SC]]$---a set of subtyping constraints.
-Together $[[Θ2]]$  and $[[SC]]$ specify how the algorithmic variables 
+Together $[[Θ2]]$ and $[[SC]]$ specify how the algorithmic variables 
 must be instantiated.
 
 
-\begin{figure}[t]
+\begin{figure}[t!]
   \ottdefnATPInfLabeled{}
   \hfill \\
   \ottdefnATNInfLabeled{}
@@ -990,7 +988,7 @@ Next, we discuss them in detail.
 \paragraph*{Application to an Empty List of Arguments}
   Rule \ruleref{\ottdruleATEmptyAppLabel}
   is the base case of application inference. 
-  If the list of applied arguments is empty, 
+  If the list of arguments is empty, 
   the inferred type is the type of the head,
   and the algorithm returns it after normalizing.
 
@@ -1035,7 +1033,7 @@ This way, the principal type is the minimal instantiation of $[[uP]]$,
 obtained by a substitution satisfying the given constraints $[[SC]]$. 
 
 To find this substitution, we use the minimal instantiation
-algorithm (\cref{fig:minimal-instantiation}). The judgment `$[[Γ ⊢ uP SC minby uσ]]$'
+algorithm (\cref{fig:minimal-instantiation}). In the judgment "$[[Γ ⊢ uP SC minby uσ]]$",
 $[[uσ]]$ instantiates $[[uP]]$ to a subtype of any other 
 instantiation of $[[uP]]$ that satisfies $[[SC]]$. 
 First, it removes the existential quantifiers by \ruleref{\ottdruleSINGExistsLabel}.

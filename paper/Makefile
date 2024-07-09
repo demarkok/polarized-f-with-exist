@@ -9,8 +9,6 @@ GEN := _gen
 GEN_TEX := $(GEN)/$(TEX)
 OTT := $(ROOT)/ott
 OTT_GEN := $(OTT)/_gen
-TEMP_DIR :=  $(ROOT)/temp
-OLD_GEN := $(TEMP_DIR)/$(TEX)
 
 
 # Files
@@ -53,25 +51,6 @@ paper.pdf: $(GEN_TEXS) $(BIBLIO)
 
 continuous:
 	make & fswatch -o .. | xargs -n1 -I{} make
-
-# DIFF
-diff: $(GEN_TEXS) $(BIBLIO) clean_temp
-	# Check out paper.tex and related files from the last commit into the temporary directory
-	mkdir -p $(OLD_GEN)
-	git --work-tree=$(TEMP_DIR) checkout HEAD~1 -- ./paper
-	mv $(TEMP_DIR)/paper/* $(TEMP_DIR)
-
-	make -C $(TEMP_DIR) 
-
-    # Run latexdiff
-	latexdiff --flatten $(TEMP_DIR)/$(GEN)/paper.tex $(GEN)/paper.tex > diff.tex
-
-	# Compile the diff.tex to diff.pdf
-	rubber --pdf -f diff.tex
-
-# Clean the temporary directory
-clean_temp:
-	rm -rf $(TEMP_DIR)
 
 # CLEAN
 clean:

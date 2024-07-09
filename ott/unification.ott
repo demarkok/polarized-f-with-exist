@@ -24,7 +24,8 @@ defns
   --------------------- :: ShiftU
   Γ ; Θ ⊨ ↑uP ≈u ↑iQ ⫤ UC
 
-  Γ ; Θ ⊨ uP ≈u iQ ⫤ UC1    Γ; Θ ⊨ uN ≈u iM ⫤ UC2    
+  Γ ; Θ ⊨ uP ≈u iQ ⫤ UC1    
+  Γ; Θ ⊨ uN ≈u iM ⫤ UC2    
   ------------------------------------------------ :: Arrow
   Γ ; Θ ⊨  uP → uN ≈u iQ → iM ⫤ UC1 & UC2 
 

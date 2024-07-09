@@ -36,7 +36,6 @@ $[[SC0]]$-complying way to equate $[[uM0]]$ with $[[iM]]$.
 \begin{theorem*}[Soundness of Typing]
     \label{thm:soundness-typing}
     Suppose that $[[Γ ⊢ Φ]]$. Then\footnotemark[1]
-    \hfill
     \begin{itemize}
         \item [$+$] $[[Γ; Φ ⊨ v : iP]]$ implies $[[Γ; Φ ⊢ v : iP]]$,
         \item [$-$] $[[Γ; Φ ⊨ c : iN]]$ implies $[[Γ; Φ ⊢ c : iN]]$,
@@ -84,13 +83,13 @@ The proof of soundness and completeness result is done gradually
 for all the subroutines,
 following the structure of the algorithm 
 (\cref{fig:alg-typing-graph,fig:alg-subtyping-graph})
-bottom-up. Next, we discuss the main of these results. 
+bottom-up. Next, we discuss the main results. 
 
 \subsection{Normalization}
     The point of type normalization is factoring out non-trivial equivalence 
     by selecting a representative from each equivalence class.
     This way, \emph{the correctness of normalization} means that
-    checking for equivalence of two types is the same as checking for equality of their normal forms.
+    checking for the equivalence of two types is the same as checking for the equality of their normal forms.
     \begin{lemma*}[Normalization correctness]
         Assuming all types are well-formed in $[[Γ]]$, we have
             $[[Γ ⊢ iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$ and 
@@ -99,7 +98,8 @@ bottom-up. Next, we discuss the main of these results.
     To prove the correctness of normalization, 
     we introduce an \emph{intermediate} relation on types---\emph{declarative equivalence}
     (the notation is $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$).
-    In contrast to $[[Γ ⊢ iN ≈ iM]]$ (which means mutual subtyping), $[[iN ≈ iM]]$ does not depend on subtyping judgments, 
+    In contrast to $[[Γ ⊢ iN ≈ iM]]$ (which means mutual subtyping), 
+    $[[iN ≈ iM]]$ does not depend on subtyping judgments, 
     but explicitly allows quantifier reordering and redundant quantifier removal.
     Then the statement $[[Γ ⊢ iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$ (as well as its positive counterpart) 
     is split into two steps: $[[Γ ⊢ iN ≈ iM]] \iff [[iN ≈ iM]] \iff [[nf(iN) = nf(iM)]]$.
@@ -159,11 +159,9 @@ instantiations are well-formed in the corresponding context, and that all the
 exists a solution satisfying the soundness criteria, then the algorithm
 succeeds.
 
-
 The correctness properties are formulated by the following lemmas. For brevity,
 we only provide the statements for the positive case, since the negative case is
 symmetric. 
-
 
 \begin{lemma*}[Soundness of (positive) anti-unification]
     \label{lemma:au-soundness}
@@ -207,7 +205,7 @@ The initiality shows that the anti-unifier that the algorithm provides is the
 most specific (or the most `detailed'). Specifically, it means that any other
 sound anti-unification solution can be `refined' to the result of the algorithm.  
 The `refinement' is represented as an instantiation of the anti-unifier---a 
-substitution $[[Γ ; Ξ2 ⊢ ausr : Ξ1]]$ replacing the `holes' from $[[Ξ1]]$ with
+substitution $[[Γ ; Ξ2 ⊢ ausr : Ξ1]]$---replacing the `holes' from $[[Ξ1]]$ with
 types that themselves can contain `holes' from $[[Ξ2]]$.
 
 \begin{lemma*}[Initiality of Anti-Unification]
@@ -254,7 +252,7 @@ The following lemma specifies this observation.
     The Least Upper Bound algorithm finds the least type that is a supertype of two given types.
     Its \emph{soundness} means that the returned type is indeed a supertype of the given ones;
     the \emph{completeness} means that the algorithm succeeds if the least upper bound exists;
-    and the \emph{initiality} means that the returned type is the least among common supertypes. 
+    and the \emph{initiality} means that the returned type is the least among the common supertypes. 
 
     \begin{lemma*}[Least Upper Bound soundness]
         For types $[[Γ ⊢ iP1]]$, and $[[Γ ⊢ iP2]]$,
@@ -382,12 +380,12 @@ Algorithmic typing relies on the \emph{minimal instantiation} procedure.
 For a given positive type $[[uP]]$ and a set of constraints $[[SC]]$
 it returns a substitution $[[Θ ⊢ uσ : SC]]$ such that
 $[[ [uσ]uP ]]$ is a subtype of all the other instantiations of $[[uP]]$ satisfying $[[SC]]$.
-This way, the correctness of minimal instantiation is formulated as the following two lemmas.
+The correctness of minimal instantiation is formulated as the following two lemmas.
 
 \begin{lemma*}[Soundness of Minimal Instantiation]
     \label{lemma:minimal-instantiation-soundness}
     Suppose that $[[Γ ⊢ Θ]]$, $[[Θ ⊢ SC]]$, and $[[Γ; dom(Θ) ⊢ uP]]$.
-    Then `$[[Γ ⊢ uP SC minby uσ ]]$' implies that 
+    Then the judgment `$[[Γ ⊢ uP SC minby uσ ]]$' implies that 
     $[[Θ ⊢ uσ : uv uP]]$ is a normalized substitution satisfying $[[SC]]$
     (\ie $[[Θ ⊢ uσ : SC]]$)
     and for any other substitution $[[Θ ⊢ uσ' : uv uP ]]$ satisfying $[[SC]]$,
@@ -400,10 +398,10 @@ This way, the correctness of minimal instantiation is formulated as the followin
     such that for any other $[[Θ ⊢ uσ' : uv uP ]]$
     satisfying $[[SC]]$, we have
     $[[Γ ⊢ [uσ']uP ≥ [uσ]uP ]]$.  Then the minimal instantiation procedure  
-    succeeds; specifically, $[[Γ ⊢ uP SC minby nf(uσ) ]]$ holds.
+    succeeds; specifically, $[[Γ ⊢ uP SC minby nf(uσ) ]]$ is derivable.
 \end{lemma*}
 
-The soundness is rather straightforwardly proved by induction on the 
+Soundness is rather straightforwardly proved by induction on the 
 judgment inference tree, relying on the soundness of the singularity procedure.
 The proof of completeness is done by induction on the structure of the type $[[uP]]$.
 It uses the fact that $[[ Γ ⊢ ∃nas.[uσ']uP ≥ ∃nas.[uσ]uP]]$ implies
@@ -436,14 +434,14 @@ $[[SC]]$-compliant substitutions are equivalent, then the singularity procedure 
 
 \subsection{Typing}
 
-Finally, we discuss the proofs of the soundness and completeness of type
-inference algorithm that we stated at the beginning of this section.
-There are three subtleties that we will cover that are important 
+Finally, we discuss the proofs of the soundness and completeness of the type
+inference algorithm that we described at the beginning of this section.
+There are three subtleties that are important 
 for the proof to go through: the determinacy of the algorithm,
 the mutual dependence of the soundness and completeness proofs, and
 the non-trivial inductive metric that we use.
 
-
+\vspace{\baselineskip}
 \paragraph*{Determinacy}
     One of the properties that our proof relies on is the determinacy of the 
     typing algorithm: the output (the inferred type)
@@ -456,12 +454,12 @@ the non-trivial inductive metric that we use.
     which is easy to ensure, but must be taken into account in the implementation.
 
 \begin{lemma*}[Determinacy of the Typing Algorithm]
-    Suppose that $[[Γ ⊢ Φ]]$ and $[[Γ ⊢ Θ]]$. Then 
+    Suppose that $[[Γ ⊢ Φ]]$ and $[[Γ ⊢ Θ0]]$. Then 
     \begin{itemize}
         \item [$+$] If $[[Γ; Φ ⊨ v : iP]]$ and $[[Γ; Φ ⊨ v : iP']]$ then $[[iP = iP']]$.
         \item [$-$] If $[[Γ; Φ ⊨ c : iN]]$ and $[[Γ; Φ ⊨ c : iN']]$ then $[[iN = iN']]$.
-        \item If $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$ and 
-            $[[Γ; Φ; Θ ⊨ uN ● args ⇒> uM' ⫤ Θ'; SC']]$ then 
+        \item If $[[Γ; Φ; Θ0 ⊨ uN ● args ⇒> uM ⫤ Θ; SC]]$ and 
+            $[[Γ; Φ; Θ0 ⊨ uN ● args ⇒> uM' ⫤ Θ'; SC']]$ then 
             $[[uM = uM']]$, $[[Θ]] = [[Θ']]$, and $[[SC]] =[[SC']]$.  
     \end{itemize}
 \end{lemma*}
@@ -472,7 +470,7 @@ Typically in our inductive proofs, the soundness is proven before completeness,
 as the completeness requires the premise subtrees to satisfy certain properties
 (which can be given by the soundness). However, in the case of the typing algorithm,
 the soundness and completeness proofs cannot be separated: the inductive proof
-of one requires another, and vice versa. 
+of one requires the other. 
 
 The proof of soundness can be viewed as a mapping from an algorithmic tree to a
 declarative one. We show that each algorithmic inference rule can be transformed
@@ -499,16 +497,17 @@ This way, the soundness and completeness proofs are mutually dependent.
     We define the metric gradually, starting from the
     auxiliary function---the size of a judgment $\size{J}$.
 
-    The size of \emph{declarative} and \emph{algorithmic} judgments is defined as
-    a pair: the first component is the syntactic size of the terms used in the judgment. 
-    The second component depends on the kind of judgment. For regular
-    type inference judgments (such as $[[Γ ; Φ ⊢ v : iP]]$
-    or $[[Γ ; Φ ⊨ c : iN]]$), it is always zero. For application inference judgments
-    $([[Γ ; Φ ⊢ iN ● args ⇒> iM]]$ or $[[Γ ; Φ ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$), 
-    it is equal to the number of prenex quantifiers of the head type $[[iN]]$.
-    We need this adjustment to ensure the monotonicity of the metric, since the rules 
-    \ruleref{\ottdruleATForallAppLabel} and \ruleref{\ottdruleDTForallAppLabel}
-    only reduce the quantifiers in the head type but they do not change the list of arguments.
+    The size of \emph{declarative} and \emph{algorithmic} judgments is defined
+    as a pair: the first component is the cumulative syntactic size of the terms
+    used in the judgment. The second component depends on the kind of judgment.
+    For regular type inference judgments (such as $[[Γ ; Φ ⊢ v : iP]]$ or 
+    $[[Γ ; Φ ⊨ c : iN]]$), it is always zero. For application inference judgments $([[Γ
+    ; Φ ⊢ iN ● args ⇒> iM]]$ or $[[Γ ; Φ ; Θ ⊨ uN ● args ⇒> uM ⫤ Θ'; SC]]$), it
+    is equal to the number of prenex quantifiers of the head type $[[iN]]$. We
+    need this adjustment to ensure the monotonicity of the metric, since the
+    quantifier instantiation rules \ruleref{\ottdruleATForallAppLabel} and
+    \ruleref{\ottdruleDTForallAppLabel} only reduce the quantifiers in the head
+    type but they do not change the list of arguments.
 
 \begin{definition*}[Judgement Size]
     \label{def:decl-typing-size}
@@ -568,7 +567,7 @@ as a pair in the following way.
 \end{definition*}
 
 This metric is suitable for mutual induction on the soundness and completeness
-of the typing algorithm.  First, it is monotonous \wrt the inference rules,
+of the typing algorithm.  First, it is monotone \wrt the inference rules,
 and this way, we can always apply the induction hypothesis to premises 
 of each rule. Second, the induction hypothesis is powerful enough,
 so we can use the completeness of the algorithm in the soundness proof,

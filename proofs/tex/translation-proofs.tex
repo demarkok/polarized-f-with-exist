@@ -463,14 +463,14 @@
         \item $[[fΓ ⊢ fA]]$, which implies $[[+|fΓ|+ ⊢ +|fA|+]]$ by \cref{lemma:typ-pol-wf-completeness}.
       \end{itemize}
       We wish to infer
-      $[[+|fΓ|+ ; +|fΦ|+ ⊢ let f : +|∀a.fT|+ = c; let y : +|[fA/a]fT|+ = f(); return y : ↑+|[fA/a]fT|+]]$.
+      $[[+|fΓ|+ ; +|fΦ|+ ⊢ let f : +|∀a.fT|+ = c; let y : +|[fA/a]fT|+ = f(·); return y : ↑+|[fA/a]fT|+]]$.
       First, let us rewrite the polarized types by definition and \cref{lemma:pol-subst}:
-      $[[+|fΓ|+ ; +|fΦ|+ ⊢ let f : ↓∀α⁺.↑+|fT|+ = c; let y : [+|fA|+/α⁺]+|fT|+ = f(); return y : ↑[+|fA|+/α⁺]+|fT|+]]$.
+      $[[+|fΓ|+ ; +|fΦ|+ ⊢ let f : ↓∀α⁺.↑+|fT|+ = c; let y : [+|fA|+/α⁺]+|fT|+ = f(·); return y : ↑[+|fA|+/α⁺]+|fT|+]]$.
       Then we prove this judgment gradually by applying the corresponding rules of \fexists:
       \begin{enumerate}
         \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+, y : [+|fA|+/α⁺]+|fT|+ ⊢ return y : ↑[+|fA|+/α⁺]+|fT|+]]$
           holds by \ruleref{\ottdruleDTVarLabel} and \ruleref{\ottdruleDTReturnLabel}.
-        \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+  ⊢ let y : [+|fA|+/α⁺]+|fT|+ = f(); return y : ↑[+|fA|+/α⁺]+|fT|+]]$
+        \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+  ⊢ let y : [+|fA|+/α⁺]+|fT|+ = f(·); return y : ↑[+|fA|+/α⁺]+|fT|+]]$
           holds by \ruleref{\ottdruleDTAppLetAnnLabel}. Let us show that the 
           required premises hold. 
           \begin{enumerate}
@@ -481,14 +481,14 @@
               $[[+|fΓ|+  ⊢ +|fA|+/α⁺ : {α⁺}]]$ since $[[+|fΓ|+  ⊢ +|fA|+]]$, as noted above.
             \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+, y : [+|fA|+/α⁺]+|fT|+ ⊢ return y : ↑[+|fA|+/α⁺]+|fT|+]]$ as noted above.
           \end{enumerate}
-        \item $[[+|fΓ|+ ; +|fΦ|+  ⊢ let f : ↓∀α⁺.↑+|fT|+ = c; let y : [+|fA|+/α⁺]+|fT|+ = f(); return y : ↑[+|fA|+/α⁺]+|fT|+]]$
+        \item $[[+|fΓ|+ ; +|fΦ|+  ⊢ let f : ↓∀α⁺.↑+|fT|+ = c; let y : [+|fA|+/α⁺]+|fT|+ = f(·); return y : ↑[+|fA|+/α⁺]+|fT|+]]$
           holds by \ruleref{\ottdruleDTCVarLetLabel}. Let us show that the
           required premises hold.
           \begin{enumerate}
             \item $[[+|fΓ|+ ⊢ ↓∀α⁺.↑+|fT|+]]$ by \cref{lemma:typ-pol-wf-completeness}.
             \item $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑↓∀α⁺.↑+|fT|+]]$ by the induction hypothesis, as noted above.
             \item $[[+|fΓ|+  ⊢ ↑↓∀α⁺.↑+|fT|+ ≤ ↑↓∀α⁺.↑+|fT|+]]$ by reflexivity (\cref{lemma:subtyping-reflexivity}).
-            \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+  ⊢ let y : [+|fA|+/α⁺]+|fT|+ = f(); return y : ↑[+|fA|+/α⁺]+|fT|+]]$ as noted above.
+            \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+  ⊢ let y : [+|fA|+/α⁺]+|fT|+ = f(·); return y : ↑[+|fA|+/α⁺]+|fT|+]]$ as noted above.
           \end{enumerate}
       \end{enumerate}
   \end{caseof}

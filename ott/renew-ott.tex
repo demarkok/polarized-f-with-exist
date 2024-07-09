@@ -2,7 +2,14 @@
 % \renewcommand{\ottcInline}{\ottprodinline{\ottcom{Computation Terms}}{\ottnt{c} ,\ \ottnt{d}}{\Coloneqq}
 % {\mbox{\ottsym{(}  \ottnt{c}  \ottsym{:} \mathcolor{negative}{N}  \ottsym{)}}}}
 
+
+\renewenvironment{ottdefnblock}[3][]{ \framebox{\mbox{#2}} \; #3 \\[0pt]}{}
+\renewenvironment{ottfundefnblock}[3][]{ \framebox{\mbox{#2}} \; #3 \\[0pt]\begin{displaymath}\begin{array}{l}}{\end{array}\end{displaymath}}
+
+
 \renewcommand{\ottkw}[1]{{\bf \tt{#1}}}
+
+\renewcommand{\ottdrule}[4][]{{\displaystyle\frac{\begin{array}{l}#2\end{array}}{#3}\;\ottdrulename{#4}}}
 
 \newcommand{\ottdefnTELNLabeledTwoColumns}[1]{
     \begin{ottdefnblock}[#1]{\ottdefnHeaderTELN}{\ottcom{Negative typing elaboration}}
@@ -116,36 +123,43 @@
 \renewcommand{\ottrulehead}[3]{\multicolumn{4}{l}{#3}\ottprodnewline$#1$ & & $#2$ & & }
 
 \renewcommand{\ottdefnATNInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATNInf}{\ottcom{Negative typing}}
-    \begin{multicols}{2}
+    \begin{minipage}{0.45\textwidth}
         \ottusedrule{\ottdruleATNAnnotLabeled{}}
         \ottusedrule{\ottdruleATtLamLabeled{}}
         \ottusedrule{\ottdruleATTLamLabeled{}}
         \ottusedrule{\ottdruleATReturnLabeled{}}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
         \ottusedrule{\ottdruleATVarLetLabeled{}}
         \ottusedrule{\ottdruleATCVarLetLabeled{}}
-    \ottusedrule{\ottdruleATUnpackLabeled{}}
-    \end{multicols}
+        \ottusedrule{\ottdruleATUnpackLabeled{}}
+    \end{minipage}
     \ottusedrule{\ottdruleATAppLetAnnLabeled{}}
     \ottusedrule{\ottdruleATAppLetLabeled{}}
 \end{ottdefnblock}}
 
 
-\renewcommand{\ottdefnATPInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATPInf}{\ottcom{Positive typing}}
-    \begin{multicols}{3}
+\renewcommand{\ottdefnATPInfLabeled}[1]{
+    \begin{ottdefnblock}[#1]{\ottdefnHeaderATPInf}{\ottcom{Positive typing}}
+    \begin{minipage}{0.29\textwidth}
         \ottusedrule{\ottdruleATVarLabeled{}}
-        \columnbreak\\
+    \end{minipage}
+    \begin{minipage}{0.39\textwidth}
         \ottusedrule{\ottdruleATPAnnotLabeled{}}
-        \columnbreak\\
+    \end{minipage}
+    \begin{minipage}{0.29\textwidth}
         \ottusedrule{\ottdruleATThunkLabeled{}}
-    \end{multicols}
+    \end{minipage}
 \end{ottdefnblock}}
 
+
 \renewcommand{\ottdefnATSpinInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATSpinInf}{\ottcom{Application typing}}
-    \begin{multicols}{2}
+    \begin{minipage}{0.5\textwidth}
         \ottusedrule{\ottdruleATEmptyAppLabeled{}}
-        \columnbreak\\
-        \ottusedrule{\hspace{-.9cm}\ottdruleATArrowAppLabeled{}}
-    \end{multicols}
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+        \ottusedrule{\ottdruleATArrowAppLabeled{}}
+    \end{minipage}
     \ottusedrule{\ottdruleATForallAppLabeled{}}
 \end{ottdefnblock}}
 
@@ -243,7 +257,7 @@
 \renewcommand{\ottdefnAPsupLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderAPsup}{\ottcom{Positive supertyping}}
 \ottusedrule{\ottdruleAPVarLabeled{}}
 \ottusedrule{\hspace{-1cm}\ottdruleAExistsLabeled{}}
-\ottusedrule{\ottdruleAShiftDLabeled{}}
+\ottusedrule{\hspace{2em}\ottdruleAShiftDLabeled{}}
 \ottusedrule{\ottdruleAPUVarLabeled{}}
 \end{ottdefnblock}}
 
@@ -525,25 +539,25 @@
 
 
 % Γ ; Φ ⊨ v : iP  
-\renewcommand{\ottdruleATVarName}[0]{(Var$^{\text{inf}}$)}
-\renewcommand{\ottdruleATThunkName}[0]{($\{\}^{\text{inf}}$)}
-\renewcommand{\ottdruleATPAnnotName}[0]{(ann$_+^{\text{inf}}$)}
+\renewcommand{\ottdruleATVarName}[0]{(\alghl{Var}$^{\text{inf}}$)}
+\renewcommand{\ottdruleATThunkName}[0]{($\ngbox{\{\}}^{\text{inf}}$)}
+\renewcommand{\ottdruleATPAnnotName}[0]{(\alghl{ann}$_+^{\text{inf}}$)}
 
 % Γ ; Φ ⊨ c : iN 
-\renewcommand{\ottdruleATtLamName}[0]{($\lambda^{\text{inf}}$)}
-\renewcommand{\ottdruleATTLamName}[0]{($\Lambda^{\text{inf}}$)}
-\renewcommand{\ottdruleATReturnName}[0]{(ret$^{\text{inf}}$)}
-\renewcommand{\ottdruleATVarLetName}[0]{(let$^{\text{inf}}$)}
-\renewcommand{\ottdruleATCVarLetName}[0]{(let$_{\text{c}}^{\text{inf}}$)}
-\renewcommand{\ottdruleATAppLetName}[0]{(let$_@^{\text{inf}}$)}
-\renewcommand{\ottdruleATAppLetAnnName}[0]{(let$_{:@}^{\text{inf}}$)}
-\renewcommand{\ottdruleATUnpackName}[0]{(let$_{\exists}^{\text{inf}}$)}
-\renewcommand{\ottdruleATNAnnotName}[0]{(ann$_-^{\text{inf}}$)}
+\renewcommand{\ottdruleATtLamName}[0]{($\ngbox{\lambda}^{\text{inf}}$)}
+\renewcommand{\ottdruleATTLamName}[0]{($\ngbox{\Lambda}^{\text{inf}}$)}
+\renewcommand{\ottdruleATReturnName}[0]{(\alghl{ret}$^{\text{inf}}$)}
+\renewcommand{\ottdruleATVarLetName}[0]{(\alghl{let}$^{\text{inf}}$)}
+\renewcommand{\ottdruleATCVarLetName}[0]{(\alghl{let}$_{\text{c}}^{\text{inf}}$)}
+\renewcommand{\ottdruleATAppLetName}[0]{(\alghl{let}$_@^{\text{inf}}$)}
+\renewcommand{\ottdruleATAppLetAnnName}[0]{(\alghl{let}$_{:@}^{\text{inf}}$)}
+\renewcommand{\ottdruleATUnpackName}[0]{(\alghl{let}$_{\exists}^{\text{inf}}$)}
+\renewcommand{\ottdruleATNAnnotName}[0]{(\alghl{ann}$_-^{\text{inf}}$)}
 
 % Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC 
-\renewcommand{\ottdruleATEmptyAppName}[0]{($\emptyset_{[[●]][[⇒>]]}^{\text{inf}}$)}
-\renewcommand{\ottdruleATArrowAppName}[0]{($\rightarrow_{[[●]][[⇒>]]}^{\text{inf}}$)}
-\renewcommand{\ottdruleATForallAppName}[0]{($\forall_{[[●]][[⇒>]]}^{\text{inf}}$)}
+\renewcommand{\ottdruleATEmptyAppName}[0]{($\ngbox{\emptyset}_{[[●]][[⇒>]]}^{\text{inf}}$)}
+\renewcommand{\ottdruleATArrowAppName}[0]{($\ngbox{\rightarrow}_{[[●]][[⇒>]]}^{\text{inf}}$)}
+\renewcommand{\ottdruleATForallAppName}[0]{($\ngbox{\forall}_{[[●]][[⇒>]]}^{\text{inf}}$)}
 
 
 

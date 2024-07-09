@@ -26,7 +26,8 @@ defns
   Γ;Θ ⊨ ∀pas.uN ≤ ∀pbs.iM ⫤ SC \ {â⁺*}
 
 
-  Γ;Θ ⊨ uP ≥ iQ ⫤ SC1  Γ;Θ ⊨ uN ≤ iM ⫤ SC2    
+  Γ;Θ ⊨ uP ≥ iQ ⫤ SC1  
+  Γ;Θ ⊨ uN ≤ iM ⫤ SC2    
   Θ ⊢ SC1 & SC2 = SC
   --------------------------------------------- :: Arrow
   Γ;Θ ⊨ uP → uN ≤ iQ → iM ⫤ SC 

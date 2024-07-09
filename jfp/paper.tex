@@ -7,10 +7,12 @@
 
 \newcommand{\ottDir}{../ott/_gen}
 \newcommand{\genDir}{../paper/_gen}
+\newcommand{\proofGenDir}{../proofs/_gen}
 \input{\ottDir/defs.tex}
 \input{\ottDir/renew-ott.tex}
 
 \renewcommand{\cite}{\citep}
+
 
 % \renewcommand{\paragraph}[1]{\paragraph{#1~}}
 
@@ -205,6 +207,10 @@
 % }
 
 \bibliography{../biblio}
+
+\clearpage
+\appendix
+\input{\proofGenDir/content.tex}
 
 \end{document}
 \endinput

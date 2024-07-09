@@ -9,8 +9,8 @@ are beyond the scope of this work, and thus are left for future research.
 \label{sec:explicit-type-application}
 
 In our system, all type applications are inferred implicitly: the algorithm
-automatically instantiates the variables abstracted by $\forall$. 
-The \emph{explicit} type application can be added to the declarative system by the following rule:
+\emph{Explicit} type application can be added to the declarative system by the following rule:
+
 $$\ottdruleDTTypeAppLabeled{}$$
 
 However, this rule alone would cause ambiguity. The declarative system does not
@@ -19,6 +19,7 @@ $[[∀β⁺.∀α⁺.iN]]$ can be inferred as a type of $[[c]]$ interchangeably.
 would make explicit instantiation $[[ c[iP] ]]$ ambiguous, as it is unclear
 whether $[[α⁺]]$ or $[[β⁺]]$ should be instantiated with $[[iP]]$.
 
+\vspace{\baselineskip}
 \paragraph*{Solution 1: Declarative Normalization}
 One way to resolve this ambiguity is to fix the order of quantifiers.  
 The algorithm already performs the ordering of the quantifiers in the normalization procedure.
@@ -30,8 +31,9 @@ The drawback of this approach is that it adds another point where the internal
 algorithmic concept---normalization---is exposed to the `surface' declarative
 system.
 
+\vspace{\baselineskip}
 \paragraph*{Solution 2: Elementary Type Inference}
-An alternative approach to provide explicit type application
+An alternative approach to explicit type application
  was proposed by \cite{zhao22:elementary}.
 In this work, the subtyping relation is restricted 
 in such a way that 
@@ -87,7 +89,8 @@ it suffices to
 After these changes, the rule \ruleref{\ottdruleDTTypeAppLabel} and its algorithmic counterpart
 can be used to infer the the type of $[[ c[iP] ]]$.
 
-The elementary type inference restricts the expressiveness of the subtyping perhaps too much.
+Elementary type inference
+is much more restrictive than what we present.
 As mentioned, it forbids the quantifier reordering; besides, 
 as soon as the right-hand side of the subtyping relation is
 polymorphic, it restricts the instantiation of the left-hand side quantifiers, 
@@ -95,11 +98,12 @@ which \emph{disallows}, for example, $[[· ⊢ ∀α⁺.↑α⁺ ≤ ∀α⁺.�
 On the other hand, the elementary subtyping system
 can be smoothly extended with bounded quantification, which we discuss later.
 
+\vspace{\baselineskip}
 \paragraph*{Solution 3: labeled quantifiers}
 
 A compromise solution that resolves the ambiguity of explicit instantiation
 without fixing the order of quantifiers is by using \emph{labeled} quantifiers.
-Let us discuss how to introduce them to the \emph{negative} part of the system,
+Let us discuss how to introduce them to the \emph{negative} part of the system
 since the positive subsystem is symmetric. 
 
 
@@ -124,7 +128,7 @@ The subtyping rule permits an arbitrary order of the quantifiers.
 However, similarly to the elementary subtyping, 
 each of the right-hand side quantifiers must have 
 a matching left-hand side quantifier with the same label. These
-matching quantifiers synchronously removed
+matching quantifiers are synchronously removed
 (in other words, each variable is abstractly instantiated to itself), 
 and the remaining quantifiers are instantiated as usual by
 a substitution $[[σ]]$.
@@ -177,7 +181,7 @@ that in the algorithm, the negative constraint entries can only be equivalence
 entries ($[[nua :≈ iN]]$) but not subtyping entries. 
 
 Second, notice that the positive subtyping is still not dependent on the negative
-subtyping. It means, that any leaf-to-root path in the inference tree is monotonous:
+subtyping. It means that any leaf-to-root path in the inference tree is monotone:
 in the first phase, the negative subtyping rules are applied, and in the second phase, 
 only the positive ones.
 
@@ -202,7 +206,7 @@ This way, the produced entries will be of the following form:
 We do not present the details of the constraint resolution procedure or how it
 is integrated into the subtyping algorithm, leaving it for future work. However,
 we believe that the system consisting of the mentioned kinds of constraints is solvable
-by the following reasons.
+for the following reasons.
 \begin{enumerate*}
     \item[(i)] The equivalence entries $[[pua :≈ uP]]$ and $[[nua :≈ uN]]$ are resolved by standard first-order pattern unification techniques.
     \item[(ii)] The resolution of supertyping entries ($[[pua :≥ iP]]$) is discussed in the original algorithm (\cref{sec:constraint-merge}).
@@ -389,10 +393,10 @@ powerful and potentially leads to undecidability.
 Instead, this check is approximated by the combination of $[[Γ; Φ ⊢ v ⇒ iP]]$
 and $[[Γ ⊢ iQ ≥ iP]]$.
 
+\vspace{\baselineskip}
 \paragraph*{The Algorithm}
-
     The algorithmic system is bidirectionalized in a similar way. 
-    Each typing premise and the conclusion of the rule is oriented
+    Each typing premise and the conclusion of the rule are oriented
     to either `checking` ($[[⇐]]$) or `synthesizing` ($[[⇒]]$) mode,
     with respect to the declarative system. 
  
@@ -438,9 +442,9 @@ and $[[Γ ⊢ iQ ≥ iP]]$.
     % \paragraph*{Restricting Inference}
     Instead, we strengthen
     \ruleref{\ottdruleATArrowAppBidirLabel}
-    in such a way that it never checks a term against an algorithmic type.
-    Instead, type checking $[[v]]$ against $[[uQ]]$ is replaced by 
-    a more restrictive premise---checking that $[[v]]$ \emph{synthesizes a subtype} of $[[uQ]]$:
+    in such a way that it never checks a term against an algorithmic type. Type
+    checking $[[v]]$ against $[[uQ]]$ is replaced by a more restrictive
+    premise---checking that $[[v]]$ \emph{synthesizes a subtype} of $[[uQ]]$:
     $$ \ottdruleATArrowAppBidirSLabeled{} $$\\
 
     As one can expect, the declarative rule is also changed accordingly.

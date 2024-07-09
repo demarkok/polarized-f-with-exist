@@ -33,7 +33,6 @@ which at the type level is reflected as an up-shift $[[↑iP]]$.
 Generally, any term and type of \systemf can be embedded into \fexists in
 multiple ways corresponding to different evaluation strategies of \systemf,
 which we will cover in more detail in \cref{sec:rel-to-systemf}.
-
 \Cref{fig:polarization-examples} illustrates how standard \systemf types are
 polarized when call-by-value evaluation is presumed.
 
@@ -69,7 +68,7 @@ positive, the argument type is suspended using $[[↓]]$.
 Using the examples provided in \cref{fig:polarization-examples}, we now showcase 
 the type inference capabilities and restrictions of \fexists
 
-\begin{figure}[h]
+\begin{figure}[t]
   \begin{align*}
     [[double]] &: [[↓(Int → ↑Int)]] \\
     [[map]] &: [[↓(∀α⁺.∀β⁺.↓(α⁺ → ↑β⁺) → List α⁺ → ↑List β⁺)]] \\

@@ -1636,8 +1636,8 @@ unrestricted re-use, distribution, and reproduction in any medium, provided the 
 \newcommand\section{\@startsection {section}{1}{\z@}{-26pt \@plus -2pt \@minus -.2pt}{6.7pt}{\sectionfont}}%
 \newcommand\subsection{\@startsection{subsection}{2}{\z@}{-21.5pt}{6.7pt}{\subsectionfont}}%
 \newcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}{-12pt}{6.7pt}{\subsubsectionfont}}%
-\newcommand\paragraph{\@startsection{paragraph}{5}{\parindent}{-19pt \@plus -2pt \@minus -.2pt}{-1em}{\paragraphfont}}%
-\newcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}{-19pt \@plus -2pt \@minus -.2pt}{-1em}{\subparagraphfont}}%
+\newcommand\paragraph{\@startsection{paragraph}{5}{0pt}{1.5pt}{-1em}{\paragraphfont}}%
+\newcommand\subparagraph{\@startsection{subparagraph}{5}{0pt}{-19pt \@plus -2pt \@minus -.2pt}{-1em}{\subparagraphfont}}%
 \newcommand\subsubparagraph{\@startsection{subsubparagraph}{6}{\parindent}{-19pt \@plus -2pt \@minus -.2pt}{-1em}{\subsubparagraphfont}}%
 %
 \newcommand\referencehead{\@startsection {paragraph}{4}{\z@}{-24pt \@plus -2pt \@minus -.2pt}{6pt}{\referenceheadfont}}%
