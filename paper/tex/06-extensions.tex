@@ -445,8 +445,7 @@ and $[[Γ ⊢ iQ ≥ iP]]$.
     in such a way that it never checks a term against an algorithmic type. Type
     checking $[[v]]$ against $[[uQ]]$ is replaced by a more restrictive
     premise---checking that $[[v]]$ \emph{synthesizes a subtype} of $[[uQ]]$:
-    $$ \ottdruleATArrowAppBidirSLabeled{} $$\\
-
+    $$ \ottdruleATArrowAppBidirSLabeled{} $$
     As one can expect, the declarative rule is also changed accordingly.
     In terms of practicality, this change disallows
     implicit checking against a \emph{polymorphic} type:

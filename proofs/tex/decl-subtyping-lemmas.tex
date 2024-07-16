@@ -16,17 +16,14 @@
     $[[fv(iN)]] \subseteq [[fv(iM)]]$.
     Then $[[fv(iP → iN)]] = [[fv(iP) ∪ fv(iN)]] \subseteq
     [[fv(iQ) ∪ fv(iM)]] = [[fv(iQ → iM)]]$.
-
-  \item $[[G ⊢ ∀pas.iN ≤ ∀pbs.iM]]$\\
-    $
-    \begin{aligned}[t]
+  \item $[[G ⊢ ∀pas.iN ≤ ∀pbs.iM]]$
+    \begin{align*}
       [[fv ∀pas.iN ]] &\subseteq [[fv ([iPs/pas] iN) ]] ~\setminus~ [[{pbs}]] 
-                      &&   \text{here $[[{pbs}]]$ is excluded by the premise $[[fv iN ∩ {pbs} = ∅]]$}\\
+                      &&   \text{$[[{pbs}]]$ is excluded by the premise $[[fv iN ∩ {pbs} = ∅]]$}\\
                       &\subseteq [[fv iM]] ~\setminus~ [[{pbs}]]
-                      &&   \text{by the induction hypothesis, } [[fv ([iPs/pas] iN) ]] \subseteq [[fv iM]] \\
+                      &&   \text{by the i.h., } [[fv ([iPs/pas] iN) ]] \subseteq [[fv iM]] \\
                       &\subseteq [[fv ∀pbs.iM]]
-    \end{aligned}
-    $
+    \end{align*}
   \item The positive cases are symmetric.
   \end{caseof}
 \end{proof}
@@ -453,8 +450,8 @@
       (\cref{lemma:subst-domain-weakening}).
       To apply the induction hypothesis, it is left to show that 
       $[[ σ ○ (iQs/pbs) ]]$ unifies $[[iM1']]$ and $[[ [iQs/pbs]iM2']]$:
-      $$
-      \begin{aligned}[t]
+
+      \begin{align*}
         [[ [σ ○ iQs/pbs]iM1' ]] &= [[ [σ][iQs/pbs]iM1' ]]\\
                                 &= [[ [ [σ]iQs/pbs ][σ]iM2' ]]
                                 && \text{by \cref{lemma:subst-composition}}\\
@@ -465,26 +462,24 @@
                                 &= [[  [σ][iQs/pbs][iQs/pbs]iM2' ]]
                                 && \text{Since $[[Γ, pcs ⊢ iQs]]$, and $[[{(Γ, pcs)} ∩ {pbs} = ∅]]$ }\\
                                 &= [[  [σ ○ iQs/pbs][iQs/pbs]iM2' ]]
-      \end{aligned}
-      $$
+      \end{align*}
+
       This way the induction hypothesis gives us
       $[[ Γ', pcs ⊢ [σ][iQs/pbs][iPs/pas]iN' ≤  [σ][iQs/pbs]iK' ]]$,
       and since $[[Γ, pcs ⊢ iK']]$, $[[ [iQs/pbs]iK' = iK' ]]$, that is 
       $[[ Γ', pcs ⊢ [σ][iQs/pbs][iPs/pas]iN' ≤  [σ]iK' ]]$.
       Let us rewrite the substitution that we apply to $[[iN']]$:
-      $$
-      \begin{aligned}[t]
+      \begin{align*}
         [[ [σ ○ iQs/pbs ○ iPs/pas]iN' ]] &= [[ [ (σ <=< iQs/pbs) ○ σ ○ iPs/pas]iN' ]]
                                        && \text{by \cref{lemma:subst-composition}}\\
                                        &= [[ [(σ <=< iQs/pbs) ○ (σ <=< iPs/pas) ○ σ] iN' ]]
                                        && \text{by \cref{lemma:subst-composition}}\\
                                        &= [[ [(((σ <=< iQs/pbs) ○ σ) <=< iPs/pas) ○ σ] iN' ]]
-                                       && \text{Since $[[fv([σ]iN') ∩ {pbs} = ∅]]$}\\
+                                       && [[fv([σ]iN') ∩ {pbs} = ∅]]\\
                                        &= [[ [((σ ○ iQs/pbs) <=< iPs/pas) ○ σ] iN' ]]
                                        && \text{by \cref{lemma:subst-composition}}\\
                                        &= [[ [(σ ○ iQs/pbs) <=< iPs/pas][σ] iN' ]]
-      \end{aligned}
-      $$
+      \end{align*}
       Notice that $[[(σ ○ iQs/pbs) <=< iPs/pas]]$
       is a substitution that turns $[[pai]]$ into $[[ [σ ○ iQs/pbs]iPi ]]$, 
       where $[[ Γ',pcs ⊢ [σ ○ iQs/pbs]iPi]]$.

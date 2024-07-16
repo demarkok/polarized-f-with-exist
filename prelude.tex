@@ -28,6 +28,8 @@
 
 \usepackage{stackengine}
 
+\usepackage{kantlipsum}
+\usepackage{showframe}
 
 
 \usepackage{todonotes}
@@ -44,7 +46,13 @@
 
 \usepackage{etoolbox}
 
+\usepackage[title,toc]{appendix}
+\AtBeginEnvironment{appendices}{\crefalias{section}{appendix}}
+\def\Appendixautorefname{Appendix}
 % \usepackage{fontspec}
+
+
+% \AtBeginEnvironment{appendices}{\crefalias{section}{appendix}}
 
 % \usepackage{tikz}
 \usetikzlibrary{shapes,arrows,arrows.meta,positioning}

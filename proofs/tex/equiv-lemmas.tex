@@ -206,17 +206,14 @@
       that is $[[iN ≈ iM]]$ has shape $[[iP → iN' ≈ iQ → iM']]$.\\
       Then by inversion, $[[iP ≈ iQ]]$ and $[[iN' ≈ iM']]$, 
       and by the induction hypothesis, $[[Γ ⊢ iP]] \iff [[Γ ⊢ iQ]]$ and $[[Γ ⊢ iN']] \iff [[Γ ⊢ iM']]$.
-
-      $
-      \begin{aligned}[t]
+      \begin{align*}
         [[Γ ⊢ iP → iN']]  &\iff [[Γ ⊢ iP]] \text{ and } [[Γ ⊢ iN']] 
                           && \text{by inversion and \ruleref{\ottdruleWFTArrowLabel}}\\
                           &\iff [[Γ ⊢ iQ]] \text{ and } [[Γ ⊢ iM']]
                           && \text{as noted above}\\
                           &\iff [[Γ ⊢ iQ → iM']]
                           && \text{by \ruleref{\ottdruleWFTArrowLabel} and inversion}\\
-      \end{aligned}
-      $\\
+      \end{align*}
     \item \ruleref{\ottdruleEOneForallLabel},
       that is $[[iN ≈ iM]]$ has shape $[[∀pas.iN' ≈ ∀pbs.iM']]$.\\
       By inversion, $[[∀pas.iN' ≈ ∀pbs.iM']]$ means that
@@ -356,9 +353,7 @@
 
     To show that $[[Γ ⊢ σ1 ≈ id :  fv ∀pas.iM]]$, let us take an arbitrary
     $[[β±]] \in [[fv ∀pas.iM]] = [[fv iM \ {pas}]]$.
-
-    $
-    \begin{aligned}[t]
+    \begin{align*}
       [[β±]] &= [[ [id]β± ]]
              && \text{by definition of $[[id]]$}\\
              &\eqDOne [[ [σ1']β± ]]
@@ -367,8 +362,7 @@
              && \text{by definition of $[[σ1']]$}\\
              &= [[ [σ1]β± ]]
              && \text{because $[[{pas} ∩ fv [σ1]β±]] \subseteq [[{pas} ∩ Γ]] = \emptyset$}
-    \end{aligned}
-    $\\
+    \end{align*}
     This way, $[[Γ ⊢ [σ1]β± ≈ β±]]$ for any $[[β±]] \in [[fv ∀pas.iM]]$ and thus,
     $[[Γ ⊢ σ1 ≈ id :  fv ∀pas.iM]]$.
 

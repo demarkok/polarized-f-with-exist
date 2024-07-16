@@ -41,15 +41,15 @@ $(RENEW_DEFS) : $(DEFS) $(OTT)/renew-ott.tex
 	make -C $(OTT)
 
 # MAKE PROCESSED TEX FILES
-$(GEN_TEXS): $(TEXS) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
-	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
+# $(GEN_TEXS): $(TEXS) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+# 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
 
 # Pattern rule for gen_tex files
-# $(GEN_TEX)/%.tex: $(TEX)/%.tex $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
-# 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $< $@
+$(GEN_TEX)/%.tex: $(TEX)/%.tex $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $< $@
 
-# $(GEN)/main.tex: main.tex $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
-# 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $< $@
+$(GEN)/%.tex: %.tex $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $< $@
 
 # MAIN
 main.pdf: $(GEN_TEXS)

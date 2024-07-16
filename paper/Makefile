@@ -41,8 +41,14 @@ $(RENEW_DEFS) : $(DEFS) $(OTT)/renew-ott.tex
 	make -C $(OTT)
 
 # MAKE PROCESSED TEX FILES
-$(GEN_TEXS): $(TEXS) $(CACHE) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
-	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
+# $(GEN_TEXS): $(TEXS) $(CACHE) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+# 	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $(@:$(GEN)/%=%) $@
+
+$(GEN_TEX)/%.tex: $(TEX)/%.tex $(CACHE) $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $< $@
+
+$(GEN)/%.tex: %.tex $(RENEW_DEFS) $(ROOT)/prelude.tex | $(GEN_TEX)
+	ott -generate_aux_rules false  -readsys $(CACHE) -tex_filter $< $@
 
 # MAIN
 

@@ -1,8 +1,12 @@
-\newcommand{\proofGenDir}{_gen}
+% \renewcommand{\proofGenDir}{_gen}
 
-\section{Declarative Type Systems}
 
-\subsection{Grammar}
+\section{Definitions and Algorithms} 
+\label{appendix}
+
+\subsection{Declarative Types}
+
+\subsubsection{Grammar}
 We assume that there is an infinite set of positive and 
 negative \emph{type} variables. Positive type variables are denoted as 
 $[[α⁺]]$, $[[β⁺]]$, $[[γ⁺]]$, etc.
@@ -15,29 +19,28 @@ $[[nbs]]$ is a list of negative type variables,
 $[[args]]$ is a list of values, which are arguments of a function.
 $[[fv(iP)]]$ and $[[fv(iN)]]$ denote the set of free variables 
 in a type $[[iP]]$ and $[[iN]]$, respectively.
-
-\bigskip
-
+% \bigskip
 % \ottgrammartabular{
 %   \ottiP\ottinterrule
 %   \ottiN\ottinterrule
 % }
 
 \begin{definition}[Declarative Types]
-  \hfill
-  \begin{multicols}{2}
+  \hfill\\
+  \begin{minipage}[t]{0.45\textwidth}
     \ottgrammartabular{
       \ottiN\ottinterrule
     }
-
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.45\textwidth}
     \ottgrammartabular{
       \ottiP\ottinterrule
     }
-    \columnbreak
-  \end{multicols}
+  \end{minipage}
 \end{definition}
 
-\subsection{Equalities}
+\subsubsection{Equalities}
 For simplicity, we assume alpha-equivalent terms are equal.
 This way, we assume that substitutions do not capture bound variables.
 Besides, we equate
@@ -46,7 +49,7 @@ as well as $[[∃nas.∃nbs.iP]]$ with $[[∃nas,nbs.iP]]$,
 and lift these equations transitively and congruently 
 to the whole system.
 
-\subsection{Contexts and Well-formedness}
+\subsubsection{Contexts and Well-formedness}
 
 \begin{definition}[Declarative Type Context]
   \hfill \\
@@ -82,8 +85,7 @@ for example, to check that the existential variables do not escape their scope.
 
 \end{algorithm}
 
-
-\subsection{Substitutions}
+\subsubsection{Substitutions}
 
 \begin{definition}[Substitution]
   Substitutions (denoted as $[[σ]]$) 
@@ -173,8 +175,7 @@ the corresponding types.
   \end{itemize}
 \end{definition}
 
-
-\subsection{Declarative Subtyping}
+\subsubsection{Declarative Subtyping}
 Subtyping is one of the key mechanisms of our system. 
 It realizes the polymorphism: abstract $[[∀]]$ and 
 $[[∃]]$ types can be used where concrete types are expected,
@@ -218,9 +219,9 @@ The following observations about the declarative subtyping are worth noting:
 In the next section, we present the sound and complete algorithm
 checking whether one type is a subtype of another according to \cref{def:subDOne}. 
 
-\section{Algorithmic Type System}
+\subsection{Algorithmic Types}
 
-\subsection{Grammar}
+\subsubsection{Grammar}
 
 In the algorithmic system, we extend the grammar of types
 by adding positive and negative \emph{algorithmic variables}
@@ -245,7 +246,7 @@ can potentially contain algorithmic variables.
   \end{multicols}
 \end{definition}
 
-\subsection{Fresh Variable Selection}
+\subsubsection{Fresh Variable Selection}
 \label{sec:fresh-selection}
 Both the subtyping and the type inference algorithm
 rely on the ability to select fresh, unused variables.
@@ -256,7 +257,7 @@ deterministic. In other words, whenever it is called in
 an algorithmic inference rule, it returns the same result, 
 uniquely determined by the input of this rule.
 
-\subsection{Variable Algorithmization}
+\subsubsection{Variable Algorithmization}
 \label{sec:variable-algorithmization}
 
 In several places of our algorithm, in particular, during
@@ -282,8 +283,7 @@ into declarative type variables via \emph{dealgorithmization}.
   $[[αî⁻ ∊ {nuas}]]$ in a type for $[[αi⁻ ∊ {nas}]]$.
 \end{definition}
 
-
-\subsection{Contexts and Well-formedness}
+\subsubsection{Contexts and Well-formedness}
 
 \begin{definition}[Algorithmic Type Context $[[Ξ]]$]
   \hfill \\
@@ -332,8 +332,7 @@ This association is represented by \emph{algorithmic subtyping context} $[[Θ]]$
   If $[[ α̂±[Γ] ]] \in [[Θ]]$, we denote $[[Γ]]$ as $[[Θ(α̂±)]]$.
 \end{definition}
 
-
-\subsection{Subsitutions}
+\subsubsection{Subsitutions}
 
 A substitution that operates on algorithmic type variables is denoted as
 $[[uσ]]$. It is defined as a total function from algorithmic 
@@ -387,7 +386,7 @@ variable appearing in $[[Ξ1]]$ to a term well-formed in $[[Γ]]$ and $[[Ξ2]]$.
   \end{enumerate}
 \end{definition}
 
-\subsection{Equivalence and Normalization}
+\subsubsection{Equivalence and Normalization}
 \label{sec:equivalence-normalization}
 
 The subtyping-induced equivalence (\cref{def:subDOne}) is non-trivial:
@@ -492,45 +491,8 @@ as the equality of their normal forms.
 
 The rest of this chapter is devoted to the
 central algorithm of the type system---the subtyping algorithm. 
-\Cref{fig:subtyping-algo} shows the dependency graph of the subtyping algorithm.
-The nodes represent the algorithmic procedures, and the edge $A \to B$ means that 
-$A$ uses $B$ as a sub-procedure.
 
-
-
-\begin{figure}[t]
-  \centering
-  \begin{tikzpicture}
-    [>={Stealth[scale=2]},node distance=2.4cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
-
-
-    % Define nodes
-    \node[] (1) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$\\(\cref{sec:subtyping})};
-    \node[below of=1] (3) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$\\(\cref{sec:subtyping})};
-    \node[left=1cm of 3] (2) {Subtyping Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
-    \node[right=1.4cm of 3] (5) {Unification\\ $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$\\ $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$\\(\cref{sec:unification})};
-    \node[below of=3] (4) {Upgrade\\$[[upgrade Γ ⊢ iP to Δ = iQ]]$\\(\cref{sec:lub})};
-    \node[below of=2] (6) {Least Upper Bound\\$[[Γ ⊨ iP1 ∨ iP2 = iQ]]$\\(\cref{sec:lub})};
-    \node[below of=6] (7) {Anti-Unification\\$[[Γ ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )]]$\\$[[Γ ⊨ iN1 ≈au iN2 ⫤ ( Ξ , uM , aus1 , aus2 )]]$\\(\cref{sec:antiunification})};
-    \node[below of=5] (8) {Unification Constraint Merge\\$[[Θ ⊢ UC1 & UC2 = UC3]]$\\(\cref{sec:constraint-merge})};
-    
-    % Define edges
-    \draw[->] (1) to (2);
-    \draw[->] (1) to (3);
-    \draw[->] (1) to (5);
-    \draw[->] (2) to (3);
-    \draw[->] (2) to (6);
-    \draw[->] (3) to (4);
-    \draw[->] (3) to (5);
-    \draw[->] (4) to (6);
-    \draw[->] (5) to (8);
-    \draw[->] (6) to (7);
-  \end{tikzpicture}  
-  \caption{Dependency graph of the subtyping algorithm}
-  \label{fig:subtyping-algo}
-\end{figure}
-
-\subsection{Subtyping}
+\subsubsection{Subtyping}
 \label{sec:subtyping}
 
 Now, we present the subtyping algorithm itself.
@@ -568,7 +530,7 @@ Let us overview the inference rules of the subtyping algorithm.
     $[[â⁺]]$ is a supertype of $[[iP]]$.
     However, the obvious constraint $[[â⁺ :≥ iP]]$ might be problematic
     if  $[[iP]]$ is not well-formed in $[[Θ(â⁺)]]$. For this reason,
-    we use the \emph{upgrade} procedure (it will be covered in \cref{sec:lub})
+    we use the \emph{upgrade} procedure (it will be covered in \cref{sec:a:lub})
     to find the minimal supertype of $[[iP]]$, which is well-formed in $[[Θ(â⁺)]]$. 
 
     Notice that this rule does not have a negative counterpart. This is
@@ -581,7 +543,7 @@ Let us overview the inference rules of the subtyping algorithm.
     shifted subtyping requires equivalence. In the presence of the algorithmic 
     variables, it means that the left and the right-hand sides of the subtyping
     must be unified. Hence, the shift rules invoke the unification algorithm, 
-    which will be discussed in \cref{sec:unification}. The unification 
+    which will be discussed in \cref{sec:a:unification}. The unification 
     returns the minimal set of constraints $[[UC]]$, which is necessary
     and sufficient for the subtyping. 
 
@@ -591,7 +553,7 @@ Let us overview the inference rules of the subtyping algorithm.
     and a call to the positive subtyping algorithm for the result types.
     After that, the resulting constraints are merged using the
     \emph{subtyping constraint merge} procedure, 
-    which is discussed in \cref{sec:constraint-merge}.
+    which is discussed in \cref{sec:a:constraint-merge}.
   \item \ruleref{\ottdruleAForallLabel} and \ruleref{\ottdruleAExistsLabel}
     are symmetric. These are the only places where 
     the algorithmic variables are introduced.
@@ -617,8 +579,8 @@ of the algorithm together give us the following simplified theorem:
   \end{itemize}
 \end{theorempreview}
 
-
-\subsection{Constraints}
+\subsubsection{Constraints}
+\label{sec:a:constraint-merge}
 
 Unification and subtyping algorithms are based on constraint generation.
 The constraints are represented by a set of constraint entries.
@@ -679,7 +641,7 @@ also to be a supertype of a positive type.
 \end{definition}
 
 
-\subsubsection{Constraint Satisfaction}
+\paragraph{Constraint Satisfaction}
 
 A constraint entry restricts a type that can be assigned to a variable.
 We say that a type satisfies a constraint entry if it can be assigned
@@ -718,8 +680,7 @@ the latter also specifies $[[uσ]]$ outside of the domain $[[dom(SC)]]$
 (see \cref{def:algo-subst-sig}).
 
 
-\subsubsection{Constraint Merge}
-\label{sec:constraint-merge}
+\paragraph{Constraint Merge}
 
 In this section, define the least upper bound 
 for constraints, which we call \emph{merge}.
@@ -766,7 +727,7 @@ can be merged in the following way:
     In this case, we find the least upper bound of the types from the input
     restrictions, 
     and as the output, restrict the variable to be a supertype of the result.
-    The least upper bound procedure will be discussed in \cref{sec:lub}.
+    The least upper bound procedure will be discussed in \cref{sec:a:lub}.
 \end{itemize}
 
 
@@ -856,8 +817,8 @@ a stronger soundness property holds (see \cref{lemma:unif-merge-soundness}):
   If $[[Θ ⊢ UC1 & UC2 = UC]]$ then $[[UC = UC1 ∪ UC2]]$.
 \end{theorempreview}
 
-\subsection{Unification}
-\label{sec:unification}
+\subsubsection{Unification}
+\label{sec:a:unification}
 
 The subtyping algorithm calls the following subtask:
 given two algorithmic types, we need to find the most general substitution 
@@ -911,7 +872,7 @@ unifying the input types.
     it unifies the arguments and the results of the arrows.
     After that, the resulting constraints are merged using the
     \emph{unification constraint merge} procedure, 
-    which is discussed in \cref{sec:constraint-merge}.
+    which is discussed in \cref{sec:a:constraint-merge}.
     Notice that $[[UC1]]$ and $[[UC2]]$ are guaranteed to be
     \emph{unification} constraints, not arbitrary \emph{subtyping} 
     constraints: it is important for modularizing the proofs, 
@@ -919,12 +880,12 @@ unifying the input types.
     can be proved independently from the \emph{subtyping} constraint merge.
 \end{itemize}
 
-\subsection{Least Upper Bound}
-\label{sec:lub}
+\subsubsection{Least Upper Bound}
+\label{sec:a:lub}
 
 In this section, we present
 the algorithm finding the least common supertype of two positive types. 
-It is used directly by the constraint merge procedure (\cref{sec:constraint-merge}),
+It is used directly by the constraint merge procedure (\cref{sec:a:constraint-merge}),
 and indirectly, through the type upgrade by positive subtyping
 (\cref{sec:subtyping}). Perhaps, the least upper bound is the least 
 intuitive part of the algorithm, and its correctness will be covered
@@ -1017,8 +978,8 @@ These properties are considered in more details in \cref{sec:upgrade-lemmas}.
   to be a \emph{subtype}.
 \end{paragraph}
 
-\subsection{Anti-unification}
-\label{sec:antiunification}
+\subsubsection{Anti-unification}
+\label{sec:a:antiunification}
 
 Next, we define the anti-unification procedure,
 also known as the \emph{most specific generalization}.
@@ -1107,32 +1068,29 @@ are normalized. This way, anti-unification up-to-equality rather than
 
 \newpage
 
-\section{Declarative Typing}
+\subsection{Declarative Typing}
 
-In the previous section, we presented the 
-type system together with subtyping specification 
-and the algorithm. In this section, 
-we describe the language under this type system, 
-together with the type inference specification
-and algorithm.  
+In the previous section, we presented the type system together with the subtyping
+specification and the algorithm. In this section, we describe the language under
+this type system, together with the type inference specification and algorithm.  
 
-\subsection{Grammar}
+\subsubsection{Grammar}
 
-First, we define the syntax of the language.
-The language combines System F with call-by-push-value 
-style. 
-\begin{definition}[Language Grammar]
-  \hfill
-  \begin{multicols}{2}
+The syntax of \fexists terms is given by the following grammar:
+\begin{definition}[Grammar of Terms]
+  \hfill\\
+  \begin{minipage}[t]{0.45\textwidth}
     \ottgrammartabular{
       \ottc\ottinterrule
     }
-
+  \end{minipage} \hfill
+  \begin{minipage}[t]{0.45\textwidth}
     \ottgrammartabular{
       \ottv\ottinterrule
     }
-  \end{multicols}
+  \end{minipage}
 \end{definition}
+
 Notice that the language does not have
 first-class applications: instead, 
 we use applicative let bindings---
@@ -1168,7 +1126,7 @@ standard let-bindings $[[let x = v; c]]$,
 and type annotations that can be added to any value or computation:
 $[[(v:iP)]]$ and $[[(c:iN)]]$.
 
-\subsection{Declarative Type Inference}
+\subsubsection{Declarative Type Inference}
 
 Next, we define the specification of the type 
 inference for our language. First, we introduce 
@@ -1204,6 +1162,7 @@ and normalization (\cref{alg:type-nf}).
 \end{itemize}
 
 \begin{definition}[Declarative Type Inference]
+  \hfill\\
   \label{def:declarative-typing}
   \ottdefnsDTLabeled
 \end{definition}
@@ -1266,8 +1225,7 @@ Let us discuss the rules of the application inference:
     which is expressed by the substitution $[[Γ ⊢ σ : {pas}]]$.
 \end{itemize}
 
-
-\section{Relation to System F}
+\subsection{Relation between \fexists and \systemf}
 
 Although based on \systemf, \fexists has an additional polarization structure.
 To demonstrate the relation between these systems we establish translations in
@@ -1281,7 +1239,7 @@ and universal quantifiers, and define existential quantifiers as a syntactic
 sugar using standard encodings. At the term level, we have variables,
 unannotated lambda abstractions, type abstractions, and term-level applications,
 but not type applications (they can be done implicitly); for convenience, we
-introduce multi-argument application, let-blinders, and existential constructors
+introduce multi-argument applications, let-blinders, and existential constructors
 and eliminators as syntactic sugar (see \cref{fig:systemf-grammar}).
 
 \begin{figure}
@@ -1332,7 +1290,7 @@ and eliminators as syntactic sugar (see \cref{fig:systemf-grammar}).
 %   \ottdefnSFWFLabeled{}
 % \end{figure}
 
-\subsection{Type-level Translation}
+\subsubsection{Type-level Translation}
 
 The translation between the types is defined in 
 \cref{fig:depolarization} and \cref{fig:polarization}.
@@ -1379,7 +1337,9 @@ lift it to the level of terms.
 
 % \lemmaDepolSubst
 
-\subsection{Term-level Translation}
+\subsubsection{Term-level Translation}
+
+\label{sec:term-level-translation}
 
 The term-level translation is defined not solely for terms, but for typing
 derivations (we call this translation \emph{elaboration}). 
@@ -1396,7 +1356,6 @@ with the corresponding \systemf term. This way,
 we define elaboration for each kind of judgment:
 subtyping, positive typing, negative typing, and application typing.
 
-\paragraph{From \fexists to \systemf: Subtyping Elaboration}
 The subtyping elaboration is defined in \cref{fig:subt-elaboration}.
 The soundness property that is preserved by the elaboration is stated in
 \cref{lemma:subt-elab-soundness}. Informally, $[[Γ ⊢ iN ≤ iM ⤳ ft]]$
@@ -1431,7 +1390,6 @@ Symmetrically, $[[Γ ⊢ iP ≥ iQ ⤳ ft]]$ implies $[[|Γ| ; · ⊢ ft : |iQ| 
 \end{itemize}
 
 
-\paragraph{From \fexists to \systemf: Typing Elaboration}
 Using the subtyping elaboration, we define the elaboration for the
 positive/negative typing and application typing in
 \cref{fig:typing-elaboration}.
@@ -1451,18 +1409,15 @@ so that the typing is preserved.
   \label{fig:subt-elaboration}
 \end{figure}
 
-\clearpage % This command will start a new page
+\clearpage
 \begin{figure}[t]
   \ottdefnTELNLabeledTwoColumns{}
-
-  \hfill
 
   \ottdefnTELPAppLabeled{}
   \caption{Typing elaboration from \fexists to \systemf}
   \label{fig:typing-elaboration}
 \end{figure}
-
-\paragraph{From \systemf to \fexists}
+\clearpage
 
 The other direction of translation is also represented as an elaboration. The
 inference rules are defined in \cref{fig:systemf-polarization}, and constitute
@@ -1477,13 +1432,13 @@ $[[fΓ ; fΦ ⊢ ft : fT ⤳ c]]$ implies $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑+|fT|+
   \label{fig:systemf-polarization}
 \end{figure}
 
-\section{Algorithmic Typing}
+\subsection{Algorithmic Typing}
 
 Next, we present the type inference algorithm, 
 which is sound and complete with respect to the declarative specification
 (\cref{def:declarative-typing}).
 
-\subsection{Algorithmic Type Inference}
+\subsubsection{Algorithmic Type Inference}
 
 Mirroring the declarative typing, 
 the algorithm is represented by an inference system of three mutually recursive
@@ -1507,10 +1462,10 @@ judgments:
 As subroutines, the algorithm calls
 subtyping (\cref{alg:subtyping}),
 type well-formedness (\cref{alg:wf}),
-constraint merge (\cref{sec:constraint-merge}),
+constraint merge (\cref{sec:a:constraint-merge}),
 normalization (\cref{alg:type-nf}),
 and constraint singularity which will be defined later in 
-\cref{sec:constraint-singularity}.
+\cref{sec:a:constraint-singularity}.
 It also relies on basic set operations and the ability to 
 deterministically choose fresh variables.
 
@@ -1615,7 +1570,7 @@ The correctness of the algorithm consists of its soundness and
 completeness, which is proved by mutual
 induction in \cref{lemma:typing-soundness,lemma:typing-completeness}.
 The simplified result is the following.
-\begin{theorempreview}
+\begin{theorempreview}[Correctness of Algorithmic Typing (simplified)]
   \hfill
   \begin{itemize}
     \item [$-$] $[[Γ; Φ ⊨ c : iN]]$ implies $[[Γ; Φ ⊢ c : iN]]$, 
@@ -1625,7 +1580,7 @@ The simplified result is the following.
   \end{itemize}
 \end{theorempreview}
 
-\subsection{Minimal Instantiation}
+\subsubsection{Minimal Instantiation}
 The minimal instantiation algorithm is used
 to infer the type of the bound variable in the un-annotated 
 applicative let-binders, as long as there exists a principal
@@ -1643,9 +1598,8 @@ The minimal instantiation algorithm is defined as follows:
   \ottdefnSINGminInstLabeled{}
 \end{algorithm}
 
-
-\subsection{Constraint Singularity}
-\label{sec:constraint-singularity}
+\subsubsection{Constraint Singularity}
+\label{sec:a:constraint-singularity}
 
 The singularity algorithm checks whether the constraint $[[SC]]$
 uniquely defines the substitution satisfying it, and if it does,
@@ -1724,162 +1678,164 @@ The correctness of the singularity algorithm is formulated as follows:
   normalized substitution satisfying $[[SC]]$.
 \end{theorempreview}
 
+\clearpage
+\section{Theorem Statements}
 
-\newpage
-
-\section{Theorem Statements: Declarative}
-\subsection{Type Well-Formedness}
+\subsection{Theorem Statements: Declarative}
+\subsubsection{Type Well-Formedness}
 \input{\proofGenDir/tex/wf-statements.tex}
 
-\subsection{Substitution}
+\subsubsection{Substitution}
 \input{\proofGenDir/tex/subst-statements.tex}
 
-\subsection{Declarative Subtyping}
+\subsubsection{Declarative Subtyping}
 \input{\proofGenDir/tex/decl-subtyping-statements.tex}
 
-\subsection{Equivalence}
+\subsubsection{Equivalence}
 \label{sec:decl-equiv-statements}
 \input{\proofGenDir/tex/equiv-statements.tex}
 
-\subsection{Variable Ordering}
+\subsubsection{Variable Ordering}
 \input{\proofGenDir/tex/ord-statements.tex}
 
-\subsection{Normaliztaion}
+\subsubsection{Normaliztaion}
 \input{\proofGenDir/tex/norm-statements.tex}
 
-\section{Declarative Typing}
+\subsection{Declarative Typing}
 \input{\proofGenDir/tex/decl-typing-statements.tex}
 
-\section{Relation to \systemf}
+\subsection{Relation to \systemf}
 \input{\proofGenDir/tex/translation-statements.tex}
 
-\section{Theorem Statements: Algorithmic}
+\subsection{Theorem Statements: Algorithmic}
 
-\subsection{Algorithmic Type Well-formedness}
+\subsubsection{Algorithmic Type Well-formedness}
 \input{\proofGenDir/tex/wf-algo-statements.tex}
 
-\subsection{Algorithmic Substitution}
+\subsubsection{Algorithmic Substitution}
 \input{\proofGenDir/tex/subst-algo-statements.tex}
 
-\subsection{Algorithmic Normalization}
+\subsubsection{Algorithmic Normalization}
 \input{\proofGenDir/tex/norm-alg-statements.tex}
 
-\subsection{Algorithmic Equivalence}
+\subsubsection{Algorithmic Equivalence}
 \input{\proofGenDir/tex/equiv-alg-statements.tex}
 
-\subsection{Unification Constraint Merge}
+\subsubsection{Unification Constraint Merge}
 \input{\proofGenDir/tex/unif-constraint-merge-statements.tex}
 
-\subsection{Unification}
+\subsubsection{Unification}
 \input{\proofGenDir/tex/unification-statements.tex}
 
-\subsection{Anti-unification}
+\subsubsection{Anti-unification}
 \input{\proofGenDir/tex/au-statements.tex}
 
-\subsection{Upper Bounds}
+\subsubsection{Upper Bounds}
 \label{sec:alg-upper-bounds-statements}
 \input{\proofGenDir/tex/lub-statements.tex}
 
-\subsection{Upgrade}
+\subsubsection{Upgrade}
 \label{sec:upgrade-statements}
 \input{\proofGenDir/tex/upgrade-statements.tex}
 
-\subsection{Constraint Satisfaction}
+\subsubsection{Constraint Satisfaction}
 \input{\proofGenDir/tex/constraint-sat-statements.tex}
 
-\subsection{Positive Subtyping}
+\subsubsection{Positive Subtyping}
 \input{\proofGenDir/tex/alg-pos-subtyping-statements.tex}
 
-\subsection{Subtyping Constraint Merge}
+\subsubsection{Subtyping Constraint Merge}
 \input{\proofGenDir/tex/constraint-merge-statements.tex}
 
-\subsection{Negative Subtyping}
+\subsubsection{Negative Subtyping}
 \input{\proofGenDir/tex/alg-neg-subtyping-statements.tex}
 
-\subsection{Singularity and Minimal Instantiation}
+\subsubsection{Singularity and Minimal Instantiation}
 \input{\proofGenDir/tex/singularity-statements.tex}
 
-\subsection{Correctness of the Typing Algorithm}
+\subsubsection{Correctness of the Typing Algorithm}
+\label{sec:alg-typing-statements}
 \input{\proofGenDir/tex/alg-typing-statements.tex}
 
+\clearpage
+\section{Theorem Proofs}
+\label{app:proofs}
 
+\subsection{Declarative Types}
 
-\section{Properties of the Declarative Type System}
-
-\subsection{Type Well-Formedness}
+\subsubsection{Type Well-Formedness}
 \input{\proofGenDir/tex/wf-lemmas.tex}
 
-\subsection{Substitution}
+\subsubsection{Substitution}
 \input{\proofGenDir/tex/subst-lemmas.tex}
 
-\subsection{Declarative Subtyping}
+\subsubsection{Declarative Subtyping}
 \input{\proofGenDir/tex/decl-subtyping-lemmas.tex}
 
-\subsection{Equivalence}
+\subsubsection{Equivalence}
 \label{sec:decl-equiv-lemmas}
 \input{\proofGenDir/tex/equiv-lemmas.tex}
 
-\subsection{Variable Ordering}
+\subsubsection{Variable Ordering}
 \input{\proofGenDir/tex/ord-lemmas.tex}
 
-\subsection{Normaliztaion}
+\subsubsection{Normaliztaion}
 \input{\proofGenDir/tex/norm-lemmas.tex}
 
-\section{Relation to \systemf}
+\subsection{Relation to \systemf}
 \input{\proofGenDir/tex/translation-proofs.tex}
 
-\section{Properties of the Algorithmic Type System}
 
-\subsection{Algorithmic Type Well-formedness}
+\subsection{Algorithmic Types}
+
+\subsubsection{Algorithmic Type Well-formedness}
 \input{\proofGenDir/tex/wf-algo-lemmas.tex}
 
-\subsection{Substitution}
+\subsubsection{Substitution}
 \input{\proofGenDir/tex/subst-algo-lemmas.tex}
 
-\subsection{Normalization}
+\subsubsection{Normalization}
 \input{\proofGenDir/tex/norm-alg-lemmas.tex}
 
-\subsection{Equivalence}
+\subsubsection{Equivalence}
 \input{\proofGenDir/tex/equiv-alg-lemmas.tex}
 
-\subsection{Unification Constraint Merge}
+\subsubsection{Unification Constraint Merge}
 \input{\proofGenDir/tex/unif-constraint-merge-lemmas.tex}
 
-\subsection{Unification}
+\subsubsection{Unification}
 \input{\proofGenDir/tex/unification-lemmas.tex}\
 
-\subsection{Anti-unification}
+\subsubsection{Anti-unification}
 \input{\proofGenDir/tex/au-lemmas.tex}
 
-\subsection{Upper Bounds}
+\subsubsection{Upper Bounds}
 \label{sec:alg-upper-bounds-proofs}
 \input{\proofGenDir/tex/lub-lemmas.tex}
 
-\subsection{Upgrade}
+\subsubsection{Upgrade}
 \label{sec:upgrade-lemmas}
 \input{\proofGenDir/tex/upgrade-lemmas.tex}
 
-\subsection{Constraint Satisfaction}
+\subsubsection{Constraint Satisfaction}
 \input{\proofGenDir/tex/constraint-sat-lemmas.tex}
 
-\subsection{Positive Subtyping}
+\subsubsection{Positive Subtyping}
 \input{\proofGenDir/tex/alg-pos-subtyping-lemmas.tex}
 
-\subsection{Subtyping Constraint Merge}
+\subsubsection{Subtyping Constraint Merge}
 \input{\proofGenDir/tex/constraint-merge-lemmas.tex}
 
-\subsection{Negative Subtyping}
+\subsubsection{Negative Subtyping}
 \input{\proofGenDir/tex/alg-neg-subtyping-lemmas.tex}
 
-
-\section{Properties of the Declarative Typing}
+\subsection{Declarative Typing}
 \input{\proofGenDir/tex/decl-typing-lemmas.tex}
 
+\subsection{Algorithmic Typing}
 
-\section{Properties of the Algorithmic Typing}
-
-\subsection{Singularity and Minimal Instantiation}
+\subsubsection{Singularity and Minimal Instantiation}
 \input{\proofGenDir/tex/singularity-lemmas.tex}
 
-\subsection{Correctness of the Typing Algorithm}
+\subsubsection{Correctness of the Typing Algorithm}
 \input{\proofGenDir/tex/alg-typing-lemmas.tex}

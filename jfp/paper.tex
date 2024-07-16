@@ -2,14 +2,29 @@
 
 % \usepackage{jfp-natbib-hack}
 \documentclass{jfp}
+\allowdisplaybreaks
 
 \input{../prelude.tex}
+
 
 \newcommand{\ottDir}{../ott/_gen}
 \newcommand{\genDir}{../paper/_gen}
 \newcommand{\proofGenDir}{../proofs/_gen}
 \input{\ottDir/defs.tex}
 \input{\ottDir/renew-ott.tex}
+
+
+\setlist{topsep=0pt, itemsep=1pt}
+% \setlist{nosep}
+\usepackage{etoolbox}
+\usepackage{parskip}
+% \AtBeginEnvironment{ottdefnblock}{\setlength{\abovedisplayskip}{0pt}}
+% \AtBeginEnvironment{ottdefnblock}{\setlength{\belowdisplayskip}{0pt}}
+\AtBeginEnvironment{ottdefnblock}{\setlength{\abovedisplayshortskip}{0pt}}
+\AtBeginEnvironment{ottdefnblock}{\setlength{\belowdisplayshortskip}{0pt}}
+
+\setlength{\parskip}{5pt}
+
 
 \renewcommand{\cite}{\citep}
 
@@ -209,8 +224,11 @@
 \bibliography{../biblio}
 
 \clearpage
-\appendix
+\begin{appendices}
 \input{\proofGenDir/content.tex}
+\end{appendices}
 
+\clearpage
+\tableofcontents
 \end{document}
 \endinput

@@ -47,14 +47,12 @@
       This way, $[[iQ]] = [[↓iM']] \in \{ [[↓iM']] \mid [[↓iM' ≈ ↓iM]] \} = \UB([[Γ⊢↓iM]])|_{\not\exists}$.
 
       In the other direction,
-      $
-      \begin{aligned}[t]
+      \begin{align*}
         [[↓iM' ≈ ↓iM]] &\Rightarrow [[G ⊢ ↓iM' ≈ ↓iM]]
                        && \text{by \cref{lemma:equiv-soundness,lemma:wf-equiv}}\\
                        &\Rightarrow [[G ⊢ ↓iM' ≥ ↓iM]]
                        && \text{by inversion}
-      \end{aligned}
-      $
+      \end{align*}
       \item $[[iQ]] = [[∃nbs.iQ']]$ (for non-empty $[[nbs]]$)\\
         Then the last rule applied to infer $[[G ⊢ ∃nbs.iQ' ≥ ↓iM]]$
         must be \ruleref{\ottdruleDOneExistsLabel}.
@@ -66,17 +64,14 @@
         that $[[nbs]]$ is not empty).
 
         In the other direction,
-
-        $
-        \begin{aligned}[t]
+        \begin{align*}
           [[ [iNs/nbs]↓iM' ≈ ↓iM]] &\Rightarrow [[G ⊢ [iNs/nbs] ↓iM' ≈ ↓iM]]
           && \text{by \cref{lemma:equiv-soundness,lemma:wf-equiv}}\\
                                   &\Rightarrow [[G ⊢ [iNs/nbs]↓iM' ≥ ↓iM]]
          && \text{by inversion}\\
                                   &\Rightarrow [[G ⊢ ∃nbs.↓iM' ≥ ↓iM]] 
          && \text{by \ruleref{\ottdruleDOneExistsLabel}}\\
-        \end{aligned}
-        $
+        \end{align*}
     \end{caseof}
     
   \end{caseof}
@@ -90,10 +85,8 @@
     Then from \cref{lemma:shape-of-supertypes},
     $\{[[nf(iQ)]]\ \mid \ [[G ⊢ iQ ≥ pb]] \} = \{[[ nf(∃nas.pb) ]] \ \mid \
     \text{for some }[[nas]]\}  = \{[[pb]]\}$ 
-  \item $[[iP = ∃nbs.iP']]$\\
-    $
-    \begin{aligned}[t]
-      & \NFUB([[Γ ⊢ ∃nbs.iP']]) \\
+  \item $[[iP = ∃nbs.iP']]$
+    \begin{align*} & \NFUB([[Γ ⊢ ∃nbs.iP']]) \\
                               &= \NFUB([[Γ, nbs ⊢ iP']]) \text{ not using $[[nbs]]$}\\
                               &= \{ [[nf(iQ)]] \mid [[Γ, nbs ⊢ iQ ≥ iP']]  \}
                                 \text{ not using $[[nbs]]$}
@@ -111,8 +104,7 @@
                               &= \{ [[nf(iQ)]] \mid [[Γ ⊢ iQ ≥ ∃nbs.iP']]
                                 \}
                               && \text{by \cref{lemma:shape-of-supertypes}}\\
-    \end{aligned}
-    $
+    \end{align*}
   
   \item $[[iP = ↓iM]]$ Let us prove the set equality by two inclusions.
   \begin{itemize}
@@ -295,8 +287,7 @@
      $[[fv(iQ) ∩ (Γ, {nas}, {nbs})]] \subseteq [[fv(iQ) ∩ Γ]]$, we prove that 
      $[[fv(iQ)]] \subseteq [[Γ]]$.
 
-     $
-     \begin{aligned}[t]
+     \begin{align*}
        [[fv(iQ)]] &\subseteq [[fv iP1 ∩ fv iP2]]
                     && \text{by \cref{lemma:fv-propagation}}\\
                   &\subseteq [[((Γ, nas) \ {nbs}) ∩ ((Γ, nbs) \ {nas})]]
@@ -307,8 +298,7 @@
                   & && \text{Barendregt's convention, $[[(Γ, nas) ∩ {nbs} = ∅]]$)}\\
                   & && \text{similarly, $[[fv(iP2)]] \subseteq [[(Γ, nbs) \ {nas}]]$}\\
                   &\subseteq [[Γ]]
-     \end{aligned}
-     $
+     \end{align*}
 
      To show $[[Γ ⊢ iQ ≥ ∃nas.iP1]]$, we apply
      \ruleref{\ottdruleDOneExistsLabel}.
@@ -382,9 +372,8 @@
       $[[nbs1]]$ or $[[nbs2]]$ is not empty\\
       \label{case:ub-completeness-exists}
 
-      Then\\
-      $
-      \begin{aligned}[t]
+      Then
+      \begin{align*}
         [[iQ]] &\in         \UB([[Γ ⊢ ∃nbs1.iQ1]]) \cap \UB([[Γ ⊢ ∃nbs2.iQ2]]) \\
               & \subseteq  \UB([[Γ, nbs1 ⊢ iQ1]]) \cap \UB([[Γ, nbs2 ⊢ iQ2]])
               && \text{definition of $\UB{}$}\\
@@ -393,8 +382,7 @@
               & = \{[[iQ']]\ \mid \ [[Γ, {nbs1}, {nbs2}  ⊢ iQ' ≥ iQ1]] \} \cap
                   \{[[iQ']]\ \mid \ [[Γ, {nbs1}, {nbs2}  ⊢ iQ' ≥ iQ2]] \}
               && \text{by \cref{lemma:shape-of-supertypes}}\\
-      \end{aligned}
-      $\\
+      \end{align*}
       It means that $[[Γ, {nbs1}, {nbs2} ⊢ iQ ≥ iQ1]]$ and $[[Γ, {nbs1}, {nbs2} ⊢ iQ ≥ iQ2]]$. 
       Then the next step of the algorithm---the recursive call 
       $[[Γ, {nbs1}, {nbs2} ⊨ iQ1 ∨ iQ2 = iQ']]$
@@ -413,33 +401,28 @@
       Then the set of common upper bounds of $[[↓iN]]$ and $[[pa]]$
       is empty, and thus, $[[iQ]] \in \UB([[Γ ⊢ iP1]]) \cap \UB([[Γ ⊢ iP2]])$
       gives a contradiction:\\
-      $
-      \begin{aligned}[t]
+      \begin{align*}
         [[iQ]] &\in         \UB([[Γ ⊢ pa]]) \cap \UB([[Γ ⊢ ↓iN]]) \\
               & = \{[[∃nas.pa]]\  \mid \cdots \} \cap
                   \{[[∃nbs.↓iM']]\ \mid \cdots \}
               && \text{by the definition of $\UB{}$}\\
               & = \emptyset
               && \text{since $[[pa]] \neq [[↓iM']]$ for any $[[iM']]$}\\
-      \end{aligned}
-      $
+      \end{align*}
     \item $[[iP1]] = [[↓iN]]$ and $[[iP2]] = [[pa]]$\\
       Symmetric to \cref{case:ub-completeness-unmatching}
 
     \item $[[iP1]] = [[pa]]$ and $[[iP2]] = [[pb]]$ (where $[[pb]] \neq [[pa]]$)\\
       Similarly to \cref{case:ub-completeness-unmatching},
       the set of common upper bounds is empty, which leads to the contradiction:
-
-      $
-      \begin{aligned}[t]
+      \begin{align*}
       [[iQ]] &\in         \UB([[Γ ⊢ pa]]) \cap \UB([[Γ ⊢ pb]]) \\
             & = \{[[∃nas.pa]]\  \mid \cdots \} \cap
                 \{[[∃nbs.pb]]\ \mid \cdots \}
             && \text{by the definition of $\UB{}$}\\
             & = \emptyset
             && \text{since $[[pa]] \neq [[pb]]$}
-      \end{aligned}
-      $
+      \end{align*}
     \item $[[iP1]] = [[pa]]$ and $[[iP2]] = [[pa]]$\\
       Then the algorithm terminates in one step (\ruleref{\ottdruleLUBVarLabel})
       and the result is $[[pa]]$, i.e. $[[G ⊨ pa ∨ pa = pa]]$.
@@ -453,15 +436,12 @@
       and then $[[Γ ⊢ pa ≥ pa]]$ by \ruleref{\ottdruleDOnePVarLabel}.
 
     \item $[[iP1]] = [[↓iM1]]$ and $[[iP2]] = [[↓iM2]]$ \label{case:ub-completeness-shift}\\
-      Then on the next step, the algorithm tries to anti-unify $[[nf(↓iM1)]]$ and
+      In the next step, the algorithm tries to anti-unify $[[nf(↓iM1)]]$ and
       $[[nf(↓iM2)]]$. By \cref{lemma:au-completeness}, to show that the
       anti-unification algorithm terminates, it suffices to
       demonstrate that a sound anti-unification solution exists.
-
       Notice that
-
-      $
-      \begin{aligned}[t]
+      \begin{align*}
         [[nf(iQ)]] &\in \NFUB([[Γ ⊢ nf(↓iM1)]]) \cap \NFUB([[Γ ⊢ nf(↓iM2)]]) \\
               &= \NFUB([[Γ ⊢ ↓nf(iM1)]]) \cap \NFUB([[Γ ⊢ ↓nf(iM2)]]) \\
               &=           \begin{array}{l}
@@ -483,8 +463,7 @@
                                               $[[ [iNs1/nas] ↓iM' = ↓nf(iM1)]]$}\\
                                               \text{, and $[[ [iNs2/nas] ↓iM' = ↓nf(iM2)]]$ }
                                             \end{array}}\\
-      \end{aligned}
-      $\\
+      \end{align*}
       The fact that the latter set is non-empty means that there exist $[[nas]],
       [[iM']]$, $[[iNs1]]$ and $[[iNs2]]$ such that
       \begin{enumerate}

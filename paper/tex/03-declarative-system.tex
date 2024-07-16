@@ -217,7 +217,7 @@ implemented by the \emph{ordering} function `$[[ord varset in iN]]$' and `$[[ord
 varset in iP]]$'. For a set of variables $[[varset]]$ and a type, it returns a
 list of variables from $[[varset]]$ that occur in the type in the \emph{order of
 their first occurrence}. For brevity, we omit the formal definition of ordering
-referring the reader to the appendix (\cref{appendix}).
+referring the reader to the appendix (\cref{alg:var-ordering}).
 
 \begin{figure}[t]
   
@@ -487,7 +487,7 @@ $[[Γ; Φ ⊢ v : iP ⤳ ft]]$ builds a term $[[ft]]$---a \systemf counterpart o
 $[[v]]$---of type $[[|iP|]]$.
 
 For brevity, we omit the formal definition of the term-level elaboration,
-referring the reader to the appendix (\cref{sec:term-translation}). We define
+referring the reader to the appendix (\cref{sec:term-level-translation}). We define
 the elaboration in such a way that it preserves the soundness invariants given
 in \cref{tab:elaboration-soundness}. 
 

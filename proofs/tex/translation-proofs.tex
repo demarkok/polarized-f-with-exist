@@ -317,21 +317,22 @@
 \lemmaTypPolWf*
 \begin{proof}
   We prove it by induction on $[[fΓ ⊢ fT]]$.
-  Let us consider the last rule applied to infer this judgment.
+  Let us consider the last rule applied to infer this judgment,
+  or, equivalently, the shape of $[[fΓ ⊢ fT]]$.
   \begin{caseof}
-    \item \ruleref{\ottdruleSFwfVarLabel}
+    \item $[[fΓ ⊢ a]]$.
       By inversion, $[[a ∊ fΓ]]$, 
       which implies $[[+|a|+]] = [[α⁺ ∊ +|fΓ|+]]$.
       Then $[[+|fΓ|+ ⊢ +|a|+ ]]$
       by \ruleref{\ottdruleWFTPVarLabel};
-    \item \ruleref{\ottdruleSFwfArrowLabel}
+    \item $[[fΓ ⊢ fA → fB]]$.
       By inversion,  $[[fΓ ⊢ fA]]$ and $[[fΓ ⊢ fB]]$,
       which by the induction hypothesis implies $[[+|fΓ|+ ⊢ +|fA|+]]$ and $[[+|fΓ|+ ⊢ +|fB|+]]$.
       Then $[[+|fΓ|+ ⊢ ↓(+|fA|+ → ↑+|fB|+)]] = [[+|fA → fB|+]]$ by 
       \ruleref{\ottdruleWFTShiftDLabel},
       \ruleref{\ottdruleWFTShiftULabel}, and
       \ruleref{\ottdruleWFTArrowLabel};
-    \item \ruleref{\ottdruleSFwfForallLabel}
+    \item $[[fΓ ⊢ ∀as.fT]]$.
       By inversion, $[[fΓ, a ⊢ fT]]$,
       which by the induction hypothesis implies $[[+|fΓ|+, α⁺ ⊢ +|fT|+]]$.
       Then $[[+|fΓ|+ ⊢ ∀α⁺.↑+|fT|+]] = [[+|∀a.fT|+]]$ by 

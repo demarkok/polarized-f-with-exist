@@ -601,31 +601,29 @@ the metric of the inference tree.
 
                                 \item Let us prove $[[ [σ0][uσ]uN = [uσ1][â⁺*/pas]uN]]$
                                     by the following reasoning
-                                    $$ 
-                                    \begin{aligned}[t] 
+                                    \begin{align*} 
                                         [[ [σ0][uσ]uN  ]] 
-                                            &= [[ [uσ0][uσ|{â⁺*}][â⁺*/pas][uσ]uN ]] 
-                                                && \text{by definition of $[[σ0]]$}\\
-                                            &= [[ [uσ0][uσ|{â⁺*}][â⁺*/pas][uσ|uv(uN)]uN ]]
-                                                && \text{by \cref{lemma:subst-restr-uv}}\\
-                                            &= [[ [uσ0][uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]]
-                                                && \text{$[[uv(uN) ∩ {â⁺*} = ∅]]$ and 
+                                            &= [[ [uσ0][uσ|{â⁺*}][â⁺*/pas][uσ]uN ]] \\
+                                            &\phantom{{} = {}} \text{by definition of $[[σ0]]$}\\
+                                            &= [[ [uσ0][uσ|{â⁺*}][â⁺*/pas][uσ|uv(uN)]uN ]] \\
+                                            &\phantom{{} = {}} \text{by \cref{lemma:subst-restr-uv}}\\
+                                            &= [[ [uσ0][uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]] \\
+                                            &\phantom{{} = {}} \text{$[[uv(uN) ∩ {â⁺*} = ∅]]$ and 
                                                     $[[{pas} ∩ Γ = ∅]]$}\\
-                                            &= [[ [uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]] 
-                                                && \text{$[[ [uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]]$
+                                            &= [[ [uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]] \\
+                                                & \text{since $[[ [uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]]$
                                                 is ground}\\
                                             &= [[ [uσ|{â⁺*} ∪ uv(uN)][â⁺*/pas]uN ]] \\
-                                            &= [[ [uσ|Ξ ∪ uv(uN)][â⁺*/pas]uN ]] 
-                                                && \text{by \cref{lemma:subst-restr-uv}:
+                                            &= [[ [uσ|Ξ ∪ uv(uN)][â⁺*/pas]uN ]] \\
+                                            &\phantom{{} = {}} \text{by \cref{lemma:subst-restr-uv}:
                                                     $[[ uv([â⁺*/pas]uN) = Ξ ∪ uv(uN)]]$}\\
-                                            &= [[ [uσ|Ξ ∪ uv(uN) ∪ uv(uM)][â⁺*/pas]uN ]] 
-                                                && \text{also by \cref{lemma:subst-restr-uv}}\\
-                                            &= [[ [(uσ0 ○ uσ)|Ξ ∪ uv(uN) ∪ uv(uM)][â⁺*/pas]uN ]]
-                                                && \text{$[[ [uσ|Ξ ∪ uv(uN) ∪ uv(uM)][â⁺*/pas]uN]]$ is ground}\\
-                                            &= [[ [uσ1][â⁺*/pas]uN ]]
-                                                && \text{by definition of $[[uσ1]]$}\\
-                                        \end{aligned} 
-                                    $$
+                                            &= [[ [uσ|Ξ ∪ uv(uN) ∪ uv(uM)][â⁺*/pas]uN ]] \\
+                                            &\phantom{{} = {}} \text{also by \cref{lemma:subst-restr-uv}}\\
+                                            &= [[ [(uσ0 ○ uσ)|Ξ ∪ uv(uN) ∪ uv(uM)][â⁺*/pas]uN ]] \\
+                                            &\phantom{{} = {}} \text{$[[ [uσ|Ξ ∪ uv(uN) ∪ uv(uM)][â⁺*/pas]uN]]$ is ground}\\
+                                            &= [[ [uσ1][â⁺*/pas]uN ]] \\
+                                                & \text{by definition of $[[uσ1]]$}\\
+                                        \end{align*} 
                                 \item $[[ [uσ]uM = [uσ1]uM]]$
                                         By definition of $[[uσ1]]$,
                                         $[[ [uσ1]uM ]]$ is equal to\\
@@ -728,21 +726,19 @@ the metric of the inference tree.
                     where $[[ord {α⁺,pcs'} in nf(nf(iM)) = pcs'']]$. 
             \end{itemize}
             It is left to show that $[[pcs'' = pcs]]$.
-            $$ 
-            \begin{aligned}[t] 
+            \begin{align*} 
                 [[ pcs'' ]] &= [[ord {α⁺,pcs'} in nf(nf(iM))]] \\
-                            &= [[ord {α⁺,pcs'} in nf(iM)]]
-                            && \text{by idempotence (\cref{lemma:norm-idemp})}\\
-                            &= [[ord {α⁺} ∪ {pbs} ∩ fv nf(iM) in nf(iM)]]
-                            && \text{by definition of $[[pcs']]$ and \cref{lemma:ord-soundness}}\\
+                            &= [[ord {α⁺,pcs'} in nf(iM)]]\\
+                            &\phantom{{} = {}} \text{by idempotence (\cref{lemma:norm-idemp})}\\
+                            &= [[ord {α⁺} ∪ {pbs} ∩ fv nf(iM) in nf(iM)]] \\
+                            &\phantom{{} = {}} \text{by definition of $[[pcs']]$ and \cref{lemma:ord-soundness}}\\
                             &= [[ord ({α⁺} ∪ {pbs} ∩ fv nf(iM)) ∩ fv nf(iM) in nf(iM)]]
                             && \text{by \cref{corollary:ord-weakening}}\\
                             &= [[ord ({α⁺} ∪ {pbs}) ∩ fv nf(iM) in nf(iM)]]
                             && \text{by set properties}\\
                             &= [[ord {α⁺,pbs} in nf(iM)]]\\
                             &= [[pcs]]
-                \end{aligned} 
-            $$
+                \end{align*} 
 
         \item \ruleref{\ottdruleDTUnpackLabel}\\
             Then we are proving that if

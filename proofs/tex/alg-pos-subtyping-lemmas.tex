@@ -213,15 +213,14 @@
                 \item $[[Γ ; dom(Θ) ⊢  nf(uN)]]$ because $[[Γ ; dom(Θ) ⊢  uN]]$ (\cref{corollary:wf-nf-algo})
                 \item $[[Γ ⊢ nf(iM)]]$ because $[[Γ ⊢ iM]]$ (\cref{corollary:wf-nf})
                 \item $[[ Θ ⊢ nf(uσ) : uv(uP) ]]$ because $[[Θ ⊢ uσ : uv(uP) ]]$ (\cref{corollary:norm-subst-sig-algo})
-                \item $ \begin{aligned}[t]
+                \item \begin{align*}
                         [[ Γ ⊢ [uσ]uN ≈ iM ]] &\Rightarrow [[ [uσ]uN ≈ iM ]]
                                             && \text {by \cref{lemma:equiv-completeness}}\\
                                             &\Rightarrow [[ nf([uσ]uN) = nf(iM) ]]
                                             && \text {by \cref{lemma:normalization-completeness}}\\
                                             &\Rightarrow [[ [nf(uσ)]nf(uN) = nf(iM) ]]
                                             && \text {by \cref{lemma:norm-subst-distr}}\\
-                        \end{aligned}
-                    $
+                        \end{align*}
             \end{itemize}
             By the completeness of the unification,
             $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$ exists, and

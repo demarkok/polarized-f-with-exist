@@ -31,7 +31,7 @@
       $[[varset ∩ fv iP → iN = {ordVars1} ∪ {ordVars2}]]$.
 
       On the other hand, 
-      As a set, $[[{ordVars1} ∪ {ordVars2}]]$
+      as a set $[[{ordVars1} ∪ {ordVars2}]]$
       is equal to $[[ordVars1, (ordVars2 \ {ordVars1})]]$. 
     \item  \ruleref{\ottdruleOForallLabel}.
       Then  the inferred ordering judgement has shape
@@ -144,10 +144,8 @@ distributes over intersection of $P$ and $Q$.
   \item $[[iN]]$ = $[[na]]$ \label{case:distr-mu-ord:var} \\
     let us consider four cases:
     \begin{caseof}
-    \item $[[na]] \in A$ and $[[na]] \in [[varset]]$\\ Then
-    \\
-      $
-      \begin{aligned}[t] [[ [mu] (ord varset in iN) ]] &= [[ [mu] (ord varset in na)]] \\
+    \item $[[na]] \in A$ and $[[na]] \in [[varset]]$. Then
+      \begin{align*} [[ [mu] (ord varset in iN) ]] &= [[ [mu] (ord varset in na)]] \\
                                                              &= [[ [mu] na ]]
                                                              && \text{by \ruleref{\ottdruleOPVarInLabel}}\\
                                                              &= [[nb]]
@@ -156,8 +154,7 @@ distributes over intersection of $P$ and $Q$.
                                                              && \text{by \ruleref{\ottdruleOPVarInLabel},
                                                                 because $[[nb]] \in [[ [mu]varset ]]$} \\
                                                              &= [[ord [mu] varset in [mu] na ]]
-       \end{aligned}
-       $
+       \end{align*}
      \item $[[na]] \notin A$ and $[[na]] \notin [[varset]]$\\
        Notice that
        $[[ [mu] (ord varset in iN) ]] = [[ [mu] (ord varset in na)]] = [[·]]$ by
@@ -196,8 +193,8 @@ distributes over intersection of $P$ and $Q$.
        On the other hand, $[[ [mu] (ord varset in iN) ]] = [[ [mu] (ord varset in na)]] = [[ [mu] na ]] = [[na]]$.
     \end{caseof}
   
-  \item $[[iN]] = [[↑iP]]$ \\
-    $\begin{aligned}[t]
+  \item $[[iN]] = [[↑iP]]$
+    \begin{align*}
        [[ [mu] (ord varset in iN) ]] &= [[ [mu] (ord varset in ↑iP) ]] \\
                                      &= [[ [mu] (ord varset in iP) ]]
                                      && \text{by \ruleref{\ottdruleOShiftULabel}}\\
@@ -208,10 +205,10 @@ distributes over intersection of $P$ and $Q$.
                                      &= [[ ord [mu]varset in  [mu]↑iP ]]
                                      && \text{by the definition of substitution}\\
                                      &= [[ ord [mu]varset in  [mu]iN ]]
-            \end{aligned}$
+    \end{align*}
           
-   \item $[[iN]] = [[iP → iM]]$  \\
-     $\begin{aligned}[t]
+   \item $[[iN]] = [[iP → iM]]$
+     \begin{align*}
         & [[ [mu] (ord varset in iN) ]] \\ 
         &= [[ [mu] (ord varset in iP → iM) ]] \\
         &= [[ [mu] (ordVars1, (ordVars2 \ {ordVars1})) ]]
@@ -226,36 +223,31 @@ distributes over intersection of $P$ and $Q$.
           $[[{ordVars1}]] \subseteq [[varset]]$ and
           $[[{ordVars2}]] \subseteq [[fv iN]]$ }\\
           &= [[ [mu] ordVars1, ([mu]ordVars2 \ {[mu]ordVars1}) ]]
-      \end{aligned}$ \\
+      \end{align*}
       \hfill\\
-      On the other hand, \\
-    $\begin{aligned}[t]
-       & [[  ord [mu] varset in [mu]iN ]] \\ 
-       &= [[ ord [mu] varset in [mu]iP → [mu]iM ]] \\
-       &= [[ ordVarsb1, (ordVarsb2 \ {ordVarsb1}) ]]
-       && \text{where } [[ord [mu] varset in [mu] iP = ordVarsb1]] \text{ and }  \\
-       & && [[ord [mu] varset in [mu] iM = ordVarsb2]]; 
-            \text{ then by the induction}\\
-       & && \text{hypothesis, $[[ordVarsb1]] = [[ [mu] ordVars1 ]]$,
-                   $[[ordVarsb2]] = [[ [mu] ordVars2 ]]$}\\
-       &= [[ [mu] ordVars1, ([mu]ordVars2 \ {[mu]ordVars1}) ]]
-     \end{aligned}$
+      On the other hand,
+       $[[  ord [mu] varset in [mu]iN ]] = 
+        [[ ord [mu] varset in [mu]iP → [mu]iM ]] = 
+        [[ ordVarsb1, (ordVarsb2 \ {ordVarsb1}) ]] = 
+        [[ [mu] ordVars1, ([mu]ordVars2 \ {[mu]ordVars1}) ]]$,
+        where  $[[ord [mu] varset in [mu] iP = ordVarsb1]]$ 
+        and $[[ord [mu] varset in [mu] iM = ordVarsb2]]$, 
+        then by the induction hypothesis, 
+        $[[ordVarsb1]] = [[ [mu] ordVars1 ]]$, 
+        $[[ordVarsb2]] = [[ [mu] ordVars2 ]]$.
    
-   \item $[[iN]] = [[∀ pas.iM]]$ \\
-     $\begin{aligned}[t]
+   \item $[[iN]] = [[∀ pas.iM]]$
+     \begin{align*}
           [[ [mu] (ord varset in iN) ]] &= [[ [mu] ord varset in ∀pas.iM]] \\
                                         &= [[ [mu] ord varset in iM]] \\
                                         &= [[ ord [mu] varset in [mu] iM]]
                                         && \text {by the induction hypothesis}\\
-     \end{aligned}$ \\
-     $ 
-     \begin{aligned}[t]
+     \end{align*}
+     \begin{align*}
        [[ (ord [mu] varset in [mu] iN) ]] &= [[ ord [mu] varset in [mu] ∀pas.iM ]] \\
                                           &= [[ ord [mu] varset in ∀pas.[mu]iM ]] \\
                                           &= [[ ord [mu] varset in [mu] iM ]] \\
-     \end{aligned}
-     $
-     
+     \end{align*}
   \end{caseof}
 \end{proof}
 
@@ -269,11 +261,10 @@ distributes over intersection of $P$ and $Q$.
       If $[[na ∊ Γ1]]$ then $[[na ∉ varset]]$, so $[[ ord varset in na ]] = [[·]]$.
       Moreover, $[[Γ2 ⊢ σ : Γ1]]$ means $[[ fv([σ]na) ⊆ Γ2 ]]$, and thus, 
       as a set, $[[ ord varset in [σ]na ]] = [[varset ∩ fv([σ]na)]] \subseteq [[varset ∩ Γ2]] = [[·]]$.
-    \item $[[iN = ∀pas.iM]]$\\
+    \item $[[iN = ∀pas.iM]]$
       We can assume $[[{pas} ∩ Γ1 = ∅]]$
       and $[[{pas} ∩ varset = ∅]]$. Then 
-
-      $\begin{aligned}[t]
+      \begin{align*}[t]
          [[ ord varset in [σ]iN ]] &= [[ ord varset in [σ]∀pas.iM ]] \\
                                    &= [[ ord varset in ∀pas.[σ]iM ]]\\
                                    &= [[ ord varset in [σ]iM ]]
@@ -281,9 +272,9 @@ distributes over intersection of $P$ and $Q$.
                                    &= [[ ord varset in iM ]]\\
                                    &= [[ ord varset in ∀pas.iM ]]\\
                                    &= [[ ord varset in iN ]]
-       \end{aligned}$
-    \item $[[iN = ↑iP]]$\\
-       $\begin{aligned}[t]
+       \end{align*}
+    \item $[[iN = ↑iP]]$
+       \begin{align*}[t]
         [[ ord varset in [σ]iN ]] &= [[ ord varset in [σ]↑iP ]] \\
                                    &= [[ ord varset in ↑[σ]iP ]]
                                    && \text{by the definition of substitution}\\
@@ -294,10 +285,10 @@ distributes over intersection of $P$ and $Q$.
                                    &= [[ ord varset in ↑iP ]]
                                    && \text{by the definition of ordering}\\
                                    &= [[ ord varset in iN ]]
-       \end{aligned} $
+       \end{align*}
 
-    \item $[[iN = iP → iM]]$\\
-       $ \begin{aligned}
+    \item $[[iN = iP → iM]]$
+       \begin{align*}
         [[ ord varset in [σ]iN ]] &= [[ ord varset in [σ](iP → iM) ]] \\
                                    &= [[ ord varset in ([σ]iP → [σ]iM) ]]
                                    && \text{def. of substitution}\\
@@ -310,7 +301,7 @@ distributes over intersection of $P$ and $Q$.
                                    &= [[ ord varset in iP → iM ]]
                                    && \text{def. of ordering}\\
                                    &= [[ ord varset in iN ]]
-       \end{aligned} $
+       \end{align*}
     \item The proofs of the positive cases are symmetric.
   \end{caseof}
 \end{proof}

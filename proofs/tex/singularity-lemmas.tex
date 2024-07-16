@@ -212,9 +212,7 @@
 
             Notice $[[Γ ⊢ iP' : scE]]$ means $[[Γ ⊢ iP' ≥ ∃nbs.↓iN1]]$.
             Let us show that it implies $[[Γ ⊢ iP' ≈ ∃α⁻.↓α⁻]]$.
-
-            $
-            \begin{aligned}
+            \begin{align*}
             [[Γ ⊢ iP' ≥ ∃nbs.↓iN1]] &\Rightarrow [[Γ ⊢ nf(iP') ≥ ∃nbs'.↓nf(iN1)]]\\
                                     &\phantom{\Rightarrow} \text{(where $[[ord {nbs} in iN' = nbs']]$)}
                                     && \text{by \cref{corollary:nf-pres-subt}} \\
@@ -227,9 +225,7 @@
                                     &\Rightarrow [[Γ, nbj ⊢ nf(iP') ≥ ↓nbj]] \\ 
                                     &\phantom{\Rightarrow} \text { and } [[nbj ∉ fv(nf(iP'))]]
                                     && \text{by \cref{lemma:shape-supertypes-norm}}\\
-            \end{aligned}
-            $
-
+            \end{align*}
             By \cref{lemma:shape-supertypes-norm}, 
             the last subtyping means that $[[nf(iP') = ∃nas.↓iN']]$,
             such that

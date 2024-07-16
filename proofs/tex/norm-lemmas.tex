@@ -134,8 +134,8 @@
    \item If the type is formed by $[[→]]$, $[[↑]]$, or $[[↓]]$, 
      the required equality follows from the congruence of the normalization and
      substitution and the induction hypothesis.
-     For example, if $[[iN]] = [[iP → iM]]$ then \\
-     $\begin{aligned}[t]
+     For example, if $[[iN]] = [[iP → iM]]$ then
+     \begin{align*}
         [[nf([σ] iN)]] &= [[ nf([σ] (iP → iM)) ]] \\
                         &= [[ nf([σ]iP → [σ]iM) ]]
                         && \text{By congruence of substitution} \\
@@ -148,9 +148,9 @@
                         &= [[ [nf(σ)]nf(iP → iM) ]]
                         && \text{By congruence of normalization} \\
                         &= [[ [nf(σ)]nf(iN) ]]
-      \end{aligned}$ \\
-    \item $[[iN]] = [[∀ pas.iM]]$ \label{case:norm-subst-commute} \\
-      $\begin{aligned}[t]
+      \end{align*}
+    \item $[[iN]] = [[∀ pas.iM]]$ \label{case:norm-subst-commute}
+      \begin{align*}
           [[ [nf(σ)] nf(iN) ]] &= [[ [nf(σ)] nf(∀pas.iM)]] \\
                             &= [[ [nf(σ)] ∀pas'.nf(iM) ]]
                             && \text {Where $[[pas']] = [[ ord {pas} in nf(iM)]]
@@ -158,9 +158,9 @@
                            & && 
                                \text{(the latter is by
                                \cref{corollary:normalization-ord})}\\
-        \end{aligned}$ \\
+        \end{align*}
 
-      $\begin{aligned}[t]
+      \begin{align*}
          [[ nf([σ]iN) ]] &= [[ nf([σ] ∀pas.iM)]] \\
                           &= [[ nf(∀pas.[σ]iM) ]]
                           && \text{Assuming $[[{pas} ∩ Γ1]] = \emptyset$
@@ -177,8 +177,7 @@
                              $[[Γ2]]$}\\
                           &= [[ ∀pas'.[nf(σ)]nf(iM) ]]
                           && \text {By the induction hypothesis}\\
-         \end{aligned}$ \\
-
+         \end{align*}
      To show the alpha-equivalence of 
      $[[ [nf(σ)] ∀pas'.nf(iM) ]]$ and $[[ ∀pas'.[nf(σ)]nf(iM) ]]$,
      we can assume that $[[{pas'} ∩ Γ1]] = \emptyset$, and $[[{pas'} ∩ Γ2]]
@@ -200,9 +199,8 @@
 \begin{proof}
   Mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$.
   \begin{caseof}
-  \item {\nameref{\ottdruleEOneForallLabel}} \label{case:ord-completeness:forall} \\
-
-    From the definition of the normalization,
+  \item {\nameref{\ottdruleEOneForallLabel}} \label{case:ord-completeness:forall}
+   From the normalization definition,
     \begin{itemize}
       \item $[[nf(∀pas.iN)]] = [[∀pas'.nf(iN)]]$ where $[[pas']]$ is $[[ord {pas} in nf(iN)]]$
       \item $[[nf(∀pbs.iM)]] = [[∀pbs'.nf(iM)]]$ where $[[pbs']]$ is $[[ord {pbs} in nf(iM)]]$
@@ -223,27 +221,29 @@
     \item[(i)] $[[ [mu] nf(iM) ]] = [[nf([mu]iM)]] = [[nf(iN)]]$.
       The first equality holds by \cref{lemma:norm-subst-commute}, the second---by the induction hypothesis.
 
-    \item[(ii)] $\begin{aligned}[t] [[ [mu]pbs' ]] &= [[ [mu] ord {pbs} in nf(iM) ]]
-                                                  && \text{by the definition of $[[pbs']]$ } \\
-                                                  &= [[ [mu] ord ({pbs} ∩ fv iM) in nf(iM) ]]
-                                                  && \text{from \cref{lemma:fv-nf,corollary:ord-weakening} } \\
-                                                  &= [[ ord [mu] ({pbs} ∩ fv iM) in [mu] nf(iM) ]]
-                                                  && \text{by \cref{lemma:distr-mu-ord}, because}\\
-                                                  & && \text{$[[{pas} ∩ fv iN]] \cap [[fv nf(iM)]] \subseteq [[{pas} ∩ fv iM ]]
-                                                     = \emptyset$}\\
-                                                  &
-                                                  && \text{$[[{pas} ∩ fv iN]] \cap [[({pbs} ∩ fv iM)]] \subseteq
-                                                     [[{pas} ∩ fv iM]] = \emptyset$} \\
-                                                  &= [[ ord [mu] ({pbs} ∩ fv iM) in nf(iN) ]]
-                                                  && \text{since $[[ [mu] nf(iM) ]] = [[nf(iN)]]$ is proved } \\
-                                                  &= [[ ord ({pas} ∩ fv iN) in nf(iN) ]]
-                                                  && \text{because $\mu$ is a bijection between}\\
-                                                  & && \text{$[[{pas} ∩ fv iN]]$ and $[[{pbs} ∩ fv iM]]$} \\
-                                                  &= [[ ord {pas} in nf(iN) ]]
-                                                  && \text{from \cref{lemma:fv-nf,corollary:ord-weakening} } \\
-                                                  &= [[ pas' ]]
-                                                  && \text{by the definition of $[[pas']]$} \\
-      \end{aligned}$
+    \item[(ii)] 
+    \begin{align*} 
+      [[ [mu]pbs' ]] &= [[ [mu] ord {pbs} in nf(iM) ]]
+                      && \text{by the definition of $[[pbs']]$ } \\
+                      &= [[ [mu] ord ({pbs} ∩ fv iM) in nf(iM) ]]
+                      && \text{from \cref{lemma:fv-nf,corollary:ord-weakening} } \\
+                      &= [[ ord [mu] ({pbs} ∩ fv iM) in [mu] nf(iM) ]]
+                      && \text{by \cref{lemma:distr-mu-ord}, because}\\
+                      & && \text{$[[{pas} ∩ fv iN]] \cap [[fv nf(iM)]] \subseteq [[{pas} ∩ fv iM ]]
+                        = \emptyset$}\\
+                      &
+                      && \text{$[[{pas} ∩ fv iN]] \cap [[({pbs} ∩ fv iM)]] \subseteq
+                        [[{pas} ∩ fv iM]] = \emptyset$} \\
+                      &= [[ ord [mu] ({pbs} ∩ fv iM) in nf(iN) ]]
+                      && \text{since $[[ [mu] nf(iM) ]] = [[nf(iN)]]$ is proved } \\
+                      &= [[ ord ({pas} ∩ fv iN) in nf(iN) ]]
+                      && \text{because $\mu$ is a bijection between}\\
+                      & && \text{$[[{pas} ∩ fv iN]]$ and $[[{pbs} ∩ fv iM]]$} \\
+                      &= [[ ord {pas} in nf(iN) ]]
+                      && \text{from \cref{lemma:fv-nf,corollary:ord-weakening} } \\
+                      &= [[ pas' ]]
+                      && \text{by the definition of $[[pas']]$} \\
+      \end{align*}
     \end{enumerate}
   \item {\nameref{\ottdruleEOneExistsLabel}} Same as for \cref{case:ord-completeness:forall}.
   \item Other rules are congruent, and thus, proved by the corresponding congruent alpha-equivalence rule,
@@ -286,10 +286,8 @@
     Then $[[iN]]$ is always normal, and
     the normality of $[[σ|{na}]]$ by the definition means $[[ [σ]na ]]$ is normal.
 
-  \item $[[iN]] = [[iP → iM]]$\\
-    \label{case:normal-after-subst-arrow}
-    $
-    \begin{aligned}[t]
+  \item $[[iN]] = [[iP → iM]]$ \label{case:normal-after-subst-arrow}
+    \begin{align*}
       [[ [σ](iP → iM) ]] \text{ is normal} &\iff [[ [σ]iP → [σ]iM ]] \text{ is normal}
                                            && \text{by substitution
                                               congruence} \\
@@ -316,13 +314,11 @@
                                                [[ iP → iM ]]  &\text{is normal} \\
                                                [[ σ|fv(iP→iM)]] &\text{is normal} \\
                                              \end{cases}
-    \end{aligned}
-    $
+    \end{align*}
   \item $[[iN]] = [[↑iP]]$\\
     By congruence and the inductive hypothesis, similar to \cref{case:normal-after-subst-arrow}
-  \item $[[iN]] = [[∀pas.iM]]$\\
-    $
-    \begin{aligned}[t]
+  \item $[[iN]] = [[∀pas.iM]]$
+    \begin{align*}
       &[[ [σ](∀pas.iM) ]] \text{ is normal} \\
        &\iff [[ (∀pas.[σ]iM) ]] \text{ is normal}
                                            && \text{assuming $[[pas]] \cap [[Γ1]] = \emptyset$ and
@@ -355,8 +351,7 @@
                                               \begin{aligned}
                                               &\text{since $[[fv(∀pas.iM) = fv(iM)]]$;}\\ &\text{by the definition of normalization}
                                               \end{aligned}
-    \end{aligned}
-    $
+    \end{align*}
   \item $[[iP]] = \dots$\\
     The positive cases are done in the same way as the negative ones.
 
@@ -376,8 +371,7 @@
 
 \corSubstPresDeclEquiv*
 \begin{proof}
-  $
-  \begin{aligned}[t] 
+  \begin{align*} 
     [[ iP ≈ iQ ]] &\Rightarrow        [[ nf(iP) = nf(iQ) ]]
                   && \text{by \cref{lemma:subt-equiv-algorithmization}}\\
                   &\Rightarrow [[ [nf(σ)]nf(iP) = [nf(σ)]nf(iQ)]]\\
@@ -385,6 +379,5 @@
                   && \text{by \cref{lemma:norm-subst-distr}}\\ 
                   &\Rightarrow        [[ [σ]iP ≈ [σ]iQ ]]
                   && \text{by \cref{lemma:subt-equiv-algorithmization}}\\
-  \end{aligned} 
-  $
+  \end{align*} 
 \end{proof}
