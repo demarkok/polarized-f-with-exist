@@ -108,7 +108,7 @@ anti-unification.
 
 We make the following \emph{\textbf{contributions}}:
 
-\paragraph*{Declarative Type System Specification (\cref{sec:overview,sec:declarative-system})} 
+\paragraph*{Declarative type system specification (\cref{sec:overview,sec:declarative-system})} 
     We present \fexists---a second-order polymorphic type system that supports first-class
     existential and universal quantifiers, both of which can be instantiated
     impredicatively. To evade the undecidability results surrounding subtyping
@@ -125,13 +125,14 @@ We make the following \emph{\textbf{contributions}}:
     language, we prove that every \fexists term can be embedded into \systemf
     and vice versa.
 
-\paragraph*{Type Inference Algorithm (\cref{sec:algorithm})} We give a type
-  inference algorithm implementing the declarative specification. Because our
-  system supports both existential and universal quantifiers, our implementation
-  of the subtyping relation requires the use of \emph{anti-unification}---a dual
-  to unification that finds the most specific generalization rather than the
-  most general unifier. To our knowledge, anti-unification has never been used
-  in the context of polymorphic type inference.
+\paragraph*{Type inference algorithm (\cref{sec:algorithm})} 
+  We give a type inference algorithm implementing the declarative specification.
+  Because our system supports both existential and universal quantifiers, our
+  implementation of the subtyping relation requires the use of
+  \emph{anti-unification}---a dual to unification that finds the most specific
+  generalization rather than the most general unifier. To our knowledge,
+  anti-unification has never been used in the context of polymorphic type
+  inference.
 
   The type inference algorithm itself is a purely local one, in the style of
   \citet{pierce2000:local}. The locality can be seen from the fact that 

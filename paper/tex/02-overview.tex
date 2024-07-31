@@ -81,7 +81,7 @@ the type inference capabilities and restrictions of \fexists.
   \label{fig:polarization-examples}
 \end{figure}
 
-\paragraph*{Application of a Polymorphic Function}
+\paragraph*{Application of a polymorphic function}
   A polymorphic function can be applied to a value of a concrete type. In this
   case, the explicit type application is not required: the inference algorithm
   automatically instantiates the quantified variables. For instance, the
@@ -89,7 +89,7 @@ the type inference capabilities and restrictions of \fexists.
   resulting type will be inferred by the algorithm:
   $$[[· ; Φ ⊢ let x = len([one,two,three]); return x : ↑Int]]$$
 
-\paragraph*{Polymorphic Self-application}
+\paragraph*{Polymorphic self-application}
   Unlike predicative systems, \fexists permits self-application of polymorphic
   functions. For instance, $[[id]]$ can be applied to itself resulting in a
   suspended polymorphic computation of type $[[↓(∀α⁺.α⁺ → ↑α⁺)]]$, which, in
@@ -97,7 +97,7 @@ the type inference capabilities and restrictions of \fexists.
   $$[[· ; Φ ⊢ let x = id(id); let y = x(x); return y : ↑↓(∀α⁺.α⁺ → ↑α⁺)]]$$
 
 
-\paragraph*{Non-example: Polymorphic Arguments}
+\paragraph*{Non-example: polymorphic arguments}
 The focus of our system is the \emph{local} type inference
 \cite{pierce2000:local}, which has certain limitations. In particular, the
 instantiation does not happen when the polymorphic term is in the argument
@@ -111,7 +111,7 @@ the syntax tree (\mbox{$[[ [two, three, nine] ]]$}), \ie bypass the locality.
 % since all the polymorphic variables of the arguments are instantiated:
 % $$[[· ; Φ ⊢ let x = map((id : ↓(Int → ↑Int)), [two, three, nine]); return x : ↑ List Int]]$$
 
-\paragraph*{Inferring the Common Supertype}
+\paragraph*{Inferring the common supertype}
   The function $[[choose]]$ takes two arguments of the same
   polymorphic type. To apply it to two values of different (concrete) types, 
   the inference algorithm must find the minimal type they can be coerced 
@@ -175,13 +175,13 @@ $[[iP → iQ → iN]]$ is equivalent to $[[iP → (iQ → iN)]]$;
 \end{itemize}
 
 
-\paragraph*{Syntactic Conventions}
+\paragraph*{Syntactic conventions}
 We always consider terms and types up to alpha-equivalence, 
 and substitution is capture-avoiding. In addition, we assume the quantification is associative,
 for example, $[[∀pas.∀pbs.iN]]$ and $[[∀pas,pbs.iN]]$
 represent the same type.
 
-\paragraph*{Type Context and Type Well-formedness}
+\paragraph*{Type context and type well-formedness}
 
 In the construction of \fexists, a type context (denoted as $[[Γ]]$) is
 represented as a \emph{set} of positive and negative type variables and it is
@@ -301,7 +301,7 @@ manageable alpha-equivalence by eliminating unused quantifiers and reordering
 the rest into a canonical permutation, effectively replacing subtyping-induced
 equivalence on terms with alpha-equivalence on their normal forms.
 
-\paragraph*{Least Upper Bound}
+\paragraph*{Least upper bound}
 Eventually, the subtyping algorithm reduces the initial subtyping problem to a set of
 constraints that need to be resolved. At this moment, another problem arises:
 as one variable can occur in multiple constraints, the resolution becomes non-trivial.

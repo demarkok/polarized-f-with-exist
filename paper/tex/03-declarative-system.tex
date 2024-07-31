@@ -58,7 +58,7 @@ well-formed in $[[Γ, pbs]]$.
 This way, application $[[ [σ]iN ]]$ instantiates (replaces) every
 $[[αi⁻]]$ in $[[iN]]$ with $[[σ]]([[αi⁻]])$.
 
-\paragraph*{Invariant Shifts}
+\paragraph*{Invariant shifts}
 As mentioned above, an important restriction that we put on the subtyping system
 is that subtyping of shifted types requires their equivalence, as shown in
 \ruleref{\ottdruleDOneShiftDLabel} and \ruleref{\ottdruleDOneShiftULabel}. The
@@ -428,7 +428,7 @@ and the depolarization from \fexists to \systemf.
 
 
 
-\paragraph*{Type-level Translation}
+\paragraph*{Type-level translation}
 
 The type depolarization (\cref{fig:depolarization}) simply forgets the polarization structure of types:
 it removes the shift operators and the polarities of the free type variables.
@@ -475,7 +475,7 @@ The context translation is used to formulate the soundness of the
 
 \footnotetext{Here the \systemf existential $[[∃ as . fT]]$ is a syntax sugar for its standard encoding $[[∀b.(∀as.(fT → b)) → b]]$}
 
-\paragraph*{Term-level Translation}
+\paragraph*{Term-level translation}
 
 The term-level translations between the systems are more complex. They are
 defined as \emph{elaborations} of the typing derivations. In other words, the

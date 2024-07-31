@@ -20,7 +20,7 @@ would make explicit instantiation $[[ c[iP] ]]$ ambiguous, as it is unclear
 whether $[[α⁺]]$ or $[[β⁺]]$ should be instantiated with $[[iP]]$.
 
 \vspace{\baselineskip}
-\paragraph*{Solution 1: Declarative Normalization}
+\paragraph*{Solution 1: declarative normalization}
 One way to resolve this ambiguity is to fix the order of quantifiers.  
 The algorithm already performs the ordering of the quantifiers in the normalization procedure.
 This way, we could require the inferred type to be normalized
@@ -32,7 +32,7 @@ algorithmic concept---normalization---is exposed to the `surface' declarative
 system.
 
 \vspace{\baselineskip}
-\paragraph*{Solution 2: Elementary Type Inference}
+\paragraph*{Solution 2: elementary type inference}
 An alternative approach to explicit type application
  was proposed by \cite{zhao22:elementary}.
 In this work, the subtyping relation is restricted 
@@ -394,7 +394,7 @@ Instead, this check is approximated by the combination of $[[Γ; Φ ⊢ v ⇒ iP
 and $[[Γ ⊢ iQ ≥ iP]]$.
 
 \vspace{\baselineskip}
-\paragraph*{The Algorithm}
+\paragraph*{The algorithm}
     The algorithmic system is bidirectionalized in a similar way. 
     Each typing premise and the conclusion of the rule are oriented
     to either `checking` ($[[⇐]]$) or `synthesizing` ($[[⇒]]$) mode,

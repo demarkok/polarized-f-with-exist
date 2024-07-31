@@ -42,7 +42,7 @@ First, let us discuss the syntax of the algorithmic system (\cref{fig:algo-synta
   \label{fig:algo-syntax}
 \end{figure}
 
-\paragraph*{Algorithmic Variables}
+\paragraph*{Algorithmic variables}
 To design a mode-correct inference system, we slightly modify the language we operate on.
 The entities (terms, types, contexts) that the algorithm manipulates we call \emph{algorithmic}. 
 They extend the previously defined declarative terms and types by adding 
@@ -59,7 +59,7 @@ The procedure of replacing declarative variables with algorithmic ones we call
 converse operation---\emph{dealgorithmization}---is denoted as $[[ nas/nuas ]]$ and 
 is used in the least upper bound procedure (\cref{sec:lub}).
 
-\paragraph*{Algorithmic Types}
+\paragraph*{Algorithmic types}
 The syntax of algorithmic types extends the declarative syntax by adding
 algorithmic variables as new terminals. We add positive algorithmic variables $[[α̂⁺]]$ 
 to the syntax of positive types, and negative algorithmic variables $[[α̂⁻]]$ to the 
@@ -67,7 +67,7 @@ syntax of negative types. All the constructors of the system can be applied
 to \emph{algorithmic} types, however, algorithmic variables cannot be abstracted by the
 quantifiers $[[∀]]$ and $[[∃]]$.
 
-\paragraph*{Algorithmic Contexts $[[Ξ]]$ and Well-formedness}
+\paragraph*{Algorithmic contexts $[[Ξ]]$ and well-formedness}
 To specify when algorithmic types are well-formed, we define algorithmic
 contexts $[[Ξ]]$ as sets of algorithmic variables. Then
 $[[Γ ; Ξ ⊢ uP]]$ and $[[Γ ; Ξ ⊢ uN]]$ represent the well-formedness judgment of
@@ -93,14 +93,14 @@ also add two base-case rules for them: \ruleref{\ottdruleWFATPUVarLabel} and
 \label{fig:algo-wf}
 \end{figure}
 
-\paragraph*{Instantiation Context $[[Θ]]$}
+\paragraph*{Instantiation context $[[Θ]]$}
 When one instantiates an algorithmic variable, one may only use type variables
 \emph{available in its scope}. As such, each algorithmic variable must remember
 the context at the moment when it was introduced. In our algorithm, this
 information is represented by an \emph{instantiation context} $[[Θ]]$---a set of
 pairs associating algorithmic variables and declarative contexts.
 
-\paragraph*{Algorithmic Substitution}
+\paragraph*{Algorithmic substitution}
 We define the algorithmic substitution $[[uσ]]$ as a mapping from algorithmic
 variables to \emph{declarative} types. The signature $[[Θ ⊢ uσ : Ξ]]$
 specifies the domain and the range of $[[uσ]]$: for each variable $[[α̂±]]$
@@ -110,7 +110,7 @@ is well-formed in $[[Γ]]$. In addition, we assume that $[[uσ]]$
 acts as the identity on the variables not in $[[Ξ]]$.
 
 
-\paragraph*{Algorithmic Normalization}
+\paragraph*{Algorithmic normalization}
 Similarly to well-formedness, the normalization of algorithmic types is defined
 by extending the declarative definition (\cref{fig:type-nf}) with the
 algorithmic variables. To the rules repeating the declarative normalization, we
@@ -174,7 +174,7 @@ decompose the algorithm's structure, thus simplifying the inductive proofs.
   \end{figure}
 
 
-\paragraph*{Auxiliary Functions}
+\paragraph*{Auxiliary functions}
 \begin{itemize}
   \item
     We define $[[dom(SC)]]$---the domain of constraint set $[[SC]]$---as a set of
@@ -190,7 +190,7 @@ decompose the algorithm's structure, thus simplifying the inductive proofs.
     a subcontext (subset) of $[[Γ]]$.
 \end{itemize}
 
-\paragraph*{Equivalent Substitutions}
+\paragraph*{Equivalent substitutions}
 In the proofs of the algorithm correctness, 
 we often state or require that two substitutions are equivalent
 on a given set of algorithmic variables.
@@ -575,7 +575,7 @@ These algorithms are shown in \cref{fig:type-upgrade}.
   \label{fig:type-upgrade}
 \end{figure}
 
-\paragraph*{The Type Upgrade}
+\paragraph*{Type upgrade}
 The type upgrade algorithm uses the least upper bound algorithm as a subroutine.
 It exploits the idea that the free variables of a positive type $[[iQ]]$
 cannot disappear in its subtypes (see \cref{prop:subtyping-preserves-fv}). 
@@ -599,7 +599,7 @@ we create \emph{two} types $[[iP1]]$ and $[[iP2]]$ by renaming $[[pnas]]$ in $[[
 to fresh disjoint variables $[[pnbs]]$ and $[[pncs]]$ respectively, and then 
 find the least upper bound of $[[iP1]]$ and $[[iP2]]$.
 
-\paragraph*{The Least Upper Bound}
+\paragraph*{The least upper bound}
 The Least Upper Bound algorithm we use operates on \emph{positive}
 types. This way, the inference rules of the algorithm
 analyze the three possible shapes of the input types:
@@ -785,7 +785,7 @@ Let us discuss the specific rules of the algorithm in detail.
       name of the `hole'.
   \end{itemize}
 
-\paragraph*{The Anti-Unification Rule}
+\paragraph*{The anti-unification rule}
   Rule \ruleref{\ottdruleAUAULabel} is the base case of the anti-unification
   algorithm. If the congruent rules are not applicable, 
   it means that the input types have a substantially different structure,
@@ -927,7 +927,7 @@ Next, we discuss them in detail.
   For instance, if $[[α⁺]]$ does not occur in the body of the lambda,
   the corresponding $[[∀]]$ will be removed.
 
-\paragraph*{Return and Thunk}
+\paragraph*{Return and thunk}
   Rules \ruleref{\ottdruleATThunkLabel} and \ruleref{\ottdruleATReturnLabel}
   are similar to the declarative rules: they make a recursive call
   to type the body of the thunk or the return expression and
@@ -943,7 +943,7 @@ Next, we discuss them in detail.
   and checks that the inferred type does not depend on $[[nas]]$
   by checking well-formedness $[[Γ ⊢ iN]]$.
 
-\paragraph*{Let Binders}
+\paragraph*{Let binders}
   Rule \ruleref{\ottdruleATVarLetLabel} represents the type inference of a
   standard let binder. It infers the type of the bound value $[[v]]$, and makes
   a recursive call to infer the type of the body in the extended context.
@@ -983,14 +983,14 @@ Next, we discuss them in detail.
   type $[[ [uσ]uQ ]]$.
 
 
-\paragraph*{Application to an Empty List of Arguments}
+\paragraph*{Application to an empty list of arguments}
   Rule \ruleref{\ottdruleATEmptyAppLabel}
   is the base case of application inference. 
   If the list of arguments is empty, 
   the inferred type is the type of the head,
   and the algorithm returns it after normalizing.
 
-\paragraph*{Application of a Polymorphic Type $[[∀]]$}
+\paragraph*{Application of a polymorphic type $[[∀]]$}
   Rule \ruleref{\ottdruleATForallAppLabel},
   analogously to the declarative case,
   is the rule ensuring the implicit elimination of the universal quantifiers. 
@@ -1003,7 +1003,7 @@ Next, we discuss them in detail.
   the head type to have at least one $[[∀]]$-quantifier, 
   and the list of arguments to be non-empty.
 
-\paragraph*{Application of an Arrow Type}
+\paragraph*{Application of an arrow type}
   Rule \ruleref{\ottdruleATArrowAppLabel}
   is the main rule of algorithmic application inference.
   It is applied when the head has an arrow type $[[uQ → uN]]$.
