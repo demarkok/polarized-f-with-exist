@@ -53,7 +53,7 @@
         Then the next step of the algorithm is the unification of $[[nf(uN)]]$ and $[[nf(iM)]]$,
         and it returns the resulting unification constraint $[[lift UC]] = [[SC]]$ as the result.
         By the soundness of unification (\cref{lemma:unification-soundness}),
-        $[[Θ ⊢ SC : uv(uN)]]$ and for any normalized $[[uσ]]$, $[[ Θ ⊢ uσ : SC ]]$
+        $[[Θ ⊢ SC : uv uN]]$ and for any normalized $[[uσ]]$, $[[ Θ ⊢ uσ : SC ]]$
         implies $[[ [uσ]nf(uN) = nf(iM) ]]$, 
         then we rewrite the left-hand side by \cref{lemma:norm-subst-distr}:
         $[[ nf([uσ]uN) = nf(iM) ]]$ and apply \cref{lemma:subt-equiv-algorithmization}:
@@ -212,7 +212,7 @@
                 \item $[[nf(uN)]]$ and $[[nf(iM)]]$ are normalized 
                 \item $[[Γ ; dom(Θ) ⊢  nf(uN)]]$ because $[[Γ ; dom(Θ) ⊢  uN]]$ (\cref{corollary:wf-nf-algo})
                 \item $[[Γ ⊢ nf(iM)]]$ because $[[Γ ⊢ iM]]$ (\cref{corollary:wf-nf})
-                \item $[[ Θ ⊢ nf(uσ) : uv(uP) ]]$ because $[[Θ ⊢ uσ : uv(uP) ]]$ (\cref{corollary:norm-subst-sig-algo})
+                \item $[[ Θ ⊢ nf(uσ) : uv uP ]]$ because $[[Θ ⊢ uσ : uv uP ]]$ (\cref{corollary:norm-subst-sig-algo})
                 \item \begin{align*}
                         [[ Γ ⊢ [uσ]uN ≈ iM ]] &\Rightarrow [[ [uσ]uN ≈ iM ]]
                                             && \text {by \cref{lemma:equiv-completeness}}\\
@@ -259,8 +259,8 @@
 
             To show that the recursive call terminates and that 
             $[[ Θ ⊢ uσ : SC1 \ {â⁻*} ]]$,
-            it suffices to build $[[Θ, â⁻*[G, nbs] ⊢ us0 : uv(uP0)]]$---an extension of $[[uσ]]$ with
-            $[[{â⁻*} ∩ uv(uP0)]]$ such that $[[Γ, nbs ⊢ [us0]uP0 ≥ iQ]]$.
+            it suffices to build $[[Θ, â⁻*[G, nbs] ⊢ us0 : uv uP0]]$---an extension of $[[uσ]]$ with
+            $[[{â⁻*} ∩ uv uP0]]$ such that $[[Γ, nbs ⊢ [us0]uP0 ≥ iQ]]$.
             Then by the induction hypothesis, $[[Θ, â⁻*[G, nbs] ⊢ us0 : SC1]]$,
             and hence, $[[ Θ  ⊢ uσ : SC1 \ {â⁻*} ]]$, as required.
 
@@ -268,17 +268,17 @@
                 \[
                     [[ [uσ0]β̂± ]]  = 
                     \begin{cases}
-                    [[ [σ]αi⁻ ]] & \text{if } [[β̂±]] = [[αî⁻]] \in [[{â⁻*} ∩ uv(uP0)]] \\
-                    [[ [uσ]β̂± ]] & \text{if } [[β̂±]] \in [[ uv(uP') ]]
+                    [[ [σ]αi⁻ ]] & \text{if } [[β̂±]] = [[αî⁻]] \in [[{â⁻*} ∩ uv uP0]] \\
+                    [[ [uσ]β̂± ]] & \text{if } [[β̂±]] \in [[ uv uP' ]]
                     \end{cases}
             \]
-            It is easy to see $[[Θ, â⁻*[Γ, nbs] ⊢ uσ0 : uv(uP0)]]$:
-            $[[uv(uP0)]] = [[ uv([â⁻*/nas]uP') ]] = [[{â⁻*} ∩ uv(uP0) ∪ uv(uP')]]$. Then
+            It is easy to see $[[Θ, â⁻*[Γ, nbs] ⊢ uσ0 : uv uP0]]$:
+            $[[uv uP0]] = [[ uv [â⁻*/nas]uP' ]] = [[{â⁻*} ∩ uv uP0 ∪ uv uP']]$. Then
             \begin{enumerate}
-                    \item for $[[αî⁻]] \in [[{â⁻*} ∩ uv(uP0)]]$, $[[ (Θ, â⁻*[Γ, nbs])(αî⁻) ⊢ [uσ0] αî⁻]]$, 
+                    \item for $[[αî⁻]] \in [[{â⁻*} ∩ uv uP0]]$, $[[ (Θ, â⁻*[Γ, nbs])(αî⁻) ⊢ [uσ0] αî⁻]]$, 
                     i.e. $[[ Γ, nbs ⊢ [σ]αi⁻ ]]$ holds since $[[Γ, nbs ⊢ σ :{nas}]]$,
-                    \item for $[[β̂±]] \in [[ uv(uP') ]] \subseteq [[dom(Θ)]]$, $[[ (Θ, â⁻*[Γ, nbs])(β̂±) ⊢ [uσ0] β̂± ]]$,
-                    i.e. $[[Θ(β̂±) ⊢ [uσ] β̂± ]]$ holds since $[[Θ ⊢ uσ : uv(uP)]]$ and $[[β̂±]] \in [[ uv(uP') ]] = [[uv(uP)]]$.
+                    \item for $[[β̂±]] \in [[ uv uP' ]] \subseteq [[dom(Θ)]]$, $[[ (Θ, â⁻*[Γ, nbs])(β̂±) ⊢ [uσ0] β̂± ]]$,
+                    i.e. $[[Θ(β̂±) ⊢ [uσ] β̂± ]]$ holds since $[[Θ ⊢ uσ : uv uP]]$ and $[[β̂±]] \in [[ uv uP' ]] = [[uv uP]]$.
             \end{enumerate}
 
             Now, let us show that $[[Γ, nbs ⊢ [us0]uP0 ≥ iQ]]$.
@@ -288,7 +288,7 @@
                 \item if this variable is a algorithmic variable $[[αî⁻]] \in [[â⁻*]]$, then
                 $[[ [uσ0]αî⁻ ]] = [[ [σ]αi⁻ ]]$ and\\
                 $[[ [uσ][σ][nas/â⁻*]αî⁻ ]] = [[ [uσ][σ]αi⁻ ]] = [[ [σ]αi⁻ ]]$,
-                \item if this variable is a algorithmic variable $[[β̂±]] \in [[ uv(uP0) \ {â⁻*} ]] = [[uv(uP')]]$, then
+                \item if this variable is a algorithmic variable $[[β̂±]] \in [[ uv uP0 \ {â⁻*} ]] = [[uv uP']]$, then
                 $[[ [uσ0]β̂± ]] = [[ [uσ]β̂± ]]$ and $[[ [uσ][σ][nas/â⁻*]β̂± ]] = [[ [uσ][σ]β̂± ]] = [[ [uσ]β̂± ]]$,
                 \item if this variable is a regular variable from $[[fv(uP0)]]$, both substitutions do not change it:
                 $[[ uσ0 ]]$, $[[ uσ ]]$ and $[[ nas / â⁻* ]]$ act on algorithmic variables, 

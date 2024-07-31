@@ -10,7 +10,7 @@
     \label{lemma:neg-subt-soundness}
     If $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; dom(Θ) ⊢ uN]]$ and 
     $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$, then 
-    $[[Θ ⊢ SC : uv(uN)]]$ and 
+    $[[Θ ⊢ SC : uv uN]]$ and 
     for any normalized $[[uσ]]$ such that $[[ Θ  ⊢ uσ : SC ]]$,
     $[[ Γ ⊢ [uσ]uN ≤ iM ]]$.
 \end{restatable}
@@ -19,6 +19,6 @@
     \label{lemma:neg-subt-completeness}
     Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iM]]$, $[[Γ ; dom(Θ) ⊢ uN]]$,
     and $[[uN]]$ does not contain negative unification variables ($[[α̂⁻]] \notin [[uv uN]]$).
-    Then for any $[[Θ ⊢ uσ : uv(uN)]]$ such that $[[Γ ⊢ [uσ]uN ≤ iM]]$,
+    Then for any $[[Θ ⊢ uσ : uv uN]]$ such that $[[Γ ⊢ [uσ]uN ≤ iM]]$,
     there exists $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$ and moreover, $[[ Θ ⊢ uσ : SC ]]$.
 \end{restatable}

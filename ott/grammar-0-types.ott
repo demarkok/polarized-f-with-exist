@@ -154,7 +154,10 @@ UC :: 'UC_' ::= {{ com unification constraint }}
    | UC \ varset         ::   :: Exclude
    | UC | varset         ::   :: Restr
    | UC1 ∪ UC2           ::   :: Union
-   | </ UCi // , // i /> ::   :: concat  {{ com concatenate }}
+   | UC1 , UC2           ::   :: Concat  {{ com concatenate }}
+   | UC1 ,.., UC2        ::   :: ConcatM {{ com concaiante multiple }}
+                                       {{ tex [[UC1]] , \ldots , [[UC2]] }}
+   % | </ UCi // , // i /> ::   :: concat  {{ com concatenate }}
    | ( UC )              :: S :: paren
 
 SC {{ tex C }} :: 'SC_' ::= {{ com subtyping constraint }}
@@ -165,7 +168,9 @@ SC {{ tex C }} :: 'SC_' ::= {{ com subtyping constraint }}
    | SC | varset         ::   :: Restr
    | SC1 ∪ SC2           ::   :: Union
    | lift UC             ::   :: Lift    {{ tex [[UC]] }}
-   | </ SCi // , // i /> ::   :: concat  {{ com concatenate }}
+   | SC1 , SC2           ::   :: Concat  {{ com concatenate }}
+   % | </ SCi // , // i /> ::   :: concat  {{ com concatenate }}
+   % | SC
    | ( SC )              :: S :: paren
 
 us {{ tex \widehat{\sigma} }}, uσ {{ tex \widehat{\sigma} }} :: 'us_' ::= {{ com unification substitution }}
@@ -530,12 +535,10 @@ terminals :: 'terminals_' ::=
   | let∃ :: :: letExists {{ tex \ottkw{let}^{\exists} }}
   | ●    :: :: bullet    {{ tex \bullet }}
   | ⇒>   :: :: spinInf   {{ tex \Rightarrow \hspace{-3pt} > }}
-  | <=<  :: :: compM     {{ tex \mathord{< \hspace{-5.3pt} = \hspace{-4.2pt} <} }}
+  | <=<  :: :: compM     {{ tex \mathord{< \hspace{-.36em} = \hspace{-.39em} <} }}
   | &    :: :: ampersand {{ tex \mathbin{\&} }}
   | ▷    :: :: triangle {{ tex \triangleright }}
   | ×    :: :: times     {{ tex \times }}
-
-
 
 
 
@@ -614,8 +617,8 @@ fun fv uP :: Γ :: uPfv by
 fun fv iP :: Γ :: Pfv by
 fun fv iN :: Γ :: Nfv by
 
-fun uv uN :: Ξ :: uNuv {{ tex \ottkw{fav} [[uN]] }} by 
-fun uv uP :: Ξ :: uPuv {{ tex \ottkw{fav} [[uP]] }} by 
+fun uv uN :: Ξ :: uNuv {{ tex \ottkw{fav}([[uN]]) }} by 
+fun uv uP :: Ξ :: uPuv {{ tex \ottkw{fav}([[uP]]) }} by 
 
 fun bv iN :: Γ :: Pbv {{ tex \ottkw{fbv} [[iN]] }} by 
 

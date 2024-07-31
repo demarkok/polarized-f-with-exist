@@ -29,11 +29,11 @@
       and well-formed in the same contexts.
       This way, by the induction hypothesis, 
       $[[uσ1|(uv uP) = uσ2|(uv uP)]]$ and $[[uσ1|(uv uN) = uσ2|(uv uN)]]$,
-      which since $[[uv (uP → uN) = uv uP ∪ uv uN]]$ implies
+      which since $[[uv uP → uN = uv uP ∪ uv uN]]$ implies
       $[[uσ1|(uv uP → uN) = uσ2|(uv uP → uN)]]$.
     \item $[[Γ; Ξ ⊢ ↑uP]]$. The proof is similar to the previous case:
       we apply congruence of substitution, equality, and normalization,
-      then the induction hypothesis, and then the fact that $[[uv (↑uP) = uv uP]]$.
+      then the induction hypothesis, and then the fact that $[[uv ↑uP = uv uP]]$.
   \end{caseof}
 \end{proof}
 
@@ -42,7 +42,7 @@
   First, let us normalize the types and the substitutions, and show that
   the given equivalences and well-formedness properties are preserved. 
   $[[Γ; Ξ ⊢ uP]]$ implies $[[Γ; Ξ ⊢ nf(uP)]]$ by \cref{corollary:wf-nf-algo}.
-  $[[Θ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ implies $[[ nf([uσ1]uP) = nf([uσ2]uP)]]$ by 
+  $[[Γ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ implies $[[ nf([uσ1]uP) = nf([uσ2]uP)]]$ by 
   \cref{lemma:subt-equiv-algorithmization}.
   Then $[[ nf([uσ1]uP) = nf([uσ2]uP)]]$ implies 
   $[[ [nf(uσ1)]nf(uP) = [nf(uσ2)]nf(uP)]]$ by \cref{lemma:norm-subst-distr}.
@@ -50,7 +50,7 @@
   $[[Θ ⊢ uσi : Ξ]]$ implies $[[Θ ⊢ nf(uσi) : Ξ]]$.
 
   This way, by \cref{lemma:subst-eq-algovar}, 
-  $[[Θ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ implies 
+  $[[Γ ⊢ [uσ1]uP ≈ [uσ2]uP]]$ implies 
   $[[nf(uσ1)|(uv nf(uP)) = nf(uσ2)|(uv nf(uP))]]$.
   Then by \cref{lemma:uv-nf}, 
   $[[nf(uσ1)|(uv uP) = nf(uσ2)|(uv uP)]]$,
@@ -58,6 +58,6 @@
   $[[Θ ⊢ uσ1 ≈ uσ2 : uv uP]]$.
 
   Symmetrically, 
-  $[[Θ ⊢ [uσ1]uN ≈ [uσ2]uN]]$ implies 
+  $[[Γ ⊢ [uσ1]uN ≈ [uσ2]uN]]$ implies 
   $[[Θ ⊢ uσ1 ≈ uσ2 : uv uN]]$.
 \end{proof}

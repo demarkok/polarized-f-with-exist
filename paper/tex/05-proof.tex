@@ -58,13 +58,13 @@ $[[SC0]]$-complying way to equate $[[uM0]]$ with $[[iM]]$.
                 \item $[[Γ ⊢ Θ]]$, 
                 \item $[[Γ ⊢ iM]]$,
                 \item $[[Γ; dom(Θ) ⊢ uN]]$ (free from \emph{negative} algorithmic variables), and
-                \item $[[Θ ⊢ uσ : uv(uN)]]$,
+                \item $[[Θ ⊢ uσ : uv uN]]$,
             \end{enumerate*}
             then there exist $[[uM0]]$, $[[Θ0]]$, and $[[SC0]]$ such that
             \begin{enumerate}
                 \item $[[ Γ; Φ; Θ ⊨ uN ● args ⇒> uM0 ⫤ Θ0; SC0 ]]$ and
                 \item \label{point:mostGeneral} for any other $[[uσ]]$ and $[[iM]]$ 
-                (where $[[Θ ⊢ uσ : uv(uN)]]$ and $[[Γ ⊢ iM]]$)
+                (where $[[Θ ⊢ uσ : uv uN]]$ and $[[Γ ⊢ iM]]$)
                     such that $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$, 
                     there exists $[[uσ']]$ such that 
                     \begin{enumerate*}
@@ -132,12 +132,12 @@ bottom-up. Next, we discuss the main results.
 %     \begin{itemize}
 %         \item [$+$] For normalized $[[uP]]$ and $[[iQ]]$ such that
 %         $[[Γ ; dom(Θ) ⊢ uP]]$ and $[[Γ ⊢ iQ]]$, 
-%         suppose that there exists $[[Θ ⊢ uσ : uv(uP)]]$ such that $[[ [uσ]uP = iQ ]]$,
+%         suppose that there exists $[[Θ ⊢ uσ : uv uP]]$ such that $[[ [uσ]uP = iQ ]]$,
 %         then $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$ for some $[[UC]]$.
         
 %         \item [$-$] For normalized $[[uN]]$ and $[[iM]]$ such that
 %         $[[Γ ; dom(Θ) ⊢  uN]]$ and $[[Γ ⊢ iM]]$,
-%         suppose that there exists $[[Θ ⊢ uσ : uv(uN)]]$ such that $[[ [uσ]uN = iM ]]$,
+%         suppose that there exists $[[Θ ⊢ uσ : uv uN]]$ such that $[[ [uσ]uN = iM ]]$,
 %         then $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$ for some $[[UC]]$.
 %    \end{itemize}
 % \end{lemma*}
@@ -353,7 +353,7 @@ The following lemma specifies this observation.
 
 \begin{lemma*}[Completeness of Positive Subtyping]
     Suppose that $[[Γ ⊢ Θ]]$, $[[Γ ⊢ iQ]]$ and $[[Γ ; dom(Θ) ⊢  uP]]$.
-    Then if there exists $[[uσ]]$ such that $[[Θ ⊢ uσ : uv(uP)]]$ and $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$,
+    Then if there exists $[[uσ]]$ such that $[[Θ ⊢ uσ : uv uP]]$ and $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$,
     then the subtyping algorithm succeeds: $[[Γ; Θ ⊨ uP ≥ iQ ⫤ SC]]$.
 \end{lemma*}
 
@@ -369,7 +369,7 @@ Greatest Common Subtype procedure to resolve the constraints.
 \begin{lemma*}[Completeness of Negative Subtyping]
     Suppose that $[[Γ ⊢ Θ]]$ and $[[Γ ⊢ iM]]$ and $[[Γ ; dom(Θ) ⊢ uN]]$
     and $[[uN]]$ does not contain negative unification variables ($[[α̂⁻]] \notin [[uv uN]]$).
-    Then for any $[[Θ ⊢ uσ : uv(uN)]]$ such that $[[Γ ⊢ [uσ]uN ≤ iM]]$,
+    Then for any $[[Θ ⊢ uσ : uv uN]]$ such that $[[Γ ⊢ [uσ]uN ≤ iM]]$,
     the subtyping algorithm succeeds: $[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$.
 \end{lemma*}
 

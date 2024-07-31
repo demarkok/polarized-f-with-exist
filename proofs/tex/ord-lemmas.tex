@@ -149,10 +149,11 @@ distributes over intersection of $P$ and $Q$.
                                                              &= [[ [mu] na ]]
                                                              && \text{by \ruleref{\ottdruleOPVarInLabel}}\\
                                                              &= [[nb]]
-                                                             && \text{for some $[[nb]] \in B$ (notice $[[nb]] \in [[ [mu]varset ]]$)} \\
+                                                             && \text{for some $[[nb]] \in B$}\\
+                                                             & && \text{(notice $[[nb]] \in [[ [mu]varset ]]$)} \\
                                                              &= [[ ord [mu]varset in nb ]]
                                                              && \text{by \ruleref{\ottdruleOPVarInLabel},
-                                                                because $[[nb]] \in [[ [mu]varset ]]$} \\
+                                                                as $[[nb]] \in [[ [mu]varset ]]$} \\
                                                              &= [[ord [mu] varset in [mu] na ]]
        \end{align*}
      \item $[[na]] \notin A$ and $[[na]] \notin [[varset]]$\\
@@ -216,9 +217,9 @@ distributes over intersection of $P$ and $Q$.
         &= [[ [mu] ordVars1, [mu](ordVars2 \ {ordVars1}) ]] \\
         &= [[ [mu] ordVars1, ([mu]ordVars2 \ [mu]{ordVars1}) ]]
           && \text{by induction on $[[ordVars2]]$;
-                  the inductive step is similar to 
+                  the ind. step is similar to 
                   \cref{case:distr-mu-ord:var}.}\\
-        & && \text{Notice that $[[mu]]$ is collision free on $[[{ordVars1}]]$ and $[[{ordVars2}]]$} \\
+        & && \text{notice that $[[mu]]$ is collision free on $[[{ordVars1}]]$ and $[[{ordVars2}]]$} \\
         & && \text{since
           $[[{ordVars1}]] \subseteq [[varset]]$ and
           $[[{ordVars2}]] \subseteq [[fv iN]]$ }\\
@@ -297,7 +298,7 @@ distributes over intersection of $P$ and $Q$.
                                    && \text{def. of ordering}\\
                                    &= [[ ord varset in iP]],\\
                                    &\phantom{=} ~ [[(ord varset in iM \ {ord varset in iP}) ]]
-                                   && \text{the induction hypothesis}\\
+                                   && \text{the ind. hypothesis}\\
                                    &= [[ ord varset in iP → iM ]]
                                    && \text{def. of ordering}\\
                                    &= [[ ord varset in iN ]]

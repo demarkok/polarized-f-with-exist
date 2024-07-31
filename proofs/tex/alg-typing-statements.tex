@@ -25,7 +25,7 @@
                 \item $[[Γ ⊢ Θ']]$
                 \item $[[Θ ⊆ Θ']]$
                 \item $[[Γ; dom(Θ') ⊢  uM]]$
-                \item $[[dom(Θ) ∩ uv(uM) ⊆ uv uN]]$
+                \item $[[dom(Θ) ∩ uv uM ⊆ uv uN]]$
                 \item $[[uM]]$ is normalized and free from negative algorithmic variables
                 \item $[[Θ'|uv uN ∪ uv uM ⊢ SC]]$
                 \item for any $[[ Θ' ⊢ uσ : uv uN ∪ uv uM ]]$,
@@ -49,12 +49,12 @@
                 \item $[[Γ ⊢ Θ]]$, 
                 \item $[[Γ ⊢ iM]]$,
                 \item $[[Γ; dom(Θ) ⊢ uN]]$ (free from negative algorithmic variables, that is $[[α̂⁻]] \notin [[uv uN]]$), and
-                \item $[[Θ ⊢ uσ : uv(uN)]]$,
+                \item $[[Θ ⊢ uσ : uv uN]]$,
             \end{enumerate}
             then there exist $[[uM']]$, $[[Θ']]$, and $[[SC]]$ such that
             \begin{enumerate}
                 \item $[[ Γ; Φ; Θ ⊨ uN ● args ⇒> uM' ⫤ Θ'; SC ]]$ and
-                \item for any $[[Θ ⊢ uσ : uv(uN)]]$ and $[[Γ ⊢ iM]]$
+                \item for any $[[Θ ⊢ uσ : uv uN]]$ and $[[Γ ⊢ iM]]$
                     such that $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> iM]]$, 
                     there exists $[[uσ']]$ such that 
                     \begin{enumerate}

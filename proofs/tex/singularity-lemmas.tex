@@ -39,18 +39,18 @@
             \end{itemize}
         \item \ruleref{\ottdruleSINGSingLabel}, which means that
             the inferred judgment has form $[[Γ ⊢ uP SC minby uσ]]$,
-            and by inversion, $[[uv(uP) ⊆ dom(SC)]]$ and
-            $[[SC|uv(uP) singular with uσ]]$. Let us apply the soundness of singularity
-            (\cref{lemma:singularity-soundness}) to $[[SC|uv(uP) singular with uσ]]$ to
+            and by inversion, $[[uv uP ⊆ dom(SC)]]$ and
+            $[[SC|uv uP singular with uσ]]$. Let us apply the soundness of singularity
+            (\cref{lemma:singularity-soundness}) to $[[SC|uv uP singular with uσ]]$ to
             obtain the following properties:
             \begin{itemize}
-                \item $[[ Θ ⊢ uσ : uv(uP) ∩ dom(SC) ]]$, which also means 
-                    $[[Θ ⊢ uσ : uv(uP)]]$,
-                \item $[[Θ ⊢ uσ : SC|uv(uP)]]$,
+                \item $[[ Θ ⊢ uσ : uv uP ∩ dom(SC) ]]$, which also means 
+                    $[[Θ ⊢ uσ : uv uP]]$,
+                \item $[[Θ ⊢ uσ : SC|uv uP]]$,
                 \item $[[uσ]]$ is normalized, and
-                \item for any other $[[Θ ⊢ uσ' : uv(uP) ]]$
-                    respecting $[[SC|uv(uP)]]$, we have
-                    $[[Θ ⊢ uσ' ≈ uσ : uv(uP)]]$. The latter means that
+                \item for any other $[[Θ ⊢ uσ' : uv uP ]]$
+                    respecting $[[SC|uv uP]]$, we have
+                    $[[Θ ⊢ uσ' ≈ uσ : uv uP]]$. The latter means that
                     $[[Γ ⊢ [uσ']uP ≈ [uσ]uP]]$, and in particular, 
                     $[[Γ ⊢ [uσ']uP ≥ [uσ]uP]]$.
             \end{itemize}
@@ -88,7 +88,7 @@
             If the entry restricting $[[α̂⁺]]$ in $[[SC]]$ is an \emph{equivalence} entry
             ($[[(α̂⁺ :≈ iQ) ∊ SC]]$), then we wish to apply
             \ruleref{\ottdruleSINGSingLabel}.
-            The first premise $[[uv(α̂⁺) ⊆ dom(SC)]]$  
+            The first premise $[[uv α̂⁺ ⊆ dom(SC)]]$  
             holds by assumption;
             to infer $[[SC|{α̂⁺} singular with uσ0]]$, 
             we apply the completeness of singularity (\cref{lemma:singularity-completeness}).
@@ -114,12 +114,12 @@
             hence, the completeness of singularity (\cref{lemma:singularity-completeness})
             can be applied to conclude that
             \begin{itemize}
-                \item $[[uv(uN) = dom(SC|uv uN)]]$, then $[[uv(uP) ⊆ dom(SC)]]$,
+                \item $[[uv uN = dom(SC|uv uN)]]$, then $[[uv uP ⊆ dom(SC)]]$,
                 \item $[[SC|uv uN singular with uσ0]]$ for some (normalized) $[[uσ0]]$.
             \end{itemize}
             It means $[[Γ ⊢ uP SC minby uσ0 ]]$, and then
-            since $[[uσ0]]$ is normalized and equivalent to $[[uσ0]]$ on $[[uv(uN)]]$,
-            and its domain is $[[uv(uN)]]$, $[[uσ0 = nf(uσ)]]$.
+            since $[[uσ0]]$ is normalized and equivalent to $[[uσ0]]$ on $[[uv uN]]$,
+            and its domain is $[[uv uN]]$, $[[uσ0 = nf(uσ)]]$.
         % \item $[[uP = ∃nas.uP']]$ 
         %     Then we wish to apply the induction hypothesis to show 
         %     $[[Γ, nas ⊢ uP' SC minby nf(uσ)]]$, which would imply 
@@ -165,7 +165,7 @@
             \cref{case:min-inst-completeness-down}
             to conclude that $[[Γ, nas ⊢ ↓uN SC minby nf(uσ)]]$.
             Then by \ruleref{\ottdruleSINGExistsLabel},
-            we have $[[Γ ⊢ ∃nas.↓uN minby nf(uσ)]]$.
+            we have $[[Γ ⊢ ∃nas.↓uN SC minby nf(uσ)]]$.
     \end{caseof}
 \end{proof}
 

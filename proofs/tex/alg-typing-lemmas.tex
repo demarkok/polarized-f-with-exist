@@ -239,13 +239,13 @@ the metric of the inference tree.
 
             By soundness of negative subtyping (\cref{lemma:neg-subt-soundness})
             applied to $[[Γ; Θ ⊨ uM' ≤ ↑iP ⫤ SC2]]$, we have
-            $[[Θ ⊢ SC2 : uv(uM')]]$, and thus, $[[uv(uM') = dom(SC2)]]$.
+            $[[Θ ⊢ SC2 : uv uM']]$, and thus, $[[uv uM' = dom(SC2)]]$.
 
             By soundness of constraint merge (\cref{lemma:merge-soundness}),
             $[[dom(SC) = dom(SC1) ∪ dom(SC2)]] \subseteq [[uv uM ∪ uv uM']]$
             Then by \cref{lemma:constraint-sat},
             let us take $[[uσ]]$ such that
-            $[[ Θ ⊢ uσ : uv(uM) ∪ uv(uM') ]]$ and 
+            $[[ Θ ⊢ uσ : uv uM ∪ uv uM' ]]$ and 
             $[[ Θ ⊢ uσ : SC ]]$.
             By the soundness of constraint merge, 
             $[[ Θ ⊢ uσ : SC1 ]]$ and $[[ Θ  ⊢ uσ : SC2 ]]$,
@@ -377,8 +377,8 @@ the metric of the inference tree.
                     \cref{corollary:wf-nf-algo},
                     and \cref{lemma:fv-nf} means that $[[nf(uN)]]$ is 
                     inherently free from negative algorithmic variables,
-                \item $[[dom(Θ) ∩ uv(nf(uN)) ⊆ uv uN]]$
-                    holds since $[[uv(nf(uN)) = uv(uN)]]$,
+                \item $[[dom(Θ) ∩ uv nf(uN) ⊆ uv uN]]$
+                    holds since $[[uv nf(uN) = uv uN]]$,
                 \item $[[Θ|uv uN ∪ uv nf(uN) ⊢ ·]]$ holds trivially,
                 \item suppose that $[[ Θ ⊢ uσ : uv uN ∪ uv nf(uN) ]]$.
                     To show $[[ Γ ; Φ ⊢ [uσ]uN ● · ⇒> [uσ]nf(uN) ]]$, we apply the corresponding 
@@ -419,10 +419,10 @@ the metric of the inference tree.
                                 \item $[[Γ ⊢ Θ']]$,
                                 \item $[[Θ ⊆ Θ']]$,
                                 \item $[[Γ; dom(Θ') ⊢  uM]]$ is normalized and free from negative algorithmic variables,
-                                \item $[[dom(Θ) ∩ uv(uM) ⊆ uv uN]]$,
-                                \item $[[Θ'|uv(uM) ∪ uv(uN) ⊢ SC2]]$, and thus, $[[dom(SC2) ⊆ uv(uM) ∪ uv(uN)]]$,
+                                \item $[[dom(Θ) ∩ uv uM ⊆ uv uN]]$,
+                                \item $[[Θ'|uv uM ∪ uv uN ⊢ SC2]]$, and thus, $[[dom(SC2) ⊆ uv uM ∪ uv uN]]$,
                                 \item for any $[[uσ]]$ such that
-                                    $[[Θ ⊢ uσ : uv(uM) ∪ uv(uN) ]]$
+                                    $[[Θ ⊢ uσ : uv uM ∪ uv uN ]]$
                                     and 
                                     $[[ Θ' ⊢ uσ : SC2 ]]$, we have 
                                     $[[ Γ ; Φ ⊢ [uσ]uN ● args ⇒> [uσ]uM ]]$;
@@ -438,10 +438,10 @@ the metric of the inference tree.
                 \item $[[Γ ⊢ Θ']]$ is shown above,
                 \item $[[Θ ⊆ Θ']]$ is shown above,
                 \item $[[Γ; dom(Θ') ⊢  uM]]$ is normalized and free from negative algorithmic variables, as shown above,
-                \item $[[dom(Θ) ∩ uv(uM) ⊆ uv uN ⊆ uv(uQ → uN)]]$
+                \item $[[dom(Θ) ∩ uv uM ⊆ uv uN ⊆ uv uQ → uN]]$
                     (the first inclusion is shown above, the second one is by definition),
-                \item To show $[[Θ'|uv(uQ) ∪ uv(uN) ∪ uv(uM) ⊢ SC]]$,
-                    first let us notice that $[[uv(uQ) ∪ uv(uN) ∪ uv(uM) ⊆ dom(SC)]]$,
+                \item To show $[[Θ'|uv uQ ∪ uv uN ∪ uv uM ⊢ SC]]$,
+                    first let us notice that $[[uv uQ ∪ uv uN ∪ uv uM ⊆ dom(SC)]]$,
                     as mentioned above.
                     Then we demonstrate 
                     $[[Θ' ⊢ SC]]$:
@@ -453,7 +453,7 @@ the metric of the inference tree.
                         \item for any $[[ Θ' ⊢ uσ : SC ]]$, $[[ Θ' ⊢ uσ : SCi ]]$ holds;
                     \end{enumerate}
                 \item Suppose that 
-                    $[[ Θ' ⊢ uσ : uv(uQ) ∪ uv(uN) ∪ uv(uM) ]]$
+                    $[[ Θ' ⊢ uσ : uv uQ ∪ uv uN ∪ uv uM ]]$
                     and $[[ Θ' ⊢ uσ : SC ]]$.
                     To show $[[ Γ ; Φ ⊢ [uσ](uQ → uN) ● v , args ⇒> [uσ]uM ]]$, 
                     that is $[[ Γ ; Φ ⊢ [uσ]uQ → [uσ]uN ● v , args ⇒> [uσ]uM ]]$,
@@ -462,15 +462,15 @@ the metric of the inference tree.
                     \begin{enumerate}
                         \item $[[Γ; Φ ⊢ v : iP]]$ holds as shown above,
                         \item $[[Γ ⊢ [uσ]uQ ≥ iP]]$ holds 
-                            since $[[Γ ⊢ [uσ|uv(uQ)]uQ ≥ iP]]$ by the soundness of subtyping 
+                            since $[[Γ ⊢ [uσ|uv uQ]uQ ≥ iP]]$ by the soundness of subtyping 
                             as noted above:
-                            since $[[ Θ' ⊢ uσ : SC ]]$ implies $[[ Θ' ⊢ uσ|uv(uQ) : SC1 ]]$,
-                            which we strengthen to $[[ Θ ⊢ uσ|uv(uQ) : SC1 ]]$,
+                            since $[[ Θ' ⊢ uσ : SC ]]$ implies $[[ Θ' ⊢ uσ|uv uQ : SC1 ]]$,
+                            which we strengthen to $[[ Θ ⊢ uσ|uv uQ : SC1 ]]$,
                         \item $[[Γ; Φ ⊢ [uσ]uN ● args ⇒> [uσ]uM]]$ holds by the induction hypothesis
                             as shown above,
                             since $[[ Θ' ⊢ uσ : SC ]]$ implies $[[ Θ' ⊢ uσ : SC2 ]]$,
-                            and then $[[ Θ' ⊢ uσ | uv(uN) ∪ uv(uM) : SC2 ]]$
-                            and $[[ Θ ⊢ uσ | uv(uN) ∪ uv(uM) : uv(uN) ∪ uv(uM) ]]$.
+                            and then $[[ Θ' ⊢ uσ | uv uN ∪ uv uM : SC2 ]]$
+                            and $[[ Θ ⊢ uσ | uv uN ∪ uv uM : uv uN ∪ uv uM ]]$.
                     \end{enumerate}
             \end{enumerate}
 
@@ -496,13 +496,13 @@ the metric of the inference tree.
                         \item $[[Γ ⊢ Θ']]$,
                         \item $[[Θ, â⁺*[Γ] ⊆ Θ']]$,
                         \item $[[Γ; dom(Θ') ⊢ uM]]$ is normalized and free from negative algorithmic variables,
-                        \item $[[dom(Θ, â⁺*[Γ]) ∩ uv(uM) ⊆ uv([â⁺*/pas]uN)]]$,
-                        \item $[[Θ'|Ξ ∪ uv(uN) ∪ uv(uM) ⊢ SC]]$, where $[[Ξ]]$ denotes $[[uv([â⁺*/pas]uN) ∩ {â⁺*}]]$,
+                        \item $[[dom(Θ, â⁺*[Γ]) ∩ uv uM ⊆ uv [â⁺*/pas]uN]]$,
+                        \item $[[Θ'|Ξ ∪ uv uN ∪ uv uM ⊢ SC]]$, where $[[Ξ]]$ denotes $[[uv [â⁺*/pas]uN ∩ {â⁺*}]]$,
                             that is the algorithmization of the $[[∀]]$-variables that are actually used in $[[uN]]$.
                         \item  \label{typing-soundness:forall-ih}
                             for any 
                             $[[uσ]]$ such that 
-                            $[[Θ' ⊢ uσ : Ξ ∪ uv(uN) ∪ uv(uM)]]$ and $[[ Θ' ⊢ uσ : SC ]]$, 
+                            $[[Θ' ⊢ uσ : Ξ ∪ uv uN ∪ uv uM]]$ and $[[ Θ' ⊢ uσ : SC ]]$, 
                             we have $[[ Γ ; Φ ⊢ [uσ][â⁺*/pas]uN ● args ⇒> [uσ]uM ]]$.
                     \end{enumerate}
             \end{enumerate}
@@ -512,21 +512,21 @@ the metric of the inference tree.
                 \item $[[Γ ⊢ Θ']]$ is shown above;
                 \item $[[Θ ⊆ Θ']]$ since $[[Θ, â⁺*[Γ] ⊆ Θ']]$;
                 \item $[[Γ; dom(Θ') ⊢  uM]]$ is normalized and free from negative algorithmic variables, as shown above;
-                \item $[[dom(Θ) ∩ uv(uM) ⊆ uv(uN)]]$
+                \item $[[dom(Θ) ∩ uv uM ⊆ uv uN]]$
                     since 
-                    $[[dom(Θ, â⁺*[Γ]) ∩ uv(uM) ⊆ uv([â⁺*/pas]uN)]]$
+                    $[[dom(Θ, â⁺*[Γ]) ∩ uv uM ⊆ uv [â⁺*/pas]uN]]$
                     implies 
-                    $[[(dom(Θ) ∪ {â⁺*}) ∩ uv(uM) ⊆ uv(uN) ∪ {â⁺*}]]$,
+                    $[[(dom(Θ) ∪ {â⁺*}) ∩ uv uM ⊆ uv uN ∪ {â⁺*}]]$,
                     thus,
-                    $[[dom(Θ) ∩ uv(uM) ⊆ uv(uN) ∪ {â⁺*}]]$,
+                    $[[dom(Θ) ∩ uv uM ⊆ uv uN ∪ {â⁺*}]]$,
                     and since $[[dom(Θ)]]$ is disjoint with $[[{â⁺*}]]$,
-                    $[[dom(Θ) ∩ uv(uM) ⊆ uv(uN)]]$;
+                    $[[dom(Θ) ∩ uv uM ⊆ uv uN]]$;
 
-                \item $[[Θ'|uv(uN) ∪ uv(uM) ⊢ SC | uv(uN) ∪ uv(uM)]]$ follows from 
-                    $[[Θ'|Ξ ∪ uv(uN) ∪ uv(uM) ⊢ SC]]$ if we restrict both sides to 
-                    $[[uv(uN) ∪ uv(uM)]]$.
-                \item Let us assume $[[ Θ' ⊢ uσ : uv(uN) ∪ uv(uM) ]]$ and
-                    $[[ Θ' ⊢ uσ : SC | uv(uN) ∪ uv(uM) ]]$.
+                \item $[[Θ'|uv uN ∪ uv uM ⊢ SC | uv uN ∪ uv uM]]$ follows from 
+                    $[[Θ'|Ξ ∪ uv uN ∪ uv uM ⊢ SC]]$ if we restrict both sides to 
+                    $[[uv uN ∪ uv uM]]$.
+                \item Let us assume $[[ Θ' ⊢ uσ : uv uN ∪ uv uM ]]$ and
+                    $[[ Θ' ⊢ uσ : SC | uv uN ∪ uv uM ]]$.
                     Then to show $[[ Γ ; Φ ⊢ [uσ]∀pas.uN ● args ⇒> [uσ]uM ]]$,
                     that is $[[ Γ ; Φ ⊢ ∀pas.[uσ]uN ● args ⇒> [uσ]uM ]]$,
                     we apply the corresponding declarative rule \ruleref{\ottdruleDTForallAppLabel}.
@@ -548,11 +548,11 @@ the metric of the inference tree.
                     \begin{itemize}
                         \item To show $[[Γ ⊢ σ0 :{pas}]]$,
                             let us take $[[αi⁺ ∊ {pas}]]$.
-                            If $[[ αî⁺ ∊ uv(uM)]]$
+                            If $[[ αî⁺ ∊ uv uM]]$
                             then $[[ [σ0]αi⁺ = [uσ]αî⁺ ]]$,
-                            and $[[ Θ' ⊢ uσ : uv(uN) ∪ uv(uM) ]]$
+                            and $[[ Θ' ⊢ uσ : uv uN ∪ uv uM ]]$
                             implies $[[Θ'(α̂⁺) ⊢ [uσ]α̂⁺]]$.
-                            Analogously, if $[[ αî⁺ ∊ {â⁺*} \ uv(uM)]]$
+                            Analogously, if $[[ αî⁺ ∊ {â⁺*} \ uv uM]]$
                             then $[[ [σ0]αi⁺ = [uσ0]αî⁺ ]]$,
                             and $[[Θ' ⊢ uσ0 : {â⁺*}]]$ implies $[[Θ'(αî⁺) ⊢ [uσ0]αî⁺]]$.
                             In any case, $[[Θ'(αî⁺) ⊢ [σ]αi⁺ ]]$
@@ -562,7 +562,7 @@ the metric of the inference tree.
                         \item Let us show $[[Γ; Φ ⊢ [σ0][uσ]uN ● args ⇒> [uσ]uM ]]$.
                             It suffices to construct $[[uσ1]]$ such that
                             \begin{enumerate}
-                                \item $[[Θ' ⊢ uσ1 : Ξ ∪ uv(uN) ∪ uv(uM)]]$,
+                                \item $[[Θ' ⊢ uσ1 : Ξ ∪ uv uN ∪ uv uM]]$,
                                 \item $[[Θ' ⊢ uσ1 : SC]]$,
                                 \item $[[ [σ0][uσ]uN = [uσ1][â⁺*/pas]uN]]$, and
                                 \item $[[ [uσ]uM = [uσ1]uM]]$,
@@ -573,27 +573,27 @@ the metric of the inference tree.
                             $[[ [uσ1][â⁺*/pas]uN = [σ0][uσ]uN]]$ and
                             $[[ [uσ1]uM = [uσ]uM]]$, and infer the required judgement.
 
-                            Let us take $[[uσ1]] = [[(uσ0 ○ uσ)|Ξ ∪ uv(uN) ∪ uv(uM)]]$, then 
+                            Let us take $[[uσ1]] = [[(uσ0 ○ uσ)|Ξ ∪ uv uN ∪ uv uM]]$, then 
                             \begin{enumerate}
-                                \item $[[Θ' ⊢ uσ1 : Ξ ∪ uv(uN) ∪ uv(uM)]]$,
+                                \item $[[Θ' ⊢ uσ1 : Ξ ∪ uv uN ∪ uv uM]]$,
                                     since $[[Θ' ⊢ uσ0 : {â⁺*}]]$ and 
-                                    $[[ Θ' ⊢ uσ : uv(uN) ∪ uv(uM) ]]$, 
+                                    $[[ Θ' ⊢ uσ : uv uN ∪ uv uM ]]$, 
                                     we have 
-                                    $[[Θ' ⊢ uσ0 ○ uσ : {â⁺*} ∪ uv(uN) ∪ uv(uM)]]$, 
-                                    which we restrict to $[[Ξ ∪ uv(uN) ∪ uv(uM)]]$.
+                                    $[[Θ' ⊢ uσ0 ○ uσ : {â⁺*} ∪ uv uN ∪ uv uM]]$, 
+                                    which we restrict to $[[Ξ ∪ uv uN ∪ uv uM]]$.
                                 \item $[[Θ' ⊢ uσ1 : SC]]$,
                                     Let us take any constraint $[[scE ∊ SC]]$ restricting 
                                     variable $[[β̂±]]$.
-                                    $[[Θ'|Ξ ∪ uv(uN) ∪ uv(uM) ⊢ SC]]$
-                                    implies that $[[β̂± ∊ Ξ ∪ uv(uN) ∪ uv(uM)]]$.
+                                    $[[Θ'|Ξ ∪ uv uN ∪ uv uM ⊢ SC]]$
+                                    implies that $[[β̂± ∊ Ξ ∪ uv uN ∪ uv uM]]$.
 
-                                    If $[[β̂± ∊ uv(uN) ∪ uv(uM)]]$ then 
+                                    If $[[β̂± ∊ uv uN ∪ uv uM]]$ then 
                                     $[[ [uσ1]β̂± = [uσ]β̂± ]]$.
-                                    Additionally,\\ $[[scE ∊ SC | uv(uN) ∪ uv(uM)]]$,
-                                    which, since $[[ Θ' ⊢ uσ : SC | uv(uN) ∪ uv(uM) ]]$,
+                                    Additionally,\\ $[[scE ∊ SC | uv uN ∪ uv uM]]$,
+                                    which, since $[[ Θ' ⊢ uσ : SC | uv uN ∪ uv uM ]]$,
                                     means $[[Θ'(β̂±) ⊢ [uσ]β̂± : scE]]$.
 
-                                    If $[[β̂± ∊ Ξ \ (uv(uN) ∪ uv(uM))]]$ then
+                                    If $[[β̂± ∊ Ξ \ (uv uN ∪ uv uM)]]$ then
                                     $[[ [uσ1]β̂± = [uσ0]β̂± ]]$.
                                     Additionally, $[[scE ∊ SC | {â⁺*}]]$,
                                     which, since $[[ Θ' ⊢ uσ0 : SC | {â⁺*} ]]$,
@@ -605,29 +605,29 @@ the metric of the inference tree.
                                         [[ [σ0][uσ]uN  ]] 
                                             &= [[ [uσ0][uσ|{â⁺*}][â⁺*/pas][uσ]uN ]] \\
                                             &\phantom{{} = {}} \text{by definition of $[[σ0]]$}\\
-                                            &= [[ [uσ0][uσ|{â⁺*}][â⁺*/pas][uσ|uv(uN)]uN ]] \\
+                                            &= [[ [uσ0][uσ|{â⁺*}][â⁺*/pas][uσ|uv uN]uN ]] \\
                                             &\phantom{{} = {}} \text{by \cref{lemma:subst-restr-uv}}\\
-                                            &= [[ [uσ0][uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]] \\
-                                            &\phantom{{} = {}} \text{$[[uv(uN) ∩ {â⁺*} = ∅]]$ and 
+                                            &= [[ [uσ0][uσ|{â⁺*}][uσ|uv uN][â⁺*/pas]uN ]] \\
+                                            &\phantom{{} = {}} \text{$[[uv uN ∩ {â⁺*} = ∅]]$ and 
                                                     $[[{pas} ∩ Γ = ∅]]$}\\
-                                            &= [[ [uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]] \\
-                                                & \text{since $[[ [uσ|{â⁺*}][uσ|uv(uN)][â⁺*/pas]uN ]]$
+                                            &= [[ [uσ|{â⁺*}][uσ|uv uN][â⁺*/pas]uN ]] \\
+                                            &\phantom{{} = {}} \text{since $[[ [uσ|{â⁺*}][uσ|uv uN][â⁺*/pas]uN ]]$
                                                 is ground}\\
-                                            &= [[ [uσ|{â⁺*} ∪ uv(uN)][â⁺*/pas]uN ]] \\
-                                            &= [[ [uσ|Ξ ∪ uv(uN)][â⁺*/pas]uN ]] \\
+                                            &= [[ [uσ|{â⁺*} ∪ uv uN][â⁺*/pas]uN ]] \\
+                                            &= [[ [uσ|Ξ ∪ uv uN][â⁺*/pas]uN ]] \\
                                             &\phantom{{} = {}} \text{by \cref{lemma:subst-restr-uv}:
-                                                    $[[ uv([â⁺*/pas]uN) = Ξ ∪ uv(uN)]]$}\\
-                                            &= [[ [uσ|Ξ ∪ uv(uN) ∪ uv(uM)][â⁺*/pas]uN ]] \\
+                                                    $[[ uv [â⁺*/pas]uN = Ξ ∪ uv uN]]$}\\
+                                            &= [[ [uσ|Ξ ∪ uv uN ∪ uv uM][â⁺*/pas]uN ]] \\
                                             &\phantom{{} = {}} \text{also by \cref{lemma:subst-restr-uv}}\\
-                                            &= [[ [(uσ0 ○ uσ)|Ξ ∪ uv(uN) ∪ uv(uM)][â⁺*/pas]uN ]] \\
-                                            &\phantom{{} = {}} \text{$[[ [uσ|Ξ ∪ uv(uN) ∪ uv(uM)][â⁺*/pas]uN]]$ is ground}\\
+                                            &= [[ [(uσ0 ○ uσ)|Ξ ∪ uv uN ∪ uv uM][â⁺*/pas]uN ]] \\
+                                            &\phantom{{} = {}} \text{$[[ [uσ|Ξ ∪ uv uN ∪ uv uM][â⁺*/pas]uN]]$ is ground}\\
                                             &= [[ [uσ1][â⁺*/pas]uN ]] \\
-                                                & \text{by definition of $[[uσ1]]$}\\
+                                            &\phantom{{} = {}} \text{by definition of $[[uσ1]]$}\\
                                         \end{align*} 
                                 \item $[[ [uσ]uM = [uσ1]uM]]$
                                         By definition of $[[uσ1]]$,
                                         $[[ [uσ1]uM ]]$ is equal to\\
-                                        $[[ [(uσ0 ○ uσ)|Ξ ∪ uv(uN) ∪ uv(uM)]uM ]]$,
+                                        $[[ [(uσ0 ○ uσ)|Ξ ∪ uv uN ∪ uv uM]uM ]]$,
                                         which by \cref{lemma:subst-restr-uv} is equal to
                                         $[[ [uσ0 ○ uσ]uM ]]$,
                                         that is $[[ [uσ0][uσ]uM ]]$,
@@ -941,7 +941,7 @@ the metric of the inference tree.
                             \begin{enumerate}
                                 \item $[[Γ; dom(Θ) ⊢  uM']]$ is normalized and 
                                     free of negative algorithmic variables, 
-                                \item $[[Θ|uv(uM') ⊢ SC]]$, which means $[[dom(SC) ⊆ uv(uM')]]$,
+                                \item $[[Θ|uv uM' ⊢ SC]]$, which means $[[dom(SC) ⊆ uv uM']]$,
                                 \item \label{point:typing-completeness:AppLet:ih-sound} 
                                     for any $[[Θ ⊢ uσ : uv uM' ]]$ such that $[[ Θ ⊢ uσ : SC ]]$, 
                                     we have $[[ Γ ; Φ ⊢ nf(iM) ● args ⇒> [uσ]uM' ]]$.
@@ -1004,7 +1004,7 @@ the metric of the inference tree.
                 \item To show $[[uv uP = dom(SC)]]$ and 
                     $[[SC singular with uσ0]]$ for some $[[uσ0]]$,
                     we apply \cref{lemma:singularity-completeness}
-                    with $[[Ξ = uv uP]] = [[uv(uM')]]$ (as noted above, $[[dom(SC) ⊆ uv(uM')]] = [[Ξ]]$).
+                    with $[[Ξ = uv uP]] = [[uv uM']]$ (as noted above, $[[dom(SC) ⊆ uv uM']] = [[Ξ]]$).
 
                     Now we will show that any substitution satisfying $[[SC]]$ is equivalent to $[[uσ1]]$.
                     As noted in \ref{point:typing-completeness:AppLet:ih-sound},
@@ -1060,7 +1060,7 @@ the metric of the inference tree.
 
                             Let us take fresh $[[â⁺*]]$ and 
                             construct $[[uN0]]$ = $[[ [â⁺*/pas]uN1 ]]$
-                            and $[[Θ, â⁺*[Γ] ⊢ uσ0 : uv(uN0)]]$ defined as
+                            and $[[Θ, â⁺*[Γ] ⊢ uσ0 : uv uN0]]$ defined as
                             $$
                             \begin{cases}
                                 [[ [uσ0]αî⁺ = [σ]αi⁺ ]] & \text{for $[[αî⁺]] \in  [[{â⁺*} ∩ uv uN0]]$ }\\
@@ -1070,7 +1070,7 @@ the metric of the inference tree.
 
                             Then it is easy to see that $[[ [uσ0][â⁺*/pas]uN1 = [σ][uσ]uN1 ]]$
                             because this substitution compositions coincide on
-                            $[[uv(uN1)]] \cup [[fv(uN1)]]$. 
+                            $[[uv uN1]] \cup [[fv(uN1)]]$. 
                             In other words, $[[ [uσ0]uN0 = [σ][uσ]uN1 ]]$.
 
                             Then let us apply the induction hypothesis
@@ -1079,11 +1079,11 @@ the metric of the inference tree.
                             \begin{itemize}
                                 \item $[[ Γ; Φ; Θ, â⁺*[Γ] ⊨ uN0 ● args ⇒> uM' ⫤ Θ'; SC ]]$ and
                                 \item \label{point:typing-completeness-forall-app-inversion-3}
-                                for any $[[Θ, â⁺*[Γ]  ⊢ uσ0 : uv(uN0)]]$ and $[[Γ ⊢ iM]]$
+                                for any $[[Θ, â⁺*[Γ]  ⊢ uσ0 : uv uN0]]$ and $[[Γ ⊢ iM]]$
                                     such that $[[Γ; Φ ⊢ [uσ0]uN0 ● args ⇒> iM]]$, 
                                     there exists $[[uσ0']]$ such that 
                                 \begin{enumerate}
-                                    \item $[[Θ'  ⊢uσ0' : uv(uN0) ∪ uv(uM')]]$, $[[ Θ' ⊢ uσ0'  : SC ]] $,
+                                    \item $[[Θ'  ⊢uσ0' : uv uN0 ∪ uv uM']]$, $[[ Θ' ⊢ uσ0'  : SC ]] $,
                                     \item $[[Θ, â⁺*[Γ] ⊢ uσ0' ≈ uσ0 : uv uN0]]$, and 
                                     \item $[[Γ ⊢ [uσ0']uM' ≈ iM]]$.
                                 \end{enumerate}
@@ -1110,7 +1110,7 @@ the metric of the inference tree.
                     Then the same reasoning as in 
                     \ref{point:typing-completeness-forall-app-inversion-2}
                     applies. In particular, we construct 
-                    $[[Θ, â⁺*[Γ] ⊢ uσ0 : uv(uN0)]]$ 
+                    $[[Θ, â⁺*[Γ] ⊢ uσ0 : uv uN0]]$ 
                         as an extension of $[[uσ]]$ and obtain 
                     $[[Γ; Φ ⊢ [uσ0]uN0 ● args ⇒> iM]]$.
 
@@ -1118,26 +1118,26 @@ the metric of the inference tree.
                     hypothesis (\ref{point:typing-completeness-forall-app-inversion-3})
                     to obtain $[[uσ0']]$ such that 
                     \begin{enumerate}
-                        \item $[[Θ' ⊢ uσ0' : uv(uN0) ∪ uv(uM')]]$ and $[[ Θ'  ⊢ uσ0' : SC ]] $,
+                        \item $[[Θ' ⊢ uσ0' : uv uN0 ∪ uv uM']]$ and $[[ Θ'  ⊢ uσ0' : SC ]] $,
                         \item $[[Θ, â⁺*[Γ] ⊢ uσ0' ≈ uσ0 : uv uN0]]$, and 
                         \item $[[Γ ⊢ [uσ0']uM' ≈ iM]]$.
                     \end{enumerate}
 
-                    Let us show that $[[uσ0'|(uv(uN1) ∪ uv(uM'))]]$ 
+                    Let us show that $[[uσ0'|(uv uN1 ∪ uv uM')]]$ 
                     satisfies the required properties.
                     \begin{enumerate}
-                        \item $[[Θ' ⊢ uσ0'|(uv(uN1) ∪ uv(uM')): (uv(uN1) ∪ uv(uM'))]]$
-                            holds since $[[ Θ' ⊢ uσ0' : uv(uN0) ∪ uv(uM')]]$
-                            and $[[uv(uN1) ∪ uv(uM') ⊆ uv(uN0) ∪ uv(uM')]]$;
-                            $[[ Θ' ⊢ uσ0'|(uv(uN1) ∪ uv(uM')) : SC \ {â⁺*} ]]$ holds since
+                        \item $[[Θ' ⊢ uσ0'|(uv uN1 ∪ uv uM'): (uv uN1 ∪ uv uM')]]$
+                            holds since $[[ Θ' ⊢ uσ0' : uv uN0 ∪ uv uM']]$
+                            and $[[uv uN1 ∪ uv uM' ⊆ uv uN0 ∪ uv uM']]$;
+                            $[[ Θ' ⊢ uσ0'|(uv uN1 ∪ uv uM') : SC \ {â⁺*} ]]$ holds since
                             $[[ Θ' ⊢ uσ0' : SC ]]$,
-                            $[[ Θ' ⊢ uσ0' : uv(uN0) ∪ uv(uM') ]]$,
-                            and $[[(uv(uN0) ∪ uv(uM')) \ {â⁺*} = uv(uN1) ∪ uv(uM')]]$.
+                            $[[ Θ' ⊢ uσ0' : uv uN0 ∪ uv uM' ]]$,
+                            and $[[(uv uN0 ∪ uv uM') \ {â⁺*} = uv uN1 ∪ uv uM']]$.
 
                         \item $[[Γ ⊢ [uσ0']uM' ≈ iM]]$ holds as shown,
-                            and hence it holds for $[[uσ0'|(uv(uN1) ∪ uv(uM'))]]$;
+                            and hence it holds for $[[uσ0'|(uv uN1 ∪ uv uM')]]$;
                         \item We show $[[Θ ⊢ uσ0' ≈ uσ : uv uN1]]$, from which
-                            it follows that it holds for\\ $[[uσ0'|(uv(uN1) ∪ uv(uM'))]]$.
+                            it follows that it holds for\\ $[[uσ0'|(uv uN1 ∪ uv uM')]]$.
                             Let us take an arbitrary 
                             $[[β̂±]] \in [[dom(Θ)]] \subseteq [[dom(Θ) ∪ {â⁺*}]]$. Then 
                             since $[[Θ, â⁺*[Γ] ⊢ uσ0' ≈ uσ0 : uv uN0]]$, 
@@ -1171,7 +1171,7 @@ the metric of the inference tree.
                             and then by completeness of subtyping 
                             (\cref{lemma:pos-subt-completeness}),
                             $[[ Γ; Θ ⊨ uQ ≥ nf(iP) ⫤ SC1 ]]$, 
-                            for some $[[Θ ⊢ SC1 : uv(uQ)]]$, and moreover, $[[ Θ ⊢ uσ : SC1 ]]$;
+                            for some $[[Θ ⊢ SC1 : uv uQ]]$, and moreover, $[[ Θ ⊢ uσ : SC1 ]]$;
                         \item $[[Γ; Φ ⊢ [uσ]uN1 ● args ⇒> iM]]$. 
                             \label{point:completeness-arrow-app-ih}
                             Notice that the induction hypothesis applies to this case:
@@ -1185,16 +1185,16 @@ the metric of the inference tree.
                                     \begin{enumerate}
                                         \item $[[Θ ⊆ Θ']]$
                                         \item $[[Γ; dom(Θ') ⊢  uM']]$
-                                        \item $[[dom(Θ) ∩ uv(uM') ⊆ uv uN1]]$
+                                        \item $[[dom(Θ) ∩ uv uM' ⊆ uv uN1]]$
                                         \item $[[Θ'|uv uN1 ∪ uv uM' ⊢ SC2]]$
                                     \end{enumerate}
                                 \item  \label{point:new-subdst}
-                                    for any $[[Θ ⊢ uσ : uv(uN1)]]$ and $[[Γ ⊢ iM]]$
+                                    for any $[[Θ ⊢ uσ : uv uN1]]$ and $[[Γ ⊢ iM]]$
                                     such that $[[Γ; Φ ⊢ [uσ]uN1 ● args ⇒> iM]]$, 
                                     there exists $[[uσ']]$ such that 
                                     \begin{enumerate}
-                                        \item $[[Θ' ⊢ uσ' : uv(uN1) ∪ uv(uM')]]$ and $[[Θ' ⊢ uσ' : SC2]]$,
-                                        \item $[[Θ ⊢ uσ' ≈ uσ : uv(uN1)]]$, and 
+                                        \item $[[Θ' ⊢ uσ' : uv uN1 ∪ uv uM']]$ and $[[Θ' ⊢ uσ' : SC2]]$,
+                                        \item $[[Θ ⊢ uσ' ≈ uσ : uv uN1]]$, and 
                                         \item $[[Γ ⊢ [uσ']uM' ≈ iM]]$.
                                     \end{enumerate}
                             \end{enumerate}
@@ -1213,53 +1213,53 @@ the metric of the inference tree.
             a substitution satisfying both 
             $[[SC1]]$ and $[[SC2]]$.
 
-            Notice that $[[dom(SC1) = uv(uQ)]]$ and
+            Notice that $[[dom(SC1) = uv uQ]]$ and
             $[[dom(SC2) ⊆ uv uN1 ∪ uv uM']]$.
             This way, it suffices to construct 
-            $[[Θ' ⊢ uσ'' : uv(uQ) ∪ uv uN1 ∪ uv uM']]$ such that
+            $[[Θ' ⊢ uσ'' : uv uQ ∪ uv uN1 ∪ uv uM']]$ such that
             $[[Θ' ⊢ uσ'' : SC1]]$ and $[[Θ' ⊢ uσ'' : SC2]]$.
 
             By the induction hypothesis (\ref{point:new-subdst}),
-            $[[uσ|uv(uN1)]]$
+            $[[uσ|uv uN1]]$
             can be extended to $[[uσ']]$ such that
             \begin{enumerate}
-                \item $[[Θ' ⊢ uσ' : uv(uN1) ∪ uv(uM')]]$ and $[[Θ' ⊢ uσ' : SC2]]$,
-                \item $[[Θ ⊢ uσ' ≈ uσ: uv(uN1)]]$, and 
+                \item $[[Θ' ⊢ uσ' : uv uN1 ∪ uv uM']]$ and $[[Θ' ⊢ uσ' : SC2]]$,
+                \item $[[Θ ⊢ uσ' ≈ uσ: uv uN1]]$, and 
                 \item $[[Γ ⊢ [uσ']uM' ≈ iM]]$.
             \end{enumerate}
             Let us extend $[[uσ']]$ to $[[uσ'']]$
-            defined on $[[uv(uQ) ∪ uv(uN1) ∪ uv(uM')]]$
+            defined on $[[uv uQ ∪ uv uN1 ∪ uv uM']]$
             with values of $[[uσ]]$ as follows:
             $$
             \begin{cases}
-                [[ [uσ'']β̂± = [uσ']β̂± ]] & \text{for $[[β̂±]] \in [[uv(uN1) ∪ uv(uM')]]$}\\
-                [[ [uσ'']γ̂± = [uσ]γ̂± ]] & \text{for $[[γ̂±]] \in [[uv(uQ) \ (uv(uN1) ∪ uv(uM'))]]$}
+                [[ [uσ'']β̂± = [uσ']β̂± ]] & \text{for $[[β̂±]] \in [[uv uN1 ∪ uv uM']]$}\\
+                [[ [uσ'']γ̂± = [uσ]γ̂± ]] & \text{for $[[γ̂±]] \in [[uv uQ \ (uv uN1 ∪ uv uM')]]$}
             \end{cases}
             $$
 
-            First, notice that $[[Θ' ⊢ uσ'' ≈ uσ' : uv(uN1) ∪ uv(uM')]]$
+            First, notice that $[[Θ' ⊢ uσ'' ≈ uσ' : uv uN1 ∪ uv uM']]$
             by definition.
             Then since $[[Θ' ⊢ uσ' : SC2]]$ and
-            $[[Θ' ⊢ SC2 : uv(uN1) ∪ uv(uM')]]$, 
+            $[[Θ' ⊢ SC2 : uv uN1 ∪ uv uM']]$, 
             we have $[[Θ' ⊢ uσ'' : SC2]]$.
 
-            Second, notice that $[[Θ ⊢ uσ'' ≈ uσ : uv(uN1) ∪ uv(uQ)]]$:
+            Second, notice that $[[Θ ⊢ uσ'' ≈ uσ : uv uN1 ∪ uv uQ]]$:
             \begin{itemize}
-                \item if $[[γ̂±]] \in [[uv(uQ) \ (uv(uN1) ∪ uv(uM'))]]$
+                \item if $[[γ̂±]] \in [[uv uQ \ (uv uN1 ∪ uv uM')]]$
                     then $[[ [uσ'']γ̂± = [uσ]γ̂± ]]$ by definition of $[[uσ'']]$;
-                \item if $[[γ̂±]] \in [[uv(uQ) ∩ uv(uN1)]]$
+                \item if $[[γ̂±]] \in [[uv uQ ∩ uv uN1]]$
                     then $[[ [uσ'']γ̂± = [uσ']γ̂± ]]$,
-                    and $[[Θ ⊢ uσ' ≈ uσ: uv(uN1)]]$, as noted above;
-                \item if $[[γ̂±]] \in [[uv(uQ) ∩ uv(uM')]]$
+                    and $[[Θ ⊢ uσ' ≈ uσ: uv uN1]]$, as noted above;
+                \item if $[[γ̂±]] \in [[uv uQ ∩ uv uM']]$
                     then since $[[Γ; dom(Θ) ⊢  uQ]]$, 
-                    we have $[[uv(uQ) ⊆ dom(Θ)]]$,
+                    we have $[[uv uQ ⊆ dom(Θ)]]$,
                     implying 
-                    $[[γ̂±]] \in [[dom(Θ) ∩ uv(uM') ⊆ uv(uN1)]]$.
-                    This way, $[[γ̂±]] \in [[uv(uQ) ∩ uv(uN1)]]$, 
+                    $[[γ̂±]] \in [[dom(Θ) ∩ uv uM' ⊆ uv uN1]]$.
+                    This way, $[[γ̂±]] \in [[uv uQ ∩ uv uN1]]$, 
                     and this case is covered by the previous one.
             \end{itemize}
-            In particular, $[[Θ ⊢ uσ'' ≈ uσ : uv(uQ)]]$.
-            Then since $[[Θ ⊢ uσ : SC1]]$ and $[[Θ ⊢ SC1 : uv(uQ)]]$,
+            In particular, $[[Θ ⊢ uσ'' ≈ uσ : uv uQ]]$.
+            Then since $[[Θ ⊢ uσ : SC1]]$ and $[[Θ ⊢ SC1 : uv uQ]]$,
             we have $[[Θ ⊢ uσ'' : SC1]]$.
 
             This way, $[[uσ']]$ satisfies both $[[SC1]]$ and $[[SC2]]$,
@@ -1299,36 +1299,36 @@ the metric of the inference tree.
                             Then by \ref{point:new-subdst}, 
                             there exists $[[uσ0']]$ such that 
                             \begin{enumerate}
-                                    \item $[[Θ' ⊢ uσ0' : uv(uN1) ∪ uv(uM')]]$ and 
+                                    \item $[[Θ' ⊢ uσ0' : uv uN1 ∪ uv uM']]$ and 
                                         $[[Θ' ⊢ uσ0' : SC2]]$,
-                                    \item $[[Θ ⊢ uσ0' ≈ uσ0 : uv(uN1)]]$, and 
+                                    \item $[[Θ ⊢ uσ0' ≈ uσ0 : uv uN1]]$, and 
                                     \item $[[Γ ⊢ [uσ0']uM' ≈ iM0]]$.
                             \end{enumerate}
                     \end{itemize}
                     Let us extend $[[uσ0']]$ to be defined on
-                    $[[uv(uQ) ∪ uv(uN1) ∪ uv(uM')]]$
+                    $[[uv uQ ∪ uv uN1 ∪ uv uM']]$
                     with the values of $[[uσ0]]$.
                     We define $[[uσ0'']]$ as follows:
                     $$
                     \begin{cases}
-                        [[ [uσ0'']γ̂± = [uσ0']γ̂± ]] & \text{for $[[γ̂±]] \in [[uv(uN1) ∪ uv(uM')]]$}\\
-                        [[ [uσ0'']γ̂± = [uσ0]γ̂± ]] & \text{for $[[γ̂±]] \in [[uv(uQ) \ (uv(uN1) ∪ uv(uM'))]]$}
+                        [[ [uσ0'']γ̂± = [uσ0']γ̂± ]] & \text{for $[[γ̂±]] \in [[uv uN1 ∪ uv uM']]$}\\
+                        [[ [uσ0'']γ̂± = [uσ0]γ̂± ]] & \text{for $[[γ̂±]] \in [[uv uQ \ (uv uN1 ∪ uv uM')]]$}
                     \end{cases}
                     $$
                     This way, 
                     \begin{itemize}
-                        \item $[[Θ' ⊢ uσ0'' : uv(uQ) ∪ uv(uN1) ∪ uv(uM')]]$,
+                        \item $[[Θ' ⊢ uσ0'' : uv uQ ∪ uv uN1 ∪ uv uM']]$,
                         \item $[[Θ' ⊢ uσ0'' : SC]]$,
                             since $[[Θ' ⊢ uσ0'' : SC1]]$ and $[[Θ' ⊢ uσ0'' : SC2]]$,
                             which is proved similarly to
                             $[[Θ' ⊢ uσ'' : SC1]]$ and $[[Θ' ⊢ uσ'' : SC2]]$ above;
-                        \item $[[Θ ⊢ uσ0'' ≈ uσ0 : uv(uN1) ∪ uv(uQ)]]$:
+                        \item $[[Θ ⊢ uσ0'' ≈ uσ0 : uv uN1 ∪ uv uQ]]$:
                             the proof is analogous to
-                            $[[Θ ⊢ uσ'' ≈ uσ : uv(uN1) ∪ uv(uQ)]]$ above.
+                            $[[Θ ⊢ uσ'' ≈ uσ : uv uN1 ∪ uv uQ]]$ above.
                         \item $[[Γ ⊢ [uσ0'']uM' ≈ iM0]]$
-                            Notice that $[[Θ' ⊢ uσ0'' ≈ uσ0' : uv(uN1) ∪ uv(uM')]]$,
+                            Notice that $[[Θ' ⊢ uσ0'' ≈ uσ0' : uv uN1 ∪ uv uM']]$,
                             which is proved analogously to
-                            $[[Θ' ⊢ uσ'' ≈ uσ' : uv(uN1) ∪ uv(uM')]]$ above.
+                            $[[Θ' ⊢ uσ'' ≈ uσ' : uv uN1 ∪ uv uM']]$ above.
                             Then $[[Γ ⊢ [uσ0']uM' ≈ iM0]]$
                             can be rewritten to $[[Γ ⊢ [uσ0'']uM' ≈ iM0]]$.
                     \end{itemize}
@@ -1342,7 +1342,7 @@ the metric of the inference tree.
                 \item $[[Γ ⊢ Θ]]$,
                 \item $[[Γ ⊢ iN']]$,
                 \item $[[Γ; dom(Θ) ⊢ uN]]$ and $[[uN]]$ is free from negative variables,
-                \item $[[Θ ⊢ uσ : uv(uN)]]$,
+                \item $[[Θ ⊢ uσ : uv uN]]$,
                 \item $[[Γ; Φ ⊢ [uσ]uN ● · ⇒> iN' ]]$,
                     and by inversion, $[[Γ ⊢ [uσ]uN ≈ iN']]$.
             \end{enumerate}
@@ -1353,15 +1353,15 @@ the metric of the inference tree.
             $[[ Γ; Φ; Θ ⊨ uN ● · ⇒> nf(uN) ⫤ Θ; · ]]$.
             Let us show the required properties. 
             Let us take an arbitrary 
-            $[[Θ ⊢ uσ0 : uv(uN)]]$ and $[[Γ ⊢ iM]]$
+            $[[Θ ⊢ uσ0 : uv uN]]$ and $[[Γ ⊢ iM]]$
             such that $[[Γ; Φ ⊢ [uσ1]uN ● · ⇒> iM]]$. 
             Then we can take $[[uσ0]]$ as the required substitution:
             \begin{enumerate}
-                \item $[[ Θ ⊢ uσ0 : uv(uN) ∪ uv(nf(uN)) ]]$,
-                    since $[[uv(nf(uN)) = uv(uN)]]$, 
-                    and thus, $[[uv(uN) ∪ uv(nf(uN)) = uv(uN)]]$;
+                \item $[[ Θ ⊢ uσ0 : uv uN ∪ uv nf(uN) ]]$,
+                    since $[[uv nf(uN) = uv uN]]$, 
+                    and thus, $[[uv uN ∪ uv nf(uN) = uv uN]]$;
                 \item $[[ Θ ⊢ uσ0 : · ]]$ vacuously;
-                \item $[[Θ ⊢ uσ0 ≈ uσ0 : uv(uN)]]$ by reflexivity;
+                \item $[[Θ ⊢ uσ0 ≈ uσ0 : uv uN]]$ by reflexivity;
                 \item Let us show $[[Γ ⊢ [uσ0]nf(uN) ≈ iM]]$.
                     Notice that $[[Γ; Φ ⊢ [uσ0]uN ● · ⇒> iM]]$ can only be inferred by 
                     \ruleref{\ottdruleDTEmptyAppLabel}, and thus, $[[ Γ ⊢ [uσ0]uN ≈ iM ]]$.

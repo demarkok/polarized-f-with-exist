@@ -2,7 +2,7 @@ defns
   SING :: 'SING' ::=
 
   defn Γ ⊢ uP SC minby uσ :: :: minInst :: '' 
-  {{ tex [[uP]] \text{ is } [[SC]]\text{-minimized by } [[uσ]] }} by 
+  {{ tex [[uP]] \ottkw{ is } [[SC]]\ottkw{-minimized by } [[uσ]] }} by 
 
   (α̂⁺ :≥ iP) ∊ SC
   ------------------------------ :: PUvar
@@ -12,8 +12,8 @@ defns
   ------------------------ :: Exists
   Γ ⊢ ∃nas.uP SC minby uσ
 
-  uv(uP) ⊆ dom(SC)  
-  SC|uv(uP) singular with uσ
+  uv uP ⊆ dom(SC)  
+  SC|uv uP singular with uσ
  --------------------------------------------- :: Sing
   Γ ⊢ uP SC minby uσ
 

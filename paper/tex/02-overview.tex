@@ -89,7 +89,7 @@ the type inference capabilities and restrictions of \fexists.
   resulting type will be inferred by the algorithm:
   $$[[· ; Φ ⊢ let x = len([one,two,three]); return x : ↑Int]]$$
 
-\paragraph*{Polymorphic Self-application.}
+\paragraph*{Polymorphic Self-application}
   Unlike predicative systems, \fexists permits self-application of polymorphic
   functions. For instance, $[[id]]$ can be applied to itself resulting in a
   suspended polymorphic computation of type $[[↓(∀α⁺.α⁺ → ↑α⁺)]]$, which, in

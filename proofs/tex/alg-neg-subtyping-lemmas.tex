@@ -90,16 +90,16 @@
             $[[uN']]$ does not contain negative unification variables either.
 
             This way, we can apply the induction hypothesis to $[[Γ ⊢ [uσ]uN' ≤ iM']]$ to 
-            obtain $[[Γ ; Θ ⊨ uN' ≤ iM' ⫤ SC2]]$ such that $[[Θ ⊢ SC2 : uv(uN')]]$ and $[[ Θ ⊢ uσ : SC2 ]]$.
+            obtain $[[Γ ; Θ ⊨ uN' ≤ iM' ⫤ SC2]]$ such that $[[Θ ⊢ SC2 : uv uN']]$ and $[[ Θ ⊢ uσ : SC2 ]]$.
             Also, we can apply the completeness of the positive subtyping (\cref{lemma:pos-subt-completeness}) to 
-            $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ to obtain $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC1]]$ such that $[[Θ ⊢ SC1 : uv(uP)]]$
+            $[[ Γ ⊢ [uσ]uP ≥ iQ ]]$ to obtain $[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC1]]$ such that $[[Θ ⊢ SC1 : uv uP]]$
             and $[[ Θ ⊢ uσ : SC1 ]]$.
 
             Finally, we need to show that the merge of $[[SC1]]$ and $[[SC2]]$ is successful and
             satisfies the required properties.
             To do so, we apply the completeness of subtyping constraint merge (\cref{lemma:merge-completeness})
-            (notice that $[[Θ ⊢ uσ : uv(uP → uN')]]$ means 
-            $[[Θ ⊢ uσ : uv(uP) ∪ uv(uN')]]$).
+            (notice that $[[Θ ⊢ uσ : uv uP → uN']]$ means 
+            $[[Θ ⊢ uσ : uv uP ∪ uv uN']]$).
             This way, $[[Θ ⊢ SC1 & SC2 = SC]]$ is defined and $[[ Θ ⊢ uσ : SC ]]$ holds. 
 
        \item \label{case:subt-complete-forall}

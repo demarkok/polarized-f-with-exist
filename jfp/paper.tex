@@ -14,7 +14,6 @@
 \input{\ottDir/renew-ott.tex}
 
 
-\setlist{topsep=0pt, itemsep=1pt}
 % \setlist{nosep}
 \usepackage{etoolbox}
 \usepackage{parskip}
@@ -24,6 +23,8 @@
 \AtBeginEnvironment{ottdefnblock}{\setlength{\belowdisplayshortskip}{0pt}}
 
 \setlength{\parskip}{5pt}
+\setlength{\parindent}{10pt}
+\setlist{topsep=0pt, partopsep=0pt, itemsep=0pt}
 
 
 \renewcommand{\cite}{\citep}

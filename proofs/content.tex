@@ -72,17 +72,16 @@ can be done recursively by a deterministic algorithm.
 We will use the well-formedness checking in the inference algorithm, 
 for example, to check that the existential variables do not escape their scope.
 
+\pagebreak[4]
 \begin{algorithm}[Type Well-formedness]
   \label{alg:wf}
-  \hfill
-  
-  \begin{multicols}{2}
-  \ottdefnWFTNiWFLabeled{}
-  \columnbreak
-
-  \ottdefnWFTPiWFLabeled{}
-  \end{multicols}
-
+  \hfill\\
+  \begin{minipage}[t]{0.45\textwidth}
+    \ottdefnWFTNiWFLabeled{}
+  \end{minipage}
+  \begin{minipage}[t]{0.45\textwidth}
+    \ottdefnWFTPiWFLabeled{}
+  \end{minipage}
 \end{algorithm}
 
 \subsubsection{Substitutions}
@@ -153,9 +152,10 @@ context of the proof.
   Formally, for any $[[α± ∊ Γ]], [[ Γ' ⊢ [σ1]α± ≈ [σ2]α± ]]$.
 \end{definition}
 
-Sometimes it is convenient to construct substitution 
-explicitly mapping each variable from a list (or a set)
-to a type. Such substitutions are denoted as $[[iPs / pas]]$
+Sometimes it is convenient to construct a substitution 
+that explicitly maps each variable \emph{from a list} 
+(or a set) to a type.
+Such substitutions are denoted as $[[iPs / pas]]$
 and $[[iNs / nas]]$, where $[[iPs]]$ and $[[iNs]]$ are lists of 
 the corresponding types.
 \begin{definition}[Explicit Substitution]
@@ -181,22 +181,24 @@ It realizes the polymorphism: abstract $[[∀]]$ and
 $[[∃]]$ types can be used where concrete types are expected,
 exactly because of the subtyping relation between them.
 
-\begin{definition} 
+\begin{definition}[Declarative Subtyping and Equivalence]
   \label{def:subDOne}
+  \hfill\\
+  \begin{minipage}[t]{0.45\textwidth}
+      \ottdefnDOneNsubLabeled{}
+  \end{minipage}
   \hfill
-  
-  \begin{multicols}{2}
-    \ottdefnDOneNsubLabeled{}
+  \begin{minipage}[t]{0.48\textwidth}
+      \ottdefnDOnePsupLabeled{}
+  \end{minipage}
 
-    \ottdefnDOnePsupLabeled{}
-  \end{multicols}
+  \begin{minipage}[t]{0.45\textwidth}
+      \ottdefnDOneNeqLabeled{}
+  \end{minipage}
   \hfill
-
-  \begin{multicols}{2}
-    \ottdefnDOneNeqLabeled{}
-
-    \ottdefnDOnePeqLabeled{}
-  \end{multicols}
+  \begin{minipage}[t]{0.45\textwidth}
+      \ottdefnDOnePeqLabeled{}
+  \end{minipage}
 \end{definition}
 
 The following observations about the declarative subtyping are worth noting:
@@ -233,17 +235,17 @@ can potentially contain algorithmic variables.
 
 \begin{definition}[Algorithmic Types]
   \label{def:algo-types}
-  \hfill\\
+  \hfill
   \begin{multicols}{2}
     \ottgrammartabular{
       \ottuN\ottinterrule
     }
-
+    \columnbreak\\
     \ottgrammartabular{
       \ottuP\ottinterrule
     }
-    \columnbreak
   \end{multicols}
+  \hfill\\
 \end{definition}
 
 \subsubsection{Fresh Variable Selection}
@@ -301,31 +303,30 @@ of the type is contained in $[[Γ]]$.
 \begin{algorithm}[Algorithmic Type Well-formedness]
   \hfill
   
-  \begin{multicols}{2}
-  \ottdefnWFATNauWFLabeled{}
-  \columnbreak
-
-  \ottdefnWFATPauWFLabeled{}
-  \end{multicols}
-
+  \begin{minipage}[t]{0.48\textwidth}
+    \ottdefnWFATNauWFLabeled{}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \ottdefnWFATPauWFLabeled{}
+  \end{minipage}
 \end{algorithm}
 
 
-Algorithmic Type Context are used in the unification algorithm.
+Algorithmic Type Contexts are used in the unification algorithm.
 In the subtyping algorithm, 
 the context needs to remember additional information.
-In the subtyping context, each algorithmic variable is associated with a
+In particular, each algorithmic variable is associated with a
 context it must be instantiated in 
 (i.e. the context in which the type replacing the variable must be well-formed).
-This association is represented by \emph{algorithmic subtyping context} $[[Θ]]$.
-\begin{definition}[Algorithmic Subtyping Context $[[Θ]]$]
+This association is represented by \emph{instantiation context} $[[Θ]]$.
+\begin{definition}[Instantiation context $[[Θ]]$]
   \hfill \\
-  Algorithmic Subtyping Context $[[Θ]]$ is represented by a set of 
+  Instantiation context $[[Θ]]$ is represented by a set of 
   entries of form $[[ α̂⁺[Γ] ]]$ and $[[ α̂⁻[Γ] ]]$,
   where $[[α̂⁺]]$ and $[[α̂⁻]]$ are algorithmic variables,
   and $[[Γ]]$ is a context in which they must be instantiated.
-  We assume that no two entries associating the same variable
-  appear in $[[Θ]]$.
+  We assume that $[[Θ]]$ does not contain multiple entries for the same variable.  
 
   $[[dom(Θ)]]$ denotes the set of variables appearing in $[[Θ]]$:
   $[[dom(Θ)]] = \{ [[α̂±]] \mid [[α̂±[Γ] ]] \in [[Θ]] \}$.
@@ -438,6 +439,7 @@ in the order they appear in $[[iN]]$.
   \hfill
   
   \ottdefnONVarLabeled{}
+  \newpage
   \ottdefnOPVarLabeled{}
 
   Analogously, the variable can be ordered in 
@@ -455,20 +457,24 @@ canonical order dictated by \cref{alg:var-ordering}, removing unused ones.
 \begin{algorithm}[Type Normalization]
   \label{alg:type-nf}
   \hfill
+
+  \begin{minipage}[t]{0.48\textwidth}
+    \ottdefnNrmNNormLabeled{}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \ottdefnNrmPNormLabeled{}
+  \end{minipage}
   
-  \begin{multicols}{2}
-  \ottdefnNrmNNormLabeled{}
-  \columnbreak\\
-  \ottdefnNrmPNormLabeled{}
-  \end{multicols}
+  Analogously, we define the normalization of algorithmic types by adding the following base cases:
 
-  Analogously, we define the normalization of algorithmic types by adding base cases:
-
-  \begin{multicols}{2}
-  \ottdefnNrmuNNormLabeled{}
-  \columnbreak\\
-  \ottdefnNrmuPNormLabeled{}
-  \end{multicols}
+  \begin{minipage}[t]{0.48\textwidth}
+    \ottdefnNrmuNNormLabeled{}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[t]{0.48\textwidth}
+    \ottdefnNrmuPNormLabeled{}
+  \end{minipage}
 
 \end{algorithm}
 
@@ -511,7 +517,7 @@ correctness of the negative subtyping.
 \end{algorithm}
 
 The inputs of the subtyping algorithm are the declarative context $[[Γ]]$,
-the subtyping context $[[Θ]]$ (it specifies in which contexts the algorithmic variables
+the instantiation context $[[Θ]]$ (it specifies in which contexts the algorithmic variables
 must be instantiated), and the types themselves: $[[uN]]$ and $[[iM]]$ for the negative case,
 and $[[uP]]$ and $[[iQ]]$ for the positive case. 
 As one of the invariants, we require
@@ -560,7 +566,7 @@ Let us overview the inference rules of the subtyping algorithm.
     It is done by algorithmization (\cref{sec:variable-algorithmization}) 
     of the quantified variables: these variables are replaced by 
     fresh algorithmic variables in the body of the quantified type,
-    the algorithmic variables are added to the subtyping context $[[Θ]]$,
+    the algorithmic variables are added to the instantiation context $[[Θ]]$,
     after that, the recursive call is made. Notice that the declarative context
     $[[Γ]]$ is extended by the quantified variables from the right-hand side,
     which matches the declarative system.
@@ -626,8 +632,8 @@ also to be a supertype of a positive type.
 
 
 \begin{definition}[Well-formed Constraint]
-  We say that a constraint is well-formed in a
-  subtyping context $[[Θ]]$ if all its entries are well-formed in
+  We say that a constraint is well-formed in an 
+  instantiation context $[[Θ]]$ if all its entries are well-formed in
   the corresponding elements of $[[Θ]]$.
   More formally, 
   $[[Θ ⊢ SC]]$ holds iff for every $[[scE]] \in $ $[[SC]]$,
@@ -1242,28 +1248,25 @@ but not type applications (they can be done implicitly); for convenience, we
 introduce multi-argument applications, let-blinders, and existential constructors
 and eliminators as syntactic sugar (see \cref{fig:systemf-grammar}).
 
+\newcommand{\graytxt}[1]{\textcolor{darkgray}{#1}}
+\newcommand{\ottprodlinecomm}[7]{\graytxt{#1}& & \graytxt{$#2$} & \graytxt{$#3$} & \graytxt{$#4 #5$} & \graytxt{$#6$} & \graytxt{$#7$}}
+
 \begin{figure}
-  \begin{minipage}[t]{0.39\linewidth}
-    \vspace*{0pt}
     \ottgrammartabular{
       \ottfT\ottprodnewline
-      \ottprodline{}{}{}{}{}{}\ottprodnewline
-      \ottprodline{}{}{}{}{}{}\ottprodnewline
-      \ottprodline{|}{[[∃as.fT]]}{}{}{}{}\ottprodnewline
-      \ottprodline{}{\equiv [[∀b.(∀as.(fT → b)) → b]]}{}{}{}{}\ottinterrule
+      \\
+      \ottprodlinecomm{(syntax sugar)}{|}{[[∃as.fT]]}{\equiv [[∀b.(∀as.(fT → b)) → b]]}{}{}{}\ottinterrule
     }
-  \end{minipage}
-  \begin{minipage}[t]{0.6\linewidth}
-    \vspace*{0pt}
+
     \ottgrammartabular{
       \ottft\ottprodnewline
-      \ottprodline{}{}{}{}{}{}\ottprodnewline
-      \ottprodline{|}{[[ft' ● fargs]]}{\equiv (([[ft']] [[ft1]])\, \dots )\,[[ftn]]}{}{}{}\ottprodnewline
-      \ottprodline{|}{[[let x = ft1 ; ft2]]} {\equiv [[(λx.ft2) ft1]]}{}{}{}\ottprodnewline
-      \ottprodline{|}{[[pack ft : fT]]}{\equiv [[Λb. λf. f ft]]}{}{}{}\ottprodnewline
-      \ottprodline{|}{[[unpack ( as , x ) = ft1 ; ft2]]}{\equiv [[ft1 (Λ as. λx. ft2)]]}{}{}{}\ottinterrule
+      \\
+      \ottprodlinecomm{(syntax sugar)}{|}{[[ft' ● fargs]]}{\equiv (([[ft']] [[ft1]])\, \dots )\,[[ftn]]}{}{}{}\ottprodnewline
+      \ottprodlinecomm{}{|}{[[let x = ft1 ; ft2]]} {\equiv [[(λx.ft2) ft1]]}{}{}{}\ottprodnewline
+      \ottprodlinecomm{}{|}{[[pack ft : fT]]}{\equiv [[Λb. λf. f ft]]}{}{}{}\ottprodnewline
+      \ottprodlinecomm{}{|}{[[unpack ( as , x ) = ft1 ; ft2]]}{\equiv [[ft1 (Λ as. λx. ft2)]]}{}{}{}\ottinterrule
     }
-  \end{minipage}
+
   \caption{Grammar of \systemf}
   \label{fig:systemf-grammar}
 \end{figure}
@@ -1274,9 +1277,9 @@ and eliminators as syntactic sugar (see \cref{fig:systemf-grammar}).
   \label{fig:systemf-typing}
 \end{figure}
 
+\newpage
 \begin{observation}
-  The following rules are admissible in \systemf: \hfill
-
+  The following rules are admissible in \systemf: \hfill\\
   \begin{minipage}{0.5\textwidth}
     \ottusedrule{\ottdruleSFtyAUnpackLabeled{}}
   \end{minipage}
@@ -1311,19 +1314,18 @@ inserted shifts, it is more straightforward to consistently
 lift it to the level of terms.
 
 \begin{figure}[t]
-  \begin{minipage}[t]{0.65\linewidth}
+  \begin{minipage}[b]{0.65\linewidth}
     \centering
-      \begin{minipage}[t]{0.32\linewidth}
+      \begin{minipage}[t]{0.4\linewidth}
       \ottfundefnunpolP{}
       \end{minipage}
-      \begin{minipage}[t]{0.32\linewidth}
+      \begin{minipage}[t]{0.4\linewidth}
       \ottfundefnunpolN{}
       \end{minipage}
     \caption{Type Depolarization}
     \label{fig:depolarization}
   \end{minipage}
-  \hspace{0.5cm}
-  \begin{minipage}[t]{0.3\linewidth}
+  \begin{minipage}[b]{0.3\linewidth}
     \centering
     \ottfundefnpolarP{}
     \caption{Type Polarization}

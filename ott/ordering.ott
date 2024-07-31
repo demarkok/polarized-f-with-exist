@@ -3,7 +3,7 @@ defns
 
   defn ord varset in iN = ordVars :: :: NVar :: ''
   {{ com variable ordering in a negative type }}
-   by
+  by
 
   na ∊ varset
   ---------------------  :: NVarIn
@@ -27,8 +27,9 @@ defns
   ord varset in ∀pas.iN = ordVars
 
 
-  defn ord varset in iP = ordVars :: :: PVar :: '' by
-  {{ com variable ordering in a positive type }}
+  defn ord varset in iP = ordVars :: :: PVar :: ''
+  {{ com variable ordering in a positive type }} 
+  by
 
   pa ∊ varset
   ---------------------  :: PVarIn

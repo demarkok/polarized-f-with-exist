@@ -16,7 +16,6 @@ which simplifies the correctness proof.
 First, let us discuss the syntax of the algorithmic system (\cref{fig:algo-syntax}).
 
 \begin{figure}[t]
-
   \begin{minipage}[t]{0.49\textwidth}
       Negative Algorithmic Variables\\
       $[[α̂⁻]]$, $[[β̂⁻]]$, $[[γ̂⁻]]$, \dots\\
@@ -184,7 +183,7 @@ decompose the algorithm's structure, thus simplifying the inductive proofs.
     $[[Θ]]$ associates with their contexts.  
   \item We write $[[Θ(α̂±)]]$ to denote the
     declarative context associated with $[[α̂±]]$ in $[[Θ]]$. 
-  \item $[[uv(uN)]]$ and $[[uv(uP)]]$ denote the set of free algorithmic variables in $[[uN]]$ and
+  \item $[[uv uN]]$ and $[[uv uP]]$ denote the set of free algorithmic variables in $[[uN]]$ and
     $[[uP]]$ respectively.
   \item We write $[[Γ ⊢ Θ]]$ to denote that each
     declarative context associated with an algorithmic variable in $[[Θ]]$ is 
@@ -243,16 +242,15 @@ if $[[Θ ⊢ SC]]$ and \emph{each entry} of $[[SC]]$ is satisfied by $[[uσ]]$.
   \begin{tikzpicture}
     [>={Stealth[scale=2]},node distance=2.4cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
 
-
     % Define nodes
-    \node[] (1) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$\\(\cref{fig:alg-subtyping})};
+    \node[xshift=-1cm] (1) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN ≤ iM ⫤ SC]]$\\(\cref{fig:alg-subtyping})};
     \node[below of=1] (3) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP ≥ iQ ⫤ SC]]$\\(\cref{fig:alg-subtyping})};
-    \node[left=1.5cm of 3] (2) {Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
+    \node[left=1.7cm of 3] (2) {Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
     \node[right=1.5cm of 3] (5) {Unification\\ $[[Γ ; Θ ⊨ uN ≈u iM ⫤ UC]]$\\ $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$\\(\cref{sec:unification})};
     \node[below of=3] (4) {Upgrade\\$[[upgrade Γ ⊢ iP to Δ = iQ]]$\\(\cref{sec:lub})};
     \node[below of=2] (6) {Least Upper Bound\\$[[Γ ⊨ iP1 ∨ iP2 = iQ]]$\\(\cref{sec:lub})};
-    \node[below of=6] (7) {Anti-Unification\\$[[Γ ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )]]$\\$[[Γ ⊨ iN1 ≈au iN2 ⫤ ( Ξ , uM , aus1 , aus2 )]]$\\(\cref{sec:antiunification})};
-    \node[below of=5] (8) {Unification Constraint Merge\\$[[Θ ⊢ UC1 & UC2 = UC3]]$\\(\cref{sec:constraint-merge})};
+    \node[below of=6,xshift=.4cm] (7) {Anti-Unification\\$[[Γ ⊨ iP1 ≈au iP2 ⫤ ( Ξ , uQ , aus1 , aus2 )]]$\\$[[Γ ⊨ iN1 ≈au iN2 ⫤ ( Ξ , uM , aus1 , aus2 )]]$\\(\cref{sec:antiunification})};
+    \node[below of=5] (8) {Unif. Constraint Merge\\$[[Θ ⊢ UC1 & UC2 = UC3]]$\\(\cref{sec:constraint-merge})};
 
     % Define edges
     \draw[->] (1) to (2);
@@ -264,7 +262,7 @@ if $[[Θ ⊢ SC]]$ and \emph{each entry} of $[[SC]]$ is satisfied by $[[uσ]]$.
     \draw[->] (3) to node[above, draw=none]{$\ottkw{nf}$} (5);
     \draw[->] (4) to (6);
     \draw[->] (5) to (8);
-    \draw[->] (6) to node[left, draw=none]{$\ottkw{nf}$} (7);
+    \draw[->] (6) to node[left, draw=none]{$\ottkw{nf}$} ($(7.north) + (-.4cm, 0)$);
   \end{tikzpicture}  
   \caption{Dependency graph of the subtyping algorithm}
   \label{fig:alg-subtyping-graph}
@@ -836,26 +834,26 @@ dependency is shown in \cref{fig:alg-typing-graph}.
 \begin{figure}[t]
   \centering
   \begin{tikzpicture}
-    [>={Stealth[scale=2]},node distance=2.2cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
+    [>={Stealth[scale=2]},node distance=2.1cm,every node/.style={draw,rectangle},every text node part/.style={align=center}]
     % Define nodes
     \node[] (1) {Positive Inference\\$[[Γ; Φ ⊨ v : iP]]$};
-    \node[right=1.4cm of 1] (2) {Negative Inference\\$[[Γ; Φ ⊨ c : iN]]$};
-    \node[right=1.2cm of 2] (3) {Application Inference\\$[[Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC]]$};
-    \node[below=0.6cm of 2] (7) {Minimal Instantiation\\$[[Γ ⊢ uP SC minby uσ]]$\\(\cref{sec:constraint-singularity})};
+    \node[right=1.1cm of 1] (2) {Negative Inference\\$[[Γ; Φ ⊨ c : iN]]$};
+    \node[right=0.8cm of 2] (3) {Application Inference\\$[[Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC]]$};
+    \node[below=0.6cm of 2, xshift=+0.4cm] (7) {Minimal Instantiation\\$[[Γ ⊢ uP SC minby uσ]]$\\(\cref{sec:constraint-singularity})};
     \node[below=0.5cm of 7] (8) {Constraint Singularity\\$[[SC singular with uσ]]$\\(\cref{sec:constraint-singularity})};
-    \node[right=0.3cm of 7] (4) {Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
+    \node[right=0.2cm of 7] (4) {Constraint Merge\\$[[Θ ⊢ SC1 & SC2 = SC3]]$\\(\cref{sec:constraint-merge})};
     \node[left=0.3cm of 7] (6) {Negative Subtyping\\$[[Γ ; Θ ⊨ uN1 ≤ iN2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
-    \node[below=0.9cm of 6] (5) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP1 ≥ iP2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
+    \node[below=0.9cm of 6, xshift=+.3cm] (5) {Positive Subtyping\\$[[Γ ; Θ ⊨ uP1 ≥ iP2 ⫤ SC]]$\\(\cref{sec:subtyping-algorithm})};
     \draw[->] ([yshift=-.2cm]2.west) to ([yshift=-.2cm]1.east);
     \draw[->] ([yshift=+.2cm]1.east) to ([yshift=+.2cm]2.west);
     \draw[->, bend right=20] (3) to (1);
     \draw[->] (2) to (3);
-    \draw[->] (2) to (4);
-    \draw[->] (2) to (7);
+    \draw[->] (2) to ([xshift=+.2cm]4.north west);
+    \draw[->] ([xshift=+.4cm]2.south) to (7);
     \draw[->] (3) to (4);
     \draw[->] (7) to (8);
     \draw[->] (1.south west) |- (5);
-    \draw[->] (3) |- (5.south east);
+    \draw[->] ([xshift=+1.2cm]3.south) |- (5.south east);
     \draw[->] (2) to (6);
   \end{tikzpicture}  
   \caption{Dependency graph of the typing algorithm}
@@ -1073,7 +1071,7 @@ performs two tasks: it checks that a
 and if it does, it builds this substitution.
 
 \begin{figure}[t]
-  \begin{minipage}{0.49\textwidth}
+  \begin{minipage}{0.43\textwidth}
     `$[[SC singular with uσ]]$' means:
     \begin{itemize}[leftmargin=*]
       \item[$+$] for any \emph{positive} constraint entry $[[scE ∊ SC]]$ restricting 
@@ -1086,7 +1084,7 @@ and if it does, it builds this substitution.
     \caption{Singular Constraint}
     \label{fig:constraint-singularity}
   \end{minipage}
-  \begin{minipage}{0.48\textwidth}
+  \begin{minipage}{0.57\textwidth}
     \ottdefnSINGLabeled
     \caption{Singular Constraint Entry}
     \label{fig:constraint-entry-singularity}

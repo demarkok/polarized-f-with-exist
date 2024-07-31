@@ -290,13 +290,15 @@
      \begin{align*}
        [[fv(iQ)]] &\subseteq [[fv iP1 ∩ fv iP2]]
                     && \text{by \cref{lemma:fv-propagation}}\\
-                  &\subseteq [[((Γ, nas) \ {nbs}) ∩ ((Γ, nbs) \ {nas})]]
+                  &\subseteq [[((Γ, nas) \ {nbs})]] \\
+                  &\phantom{{} = {}} [[∩]]\\
+                  &\phantom{{} = {}} [[((Γ, nbs) \ {nas})]]
                     && \text{since } [[Γ ⊢ ∃nas.iP1]],~ [[fv(iP1)]]
                         \subseteq [[(Γ, nas)]] = \\ 
                   & && [[(Γ, nas) \ {nbs}]]
                         \text{(the latter is because by the}\\ 
-                  & && \text{Barendregt's convention, $[[(Γ, nas) ∩ {nbs} = ∅]]$)}\\
-                  & && \text{similarly, $[[fv(iP2)]] \subseteq [[(Γ, nbs) \ {nas}]]$}\\
+                  & && \text{Barendregt's convention, $[[(Γ, nas) ∩ {nbs} = ∅]]$),}\\
+                  & && \text{and similarly, $[[fv(iP2)]] \subseteq [[(Γ, nbs) \ {nas}]]$}\\
                   &\subseteq [[Γ]]
      \end{align*}
 
@@ -379,9 +381,10 @@
               && \text{definition of $\UB{}$}\\
               & =  \UB([[Γ, {nbs1}, {nbs2} ⊢ iQ1]]) \cap \UB([[Γ, {nbs1}, {nbs2} ⊢ iQ2]])
               && \text{by \cref{observation:ub-context-irrelevant}}\\
-              & = \{[[iQ']]\ \mid \ [[Γ, {nbs1}, {nbs2}  ⊢ iQ' ≥ iQ1]] \} \cap
-                  \{[[iQ']]\ \mid \ [[Γ, {nbs1}, {nbs2}  ⊢ iQ' ≥ iQ2]] \}
+              & = \{[[iQ']]\ \mid \ [[Γ, {nbs1}, {nbs2}  ⊢ iQ' ≥ iQ1]] \} \\
+              &\phantom{{} = {} } \cap
               && \text{by \cref{lemma:shape-of-supertypes}}\\
+              &\phantom{{} = {}} \{[[iQ']]\ \mid \ [[Γ, {nbs1}, {nbs2}  ⊢ iQ' ≥ iQ2]] \}\\
       \end{align*}
       It means that $[[Γ, {nbs1}, {nbs2} ⊢ iQ ≥ iQ1]]$ and $[[Γ, {nbs1}, {nbs2} ⊢ iQ ≥ iQ2]]$. 
       Then the next step of the algorithm---the recursive call 
@@ -452,7 +455,8 @@
                               \Set{ [[ ∃nas.↓iM' ]] \ | \begin{array}{l}
                                                           \text{for $[[nas]]$, $[[iM']]$, and $[[iNs]]$ s.t. $[[ord {nas} in iM' = nas]]$,}\\
                                                           \text{$[[G ⊢ iNs1]]$,
-                                                          $[[G ⊢ iNs2]]$, $[[G,nas ⊢ iM']]$,  and $[[ [iNs/nas] ↓iM' = ↓nf(iM2) ]]$}
+                                                          $[[G ⊢ iNs2]]$, $[[G,nas ⊢ iM']]$,}\\
+                                                          \text{and $[[ [iNs/nas] ↓iM' = ↓nf(iM2) ]]$}
                                                         \end{array}}
                             \end{array}\\
                 &=

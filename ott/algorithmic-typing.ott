@@ -80,7 +80,7 @@ defn Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC :: :: SpinInf :: ''
 Γ; Φ; Θ, â⁺*[Γ] ⊨ [â⁺*/pas]uN ● args ⇒> uM ⫤ Θ'; SC  
 {â⁺*} are fresh    args ≠ ·      pas ≠ ·
 ---------------------------------------------------------- :: ForallApp
-Γ; Φ; Θ ⊨ ∀pas.uN ● args ⇒> uM ⫤ Θ'; SC | uv(uN) ∪ uv(uM)
+Γ; Φ; Θ ⊨ ∀pas.uN ● args ⇒> uM ⫤ Θ'; SC | uv uN  ∪ uv uM 
 
 
 
@@ -188,7 +188,7 @@ defn Γ ; Φ ; Θ1 ⊨ uN ● args ⇒> uM ⫤ Θ2 ; SC :: :: SpinInfBidir :: ''
 Γ; Φ; Θ, â⁺*[Γ] ⊨ [â⁺*/pas]uN ● args ⇒> uM ⫤ Θ'; SC  
 {â⁺*} are fresh    args ≠ ·      pas ≠ ·
 ---------------------------------------------------------- :: ForallAppBidir
-Γ; Φ; Θ ⊨ ∀pas.uN ● args ⇒> uM ⫤ Θ'; SC | uv(uN) ∪ uv(uM)
+Γ; Φ; Θ ⊨ ∀pas.uN ● args ⇒> uM ⫤ Θ'; SC | uv uN  ∪ uv uM 
 
 
 Γ; Φ ⊨ v ⇒ iP  Γ; Θ ⊨ uQ ≥ iP ⫤ SC1  

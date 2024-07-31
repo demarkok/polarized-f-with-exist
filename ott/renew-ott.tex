@@ -5,6 +5,7 @@
 
 \renewenvironment{ottdefnblock}[3][]{ \framebox{\mbox{#2}} \; #3 \\[0pt]}{}
 \renewenvironment{ottfundefnblock}[3][]{ \framebox{\mbox{#2}} \; #3 \\[0pt]\begin{displaymath}\begin{array}{l}}{\end{array}\end{displaymath}}
+\renewcommand{\ottgrammartabular}[1]{\begin{tabular}{@{}llcllllll}#1\end{tabular}}
 
 
 % \setlength{\abovedisplayskip}{0pt}
@@ -12,9 +13,10 @@
 % \setlength{\abovedisplayshortskip}{0pt}
 % \setlength{\belowdisplayshortskip}{0pt}
 
-\renewcommand{\ottkw}[1]{{\bf \tt{#1}}}
+\renewcommand{\ottkw}[1]{{\bf \texttt{#1}}}
 
 \renewcommand{\ottdrule}[4][]{{\displaystyle\frac{\begin{array}{l}#2\end{array}}{#3}\;\ottdrulename{#4}}}
+
 
 \newcommand{\ottdefnTELNLabeledTwoColumns}[1]{
     \begin{ottdefnblock}[#1]{\ottdefnHeaderTELN}{\ottcom{Negative typing elaboration}}
@@ -54,6 +56,11 @@
 }
 
 
+\renewcommand{\ottdefnLUBNsubLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderLUBNsub}{\ottcom{Least Upper Bound}}
+\ottusedrule{\ottdruleLUBExistsLabeled{}}
+\ottusedrule{\ottdruleLUBVarLabeled{}}
+\ottusedrule{\hspace{-.8cm}\ottdruleLUBShiftLabeled{}}
+\end{ottdefnblock}}
 
 
 \newcommand{\ottdefnELLabeled}[0]{
@@ -107,17 +114,17 @@
 }
 
 \newcommand{\ottuGrammarExt}[4]{\ottgrammartabular{
-    \multicolumn{5}{l}{#1}\ottprodnewline$#2$ & $#3$ & $\cdots$ & $\mid$ & $#4$\ottinterrule}}
+    \multicolumn{5}{@{}l}{#1}\ottprodnewline$#2$ & $#3$ & $\cdots$ & $\mid$ & $#4$\ottinterrule}}
 
 \newcommand{\ottuNShort}[0]
     {\ottuGrammarExt{\ottcom{Negative Algorithmic Types}}
-                   { \negAlgType{N}  ,\ \negAlgType{M} }
+                   {\negAlgType{N}  ,\ \negAlgType{M} }
                    {\Coloneqq}
                    {\widehat{ \mathcolor{negative}{\alpha} }^{-}}}
 
 \newcommand{\ottuPShort}[0]
     {\ottuGrammarExt{\ottcom{Positive Algorithmic Types}}
-                   { \posAlgType{P}  ,\ \posAlgType{Q} }
+                   {\posAlgType{P}  ,\ \posAlgType{Q} }
                    {\Coloneqq}
                    {\widehat{ \mathcolor{positive}{\alpha} }^{+}}}
 
@@ -126,7 +133,7 @@
 % \ottfirstprodline{|}{\widehat{ \mathcolor{negative}{\alpha} }^{-}}{}{}{}{}}
 
 
-\renewcommand{\ottrulehead}[3]{\multicolumn{4}{l}{#3}\ottprodnewline$#1$ & & $#2$ & & }
+\renewcommand{\ottrulehead}[3]{\multicolumn{3}{l}{#3}\ottprodnewline$#1$ & $#2$ }
 
 \renewcommand{\ottdefnATNInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATNInf}{\ottcom{Negative typing}}
     \begin{minipage}{0.45\textwidth}
@@ -246,6 +253,7 @@
     \hfill\\
     \ottdefnDTPInfLabeled{}
     \hfill\\
+    \newpage
     \ottdefnDTSpinInfLabeled{}
 }
 
@@ -287,9 +295,8 @@
     \ottusedrule{\ottdruleAUExists{}}
 \end{ottdefnblock}}
 
-
-\renewcommand{\ottrulehead}[3]{\multicolumn{4}{l}{#3}\ottprodnewline$#1$ & & $#2$ & & }
-\newcommand{\ottruleheadOneLine}[4]{\multicolumn{4}{l}{#3}\ottprodnewline$#1$ & & $#2$ & $#4$ & }
+\renewcommand{\ottrulehead}[3]{\multicolumn{5}{@{}l}{#3}\ottprodnewline$#1$ & & $#2$ & & }
+\newcommand{\ottruleheadOneLine}[4]{\multicolumn{4}{@{}l}{#3}\ottprodnewline$#1$ & & $#2$ & $#4$ & }
 % \renewenvironment{ottdefnblock}[3][]{\noindent#3 \\\framebox{\mbox{#2}}\\[0pt]}{}
 \renewcommand{\ottusedrule}[1]{\[#1\]\smallskip}
 

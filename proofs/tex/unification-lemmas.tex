@@ -103,14 +103,14 @@
             $[[Γ ; Θ ⊨ â⁻ ≈u iM ⫤ (â⁻ :≈ iM)]]$.
             
         \item $[[uN]] = [[α⁻]]$\\
-            Let us take an arbitrary $[[Θ ⊢ uσ : uv(α⁻)]]$ such that $[[ [uσ]α⁻ = iM ]]$.
-            Since $[[uv(α⁻) = ∅]]$, $[[ [us]α⁻ = iM ]]$ means $[[iM = α⁻]]$.
+            Let us take an arbitrary $[[Θ ⊢ uσ : uv α⁻]]$ such that $[[ [uσ]α⁻ = iM ]]$.
+            Since $[[uv α⁻ = ∅]]$, $[[ [us]α⁻ = iM ]]$ means $[[iM = α⁻]]$.
 
             This way, \ruleref{\ottdruleUNVarLabel} infers 
             $[[Γ; Θ ⊨ a⁻ ≈u a⁻ ⫤ ·]]$, which is rewritten as $[[Γ; Θ ⊨ uN ≈u iM ⫤ ·]]$.
 
         \item $[[uN]] = [[↑uP]]$\\
-            Let us take an arbitrary $[[Θ ⊢ uσ : uv(uP)]]$ such that $[[ [uσ]↑uP = iM ]]$.
+            Let us take an arbitrary $[[Θ ⊢ uσ : uv uP]]$ such that $[[ [uσ]↑uP = iM ]]$.
             The latter means $[[ ↑[uσ]uP = iM ]]$, i.e.
             $[[iM]] = [[↑iQ]]$ for some $[[iQ]]$ and $[[ [uσ]uP = iQ ]]$.
 
@@ -123,14 +123,14 @@
             $[[Γ ; Θ ⊨ uP ≈u iQ ⫤ UC]]$.
             
         \item $[[uN]] = [[uP → uN']]$\\
-            Let us take an arbitrary $[[Θ ⊢ uσ : uv(uP → uN')]]$ such that $[[ [uσ](uP → uN') = iM ]]$.
+            Let us take an arbitrary $[[Θ ⊢ uσ : uv uP → uN']]$ such that $[[ [uσ](uP → uN') = iM ]]$.
             The latter means $[[ [uσ]uP → [uσ]uN' = iM ]]$, i.e.
             $[[iM]] = [[iQ → iM']]$ for some $[[iQ]]$ and $[[iM']]$, 
             such that $[[ [uσ]uP = iQ ]]$ and $[[ [uσ]uN' = iM' ]]$.
 
             Let us show that the induction hypothesis is applicable to 
-            $[[Θ ⊢ uσ|uv(uP) : uv(uP)]]$ and $[[ [uσ|uv(uP)]uP = iQ ]]$ 
-            (the latter holds since $[[ [uσ|uv(uP)]uP = [uσ]uP ]]$ by \cref{lemma:subst-restr-uv}),
+            $[[Θ ⊢ uσ|uv uP : uv uP]]$ and $[[ [uσ|uv uP]uP = iQ ]]$ 
+            (the latter holds since $[[ [uσ|uv uP]uP = [uσ]uP ]]$ by \cref{lemma:subst-restr-uv}),
             \begin{itemize}
                 \item $[[uP]]$ is normalized, since $[[uN]] = [[uP → uN']]$ is normalized
                 \item $[[Γ ; dom(Θ) ⊢ uP]]$ follows from the inversion of $[[Γ ; dom(Θ) ⊢  uP → uN']]$,
@@ -147,14 +147,14 @@
             (\cref{lemma:unif-merge-completeness})
             for $[[Θ ⊢ lift UC1 : uv uP]]$, 
                 $[[Θ ⊢ lift UC2 : uv uN']]$ (which hold by soundness),
-                and $[[Θ ⊢ uσ : uv(uP) ∪ uv(uN')]]$, 
-                which holds since $[[uv(uP) ∪ uv(uN') = uv(uP → uN')]]$.
-            Notice that by soundness, $[[Θ ⊢ uσ|uv(uP) : lift UC1]]$, 
+                and $[[Θ ⊢ uσ : uv uP ∪ uv uN']]$, 
+                which holds since $[[uv uP ∪ uv uN' = uv uP → uN']]$.
+            Notice that by soundness, $[[Θ ⊢ uσ|uv uP : lift UC1]]$, 
             which implies $[[Θ ⊢ uσ : lift UC1]]$.
             Analogously, $[[Θ ⊢ uσ : lift UC2]]$.
 
         \item $[[uN]] = [[∀pas.uN']]$\\
-            Let us take an arbitrary $[[Θ ⊢ uσ : uv(uN')]]$ such that $[[ [uσ]∀pas.uN' = iM ]]$.
+            Let us take an arbitrary $[[Θ ⊢ uσ : uv uN']]$ such that $[[ [uσ]∀pas.uN' = iM ]]$.
             The latter means $[[ ∀pas.[uσ]uN' = iM ]]$, i.e.
             $[[iM]] = [[∀pas.iM']]$ for some $[[iM']]$ such that $[[ [uσ]uN' = iM' ]]$.
 
@@ -162,7 +162,7 @@
             Notice that $[[uN']]$ is normalized, since $[[uN]] = [[∀pas.uN']]$ is normalized,
             $[[Γ,pas ; dom(Θ) ⊢ uN']]$ follows from inversion of $[[Γ ; dom(Θ) ⊢  ∀pas.uN']]$,
             $[[Γ,pas ⊢ iM']]$ follows from inversion of $[[Γ ⊢ ∀pas.iM']]$, and
-            $[[Θ ⊢ uσ : uv(uN')]]$ by assumption. 
+            $[[Θ ⊢ uσ : uv uN']]$ by assumption. 
 
             This way, by the induction hypothesis, $[[Γ,pas ; Θ ⊨ uN' ≈u iM' ⫤ UC]]$ exists and 
             moreover, $[[ Θ ⊢ uσ : lift UC ]]$.

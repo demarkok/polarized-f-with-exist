@@ -12,10 +12,9 @@
 \usepackage{amsthm}
 \usepackage{booktabs}
 \usepackage{multicol}
+\usepackage{vwcol}
 \usepackage{supertabular}
 \usepackage[inline]{enumitem}
-\setlist[itemize]{topsep=1pt}
-\setlist[enumerate]{topsep=1pt}
 \usepackage{proof}
 \usepackage{mathtools}
 
@@ -29,7 +28,6 @@
 \usepackage{stackengine}
 
 \usepackage{kantlipsum}
-\usepackage{showframe}
 
 
 \usepackage{todonotes}
@@ -55,8 +53,10 @@
 % \AtBeginEnvironment{appendices}{\crefalias{section}{appendix}}
 
 % \usepackage{tikz}
+
 \usetikzlibrary{shapes,arrows,arrows.meta,positioning}
 \usetikzlibrary{shapes.multipart}
+\usetikzlibrary{calc}
 
 % ⫤
 \usepackage{graphicx}
@@ -109,6 +109,36 @@
 
 \declaretheorem[name=Lemma,refname={lemma,lemmas},Refname={Lemma,Lemmas}]{lemmaRes}
 
+\setlength{\parindent}{10pt}
+\setlength{\parskip}{1em} % or another value
+
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{\par
+  \vspace{-\topsep}% remove the space after the theorem
+  \pushQED{\qed}%
+  \normalfont
+  \topsep0pt \partopsep0pt % no space before
+  \trivlist
+  \item[\hskip\labelsep
+        \bfseries
+    #1\@addpunct{.}]\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+  \addvspace{6pt plus 6pt} % some space after
+}
+\makeatother
+
+\newtheoremstyle{myplain}
+  {5pt} % Space above
+  {3pt} % Space below
+  {\normalfont} % Body font
+  {} % Indent amount
+  {\bfseries} % Theorem head font
+  {.} % Punctuation after theorem head
+  {1em} % Space after theorem head
+  {\thmname{#1}\thmnumber{ #2}\thmnote{{\mdseries \textit{~(#3)}}}}
+
+\theoremstyle{myplain}
 \newtheorem{lemma}{Lemma}
 \newtheorem*{lemma*}{Lemma}
 \newtheorem{corollary}{Corollary}
@@ -116,14 +146,13 @@
 \newtheorem*{theorem*}{Theorem}
 \newtheorem{proposition}{Proposition}
 \newtheorem{property}{Property}
-
 \newtheorem{algorithm}{Algorithm}
-\newtheorem{definition}{Definition}
-\newtheorem*{definition*}{Definition}
-\newtheorem*{notation*}{Notation}
 \newtheorem*{theorempreview}{Theorem}
 \newtheorem{observation}{Observation}
 \newtheorem*{assertion*}{Assertion}
+\newtheorem{definition}{Definition}
+\newtheorem*{definition*}{Definition}
+\newtheorem*{notation*}{Notation}
 
 \makeatletter
 \newcommand{\defeq}{\mathrel{\aban@defeq}}

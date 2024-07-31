@@ -138,45 +138,42 @@
      \begin{align*}
         [[nf([σ] iN)]] &= [[ nf([σ] (iP → iM)) ]] \\
                         &= [[ nf([σ]iP → [σ]iM) ]]
-                        && \text{By congruence of substitution} \\
+                        && \text{by congruence of substitution} \\
                         &= [[ nf([σ]iP) → nf([σ]iM) ]]
-                        && \text{By congruence of normalization} \\
+                        && \text{by congruence of normalization} \\
                         &= [[ [nf(σ)]nf(iP) → [nf(σ)]nf(iM) ]]
-                        && \text{By induction hypothesis} \\
+                        && \text{by induction hypothesis} \\
                         &= [[ [nf(σ)](nf(iP) → nf(iM)) ]]
-                        && \text{By congruence of substitution} \\
+                        && \text{by congruence of substitution} \\
                         &= [[ [nf(σ)]nf(iP → iM) ]]
-                        && \text{By congruence of normalization} \\
+                        && \text{by congruence of normalization} \\
                         &= [[ [nf(σ)]nf(iN) ]]
       \end{align*}
     \item $[[iN]] = [[∀ pas.iM]]$ \label{case:norm-subst-commute}
       \begin{align*}
           [[ [nf(σ)] nf(iN) ]] &= [[ [nf(σ)] nf(∀pas.iM)]] \\
                             &= [[ [nf(σ)] ∀pas'.nf(iM) ]]
-                            && \text {Where $[[pas']] = [[ ord {pas} in nf(iM)]]
-                               = [[ord {pas} in iM]]$}\\
-                           & && 
-                               \text{(the latter is by
-                               \cref{corollary:normalization-ord})}\\
+                            && \text {where $[[pas']] = [[ ord {pas} in nf(iM)]]$}\\
+                            & && = [[ord {pas} in iM]]\\
+                            & && \text{(the latter is by \cref{corollary:normalization-ord})}\\
         \end{align*}
 
       \begin{align*}
          [[ nf([σ]iN) ]] &= [[ nf([σ] ∀pas.iM)]] \\
                           &= [[ nf(∀pas.[σ]iM) ]]
-                          && \text{Assuming $[[{pas} ∩ Γ1]] = \emptyset$
+                          && \text{assuming $[[{pas} ∩ Γ1]] = \emptyset$
                              and $[[{pas} ∩ Γ2]] = \emptyset$}\\
                           &= [[ ∀pbs.nf([σ]iM) ]]
-                          && \text {Where $[[pbs]] = [[ord {pas} in nf([σ]iM)]]
-                             = [[ord {pas} in [σ]iM]]$}\\
-                          & && 
-                             \text{(the latter is by \cref{corollary:normalization-ord})}\\
+                          && \text {where $[[pbs]] = [[ord {pas} in nf([σ]iM)]]$}\\
+                          & && = [[ord {pas} in [σ]iM]]\\
+                          & && \text{(the latter is by \cref{corollary:normalization-ord})}\\
                           &= [[ ∀pas'.nf([σ]iM) ]]
-                          && \text{By \cref{lemma:ord-sigma},}\\
+                          && \text{by \cref{lemma:ord-sigma},}\\
                           & && \text{$[[pbs]] = [[pas']]$
                              since $[[{pas}]]$ is disjoint with $[[Γ1]]$ and
                              $[[Γ2]]$}\\
                           &= [[ ∀pas'.[nf(σ)]nf(iM) ]]
-                          && \text {By the induction hypothesis}\\
+                          && \text {by the induction hypothesis}\\
          \end{align*}
      To show the alpha-equivalence of 
      $[[ [nf(σ)] ∀pas'.nf(iM) ]]$ and $[[ ∀pas'.[nf(σ)]nf(iM) ]]$,
@@ -229,15 +226,12 @@
                       && \text{from \cref{lemma:fv-nf,corollary:ord-weakening} } \\
                       &= [[ ord [mu] ({pbs} ∩ fv iM) in [mu] nf(iM) ]]
                       && \text{by \cref{lemma:distr-mu-ord}, because}\\
-                      & && \text{$[[{pas} ∩ fv iN]] \cap [[fv nf(iM)]] \subseteq [[{pas} ∩ fv iM ]]
-                        = \emptyset$}\\
-                      &
-                      && \text{$[[{pas} ∩ fv iN]] \cap [[({pbs} ∩ fv iM)]] \subseteq
-                        [[{pas} ∩ fv iM]] = \emptyset$} \\
+      &  \omit\rlap{\hspace{5em} $[[{pas} ∩ fv iN]] \cap [[fv nf(iM)]] \subseteq [[{pas} ∩ fv iM ]] = \emptyset$, and}\\ 
+      &  \omit\rlap{\hspace{5em} $[[{pas} ∩ fv iN]] \cap [[({pbs} ∩ fv iM)]] \subseteq [[{pas} ∩ fv iM]] = \emptyset$}\\ 
                       &= [[ ord [mu] ({pbs} ∩ fv iM) in nf(iN) ]]
-                      && \text{since $[[ [mu] nf(iM) ]] = [[nf(iN)]]$ is proved } \\
+                      && \text{as $[[ [mu] nf(iM) ]] = [[nf(iN)]]$} \\
                       &= [[ ord ({pas} ∩ fv iN) in nf(iN) ]]
-                      && \text{because $\mu$ is a bijection between}\\
+                      && \text{$\mu$ is a bijection between}\\
                       & && \text{$[[{pas} ∩ fv iN]]$ and $[[{pbs} ∩ fv iM]]$} \\
                       &= [[ ord {pas} in nf(iN) ]]
                       && \text{from \cref{lemma:fv-nf,corollary:ord-weakening} } \\
@@ -289,8 +283,7 @@
   \item $[[iN]] = [[iP → iM]]$ \label{case:normal-after-subst-arrow}
     \begin{align*}
       [[ [σ](iP → iM) ]] \text{ is normal} &\iff [[ [σ]iP → [σ]iM ]] \text{ is normal}
-                                           && \text{by substitution
-                                              congruence} \\
+                                           && \text{substitution definition} \\
                                            &\iff
                                              \begin{cases}
                                              [[ [σ]iP ]] &\text{is normal} \\
@@ -303,7 +296,7 @@
                                                [[ iM ]]       &\text{is normal} \\
                                                [[ σ|fv(iM) ]] &\text{is normal} \\
                                              \end{cases}
-                                           && \text{by the induction hypothesis}\\
+                                           && \text{induction hypothesis}\\
                                            &\iff
                                              \begin{cases}
                                                [[ iP → iM ]]  &\text{is normal} \\

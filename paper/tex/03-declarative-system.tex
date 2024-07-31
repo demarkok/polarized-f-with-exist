@@ -399,7 +399,7 @@ Let us discuss the rules of the declarative system in more detail.
   In the algorithm (\cref{sec:algorithm}), this subtyping check will provide the constraints
   we need to resolve the delayed instantiations of the quantifying variables.
 
-  \vspace{\baselineskip}
+  % \vspace{\baselineskip}
 % \subsubsection{Properties of Declarative Typing}
   An important property that the declarative system has is
   that the declarative specification is correctly defined for
@@ -491,7 +491,7 @@ referring the reader to the appendix (\cref{sec:term-level-translation}). We def
 the elaboration in such a way that it preserves the soundness invariants given
 in \cref{tab:elaboration-soundness}. 
 
-\begin{table}[h]
+\begin{figure}[t]
 \centering
 \begin{tabular}{rll}
 \hline
@@ -509,7 +509,7 @@ Application Typing & $[[Γ ; Φ ⊢ iN ● args ⇒> iM ⤳ fe; fargs]]$ & $[[|�
 \caption{Soundness of the Elaboration:
   the elaboration judgment on the left implies the typing judgment on the right}
   \label{tab:elaboration-soundness}
-\end{table}
+\end{figure}
 
 The least obvious aspect of the elaboration soundness is the application typing.
 The elaboration judgment $[[Γ ; Φ ⊢ iN ● args ⇒> iM ⤳ fe; fargs]]$ 
