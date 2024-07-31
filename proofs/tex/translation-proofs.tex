@@ -374,7 +374,7 @@
       Also, the soundness of \systemf typing (together with \cref{lemma:pol-removable}) 
       imply that the inferred type $[[fA → fB]]$ is well-formed in $[[fΓ]]$,
       which means that $[[+|fA|+]]$ is well-formed in 
-      $[[+|fΓ|+]]$ by \cref{lemma:typ-pol-wf-completeness}.
+      $[[+|fΓ|+]]$ by \cref{lemma:typ-pol-wf}.
       Then by \ruleref{\ottdruleDTtLamLabel} we infer 
       $[[+|fΓ|+ ; +|fΦ|+  ⊢ λx : +|fA|+. c : +|fA|+ → ↑+|fB|+]]$,
       and then by \ruleref{\ottdruleDTThunkLabel} and \ruleref{\ottdruleDTReturnLabel}, 
@@ -424,7 +424,7 @@
           \ruleref{\ottdruleDTAppLetAnnLabel}. Let us show that the 
           required premises hold. 
           \begin{enumerate}
-            \item $[[+|fΓ|+ ⊢ +|fB|+]]$ by \cref{lemma:typ-pol-wf-completeness};
+            \item $[[+|fΓ|+ ⊢ +|fB|+]]$ by \cref{lemma:typ-pol-wf};
             \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+), x:+|fA|+ ⊢ f : ↓(+|fA|+ → ↑+|fB|+)]]$ by 
               \ruleref{\ottdruleDTVarLabel};
             \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+), x:+|fA|+ ⊢ (+|fA|+ → ↑+|fB|+) ● x ⇒> ↑+|fB|+]]$
@@ -437,7 +437,7 @@
           \ruleref{\ottdruleDTCVarLetLabel}. Let us show that the 
           required premises hold. 
           \begin{enumerate}
-            \item $[[+|fΓ|+ ⊢ +|fA|+]]$ by \cref{lemma:typ-pol-wf-completeness};
+            \item $[[+|fΓ|+ ⊢ +|fA|+]]$ by \cref{lemma:typ-pol-wf};
             \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+) ⊢ c' : ↑+|fA|+]]$
               holds by weakening of $[[+|fΓ|+ ; +|fΦ|+ ⊢ c' : ↑+|fA|+]]$, which in turn holds by the induction hypothesis,
               as noted above;
@@ -448,7 +448,7 @@
           \ruleref{\ottdruleDTCVarLetLabel}. Let us show that the 
           required premises hold. 
           \begin{enumerate}
-            \item $[[+|fΓ|+ ⊢ +|fA → fB|+]]$ by \cref{lemma:typ-pol-wf-completeness};
+            \item $[[+|fΓ|+ ⊢ +|fA → fB|+]]$ by \cref{lemma:typ-pol-wf};
             \item $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑+|fA → fB|+]]$ by the induction hypothesis, as noted above;
             \item $[[+|fΓ|+  ⊢ ↑+|fA → fB|+ ≤ ↑+|fA → fB|+]]$ by reflexivity (\cref{lemma:subtyping-reflexivity});
             \item $[[+|fΓ|+ ; +|fΦ|+, f:↓(+|fA|+ → ↑+|fB|+) ⊢ let x:+|fA|+ = c'; let y:+|fB|+ = f(x); return y : ↑+|fB|+]]$ 
@@ -461,7 +461,7 @@
       \begin{itemize}
         \item $[[fΓ ; fΦ ⊢ ft : ∀a.fT  ⤳  c]]$, and thus, 
           $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑+|∀a.fT|+]]$ by the induction hypothesis; and
-        \item $[[fΓ ⊢ fA]]$, which implies $[[+|fΓ|+ ⊢ +|fA|+]]$ by \cref{lemma:typ-pol-wf-completeness}.
+        \item $[[fΓ ⊢ fA]]$, which implies $[[+|fΓ|+ ⊢ +|fA|+]]$ by \cref{lemma:typ-pol-wf}.
       \end{itemize}
       We wish to infer
       $[[+|fΓ|+ ; +|fΦ|+ ⊢ let f : +|∀a.fT|+ = c; let y : +|[fA/a]fT|+ = f(·); return y : ↑+|[fA/a]fT|+]]$.
@@ -486,7 +486,7 @@
           holds by \ruleref{\ottdruleDTCVarLetLabel}. Let us show that the
           required premises hold.
           \begin{enumerate}
-            \item $[[+|fΓ|+ ⊢ ↓∀α⁺.↑+|fT|+]]$ by \cref{lemma:typ-pol-wf-completeness}.
+            \item $[[+|fΓ|+ ⊢ ↓∀α⁺.↑+|fT|+]]$ by \cref{lemma:typ-pol-wf}.
             \item $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑↓∀α⁺.↑+|fT|+]]$ by the induction hypothesis, as noted above.
             \item $[[+|fΓ|+  ⊢ ↑↓∀α⁺.↑+|fT|+ ≤ ↑↓∀α⁺.↑+|fT|+]]$ by reflexivity (\cref{lemma:subtyping-reflexivity}).
             \item $[[+|fΓ|+ ; +|fΦ|+, f : ↓∀α⁺.↑+|fT|+  ⊢ let y : [+|fA|+/α⁺]+|fT|+ = f(·); return y : ↑[+|fA|+/α⁺]+|fT|+]]$ as noted above.
