@@ -100,11 +100,12 @@ of inference to support object-oriented features.
 
 In this paper, we extend the local type inference algorithm to a language with
 both universal and existential quantifiers, which can both be instantiated
-impredicatively. This extended system is referred to as \fexists. The
-combination of features in \fexists  broke a number of the invariants which
-traditional type inference algorithms depend on and required us to invent
-new algorithms which combine both unification and (surprisingly)
-anti-unification.
+impredicatively. This extended system is referred to as \fexists. 
+The version of this system without existential quantifiers was studied 
+by \citet{mercer2019:system-f}. However, the addition of existentials in \fexists
+broke a number of the invariants that traditional type inference algorithms depend
+ on and required us to invent new algorithms which combine both unification and 
+ (surprisingly) anti-unification.
 
 We make the following \emph{\textbf{contributions}}:
 
@@ -181,5 +182,3 @@ We make the following \emph{\textbf{contributions}}:
 % where the full definitions might not be of immediate interest, we direct the
 % reader to the appendix.
 
-\paragraph*{\textbf{Acknowledgments}} We would like to thank Meven
-Lennon-Bertrand for his extremely helpful comments and suggestions. 

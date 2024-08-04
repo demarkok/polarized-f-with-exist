@@ -38,12 +38,12 @@
   Mutual induction on $[[nf(iN) = iM]]$ and $[[nf(iP) = iQ]]$.
   Let us consider how this judgment is formed:
   \begin{caseof}
-    \item{\nameref{\ottdruleNrmNVarLabel} and \nameref{\ottdruleNrmPVarLabel}}\\ By
+    \item{\ruleref{\ottdruleNrmNVarLabel} and \ruleref{\ottdruleNrmPVarLabel}}\\ By
       the corresponding equivalence rules.
-    \item{\nameref{\ottdruleNrmShiftULabel}, \nameref{\ottdruleNrmShiftDLabel},
-        and \nameref{\ottdruleNrmArrowLabel}}\\
+    \item{\ruleref{\ottdruleNrmShiftULabel}, \ruleref{\ottdruleNrmShiftDLabel},
+        and \ruleref{\ottdruleNrmArrowLabel}}\\
       By the induction hypothesis and the corresponding congruent equivalence rules.
-    \item{\nameref{\ottdruleNrmForallLabel}}, i.e. $[[nf(∀pas.uN) = ∀pas'.uN']]$ \label{case:norm-soundness:forall}\\
+    \item{\ruleref{\ottdruleNrmForallLabel}}, i.e. $[[nf(∀pas.uN) = ∀pas'.uN']]$ \label{case:norm-soundness:forall}\\
       From the induction hypothesis, we
       know that $[[iN ≈ iN']]$. In particular, by \cref{lemma:equiv-fv}, $[[fv
         iN]] \equiv [[fv iN']]$.
@@ -54,7 +54,7 @@
       To prove $[[∀pas.iN ≈ ∀pas'.iN']]$, it suffices to provide a bijection 
       $\mu : [[{pas'} ∩ fv iN']] \leftrightarrow [[{pas} ∩ fv iN]]$ such that
       $[[iN ≈ [mu]iN']]$. Since these sets are equal, we take $\mu = id$.
-    \item{\nameref{\ottdruleNrmExistsLabel}} Same as for \cref{case:norm-soundness:forall}.
+    \item{\ruleref{\ottdruleNrmExistsLabel}} Same as for \cref{case:norm-soundness:forall}.
   \end{caseof}
 \end{proof}
 
@@ -196,7 +196,7 @@
 \begin{proof}
   Mutual induction on $[[iN ≈ iM]]$ and $[[iP ≈ iQ]]$.
   \begin{caseof}
-  \item {\nameref{\ottdruleEOneForallLabel}} \label{case:ord-completeness:forall}
+  \item {\ruleref{\ottdruleEOneForallLabel}} \label{case:ord-completeness:forall}
    From the normalization definition,
     \begin{itemize}
       \item $[[nf(∀pas.iN)]] = [[∀pas'.nf(iN)]]$ where $[[pas']]$ is $[[ord {pas} in nf(iN)]]$
@@ -239,7 +239,7 @@
                       && \text{by the definition of $[[pas']]$} \\
       \end{align*}
     \end{enumerate}
-  \item {\nameref{\ottdruleEOneExistsLabel}} Same as for \cref{case:ord-completeness:forall}.
+  \item {\ruleref{\ottdruleEOneExistsLabel}} Same as for \cref{case:ord-completeness:forall}.
   \item Other rules are congruent, and thus, proved by the corresponding congruent alpha-equivalence rule,
     which is applicable by the induction hypothesis. 
   \end{caseof}

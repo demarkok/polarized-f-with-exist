@@ -1,5 +1,7 @@
-% \renewcommand{\proofGenDir}{_gen}
 
+% Add prefix to the labels so that they do not conflict with the main paper
+\newcommand{\apppref}{:app}
+\renewcommand{\ruleref}[1]{\nameref{\apppref#1}}
 
 \section{Definitions and Algorithms} 
 \label{appendix}
@@ -66,7 +68,7 @@ Notice that checking the well-formedness of a type
 is an \emph{algorithmic} procedure, in which 
 both the context and the type are considered inputs.
 In other words, it is syntax-directed and mode-correct 
-(according to \cite{dunfieldBidirectionalTyping2020}), 
+(according to \citet{dunfield2020:bidirectional}), 
 which means that checking the well-formedness of a type
 can be done recursively by a deterministic algorithm. 
 We will use the well-formedness checking in the inference algorithm, 
@@ -77,10 +79,10 @@ for example, to check that the existential variables do not escape their scope.
   \label{alg:wf}
   \hfill\\
   \begin{minipage}[t]{0.45\textwidth}
-    \ottdefnWFTNiWFLabeled{}
+    \ottdefnWFTNiWFLabeled[\apppref]{}
   \end{minipage}
   \begin{minipage}[t]{0.45\textwidth}
-    \ottdefnWFTPiWFLabeled{}
+    \ottdefnWFTPiWFLabeled[\apppref]{}
   \end{minipage}
 \end{algorithm}
 
@@ -185,19 +187,19 @@ exactly because of the subtyping relation between them.
   \label{def:subDOne}
   \hfill\\
   \begin{minipage}[t]{0.45\textwidth}
-      \ottdefnDOneNsubLabeled{}
+      \ottdefnDOneNsubLabeled[\apppref]{}
   \end{minipage}
   \hfill
   \begin{minipage}[t]{0.48\textwidth}
-      \ottdefnDOnePsupLabeled{}
+      \ottdefnDOnePsupLabeled[\apppref]{}
   \end{minipage}
 
   \begin{minipage}[t]{0.45\textwidth}
-      \ottdefnDOneNeqLabeled{}
+      \ottdefnDOneNeqLabeled[\apppref]{}
   \end{minipage}
   \hfill
   \begin{minipage}[t]{0.45\textwidth}
-      \ottdefnDOnePeqLabeled{}
+      \ottdefnDOnePeqLabeled[\apppref]{}
   \end{minipage}
 \end{definition}
 
@@ -304,11 +306,11 @@ of the type is contained in $[[Γ]]$.
   \hfill
   
   \begin{minipage}[t]{0.48\textwidth}
-    \ottdefnWFATNauWFLabeled{}
+    \ottdefnWFATNauWFLabeled[\apppref]{}
   \end{minipage}%
   \hfill
   \begin{minipage}[t]{0.48\textwidth}
-    \ottdefnWFATPauWFLabeled{}
+    \ottdefnWFATPauWFLabeled[\apppref]{}
   \end{minipage}
 \end{algorithm}
 
@@ -421,9 +423,9 @@ It will be covered formally in \cref{sec:decl-equiv-lemmas}.
   \hfill
   
   \begin{multicols}{2}
-  \ottdefnEOneNeqLabeled{}
+  \ottdefnEOneNeqLabeled[\apppref]{}
   \columnbreak\\
-  \ottdefnEOnePeqLabeled{}
+  \ottdefnEOnePeqLabeled[\apppref]{}
   \end{multicols}
 
 \end{definition}
@@ -438,9 +440,9 @@ in the order they appear in $[[iN]]$.
   \label{alg:var-ordering}
   \hfill
   
-  \ottdefnONVarLabeled{}
+  \ottdefnONVarLabeled[\apppref]{}
   \newpage
-  \ottdefnOPVarLabeled{}
+  \ottdefnOPVarLabeled[\apppref]{}
 
   Analogously, the variable can be ordered in 
   an \emph{algorithmic} type ($[[ord varset in uP]]$ and 
@@ -459,21 +461,21 @@ canonical order dictated by \cref{alg:var-ordering}, removing unused ones.
   \hfill
 
   \begin{minipage}[t]{0.48\textwidth}
-    \ottdefnNrmNNormLabeled{}
+    \ottdefnNrmNNormLabeled[\apppref]{}
   \end{minipage}%
   \hfill
   \begin{minipage}[t]{0.48\textwidth}
-    \ottdefnNrmPNormLabeled{}
+    \ottdefnNrmPNormLabeled[\apppref]{}
   \end{minipage}
   
   Analogously, we define the normalization of algorithmic types by adding the following base cases:
 
   \begin{minipage}[t]{0.48\textwidth}
-    \ottdefnNrmuNNormLabeled{}
+    \ottdefnNrmuNNormLabeled[\apppref]{}
   \end{minipage}%
   \hfill
   \begin{minipage}[t]{0.48\textwidth}
-    \ottdefnNrmuPNormLabeled{}
+    \ottdefnNrmuPNormLabeled[\apppref]{}
   \end{minipage}
 
 \end{algorithm}
@@ -512,8 +514,8 @@ correctness of the negative subtyping.
 \begin{algorithm}[Subtyping]
   \label{alg:subtyping}
   \hfill\\
-  \ottdefnANsubLabeled{}
-  \ottdefnAPsupLabeled{}
+  \ottdefnANsubLabeled[\apppref]{}
+  \ottdefnAPsupLabeled[\apppref]{}
 \end{algorithm}
 
 The inputs of the subtyping algorithm are the declarative context $[[Γ]]$,
@@ -656,9 +658,9 @@ to the variable restricted by the entry.
 \begin{definition}[Type Satisfying a Constraint Entry]
   \hfill\\
   \begin{multicols}{2}
-  \ottdefnSATSCENLabeled{}
+  \ottdefnSATSCENLabeled[\apppref]{}
   \columnbreak\\
-  \ottdefnSATSCEPLabeled{}
+  \ottdefnSATSCEPLabeled[\apppref]{}
   \end{multicols}
 \end{definition}
 
@@ -708,7 +710,7 @@ can be merged in the following way:
   \label{definition:merge-matching-entries}
    \hfill 
 
-  \ottdefnSCMELabeled\\
+  \ottdefnSCMELabeled[\apppref]\\
 \end{algorithm}
 
 \begin{itemize}
@@ -846,9 +848,9 @@ unifying the input types.
 \begin{algorithm}[Unification]
   \hfill
   \begin{multicols}{2}
-  \ottdefnUNUnifLabeled{}
+  \ottdefnUNUnifLabeled[\apppref]{}
   \columnbreak\\
-  \ottdefnUPUnifLabeled{}
+  \ottdefnUPUnifLabeled[\apppref]{}
   \end{multicols}
 \end{algorithm}
 
@@ -899,7 +901,7 @@ in \cref{sec:alg-upper-bounds-proofs}.
 
 \begin{algorithm}[The Least Upper Bound Algorithm]
   \hfill\\
-  \ottdefnLUBNsubLabeled{}
+  \ottdefnLUBNsubLabeled[\apppref]{}
 \end{algorithm}
 
 \begin{itemize}
@@ -954,7 +956,7 @@ These properties are considered in more details in \cref{sec:upgrade-lemmas}.
 
 \begin{algorithm}[Type Upgrade]
   \hfill\\
-  \ottdefnLUBUpLabeled{}
+  \ottdefnLUBUpLabeled[\apppref]{}
 \end{algorithm}
 
 \begin{paragraph}{Note on the Greatest Lower Bound}
@@ -1019,8 +1021,8 @@ are normalized. This way, anti-unification up-to-equality rather than
 \begin{algorithm}[Anti-unification]
   \hfill
   
-  \ottdefnAUAUPLabeled{}
-  \ottdefnAUAUNLabeled{}
+  \ottdefnAUAUPLabeled[\apppref]{}
+  \ottdefnAUAUNLabeled[\apppref]{}
 
 \end{algorithm}
 
@@ -1170,7 +1172,7 @@ and normalization (\cref{alg:type-nf}).
 \begin{definition}[Declarative Type Inference]
   \hfill\\
   \label{def:declarative-typing}
-  \ottdefnsDTLabeled
+  \ottdefnsDTLabeled[\apppref]{}
 \end{definition}
 
 
@@ -1272,7 +1274,7 @@ and eliminators as syntactic sugar (see \cref{fig:systemf-grammar}).
 \end{figure}
 
 \begin{figure}
-  \ottdefnSFtyLabeledTwoColumns{}
+  \ottdefnSFtyLabeledTwoColumns[\apppref]{}
   \caption{Typing rules of \systemf}
   \label{fig:systemf-typing}
 \end{figure}
@@ -1281,11 +1283,11 @@ and eliminators as syntactic sugar (see \cref{fig:systemf-grammar}).
 \begin{observation}
   The following rules are admissible in \systemf: \hfill\\
   \begin{minipage}{0.5\textwidth}
-    \ottusedrule{\ottdruleSFtyAUnpackLabeled{}}
+    \ottusedrule{\ottdruleSFtyAUnpackLabeled[\apppref]{}}
   \end{minipage}
   \begin{minipage}{0.5\textwidth}
-    \ottusedrule{\ottdruleSFtyAPackLabeled{}}
-    \ottusedrule{\ottdruleSFtyALetLabeled{}}
+    \ottusedrule{\ottdruleSFtyAPackLabeled[\apppref]{}}
+    \ottusedrule{\ottdruleSFtyALetLabeled[\apppref]{}}
   \end{minipage}
 \end{observation}
   
@@ -1406,16 +1408,16 @@ by annotating each judgment with the elaboration term
 so that the typing is preserved.
 
 \begin{figure}[t]
-  \ottdefnELLabeled
+  \ottdefnELLabeled[\apppref]
   \caption{Subtyping elaboration from \fexists to \systemf}
   \label{fig:subt-elaboration}
 \end{figure}
 
 \clearpage
 \begin{figure}[t]
-  \ottdefnTELNLabeledTwoColumns{}
+  \ottdefnTELNLabeledTwoColumns[\apppref]{}
 
-  \ottdefnTELPAppLabeled{}
+  \ottdefnTELPAppLabeled[\apppref]{}
   \caption{Typing elaboration from \fexists to \systemf}
   \label{fig:typing-elaboration}
 \end{figure}
@@ -1429,7 +1431,7 @@ the soundness property (\cref{lemma:polar-soundness}) holds:
 $[[fΓ ; fΦ ⊢ ft : fT ⤳ c]]$ implies $[[+|fΓ|+ ; +|fΦ|+ ⊢ c : ↑+|fT|+]]$.
 
 \begin{figure}[t]
-  \ottdefnELfPolLabeled{}
+  \ottdefnELfPolLabeled[\apppref]{}
   \caption{Typing elaboration form from \systemf to \fexists}
   \label{fig:systemf-polarization}
 \end{figure}
@@ -1473,11 +1475,11 @@ deterministically choose fresh variables.
 
 \begin{algorithm}
   \hfill \\
-  \ottdefnATPInfLabeled{}
+  \ottdefnATPInfLabeled[\apppref]{}
   \hfill \\
-  \ottdefnATNInfLabeled{}
+  \ottdefnATNInfLabeled[\apppref]{}
   \hfill \\
-  \ottdefnATSpinInfLabeled{}
+  \ottdefnATSpinInfLabeled[\apppref]{}
 \end{algorithm}
 
 Let us discuss the inference rules of the algorithm:
@@ -1597,7 +1599,7 @@ we have $[[Γ ⊢ [uσ']uP ≥ [uσ]uP]]$.
 The minimal instantiation algorithm is defined as follows:
 \begin{algorithm}[Minimal Instantiation]
   \hfill \\
-  \ottdefnSINGminInstLabeled{}
+  \ottdefnSINGminInstLabeled[\apppref]{}
 \end{algorithm}
 
 \subsubsection{Constraint Singularity}
@@ -1617,8 +1619,8 @@ and returning the type satisfying $[[scE]]$ if such a type is unique.
 
 \begin{algorithm}[Singular Constraint Entry]
   \hfill\\
-  \ottdefnSINGscEPLabeled{}
-  \ottdefnSINGscENLabeled{}
+  \ottdefnSINGscEPLabeled[\apppref]{}
+  \ottdefnSINGscENLabeled[\apppref]{}
 \end{algorithm}
 
 \begin{itemize}

@@ -18,98 +18,100 @@
 \renewcommand{\ottdrule}[4][]{{\displaystyle\frac{\begin{array}{l}#2\end{array}}{#3}\;\ottdrulename{#4}}}
 
 
-\newcommand{\ottdefnTELNLabeledTwoColumns}[1]{
-    \begin{ottdefnblock}[#1]{\ottdefnHeaderTELN}{\ottcom{Negative typing elaboration}}
+\newcommand{\ottdefnTELNLabeledTwoColumns}[2][]{
+    \begin{ottdefnblock}[#2]{\ottdefnHeaderTELN}{\ottcom{Negative typing elaboration}}
         \begin{minipage}[t]{0.5\textwidth}
-            \ottusedrule{\ottdruleTELtLamLabeled{}}
-            \ottusedrule{\ottdruleTELReturnLabeled{}}
-            \ottusedrule{\ottdruleTELNEquivLabeled{}}
+            \ottusedrule{\ottdruleTELtLamLabeled[#1]{}}
+            \ottusedrule{\ottdruleTELReturnLabeled[#1]{}}
+            \ottusedrule{\ottdruleTELNEquivLabeled[#1]{}}
         \end{minipage}%
         \begin{minipage}[t]{0.5\textwidth}
-            \ottusedrule{\ottdruleTELTLamLabeled{}}
-            \ottusedrule{\ottdruleTELVarLetLabeled{}}
-            \ottusedrule{\ottdruleTELNAnnotLabeled{}}
+            \ottusedrule{\ottdruleTELTLamLabeled[#1]{}}
+            \ottusedrule{\ottdruleTELVarLetLabeled[#1]{}}
+            \ottusedrule{\ottdruleTELNAnnotLabeled[#1]{}}
         \end{minipage}
-        \ottusedrule{\ottdruleTELAppLetLabeled{}}
-        \ottusedrule{\ottdruleTELAppLetAnnLabeled{}}
-        \ottusedrule{\ottdruleTELUnpackLabeled{}}
-        \ottusedrule{\ottdruleTELCVarLetLabeled{}}
+        \ottusedrule{\ottdruleTELAppLetLabeled[#1]{}}
+        \ottusedrule{\ottdruleTELAppLetAnnLabeled[#1]{}}
+        \ottusedrule{\ottdruleTELUnpackLabeled[#1]{}}
+        \ottusedrule{\ottdruleTELCVarLetLabeled[#1]{}}
     \end{ottdefnblock}
 }
 
-\newcommand{\ottdefnTELPAppLabeled}[1]{
+\newcommand{\ottdefnTELPAppLabeled}[2][]{
     \begin{minipage}[t]{0.45\textwidth}
-        \begin{ottdefnblock}[#1]{\ottdefnHeaderTELP}{\ottcom{Positive typing elaboration}}
-            \ottusedrule{\ottdruleTELVarLabeled{}}
-            \ottusedrule{\ottdruleTELThunkLabeled{}}
-            \ottusedrule{\ottdruleTELPAnnotLabeled{}}
-            \ottusedrule{\ottdruleTELPEquivLabeled{}}
+        \begin{ottdefnblock}[#2]{\ottdefnHeaderTELP}{\ottcom{Positive typing elaboration}}
+            \ottusedrule{\ottdruleTELVarLabeled[#1]{}}
+            \ottusedrule{\ottdruleTELThunkLabeled[#1]{}}
+            \ottusedrule{\ottdruleTELPAnnotLabeled[#1]{}}
+            \ottusedrule{\ottdruleTELPEquivLabeled[#1]{}}
         \end{ottdefnblock}
     \end{minipage}
     \begin{minipage}[t]{0.5\textwidth}
         \begin{ottdefnblock}[#1]{\ottdefnHeaderTELApp}{\ottcom{Application typing}}
-        \ottusedrule{\ottdruleTELEmptyAppLabeled{}}
-        \ottusedrule{\ottdruleTELArrowAppLabeled{}}
-        \ottusedrule{\ottdruleTELForallAppLabeled{}}
+        \ottusedrule{\ottdruleTELEmptyAppLabeled[#1]{}}
+        \ottusedrule{\ottdruleTELArrowAppLabeled[#1]{}}
+        \ottusedrule{\ottdruleTELForallAppLabeled[#1]{}}
         \end{ottdefnblock}
     \end{minipage}
 }
 
 
-\renewcommand{\ottdefnLUBNsubLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderLUBNsub}{\ottcom{Least Upper Bound}}
-\ottusedrule{\ottdruleLUBExistsLabeled{}}
-\ottusedrule{\ottdruleLUBVarLabeled{}}
-\ottusedrule{\hspace{-.8cm}\ottdruleLUBShiftLabeled{}}
-\end{ottdefnblock}}
+\renewcommand{\ottdefnLUBNsubLabeled}[2][]{
+    \begin{ottdefnblock}[#2]{\ottdefnHeaderLUBNsub}{\ottcom{Least Upper Bound}}
+        \ottusedrule{\ottdruleLUBExistsLabeled[#1]{}}
+        \ottusedrule{\ottdruleLUBVarLabeled[#1]{}}
+        \ottusedrule{\hspace{-.8cm}\ottdruleLUBShiftLabeled[#1]{}}
+    \end{ottdefnblock}
+}
 
 
-\newcommand{\ottdefnELLabeled}[0]{
+\newcommand{\ottdefnELLabeled}[1][]{
     \framebox{\mbox{\ottdefnHeaderELN}} \quad
-    \framebox{\mbox{\ottdefnHeaderELP}}
+        \framebox{\mbox{\ottdefnHeaderELP}}
 
-    \begin{minipage}[t]{0.49\textwidth}
-        \ottusedrule{\ottdruleELNVarLabeled{}}
-        \ottusedrule{\ottdruleELShiftULabeled{}}
-    \end{minipage}%
-    \begin{minipage}[t]{0.49\textwidth}
-        \ottusedrule{\ottdruleELPVarLabeled{}}
-        \ottusedrule{\ottdruleELShiftDLabeled{}}
-    \end{minipage}
-    \ottusedrule{\ottdruleELArrowLabeled{}}
-    \ottusedrule{\ottdruleELExistsLabeled{}}
-    \ottusedrule{\ottdruleELForallLabeled{}}
+        \begin{minipage}[t]{0.49\textwidth}
+            \ottusedrule{\ottdruleELNVarLabeled[#1]{}}
+            \ottusedrule{\ottdruleELShiftULabeled[#1]{}}
+        \end{minipage}%
+        \begin{minipage}[t]{0.49\textwidth}
+            \ottusedrule{\ottdruleELPVarLabeled[#1]{}}
+            \ottusedrule{\ottdruleELShiftDLabeled[#1]{}}
+        \end{minipage}
+        \ottusedrule{\ottdruleELArrowLabeled[#1]{}}
+        \ottusedrule{\ottdruleELExistsLabeled[#1]{}}
+        \ottusedrule{\ottdruleELForallLabeled[#1]{}}
 }
 
-\newcommand{\ottdefnSFtyLabeledTwoColumns}[0]{
+\newcommand{\ottdefnSFtyLabeledTwoColumns}[1][]{
     \begin{minipage}{0.5\textwidth}
-        \ottusedrule{\ottdruleSFtyVarLabeled{}}
-        \ottusedrule{\ottdruleSFtytLamLabeled{}}
-        \ottusedrule{\ottdruleSFtyAppLabeled{}}
+        \ottusedrule{\ottdruleSFtyVarLabeled[#1]{}}
+        \ottusedrule{\ottdruleSFtytLamLabeled[#1]{}}
+        \ottusedrule{\ottdruleSFtyAppLabeled[#1]{}}
     \end{minipage}%
     \begin{minipage}{0.5\textwidth}
-        \ottusedrule{\ottdruleSFtyTLamLabeled{}}
-        \ottusedrule{\ottdruleSFtyTAppLabeled{}}
-    \end{minipage}
-}
-
-\newcommand{\ottdefnMININSTLabeled}[0]{
-    \begin{minipage}{0.5\textwidth}
-        \ottusedrule{\ottdruleSINGPUvarLabeled{}}
-        \ottusedrule{\ottdruleSINGExistsLabeled{}}
-    \end{minipage}%
-    \begin{minipage}{0.5\textwidth}
-        \ottusedrule{\ottdruleSINGSingLabeled{}}
+        \ottusedrule{\ottdruleSFtyTLamLabeled[#1]{}}
+        \ottusedrule{\ottdruleSFtyTAppLabeled[#1]{}}
     \end{minipage}
 }
 
-\newcommand{\ottdefnSINGLabeled}[0]{
+\newcommand{\ottdefnMININSTLabeled}[1][]{
+    \begin{minipage}{0.5\textwidth}
+        \ottusedrule{\ottdruleSINGPUvarLabeled[#1]{}}
+        \ottusedrule{\ottdruleSINGExistsLabeled[#1]{}}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \ottusedrule{\ottdruleSINGSingLabeled[#1]{}}
+    \end{minipage}
+}
+
+\newcommand{\ottdefnSINGLabeled}[1][]{
     % \begin{minipage}{0.5\textwidth}
-        \ottusedrule{\ottdruleSINGPEqLabeled{}}
-        \ottusedrule{\ottdruleSINGNEqLabeled{}}
+        \ottusedrule{\ottdruleSINGPEqLabeled[#1]{}}
+        \ottusedrule{\ottdruleSINGNEqLabeled[#1]{}}
     % \end{minipage}%
     % \begin{minipage}{0.5\textwidth}
-        \ottusedrule{\ottdruleSINGSupVarLabeled{}}
-        \ottusedrule{\ottdruleSINGSupShiftLabeled{}}
+        \ottusedrule{\ottdruleSINGSupVarLabeled[#1]{}}
+        \ottusedrule{\ottdruleSINGSupShiftLabeled[#1]{}}   
     % \end{minipage}
 }
 
@@ -135,46 +137,48 @@
 
 \renewcommand{\ottrulehead}[3]{\multicolumn{3}{l}{#3}\ottprodnewline$#1$ & $#2$ }
 
-\renewcommand{\ottdefnATNInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATNInf}{\ottcom{Negative typing}}
+\renewcommand{\ottdefnATNInfLabeled}[2][]{\begin{ottdefnblock}[#2]{\ottdefnHeaderATNInf}{\ottcom{Negative typing}}
     \begin{minipage}{0.45\textwidth}
-        \ottusedrule{\ottdruleATNAnnotLabeled{}}
-        \ottusedrule{\ottdruleATtLamLabeled{}}
-        \ottusedrule{\ottdruleATTLamLabeled{}}
-        \ottusedrule{\ottdruleATReturnLabeled{}}
+        \ottusedrule{\ottdruleATNAnnotLabeled[#1]{}}
+        \ottusedrule{\ottdruleATtLamLabeled[#1]{}}
+        \ottusedrule{\ottdruleATTLamLabeled[#1]{}}
+        \ottusedrule{\ottdruleATReturnLabeled[#1]{}}
     \end{minipage}
     \begin{minipage}{0.45\textwidth}
-        \ottusedrule{\ottdruleATVarLetLabeled{}}
-        \ottusedrule{\ottdruleATCVarLetLabeled{}}
-        \ottusedrule{\ottdruleATUnpackLabeled{}}
+        \ottusedrule{\ottdruleATVarLetLabeled[#1]{}}
+        \ottusedrule{\ottdruleATCVarLetLabeled[#1]{}}
+        \ottusedrule{\ottdruleATUnpackLabeled[#1]{}}
     \end{minipage}
-    \ottusedrule{\ottdruleATAppLetAnnLabeled{}}
-    \ottusedrule{\ottdruleATAppLetLabeled{}}
+    \ottusedrule{\ottdruleATAppLetAnnLabeled[#1]{}}
+    \ottusedrule{\ottdruleATAppLetLabeled[#1]{}}
 \end{ottdefnblock}}
 
 
-\renewcommand{\ottdefnATPInfLabeled}[1]{
+\renewcommand{\ottdefnATPInfLabeled}[2][]{
     \begin{ottdefnblock}[#1]{\ottdefnHeaderATPInf}{\ottcom{Positive typing}}
-    \begin{minipage}{0.29\textwidth}
-        \ottusedrule{\ottdruleATVarLabeled{}}
-    \end{minipage}
-    \begin{minipage}{0.39\textwidth}
-        \ottusedrule{\ottdruleATPAnnotLabeled{}}
-    \end{minipage}
-    \begin{minipage}{0.29\textwidth}
-        \ottusedrule{\ottdruleATThunkLabeled{}}
-    \end{minipage}
-\end{ottdefnblock}}
+        \begin{minipage}{0.29\textwidth}
+            \ottusedrule{\ottdruleATVarLabeled[#1]{}}
+        \end{minipage}
+        \begin{minipage}{0.39\textwidth}
+            \ottusedrule{\ottdruleATPAnnotLabeled[#1]{}}
+        \end{minipage}
+        \begin{minipage}{0.29\textwidth}
+            \ottusedrule{\ottdruleATThunkLabeled[#1]{}}
+        \end{minipage}
+    \end{ottdefnblock}
+}
 
-
-\renewcommand{\ottdefnATSpinInfLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATSpinInf}{\ottcom{Application typing}}
+\renewcommand{\ottdefnATSpinInfLabeled}[2][]{
+    \begin{ottdefnblock}[#2]{\ottdefnHeaderATSpinInf}{\ottcom{Application typing}}
     \begin{minipage}{0.5\textwidth}
-        \ottusedrule{\ottdruleATEmptyAppLabeled{}}
+        \ottusedrule{\ottdruleATEmptyAppLabeled[#1]{}}
     \end{minipage}
     \begin{minipage}{0.5\textwidth}
-        \ottusedrule{\ottdruleATArrowAppLabeled{}}
+        \ottusedrule{\ottdruleATArrowAppLabeled[#1]{}}
     \end{minipage}
-    \ottusedrule{\ottdruleATForallAppLabeled{}}
-\end{ottdefnblock}}
+    \ottusedrule{\ottdruleATForallAppLabeled[#1]{}}
+    \end{ottdefnblock}
+}
 
 % \begin{figure}
 %   \ottdefnATNInfLabeled{}
@@ -195,44 +199,44 @@
 % \end{figure}
 
 
-\renewcommand{\ottdefnDTNInfLabeled}[1]{
-    \begin{ottdefnblock}[#1]{\ottdefnHeaderDTNInf}{\ottcom{Negative typing}}
+\renewcommand{\ottdefnDTNInfLabeled}[2][]{
+    \begin{ottdefnblock}[#2]{\ottdefnHeaderDTNInf}{\ottcom{Negative typing}}
         \begin{minipage}[t]{0.49\textwidth}
-            \ottusedrule{\ottdruleDTtLamLabeled{}}
-            \ottusedrule{\ottdruleDTTLamLabeled{}}
-            \ottusedrule{\ottdruleDTReturnLabeled{}}
-            \ottusedrule{\ottdruleDTVarLetLabeled{}}
-            \ottusedrule{\ottdruleDTCVarLetLabeled{}}
-            \ottusedrule{\ottdruleDTNEquivLabeled{}}
+            \ottusedrule{\ottdruleDTtLamLabeled[#1]{}}
+            \ottusedrule{\ottdruleDTTLamLabeled[#1]{}}
+            \ottusedrule{\ottdruleDTReturnLabeled[#1]{}}
+            \ottusedrule{\ottdruleDTVarLetLabeled[#1]{}}
+            \ottusedrule{\ottdruleDTCVarLetLabeled[#1]{}}
+            \ottusedrule{\ottdruleDTNEquivLabeled[#1]{}}
         \end{minipage}
         \begin{minipage}[t]{0.49\textwidth}
-            \ottusedrule{\ottdruleDTAppLetLabeled{}}
-            \ottusedrule{\ottdruleDTAppLetAnnLabeled{}}
-            \ottusedrule{\ottdruleDTUnpackLabeled{}}
-            \ottusedrule{\hspace{-.5cm}\ottdruleDTNAnnotLabeled{}}
+            \ottusedrule{\ottdruleDTAppLetLabeled[#1]{}}
+            \ottusedrule{\ottdruleDTAppLetAnnLabeled[#1]{}}
+            \ottusedrule{\ottdruleDTUnpackLabeled[#1]{}}
+            \ottusedrule{\hspace{-.5cm}\ottdruleDTNAnnotLabeled[#1]{}}
         \end{minipage}
     \end{ottdefnblock}}
 
-\renewcommand{\ottdefnDTSpinInfLabeled}[1]{
-    \begin{ottdefnblock}[#1]{\ottdefnHeaderDTSpinInf}{\ottcom{Application typing}}
+\renewcommand{\ottdefnDTSpinInfLabeled}[2][]{
+    \begin{ottdefnblock}[#2]{\ottdefnHeaderDTSpinInf}{\ottcom{Application typing}}
         \begin{minipage}{0.49\textwidth}
-            \ottusedrule{\ottdruleDTEmptyAppLabeled{}}
-            \ottusedrule{\ottdruleDTArrowAppLabeled{}}
+            \ottusedrule{\ottdruleDTEmptyAppLabeled[#1]{}}
+            \ottusedrule{\ottdruleDTArrowAppLabeled[#1]{}}
         \end{minipage}
         \begin{minipage}{0.49\textwidth}
-            \ottusedrule{\ottdruleDTForallAppLabeled{}}
+            \ottusedrule{\ottdruleDTForallAppLabeled[#1]{}}
         \end{minipage}
     \end{ottdefnblock}}
 
-\renewcommand{\ottdefnDTPInfLabeled}[1]{
-    \begin{ottdefnblock}[#1]{\ottdefnHeaderDTPInf}{\ottcom{Positive typing}}
+\renewcommand{\ottdefnDTPInfLabeled}[2][]{
+    \begin{ottdefnblock}[#2]{\ottdefnHeaderDTPInf}{\ottcom{Positive typing}}
         \begin{minipage}{0.49\textwidth}
-            \ottusedrule{\ottdruleDTVarLabeled{}}
-            \ottusedrule{\ottdruleDTThunkLabeled{}}
+            \ottusedrule{\ottdruleDTVarLabeled[#1]{}}
+            \ottusedrule{\ottdruleDTThunkLabeled[#1]{}}
         \end{minipage}
         \begin{minipage}{0.49\textwidth}
-            \ottusedrule{\ottdruleDTPAnnotLabeled{}}
-            \ottusedrule{\ottdruleDTPEquivLabeled{}}
+            \ottusedrule{\ottdruleDTPAnnotLabeled[#1]{}}
+            \ottusedrule{\ottdruleDTPEquivLabeled[#1]{}}
         \end{minipage}
     \end{ottdefnblock}
 }
@@ -248,15 +252,14 @@
 \end{ottdefnblock}}
 
 
-\newcommand{\ottdefnsDTLabeled}{
-    \ottdefnDTNInfLabeled{}
+\newcommand{\ottdefnsDTLabeled}[1][]{
+    \ottdefnDTNInfLabeled[#1]{}
     \hfill\\
-    \ottdefnDTPInfLabeled{}
+    \ottdefnDTPInfLabeled[#1]{}
     \hfill\\
     \newpage
-    \ottdefnDTSpinInfLabeled{}
+    \ottdefnDTSpinInfLabeled[#1]{}
 }
-
 
 % \renewcommand{\ottdefnATSpinInf}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderATSpinInf}{\ottcom{Application typing}}
 % \begin{multicols}{2}
@@ -268,14 +271,16 @@
 % \end{ottdefnblock}}
 
 
-\renewcommand{\ottdefnAPsupLabeled}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderAPsup}{\ottcom{Positive supertyping}}
-\ottusedrule{\ottdruleAPVarLabeled{}}
-\ottusedrule{\hspace{-1cm}\ottdruleAExistsLabeled{}}
-\ottusedrule{\hspace{2em}\ottdruleAShiftDLabeled{}}
-\ottusedrule{\ottdruleAPUVarLabeled{}}
-\end{ottdefnblock}}
+\renewcommand{\ottdefnAPsupLabeled}[2][]{
+    \begin{ottdefnblock}[#2]{\ottdefnHeaderAPsup}{\ottcom{Positive supertyping}}
+        \ottusedrule{\ottdruleAPVarLabeled[#1]{}}
+        \ottusedrule{\hspace{-1cm}\ottdruleAExistsLabeled[#1]{}}
+        \ottusedrule{\hspace{2em}\ottdruleAShiftDLabeled[#1]{}}
+        \ottusedrule{\ottdruleAPUVarLabeled[#1]{}}
+    \end{ottdefnblock}}
 
-\renewcommand{\ottdefnAUAUN}[1]{\begin{ottdefnblock}[#1]{\ottdefnHeaderAUAUN}{}
+\renewcommand{\ottdefnAUAUN}[1]{
+    \begin{ottdefnblock}[#1]{\ottdefnHeaderAUAUN}{}
     \begin{multicols}{2}
         \ottusedrule{\ottdruleAUNVar{}}
         \columnbreak\\

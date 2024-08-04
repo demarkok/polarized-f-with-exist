@@ -99,3 +99,7 @@ printvars:
 	@echo "LOCAL_TEXS: $(LOCAL_TEXS)"
 	@echo "LOCAL_GEN_DIR: $(LOCAL_GEN_DIR)"
 	@echo "LOCAL_GEN_TEXS: $(LOCAL_GEN_TEXS)"
+
+cut:
+	pdftk paper.pdf cat 1-50 output main.pdf
+	pdftk paper.pdf cat 51-end output appendix.pdf
